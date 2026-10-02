@@ -28,10 +28,17 @@
     "js/generated/compatibility/midi.js",
     "js/optional/midi-led-test.js",
     "js/midi-import.js",
+    "js/generated/render/geometry-engine.js",
+    "js/generated/render/feedback-overlay.js",
+    "js/generated/render/loop-overlay.js",
+    "js/generated/compatibility/geometry.js",
     "js/feedback-engine.js",
     "js/feedback-debug.js",
     "js/generated/domain/timing.js",
-    "js/score-display.js",
+    "js/generated/score/osmd-adapter.js",
+    "js/generated/render/score-viewport.js",
+    "js/generated/render/score-renderer.js",
+    "js/generated/compatibility/score-rendering.js",
     "js/generated/score/score-traversal.js",
     "js/generated/compatibility/score-traversal.js",
     "js/generated/ui/audio-capabilities.js",
@@ -140,9 +147,10 @@
         "js/generated/ui/player-range-controls.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js",
         "js/feedback-debug.js",
-        "js/score-display.js",
+        "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/audio.js",
         "js/trainer-core.js",
@@ -151,7 +159,8 @@
         "docs/testing/settings-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/midi-baseline.integration.js",
-        "docs/testing/audio-baseline.integration.js"
+        "docs/testing/audio-baseline.integration.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -248,14 +257,15 @@
         {
           "symbol": "GeometryEngine",
           "kind": "const",
-          "file": "js/feedback-engine.js",
-          "line": 33
+          "file": "js/generated/compatibility/geometry.js",
+          "line": 42
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js",
         "js/feedback-debug.js",
-        "js/score-display.js",
+        "js/generated/compatibility/score-rendering.js",
         "js/trainer-core.js"
       ]
     },
@@ -735,6 +745,51 @@
       ]
     },
     {
+      "symbol": "PianoTrainerFeedbackOverlay",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerFeedbackOverlay",
+          "kind": "var",
+          "file": "js/generated/render/feedback-overlay.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/render/feedback-overlay.js",
+        "js/generated/compatibility/geometry.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerGeometry",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerGeometry",
+          "kind": "var",
+          "file": "js/generated/render/geometry-engine.js",
+          "line": 4
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/render/geometry-engine.js",
+        "js/generated/compatibility/geometry.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerLoopOverlay",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerLoopOverlay",
+          "kind": "var",
+          "file": "js/generated/render/loop-overlay.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/render/loop-overlay.js",
+        "js/generated/compatibility/geometry.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerMidiControls",
       "definitions": [
         {
@@ -811,6 +866,36 @@
       ]
     },
     {
+      "symbol": "PianoTrainerOsmdAdapter",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerOsmdAdapter",
+          "kind": "var",
+          "file": "js/generated/score/osmd-adapter.js",
+          "line": 4
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/score/osmd-adapter.js",
+        "js/generated/compatibility/score-rendering.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerScoreRenderer",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoreRenderer",
+          "kind": "var",
+          "file": "js/generated/render/score-renderer.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/render/score-renderer.js",
+        "js/generated/compatibility/score-rendering.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerScoreTraversal",
       "definitions": [
         {
@@ -823,6 +908,21 @@
       "referenceFiles": [
         "js/generated/score/score-traversal.js",
         "js/generated/compatibility/score-traversal.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerScoreViewport",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoreViewport",
+          "kind": "var",
+          "file": "js/generated/render/score-viewport.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/render/score-viewport.js",
+        "js/generated/compatibility/score-rendering.js"
       ]
     },
     {
@@ -980,18 +1080,18 @@
         {
           "symbol": "ScoreDisplay",
           "kind": "const",
-          "file": "js/score-display.js",
-          "line": 2
+          "file": "js/generated/compatibility/score-rendering.js",
+          "line": 16
         }
       ],
       "referenceFiles": [
-        "js/feedback-engine.js",
-        "js/score-display.js",
+        "js/generated/compatibility/score-rendering.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/settings-baseline.integration.js",
-        "docs/testing/traversal-baseline.integration.js"
+        "docs/testing/traversal-baseline.integration.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -1413,7 +1513,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/score-display.js"
+        "js/generated/compatibility/score-rendering.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -1793,7 +1894,8 @@
       ],
       "referenceFiles": [
         "js/trainer-core.js",
-        "docs/testing/score-display.integration.js"
+        "docs/testing/score-display.integration.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -1881,7 +1983,6 @@
         }
       ],
       "referenceFiles": [
-        "js/feedback-engine.js",
         "js/trainer-core.js"
       ]
     },
@@ -2173,14 +2274,15 @@
           "symbol": "buildExpectedNotesFromEntries",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 961
+          "line": 245
         }
       ],
       "referenceFiles": [
         "js/feedback-engine.js",
         "js/trainer-core.js",
         "docs/testing/traversal-baseline.integration.js",
-        "docs/testing/midi-baseline.integration.js"
+        "docs/testing/midi-baseline.integration.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -2336,7 +2438,7 @@
         }
       ],
       "referenceFiles": [
-        "js/score-display.js",
+        "js/generated/compatibility/score-rendering.js",
         "js/trainer-core.js"
       ]
     },
@@ -2471,7 +2573,8 @@
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
-        "docs/testing/midi-baseline.integration.js"
+        "docs/testing/midi-baseline.integration.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -2744,8 +2847,10 @@
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js",
-        "js/feedback-debug.js"
+        "js/feedback-debug.js",
+        "js/generated/compatibility/score-rendering.js"
       ]
     },
     {
@@ -2806,8 +2911,9 @@
         }
       ],
       "referenceFiles": [
-        "js/feedback-engine.js",
-        "js/feedback-debug.js"
+        "js/generated/compatibility/geometry.js",
+        "js/feedback-debug.js",
+        "js/generated/compatibility/score-rendering.js"
       ]
     },
     {
@@ -2821,8 +2927,10 @@
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js",
-        "js/feedback-debug.js"
+        "js/feedback-debug.js",
+        "js/generated/compatibility/score-rendering.js"
       ]
     },
     {
@@ -2917,7 +3025,7 @@
           "symbol": "drawFeedbackNote",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 810
+          "line": 101
         }
       ],
       "referenceFiles": [
@@ -3072,7 +3180,7 @@
           "symbol": "enforceLooperBounds",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 597
+          "line": 26
         }
       ],
       "referenceFiles": [
@@ -3201,13 +3309,27 @@
       ]
     },
     {
+      "symbol": "feedbackOverlay",
+      "definitions": [
+        {
+          "symbol": "feedbackOverlay",
+          "kind": "const",
+          "file": "js/generated/compatibility/geometry.js",
+          "line": 25
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/geometry.js"
+      ]
+    },
+    {
       "symbol": "findExpectedMatchForMidi",
       "definitions": [
         {
           "symbol": "findExpectedMatchForMidi",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 854
+          "line": 138
         }
       ],
       "referenceFiles": [
@@ -3343,6 +3465,20 @@
       ]
     },
     {
+      "symbol": "geometryEngine",
+      "definitions": [
+        {
+          "symbol": "geometryEngine",
+          "kind": "const",
+          "file": "js/generated/compatibility/geometry.js",
+          "line": 4
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/geometry.js"
+      ]
+    },
+    {
       "symbol": "getAppVersionDisplayText",
       "definitions": [
         {
@@ -3409,7 +3545,7 @@
           "symbol": "getCombinedTieLength",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 926
+          "line": 210
         }
       ],
       "referenceFiles": [
@@ -3480,10 +3616,11 @@
           "symbol": "getCurrentFeedbackContext",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 698
+          "line": 51
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js"
       ]
     },
@@ -3507,11 +3644,13 @@
         {
           "symbol": "getCursorSvgX",
           "kind": "function",
-          "file": "js/feedback-engine.js",
-          "line": 847
+          "file": "js/generated/compatibility/geometry.js",
+          "line": 55
         }
       ],
       "referenceFiles": [
+        "js/generated/render/geometry-engine.js",
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js"
       ]
     },
@@ -3536,7 +3675,7 @@
           "symbol": "getFeedbackContextKey",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 694
+          "line": 47
         }
       ],
       "referenceFiles": [
@@ -3611,20 +3750,6 @@
       ],
       "referenceFiles": [
         "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "getGraphicalNote",
-      "definitions": [
-        {
-          "symbol": "getGraphicalNote",
-          "kind": "function",
-          "file": "js/feedback-engine.js",
-          "line": 644
-        }
-      ],
-      "referenceFiles": [
-        "js/feedback-engine.js"
       ]
     },
     {
@@ -4117,6 +4242,21 @@
       ]
     },
     {
+      "symbol": "getScoreNoteRef",
+      "definitions": [
+        {
+          "symbol": "getScoreNoteRef",
+          "kind": "function",
+          "file": "js/generated/compatibility/score-rendering.js",
+          "line": 42
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/generated/compatibility/score-rendering.js"
+      ]
+    },
+    {
       "symbol": "getSelectedLedMidiOutputState",
       "definitions": [
         {
@@ -4371,13 +4511,13 @@
         {
           "symbol": "handleAutoScroll",
           "kind": "function",
-          "file": "js/feedback-engine.js",
-          "line": 618
+          "file": "js/generated/compatibility/score-rendering.js",
+          "line": 44
         }
       ],
       "referenceFiles": [
         "js/feedback-engine.js",
-        "js/score-display.js",
+        "js/generated/compatibility/score-rendering.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js"
       ]
@@ -4471,7 +4611,8 @@
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/midi-baseline.integration.js",
-        "docs/testing/audio-baseline.integration.js"
+        "docs/testing/audio-baseline.integration.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -5074,7 +5215,8 @@
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
-        "docs/testing/midi-baseline.integration.js"
+        "docs/testing/midi-baseline.integration.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -5201,6 +5343,20 @@
       ],
       "referenceFiles": [
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loopOverlay",
+      "definitions": [
+        {
+          "symbol": "loopOverlay",
+          "kind": "const",
+          "file": "js/generated/compatibility/geometry.js",
+          "line": 30
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/geometry.js"
       ]
     },
     {
@@ -5788,13 +5944,32 @@
       ],
       "referenceFiles": [
         "index.html",
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js",
-        "js/score-display.js",
+        "js/generated/score/osmd-adapter.js",
+        "js/generated/compatibility/score-rendering.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
-        "docs/testing/midi-baseline.integration.js"
+        "docs/testing/midi-baseline.integration.js",
+        "docs/testing/render-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "osmdAdapter",
+      "definitions": [
+        {
+          "symbol": "osmdAdapter",
+          "kind": "const",
+          "file": "js/generated/compatibility/score-rendering.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/geometry.js",
+        "js/generated/compatibility/score-rendering.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -5840,7 +6015,8 @@
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
-        "docs/testing/midi-baseline.integration.js"
+        "docs/testing/midi-baseline.integration.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -6041,7 +6217,7 @@
           "symbol": "processMissedNotes",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 1148
+          "line": 432
         }
       ],
       "referenceFiles": [
@@ -6228,7 +6404,7 @@
           "symbol": "registerHeldIncorrectFeedback",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 770
+          "line": 61
         }
       ],
       "referenceFiles": [
@@ -6257,7 +6433,7 @@
           "symbol": "releaseHeldIncorrectFeedback",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 801
+          "line": 92
         }
       ],
       "referenceFiles": [
@@ -6288,12 +6464,14 @@
         {
           "symbol": "renderFeedbackOverlay",
           "kind": "function",
-          "file": "js/feedback-engine.js",
-          "line": 751
+          "file": "js/generated/compatibility/geometry.js",
+          "line": 51
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js",
+        "js/generated/compatibility/score-rendering.js",
         "js/trainer-core.js"
       ]
     },
@@ -6304,12 +6482,15 @@
           "symbol": "renderLooper",
           "kind": "function",
           "file": "js/feedback-engine.js",
-          "line": 593
+          "line": 22
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/score-rendering.js",
+        "js/trainer-core.js",
+        "docs/testing/render-baseline.integration.js"
       ]
     },
     {
@@ -6318,13 +6499,14 @@
         {
           "symbol": "renderScoreAndRefreshGeometry",
           "kind": "function",
-          "file": "js/feedback-engine.js",
-          "line": 21
+          "file": "js/generated/compatibility/score-rendering.js",
+          "line": 43
         }
       ],
       "referenceFiles": [
-        "js/feedback-engine.js",
-        "js/score-display.js",
+        "js/generated/render/score-viewport.js",
+        "js/generated/render/score-renderer.js",
+        "js/generated/compatibility/score-rendering.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js"
       ]
@@ -6360,6 +6542,20 @@
       ],
       "referenceFiles": [
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "requireScoreDisplayElement",
+      "definitions": [
+        {
+          "symbol": "requireScoreDisplayElement",
+          "kind": "function",
+          "file": "js/generated/compatibility/score-rendering.js",
+          "line": 10
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/score-rendering.js"
       ]
     },
     {
@@ -6425,11 +6621,13 @@
         {
           "symbol": "resolveFeedbackAnchor",
           "kind": "function",
-          "file": "js/feedback-engine.js",
-          "line": 708
+          "file": "js/generated/compatibility/geometry.js",
+          "line": 52
         }
       ],
       "referenceFiles": [
+        "js/generated/render/geometry-engine.js",
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js"
       ]
     },
@@ -6589,6 +6787,20 @@
       ],
       "referenceFiles": [
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "scoreRenderer",
+      "definitions": [
+        {
+          "symbol": "scoreRenderer",
+          "kind": "const",
+          "file": "js/generated/compatibility/score-rendering.js",
+          "line": 36
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/score-rendering.js"
       ]
     },
     {
@@ -8066,8 +8278,10 @@
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/geometry.js",
         "js/feedback-engine.js",
-        "js/feedback-debug.js"
+        "js/feedback-debug.js",
+        "js/generated/compatibility/score-rendering.js"
       ]
     },
     {

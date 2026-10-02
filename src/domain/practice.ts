@@ -1,5 +1,5 @@
-// Transitional domain data: preserve legacy field names and units. OSMD note
-// objects stay opaque here until the renderer introduces revision-scoped refs.
+// Transitional domain data: preserve legacy field names and units. Expected
+// notes now use revision-scoped references; vendor objects belong to adapters.
 namespace PianoTrainerDomain {
     export type PracticeMode = 'wait' | 'follow' | 'realtime';
     export type ScoreLayout = 'traditional' | 'horizontal';
@@ -29,13 +29,15 @@ namespace PianoTrainerDomain {
         left?: boolean; right?: boolean;
     }
     export interface ExpectedContext { measureIndex: number; timestamp: WholeNoteTime; signature: string; }
+    export interface NoteRef { readonly scoreRevision: number; readonly id: string; }
+    export interface TraversalPosition { measureIndex: number; timestampWhole: WholeNoteTime | null; }
     export interface ExpectedNote {
         midi: MidiNote;
         staffId: number;
         hit: boolean;
         mIdx: number;
         anchor: SvgPoint | null;
-        logicalNote: unknown;
+        noteRef: NoteRef;
     }
     export interface EarlyGraceReservation {
         midi: MidiNote;

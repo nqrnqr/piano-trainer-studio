@@ -112,3 +112,21 @@ sample release 与 routed MIDI note-off timer 分别由 audioOutput/audioRouting
 失效迟到回调。Pause 仍只 silence，不取消旧 one-shot release；P7 需单独记录这一原有语义。
 Tone 的 latencyHint getter 无 setter；旧 sloppy JS 静默忽略赋值。迁移使用 Reflect.set 忽略 false，
 保留该行为，避免 TS strict 引入警告；有抛错的 setter 仍落入原 warning 路径。
+
+P5：旧 score-display.js 已删除；layout／native rAF／vertical scroll 在
+`src/render/score-viewport.ts`，DOM、storage、cursor provider 和命令均通过窄端口注入。
+`score-renderer.ts` 保留 render → geometry invalidate → display restore/anchor refresh →
+feedback → Loop → debug 顺序。geometry-engine、feedback-overlay 和 loop-overlay 为唯一绘制实现；
+旧 feedback-engine.js 只剩期望构建／匹配、反馈记录和尚未迁出的 Loop 边界推进。
+
+`src/score/osmd-adapter.ts` 是唯一写 cursor.iterator／浅拷贝 snapshot 的源文件，保存 prototype
+及 enumerable repeat fields、复制数组；数值 readPositions 只作观察，不能代替完整快照 token。
+private hook 有明确所有者，重复 afterRender 不叠加；换 cursor 或 dispose 释放旧 hook，保留外部新 owner。
+其 NoteRef registry 根据实际 Sheet identity 增加 revision；map 不按 midi/timestamp 合并，并拒绝旧谱 ref。
+图形 exact-source 查找与 measure/system 坐标由 adapter 提供；vendor Shape 仅供渲染几何使用。
+
+`src/compatibility/{geometry,score-rendering}.ts` 仍提供 GeometryEngine／ScoreDisplay 和 legacy callback
+给 core、feedback/debug、optional LED 及旧测试。首次组成 factory 无 render/rAF 副作用，ScoreDisplay.init
+仍在 core 原位置执行；renderer、geometry 的实际工作在命令调用时发生。P6/P9 再移除这些隐式消费者。
+Geometry 的两个局部断言分别用于完整 iterator prototype/fields clone 与有界 vendor shape reflection；
+没有 any/index-any，未改候选评分、dot/annotation rejection、same-stem cluster 优先级或 beam 算法。

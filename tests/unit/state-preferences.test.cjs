@@ -134,12 +134,16 @@ test('mode-specific routing keeps independent objects and Follow chooses exactly
 test('persisted display layout restores after recreating the display module', () => {
     const initializeDisplay = h => {
         const elements = new Map();
+        class Element { constructor() { this.style={};this.classList={toggle(){}}; } addEventListener() {} }
+        class Select extends Element {}
+        class Input extends Element {}
+        Object.assign(h.context,{HTMLElement:Element,HTMLSelectElement:Select,HTMLInputElement:Input});
         h.context.document = { getElementById: id => {
-            if (!elements.has(id)) elements.set(id, { style: {}, classList: { toggle() {} }, addEventListener() {} });
+            if (!elements.has(id)) elements.set(id, new (id==='select-score-layout'?Select:id==='check-autoscroll'?Input:Element)());
             return elements.get(id);
         } };
         h.context.osmd = { EngravingRules: {}, cursor: null, setOptions() {}, IsReadyToRender: () => false };
-        runScript(h.context, 'js/score-display.js');
+        for(const file of ['score/osmd-adapter','render/score-viewport','render/score-renderer','compatibility/score-rendering'])runScript(h.context,`js/generated/${file}.js`);
         h.evaluate('ScoreDisplay.init()');
         assert.equal(h.evaluate('ScoreDisplay.isHorizontal()'), true);
         assert.equal(elements.get('select-score-layout').value, 'horizontal');

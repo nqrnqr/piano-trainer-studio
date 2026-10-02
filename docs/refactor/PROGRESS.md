@@ -104,8 +104,26 @@
 - 命令：npm run build/check，显示／练习／MIDI／audio 浏览器页与两个 inventory 脚本。回退：revert 本阶段恢复音频 core 与 MIDI 的原归一化连接；不修改用户 key、数据库、vendor 或其他阶段。
 - 下一阶段最小入口：P5 OSMD adapter、score-display 与几何／绘制位置／NoteRef；保留 render 生命周期和两个位置语义。
 
-## P5–P9
+## P5
+
+- 状态：完成（2026-10-03）；完整目标仍活跃。
+- 范围：OSMD 最小对象接口／图形查询／measure bounds、private painted snapshot、revision-scoped NoteRef；score-display、纵横 viewport、render lifecycle、几何与反馈／Loop SVG。播放／判定分支尚保留旧实现，继续 P6/P7。
+- 迁移映射：score-display.js → `src/render/score-viewport.ts`（旧文件已移除）；feedback 的 renderScoreAndRefreshGeometry → score-renderer，GeometryEngine → geometry-engine，draw/render feedback → feedback-overlay，Loop drawing → loop-overlay；图形 exact-source lookup／system box／cursor.iterator → `src/score/osmd-adapter.ts`。feedback-engine 仅保留输入判定／期望构造、反馈记录与 Loop 推进。
+- 类型／接口：OSMD 1.9.7 最小 Renderer/Cursor/Note/Shape/GraphicalMeasure；NoteRef readonly revision/id 和数值位置观察；各 render factory 的窄命令／状态／DOM／clock ports。domain/ExpectedNote 不再保存 logicalNote，constructor 与 dedupe fallback 改成 noteRef。相同 pitch/time 的源对象保留不同 ref；旧同 staff/pitch expected 去重规则不变。
+- compatibility：`src/compatibility/{geometry,score-rendering}.ts` 暂时组装与旧名转发，供 core、feedback/debug、optional LED 及旧测试。factory 没有 render/rAF 副作用，ScoreDisplay.init 仍在 core 原位置执行。剩余 vendor 访问的旧业务消费者由 P6/P7/P8 逐阶段迁走。
+- 原行为：render → invalidate geometry/overlay/debug → refresh anchors & restore painted cursor → feedback → Loop → debug 顺序未改。真正 iterator 预取位置／身份与完整 repeat state 保留；仅 adapter 暂写 private iterator，在 finally 恢复。cloning 保留 prototype、所有 enumerable 字段并浅拷贝数组，不把 measure/time 观察值当作完整 token。
+- 几何规则：沿用 units=10、shape 探索上限/annotation ban、dot rejection、候选评分、X neighborhood 与 same-stem chord 的 Y 优先、exact-source 查找和 measure/system padding；没有改 beam 布局。两个局部 vendor 断言（完整 iterator clone、bounded shape reflection）及 nullable distance/cache assertion 有明确条件，无 any 或忽略检查。
+- 生命周期：viewport init 去重／dispose 释放四类 DOM listener 和 rAF；adapter 重复 afterRender 不叠加 update wrapper，换 cursor／dispose 只释放自己的 hook，不覆盖外部 owner。Sheet identity 或 dispose 增加 revision、清除 ref map；geometry 在 render 后失效旧 cache。P9 再统一销毁入口。
+- 特征测试说明：保留原 anchor refresh 的 horizontal/changingLayout 条件；layout switch 保留 realtimeWrongPress 标记，zoom/resize 的既有 visual cleanup 清空它。新增断言先误以为 zoom 也保留 flag；检查原 core 明确写 false 后，拆成分别验证原行为的断言，没有改计分或减少已有检查。
+- 验证：109/109 Node（新增 14 项 snapshot/NoteRef/renderer/viewport/geometry/overlay）；strict typecheck、70 文件的干净生成比较通过。读取 e6f8095 原 Geometry，20,000 组 SVG candidate/fallback 比较完全一致。真实 OSMD 固定 1200px complex fixture，两布局 42 个 expected/anchor 记录与原 P4b snapshot 误差小于 0.01px，golden 源提交／vendor／宽度保存在 geometry.p4b.json；临时旧脚本采集后已删除，最终只加载新实现。
+- 浏览器：默认／no-op 各显示 30、三模式×两布局练习及真实反复 53、render 专项 19；共享时间线／提前输入 30/33，实际启动的模拟 MIDI 桥接 20/21，共 308 项检查。前台 visibility=visible 下原生 rAF 的移动、33% 收敛及 dispose 均通过。render 专项还验证 hidden/cue、same-pitch staff refs、Wait relayout/zoom 状态身份、Loop shading/brackets、换谱旧 ref 失效。完整记录见 validation/P5-browser.txt。
+- 清单：590 个 global candidates／45 classic slots，同名函数覆盖为零；335 个直接 AppState 写入，renderer 中别名 anchor/flag 写入及 ref/cache 所有权在 STATE_OWNERSHIP 记录。
+- 未验证：实体 MIDI/LED、可听音频／metronome 同步、Mac 字体／启动器和触屏设备；前台 native scroll 的一次实测不代表各硬件帧率。没有升级 vendor、调整 storage/db/helper、重写匹配／时间算法。
+- 命令：npm run build/check，两个 inventory 脚本，显示／practice／render／traversal 浏览器页；.cache 的原算法比较。回退：revert 本阶段恢复旧 display/feedback 与 expected logical source 字段；不清空用户数据或回退音频/MIDI。
+- 下一入口：P6 建立 expected-notes、input-matching、early-grace、scoring；先列出原输入状态与副作用顺序，再迁移共用判定。
+
+## P6–P9
 
 状态：未开始，仍属于完整目标。
 
-下一最小入口：P5 的 OSMD／渲染与几何边界；随后依序完成判定、调度、数据/UI 和显式 bootstrap 的终态验收。完整目标仍活跃，P4b 完成不代表整个重构完成。
+下一最小入口：P6 的期望音符、输入匹配、提前输入与计分；随后依序完成调度、数据/UI 和显式 bootstrap 的终态验收。完整目标仍活跃，P5 完成不代表整个重构完成。

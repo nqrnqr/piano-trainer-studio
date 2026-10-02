@@ -13,13 +13,16 @@
 - `src/ui/settings-controls.ts` = settings download, FileReader import, alert and reload boundary
 - `src/domain/playable-range.ts` / `src/state/player-range.ts` = hardware-independent keyboard range math and shared range cache used by input grading and previews
 - `src/domain/timing.ts` → `js/generated/domain/timing.js` = shared timing math for traversal waits, measure remainder checks, and playback scheduling inputs
-- `js/score-display.js` = score layout preference, single-system engraving, and horizontal viewport following
+- `src/score/osmd-adapter.ts` = OSMD graph access, revision-scoped NoteRef registry, private iterator snapshot and painted cursor restoration
+- `src/render/score-viewport.ts`, `score-renderer.ts` = layout/scroll ownership and the unchanged render lifecycle
+- `src/render/geometry-engine.ts`, `feedback-overlay.ts`, `loop-overlay.ts` = stabilized notehead anchors and independent SVG layers
 - `js/toolbar-ui.js` = toolbar/menu shell
 - `js/scores-ui.js` = score browser UI shell
 - `js/score-library.js` = score library shell
 - `js/led.js` = LED simulator, calibration, and hardware/WLED output
-- `js/midi.js` = WebMIDI setup, selectors, and connection state wiring
-- `js/feedback-engine.js` = production feedback-note matching, anchor resolution, and overlay placement
+- `src/midi/*.ts`, `src/ui/midi-controls.ts` = Web MIDI decoding, service, output and device controls; old js/midi.js is removed
+- `src/audio/*.ts`, `src/domain/velocity.ts` = Tone voice/loading/unlock lifecycle, independent audio/MIDI routing and shared velocity normalization
+- `js/feedback-engine.js` = remaining legacy matching, expected-note construction and feedback state, delegating geometry/overlays to render ports
 - `js/feedback-debug.js` = developer-only feedback diagnostics and sticky debug labels
 - `trainer-core.js` = remaining trainer core and orchestration
 
@@ -48,13 +51,14 @@ settles on the current note; backward repeats use the same follower. Pause cance
 animation; Reset follows the reset cursor. Reduced-motion preferences use immediate positioning.
 
 The playback iterator often points one event ahead of the visible cursor. The display
-module snapshots the iterator when `cursor.update()` paints and uses that snapshot only
+adapter snapshots the iterator when `cursor.update()` paints and uses that snapshot only
 to repaint after a horizontal relayout or mode switch. It restores the live iterator
 immediately, without traversing or scheduling it. OSMD recreates cursors on render, so the
-update hook is attached again by `afterRender()`. Expected notes retain their logical-note
-reference so feedback anchors can be refreshed after geometry invalidation without
+update hook is attached again by `afterRender()` without stacking wrappers. Expected notes retain a revision-scoped
+NoteRef, resolved only by the adapter, so feedback anchors can be refreshed after geometry invalidation without
 rebuilding grading state. This integration depends on the bundled OSMD cursor's `iterator`
-field; rerun the display checks when upgrading OSMD.
+field; rerun the display and render checks when upgrading OSMD. The registry uses exact source identity,
+keeps equal-pitch voices separate and invalidates old references on a new Sheet or dispose.
 
 Run `node local-web-server.js`, then open `/docs/testing/score-display.html` and click
 Run checks for browser integration coverage. The synthetic two-staff score exercises
@@ -71,7 +75,7 @@ The remaining file still owns the most timing-sensitive systems:
 - repeat/jump traversal
 - metronome behavior and drift fixes
 - count-in handoff
-- score render lifecycle coordination
+- render commands still enter through transitional compatibility; lifecycle implementation is in src/render
 
 Keeping those areas together is safer while playback/navigation behavior is still being stabilized.
 

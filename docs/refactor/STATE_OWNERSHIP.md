@@ -37,8 +37,17 @@ sampler ready/promise、Tone nodes、初始 context profile 与 sample release t
 移调 UI 使用 `semitone`，targetKey 可为 null；没有按草案猜测字段值。
 
 核心时间单位保留别名与字段名：谱面全音符、Tone 秒、performance 毫秒；数字别名本身不提供品牌隔离。
-`logicalNote` 当前为 unknown 的不透明源引用；P5 转入 adapter 的 NoteRef 映射，业务不得依赖它的字段。
+P5 已把 ExpectedNote.logicalNote 替换为 readonly `noteRef: {scoreRevision,id}`；
+源对象映射只由 osmd-adapter 持有，按 Sheet 身份变更／dispose 失效。相同 pitch/time 的不同源对象
+获得不同 ID；expected 同谱表同音的旧去重规则仍由 buildExpectedNotes 保留，不借 ID 改变匹配。
+renderer 不推进 iterator；viewport 经 adapter 恢复最后绘制快照，再立即恢复真实预取 iterator。
+anchor 刷新仍保留原 horizontal／changingLayout 条件，cache 在每次 render 后失效。
 模式初值是三个有效值，但旧 core 直接接收 persisted string；类型保留此历史事实，后续 UI 边界需显式判别。
+
+P5 的反馈／Loop 绘制只读记录与 looper 边界，不写计分、expected hit 或时间线；feedback
+context key 通过旧 practice callback 注入。几何 node/measure cache 归 geometryEngine 实例；
+reset feedback history 仍由 core 负责。布局切换临时保存 realtimeWrongPressInCurrentContext，
+zoom/resize 仍执行原 clearFeedbackVisualStatePreserveScoring 的 flag 清理；这是原语义，未合并两条路径。
 
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。

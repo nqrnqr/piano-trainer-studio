@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Rendering boundary regression checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1200px;height:500px;border:1px solid #ccc}pre{white-space:pre-wrap;height:260px;overflow:auto}#golden{display:none}</style>
+<h1>Rendering boundary regression checks</h1>
+<p>Actual OSMD/SVG geometry, source references, overlays and native animation frames. Uses a synthetic score. Audio and hardware outputs are disabled by the checks.</p>
+<button id="run" disabled>Run checks</button><pre id="results">Loading</pre><pre id="golden"></pre>
+<iframe title="App under test"></iframe>
+<script>
+const frame=document.querySelector('iframe'),params=new URLSearchParams(location.search);
+frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
+document.getElementById('run').onclick=()=>{
+ document.getElementById('run').disabled=true;
+ const script=document.createElement('script');script.src='/docs/testing/render-baseline.integration.js';frame.contentDocument.body.append(script);
+};
+frame.src='../../index.html'+(params.get('led')==='off'?'?led=off':'');
+</script>
