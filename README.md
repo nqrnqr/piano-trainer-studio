@@ -2,6 +2,9 @@
 
 Practice piano with real-time MIDI feedback, scoring, and optional LED guidance.
 
+For contributors: [TypeScript development and regression checks](docs/refactor/DEVELOPMENT.md).
+The app includes generated scripts; running the existing launchers requires no frontend build.
+
 ---
 
 ## 🌐 Try It

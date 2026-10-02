@@ -1,0 +1,21 @@
+{
+  "name": "piano-trainer-studio",
+  "version": "1.2.4",
+  "private": true,
+  "description": "Development tools for the existing static Piano Trainer Studio app",
+  "engines": {
+    "node": ">=22.21.0 <23"
+  },
+  "scripts": {
+    "start": "node local-web-server.js",
+    "typecheck": "tsc -p tsconfig.legacy.json --noEmit",
+    "build": "node scripts/build-legacy.cjs",
+    "build:check": "node scripts/build-legacy.cjs --check",
+    "test": "node --test tests/unit/*.test.cjs",
+    "check": "npm run typecheck && npm run build:check && npm test",
+    "inventory:globals": "node scripts/inventory-legacy-globals.cjs"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

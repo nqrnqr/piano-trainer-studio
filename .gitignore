@@ -5,8 +5,9 @@ Thumbs.db
 # Logs
 *.log
 
-# Node (only if you ever add helper packaging)
+# Node development dependencies
 node_modules/
+.cache/
 
 # Local dev / temp
 *.zip

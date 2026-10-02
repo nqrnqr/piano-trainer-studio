@@ -4,12 +4,13 @@
 - `/assets/js` = local third-party vendor libraries kept separate for offline use
 - `/assets/audio` = static audio assets such as Salamander samples
 - `/js` = extracted app modules with focused ownership
+- `/src` = migrated TypeScript source; `/js/generated` = committed classic-script output and embedded source maps
 - `trainer-core.js` = remaining integration layer for rendering lifecycle, playback scheduling, metronome flow, repeat/jump handling, and cross-module orchestration
 - `/docs` = architecture notes and development notes
 
 ## Current modules
 - `js/trainer-state.js` = shared state and persisted preference helpers
-- `js/trainer-timing.js` = shared timing math for traversal waits, measure remainder checks, and playback scheduling inputs
+- `src/domain/timing.ts` → `js/generated/domain/timing.js` = shared timing math for traversal waits, measure remainder checks, and playback scheduling inputs
 - `js/score-display.js` = score layout preference, single-system engraving, and horizontal viewport following
 - `js/toolbar-ui.js` = toolbar/menu shell
 - `js/scores-ui.js` = score browser UI shell
@@ -22,11 +23,12 @@
 
 
 ## Timing module boundary
-- `js/trainer-timing.js` is shared infrastructure for all practice modes
+- `src/domain/timing.ts` is shared infrastructure for all practice modes, exposing the existing `window.PTTiming` API through generated classic JS
 - It answers **how long** structural traversal should wait
 - It must not directly move the cursor, render feedback, or update UI
 - `trainer-core.js` remains the orchestrator that decides **when** each mode advances
 - Realtime structural jumps should use current-measure remainder timing instead of first-note fallbacks or raw iterator deltas
+- Edit the TS source, run `npm run build`, and commit both JS and map. `npm run check` validates types, generated output, and Node behavior tests. See `docs/refactor/DEVELOPMENT.md` for the staged migration and browser checks.
 
 ## Score display modes
 

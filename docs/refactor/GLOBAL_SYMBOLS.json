@@ -12,7 +12,7 @@
     "js/midi-import.js",
     "js/feedback-engine.js",
     "js/feedback-debug.js",
-    "js/trainer-timing.js",
+    "js/generated/domain/timing.js",
     "js/score-display.js",
     "js/trainer-core.js"
   ],
@@ -3542,7 +3542,7 @@
         }
       ],
       "referenceFiles": [
-        "js/trainer-timing.js",
+        "js/generated/domain/timing.js",
         "js/trainer-core.js",
         "docs/testing/practice-baseline.integration.js"
       ]
@@ -7937,12 +7937,12 @@
         {
           "symbol": "window.PTTiming",
           "kind": "window assignment",
-          "file": "js/trainer-timing.js",
-          "line": 6
+          "file": "js/generated/domain/timing.js",
+          "line": 4
         }
       ],
       "referenceFiles": [
-        "js/trainer-timing.js",
+        "js/generated/domain/timing.js",
         "js/trainer-core.js",
         "docs/testing/practice-baseline.integration.js"
       ]
@@ -7953,12 +7953,12 @@
         {
           "symbol": "window.PTTiming.getRemainingMeasureWaitWhole",
           "kind": "window assignment",
-          "file": "js/trainer-timing.js",
-          "line": 13
+          "file": "js/generated/domain/timing.js",
+          "line": 7
         }
       ],
       "referenceFiles": [
-        "js/trainer-timing.js"
+        "js/generated/domain/timing.js"
       ]
     },
     {
@@ -7967,12 +7967,12 @@
         {
           "symbol": "window.PTTiming.getTraversalBeatsToWait",
           "kind": "window assignment",
-          "file": "js/trainer-timing.js",
-          "line": 40
+          "file": "js/generated/domain/timing.js",
+          "line": 27
         }
       ],
       "referenceFiles": [
-        "js/trainer-timing.js",
+        "js/generated/domain/timing.js",
         "js/trainer-core.js",
         "docs/testing/practice-baseline.integration.js"
       ]

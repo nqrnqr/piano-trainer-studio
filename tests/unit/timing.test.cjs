@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const { runScript } = require('../helpers/legacy-script.cjs');
 
 const context = vm.createContext({ window: {} });
-runScript(context, process.env.PT_TIMING_SCRIPT || 'js/trainer-timing.js');
+runScript(context, process.env.PT_TIMING_SCRIPT || 'js/generated/domain/timing.js');
 const timing = context.window.PTTiming;
 const measure = { startTimestamp: 4, actualLengthWhole: 1, nominalMeasureLengthWhole: 1 };
 const options = {
@@ -63,7 +63,7 @@ test('callback receives current measure index, including omitted index', () => {
 test('classic script reuses an existing namespace', () => {
     const existing = { sentinel: 42 };
     const other = vm.createContext({ window: { PTTiming: existing } });
-    runScript(other, process.env.PT_TIMING_SCRIPT || 'js/trainer-timing.js');
+    runScript(other, process.env.PT_TIMING_SCRIPT || 'js/generated/domain/timing.js');
     assert.equal(other.window.PTTiming, existing);
     assert.equal(existing.sentinel, 42);
 });
