@@ -1,6 +1,6 @@
 interface Window {
     __PT_BOOT_OPTIONS__?: {ledEnabled?: boolean};
-    MidiLedTestController?: {stop(): Promise<void>};
+    MidiLedTestController?: PianoTrainerMidiControls.LedTest;
 }
 declare const LedEngine: {
     config: {futurePreview: number};

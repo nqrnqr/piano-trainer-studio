@@ -1803,10 +1803,9 @@ const WLEDController = {
 // Optional legacy MIDI LED output; musical input/output belongs to MIDI service.
 function legacyUpdateLEDHardware(midi, newClass, oldClass) {
     if (AppState.ledOutputMode !== 'midi') return;
-    if (!midiAccess) return;
     const lightsOutId = document.getElementById('midi-lights').value;
     if (lightsOutId === 'none') return;
-    const output = midiAccess.outputs.get(lightsOutId);
+    const output = getLegacyMidiOutput(lightsOutId);
     if (!output || output.state === 'disconnected') return;
 
     const noteWasLit = isMidiLedRenderableState(oldClass);
@@ -1829,10 +1828,9 @@ function legacyUpdateLEDHardware(midi, newClass, oldClass) {
 
 function legacyWipeHardwareLEDs() {
     if (AppState.ledOutputMode !== 'midi') return;
-    if (!midiAccess) return;
     const lightsOutId = document.getElementById('midi-lights').value;
     if (lightsOutId === 'none') return;
-    const output = midiAccess.outputs.get(lightsOutId);
+    const output = getLegacyMidiOutput(lightsOutId);
     if (!output || output.state === 'disconnected') return;
 
     const noteOffStatus = getMidiLightsStatus(0x80);

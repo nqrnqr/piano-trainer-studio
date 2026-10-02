@@ -8,6 +8,7 @@ const optionalLedEnabled = typeof window.__PT_BOOT_OPTIONS__?.ledEnabled === 'bo
 const optionalLedOutput = optionalLedEnabled
     ? PianoTrainerOptionalLed.createLegacy({
         initControls: () => {
+            initLegacyMidiLedTest();
             initLedCountControl();
             initLedBrightnessControls();
             initLedCalibrationControls();

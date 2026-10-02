@@ -1219,9 +1219,6 @@ function getOsmdLoadPayload(rawData, fileType = 'xml', fileName = 'Untitled Scor
     return rawData;
 }
 
-
-
-
 async function loadScoreIntoApp(rawData, { fileName = 'Untitled Score', fileType = 'xml', libraryScoreId = null, title = null, originalRawData = undefined, originalFileName = undefined, originalFileType = undefined, skipTransposeReset = false } = {}) {
     try {
         resetPlaybackForLoadedScore();
@@ -2111,30 +2108,6 @@ function createKeyboard() {
     }
 }
 
-
-
-
-function getMidiOutStatus(baseStatus) {
-    return typeof getMidiStatus === 'function'
-        ? getMidiStatus(baseStatus, AppState.midiOutChannel || 1)
-        : (baseStatus + (Math.max(1, Math.min(16, Number(AppState.midiOutChannel) || 1)) - 1));
-}
-
-function getMidiLightsStatus(baseStatus) {
-    return typeof getMidiStatus === 'function'
-        ? getMidiStatus(baseStatus, AppState.midiLightsChannel || 1)
-        : (baseStatus + (Math.max(1, Math.min(16, Number(AppState.midiLightsChannel) || 1)) - 1));
-}
-
-function getSelectedMidiOutOutput() {
-    if (!midiAccess) return null;
-    const outId = document.getElementById('midi-out')?.value || 'none';
-    if (outId === 'none') return null;
-    const output = midiAccess.outputs.get(outId);
-    return (output && output.state !== 'disconnected') ? output : null;
-}
-
-
 function getLiveAudioTime() {
     if (typeof Tone?.immediate === 'function') return Tone.immediate();
     return Tone.now();
@@ -2233,38 +2206,6 @@ function shouldRouteLiveSourceToMidiOut(source) {
     return roleKey ? getRoutingEnabledForRole(AppState.midiOutEnabled, roleKey) : false;
 }
 
-function getMidiOutExpressionValue(value = AppState.midiOutVolume) {
-    const percent = Math.max(0, Math.min(100, Number(value) || 0));
-    return Math.max(0, Math.min(127, Math.round((percent / 100) * 127)));
-}
-
-function sendMidiOutExpressionLevel(value = AppState.midiOutVolume) {
-    const output = getSelectedMidiOutOutput();
-    if (!output) return false;
-    const status = getMidiOutStatus(0xB0);
-    output.send([status, 11, getMidiOutExpressionValue(value)]);
-    return true;
-}
-
-function sendMidiOutNoteOn(midi, velocity = 100) {
-    const output = getSelectedMidiOutOutput();
-    if (!output) return false;
-    const status = getMidiOutStatus(0x90);
-    const finalVelocity = normalizeLiveVelocity(velocity).midi;
-    rememberOutgoingMidiMessage(status, midi, finalVelocity);
-    output.send([status, midi, finalVelocity]);
-    return true;
-}
-
-function sendMidiOutNoteOff(midi) {
-    const output = getSelectedMidiOutOutput();
-    if (!output) return false;
-    const status = getMidiOutStatus(0x80);
-    rememberOutgoingMidiMessage(status, midi, 0);
-    output.send([status, midi, 0]);
-    return true;
-}
-
 function schedulePlaybackForDestinations(midi, durationMs, velocity = 100, options = {}) {
     if (!Number.isFinite(midi) || midi < 0) return;
     if (durationMs <= 0) return;
@@ -2280,7 +2221,7 @@ function schedulePlaybackForDestinations(midi, durationMs, velocity = 100, optio
     }
 }
 
-// MIDI access, device population, and connection listeners now live in js/midi.js.
+// MIDI access/output live in src/midi; device DOM controls live in src/ui/midi-controls.ts.
 
 function triggerVirtualKey(midi, isPressed, source = 'midi', velocity = 100) {
     if (isPressed) {
@@ -2906,18 +2847,7 @@ function silencePlaybackOutputsImmediately() {
         console.warn('Could not release Tone.js playback voices immediately.', err);
     }
 
-    if (midiAccess) {
-        const outId = document.getElementById('midi-out')?.value;
-        if (outId && outId !== 'none') {
-            const output = midiAccess.outputs.get(outId);
-            if (output && output.state !== 'disconnected') {
-                const controlStatus = getMidiOutStatus(0xB0);
-                output.send([controlStatus, 64, 0]);
-                output.send([controlStatus, 123, 0]);
-                output.send([controlStatus, 120, 0]);
-            }
-        }
-    }
+    midiOutput.silence();
 }
 
 function clearTransientPlaybackState({ clearVisualState = false } = {}) {
@@ -3913,9 +3843,6 @@ optionalLedOutput.start();
 
 
 window.syncTrainerRoutingUiState = syncTrainerRoutingUiState;
-
-
-
 
 // ensure synth cleanup
 function releaseLowLatencySynth() {

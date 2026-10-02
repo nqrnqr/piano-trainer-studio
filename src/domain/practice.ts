@@ -7,6 +7,15 @@ namespace PianoTrainerDomain {
     export type MidiChannel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
     export type MidiInputChannel = 0 | MidiChannel;
     export type MidiNote = number;
+    export type InputSource = 'midi' | 'ui';
+    export interface TrainerNoteInput {
+        kind: 'note-on' | 'note-off';
+        note: MidiNote;
+        velocity: number;
+        source: InputSource;
+        channel: MidiChannel | null;
+        receivedAtMs: MonotonicMilliseconds;
+    }
     export type WholeNoteTime = number;
     export type AudioTimeSeconds = number;
     export type MonotonicMilliseconds = number;

@@ -19,6 +19,12 @@ P2 保留一个 `const AppState` 词法对象。Map/Set 泛型、null 和动态�
 | 共享键域 | src/domain/playable-range.ts 纯计算；src/state/player-range.ts 缓存，旧键盘／判定消费者转发 | domain / explicit controller |
 | library 抽屉、选中项、管理模式 | ScoresUI 和 toolbar | UI controllers |
 
+P3/P4a 后，共享 timeline 的 cache 写入通过 `score-traversal` 注入的 `state` 端口进行；
+键域过滤由 `player-range-controls` 使用同一 AppState。MIDI echo 的 push／slice／filter
+在 `midi-input.createEchoFilter`，设备对象与监听仅由 `midi-service` 持有；通道／低力度偏好
+由 `midi-controls` 的窄 `state` 引用写入。`STATE_WRITES.md` 现在动态扫描所有 src TS 和
+HTML 当前加载的 legacy JS，避免继续引用已经删除的脚本；别名写入仍由本表解释。
+
 运行中追加的字段：`wledDdpLastSendOk`、`wledDdpLastSendAt`、`wledDdpLastError`、
 `scoreLibrarySelectedFolderIds`、`scoreLibraryFolderManageMode`。初始对象仍没有这些 own properties。
 左／右谱表分配可以是 null。future 显示事件没有 signature，timeline 事件有；它们是不同接口。

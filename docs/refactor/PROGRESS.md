@@ -74,8 +74,22 @@
 - 命令：npm run build、npm run check；浏览器 score-display、practice-baseline、traversal-baseline 默认与 ?led=off；两个 inventory 脚本。
 - 回退边界：还原本子步骤的函数与常量槽位，不改偏好／数据库或时间算法。
 
-## P4–P9
+## P4a
+
+- 状态：完成；P4b 尚未开始。
+- 范围／映射：midi.js 输入解析／echo → src/midi/midi-input.ts；Web MIDI access／设备监听 → midi-service.ts；当前 core 生效的 Note On/Off、expression、silence → midi-output.ts；设备／通道 DOM 与持久化 → src/ui/midi-controls.ts。旧 MIDI LED strip 测试 → js/optional/midi-led-test.js，由 optional adapter 初始化，helper 未改。原 midi.js 删除，HTML 只加载唯一新实现。
+- 类型／依赖：TrainerNoteInput 含 kind、note、velocity、source、1..16 channel、performance 毫秒 receivedAtMs。Any=0 仅为筛选配置。service 内部使用 DOM 自带的 Web MIDI 类型；UI 读设备 metadata，output 只读 send 端口。decoder／echo 不读 DOM、Tone 或 OSMD；service 不读 storage；状态和时钟经参数注入。
+- compatibility：src/compatibility/midi.ts 提供旧名、service/output/controls 组装以及 dispatchTrainerNoteInput → triggerVirtualKey。core/LED 不再读 midiAccess 或 activeMidiInput；output 的 normalizeLiveVelocity 暂由原 core 单一实现提供，P4b 迁出。播放循环／音频调度未改。
+- 行为基线：core 的有效力度 0→1、65.5 不取整、非有限值→100、夹紧 1..127，输出通道取 AppState 而非过期 DOM。echo 先过滤再筛通道，严格小于 120ms 及 256→128 截取不变；零力度 Note On 与两字节 note release 不变。expression 与 silence 的 CC 顺序不变，scheduled release 仍取回调时所选输出。
+- 明确边界完善：释放被移除的 input listener、同 ID 新对象重绑、pending access 在 dispose 后失效、init 不重复、UI listener 可清除／重绑。这是计划要求的生命周期清理，均有独立用例；未调整练习匹配。损坏／缺少数据／范围外 note 或 velocity 不再进入领域桥接，有效 MIDI 字节行为完全相同；null device name 的旧 DOM String coercion 保留。
+- 验证：82/82 Node；strict typecheck 与 44 个产物的干净构建比较通过；从 P3 读取原 callback，对 30,720 组有效字节／通道组合比较一致。显示 30/30、练习／真实反复 53/53；实际启动／DOM／OSMD 的模拟 MIDI default 20/20、no-op 21/21，通过后还原临时偏好。结果见 validation/P4a-browser.txt。
+- 浏览器专项：saved device 自动绑定、Note On/Off/zero velocity／Any／指定通道／非音符、实际判定命中、唯一 output 与过期 DOM 通道、echo 过期、None／switch／unplug／reconnect、UI 和 service init/dispose/reinit、LED 控件缺失时输入输出均可用。fixture 在当前 index 的启动前注入，仅测试页使用。
+- 清单：GLOBAL_SYMBOLS 595 个候选／33 classic scripts，同名函数覆盖为零。state inventory 改成动态扫描当前 src 与 legacy slots（336 个直接写入），别名／端口所有权补充在 STATE_OWNERSHIP。
+- 未验证：实体 MIDI 权限／设备／硬件输出、真实音频、Mac 仍按基线手工清单；模拟 provider 不冒充硬件。普通测试浏览器的 Web MIDI permission denied 路径仍能显示独立提示。
+- 命令：npm run build、npm run check；MIDI/显示/练习浏览器页；两个 inventory 脚本。回退：revert 本阶段恢复原 midi slot 和 core 输出；不改用户 key／数据库／vendor，P3 optional 边界保留。
+
+## P4b–P9
 
 状态：未开始，仍属于完整目标。
 
-下一最小入口：P4a 分离 MIDI 输入／生命周期／输出／控件，保留当前 core 的有效输出行为并收敛三个同名覆盖；随后依序完成音频、渲染、判定、调度、数据/UI 和显式 bootstrap 的终态验收。完整目标仍活跃，P3 完成不代表整个重构完成。
+下一最小入口：P4b 的 sampler、低延迟 synth、解锁／释放、力度音量与音频路由；随后依序完成渲染、判定、调度、数据/UI 和显式 bootstrap 的终态验收。完整目标仍活跃，P4a 完成不代表整个重构完成。

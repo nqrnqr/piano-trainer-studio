@@ -2,7 +2,16 @@ const fs = require('node:fs');
 const path = require('node:path');
 const ts = require('typescript');
 const root = path.resolve(__dirname, '..');
-const files = ['src/state/app-state.ts', 'src/state/preferences.ts', 'src/state/player-range.ts', 'js/trainer-core.js', 'js/led.js', 'js/midi.js', 'js/feedback-engine.js', 'js/feedback-debug.js', 'js/scores-ui.js', 'js/toolbar-ui.js', 'js/score-display.js', 'js/transpose/transpose-ui.js'];
+function sourceFiles(directory) {
+    return fs.readdirSync(path.join(root, directory), {withFileTypes:true}).flatMap(entry => {
+        const file = `${directory}/${entry.name}`;
+        return entry.isDirectory() ? sourceFiles(file) : file.endsWith('.ts') ? [file] : [];
+    });
+}
+const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const legacyFiles = [...html.matchAll(/src="(js\/[^"?]+)\?v=/g)]
+    .map(match => match[1]).filter(file => !file.startsWith('js/generated/'));
+const files = [...sourceFiles('src'), ...legacyFiles];
 const writes = [];
 for (const file of files) {
     const source = ts.createSourceFile(file, fs.readFileSync(path.join(root, file), 'utf8'), ts.ScriptTarget.Latest, true);

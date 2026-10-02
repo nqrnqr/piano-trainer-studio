@@ -66,7 +66,8 @@ IIFE 内局部声明、解构声明、动态索引不自动认定为全局。以
 - midi 输出通道 helper 读 DOM 值，core 的 `getMidiOutStatus` 使用 `AppState.midiOutChannel`。
 - 两者都记录回声、排除断连／None 输出；Note Off 力度为 0。
 
-P4a 收敛时以 core 行为为基线，若需修复小数 MIDI 数据，另做产品行为修复与独立用例。
+P4a 已收敛为 `src/midi/midi-output.ts` 的唯一实现，以 core 行为为基线；小数力度未修复。
+上面的覆盖描述是 P0 历史证据。旧 midi.js 和 core 重复定义已删除，当前经典脚本 inventory 无同名函数覆盖。
 
 ## 临时兼容层
 
@@ -80,10 +81,21 @@ P3 后，上表中的 LED 键域 provider 已迁至 domain/state；时间线 pro
 `ledPreview*` 名称以保留状态身份，P9 随消费者迁移移除这些 forwards。
 
 MIDI 权限提示、连接状态、更新检查分别归属 `src/ui/{permission-help,connection-status,update-controls}.ts`。
-连接状态通过暂时的 `getLegacyMidiPort` 回调读取实际 MIDI 服务；P4a 替换其 provider。
+连接状态通过暂时的 `getLegacyMidiPort` 回调读取实际 MIDI 服务；P4a 已将 provider 换成新 service。
 更新 UI 在 core 原启动位置独立初始化；LED 设置变化触发的旧更新检查仍保留。
 
 core 的 LED 输出委托 `optionalLedOutput`，不再访问 LedEngine/WLEDController 或自行启动 LED rAF。
 旧 MIDI LED 硬件写入／清屏函数迁回 `led.js`，临时全局 `wipeHardwareLEDs` 只转发 optional port。
 共享 range 控件归属 `src/ui/player-range-controls.ts`；无 LED 时仍维护期望音符／延音过滤。
 显式 no-op 配置及默认行为见 DEVELOPMENT。生产不加载新的测试脚本。
+
+P4a：输入 decoder／echo filter、设备生命周期、输出分别在 `src/midi` 三个文件。
+`src/ui/midi-controls.ts` 只拥有 DOM、持久化与 UI 监听；service 不读取 DOM/storage，
+发送／解析不依赖 Tone/OSMD。`src/compatibility/midi.ts` 暂时组装，输入消息携带 kind/note/
+velocity/source/channel/receivedAtMs，经 dispatchTrainerNoteInput 转交既有 triggerVirtualKey。
+UI 键盘仍走同一个 triggerVirtualKey；P6 再迁出其判定职责。
+
+core 和 optional LED 不再读全局 midiAccess/activeMidiInput；前者只读输出端口，后者使用
+getLegacyMidiOutput。旧 MIDI LED 测试控制器迁往 `js/optional/midi-led-test.js`，由 adapter
+初始化，保持独立 legacy 实现。core 的 normalizeLiveVelocity 暂由声明接入 output，P4b
+迁移到音频边界；没有为了早加载另一份力度算法。P9 删除 classic composition 与转发。
