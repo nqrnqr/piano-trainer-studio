@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Practice input regression checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1200px;height:480px;border:1px solid #ccc}pre{white-space:pre-wrap;height:320px;overflow:auto}</style>
+<h1>Practice input regression checks</h1>
+<p>Actual OSMD notes and virtual key DOM events use the shared typed input controller. Synthetic input, muted output, no hardware required.</p>
+<button id="run" disabled>Run checks</button><pre id="results">Loading</pre>
+<iframe title="App under test"></iframe>
+<script>
+const frame=document.querySelector('iframe'),params=new URLSearchParams(location.search);
+frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
+document.getElementById('run').onclick=()=>{
+ document.getElementById('run').disabled=true;
+ const script=document.createElement('script');script.src='/docs/testing/input-baseline.integration.js';frame.contentDocument.body.append(script);
+};
+frame.src='../../index.html'+(params.get('led')==='off'?'?led=off':'');
+</script>

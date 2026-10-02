@@ -2,8 +2,11 @@
     const results=parent.document.getElementById('results');results.textContent='';
     const check=(ok,label)=>{results.textContent+=`${ok?'PASS':'FAIL'} ${label}\n`;if(!ok)throw new Error(label);};
     const select=(id,value)=>{const element=document.getElementById(id);element.value=value;element.dispatchEvent(new Event('change'));};
-    const originalInput=triggerVirtualKey,received=[];
-    triggerVirtualKey=function(...args){received.push(args);return originalInput.apply(this,args);};
+    const originalInput=practiceInput.handle,received=[];
+    practiceInput.handle=function(input){
+        received.push([input.note,input.kind==='note-on',input.source,input.velocity]);
+        return originalInput(input);
+    };
     const f=window.MidiFixture;
     const emit=(port,data)=>port.onmidimessage({data:Uint8Array.from(data)});
     try {
@@ -82,7 +85,7 @@
     } finally {
         pausePlaybackFromToolbar();
         for(const note of [...AppState.pressedKeys])originalInput(note,false,'midi');
-        triggerVirtualKey=originalInput;
+        practiceInput.handle=originalInput;
         parent.restoreMidiTestPreferences();parent.document.getElementById('run').disabled=false;
     }
 })();

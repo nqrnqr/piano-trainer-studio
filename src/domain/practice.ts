@@ -30,10 +30,28 @@ namespace PianoTrainerDomain {
     }
     export interface ExpectedContext { measureIndex: number; timestamp: WholeNoteTime; signature: string; }
     export interface NoteRef { readonly scoreRevision: number; readonly id: string; }
+    export interface PracticeSourceNote {
+        readonly midi: MidiNote;
+        readonly noteRef: NoteRef;
+        readonly notehead: string | undefined;
+        readonly printObject: boolean | undefined;
+        readonly cue: boolean | undefined;
+        readonly rest: boolean;
+        readonly tieContinuation: boolean;
+        readonly combinedLengthWhole: WholeNoteTime;
+    }
+    export interface PracticeSourceEntry { readonly staffId: number | null; readonly notes: Iterable<PracticeSourceNote>; }
+    export interface SatisfiedMatch {
+        midi: MidiNote; staffId: number | null; mIdx: number | null; source: 'already-hit' | 'sustained-visual';
+    }
+    export interface FeedbackFrameInput {
+        kind: string; measureIndex: number | null; timestamp?: WholeNoteTime | null;
+        notes: {midi: MidiNote; staffId: number | null; anchor: SvgPoint | null; hit: boolean; kind: string}[];
+    }
     export interface TraversalPosition { measureIndex: number; timestampWhole: WholeNoteTime | null; }
     export interface ExpectedNote {
         midi: MidiNote;
-        staffId: number;
+        staffId: number | null;
         hit: boolean;
         mIdx: number;
         anchor: SvgPoint | null;
@@ -62,12 +80,12 @@ namespace PianoTrainerDomain {
     }
     export interface SustainedVisual {
         midi: MidiNote;
-        staffId: number;
+        staffId: number | null;
         mIdx: number;
         endTimestamp: WholeNoteTime | null;
     }
     export interface PendingVisual extends SustainedVisual { durationMs: number; }
-    export interface OutOfRangeNote { midi: MidiNote; staffId: number; mIdx: number; }
+    export interface OutOfRangeNote { midi: MidiNote; staffId: number | null; mIdx: number; }
     export interface FeedbackMarker {
         midi: MidiNote;
         staffId: number | null;

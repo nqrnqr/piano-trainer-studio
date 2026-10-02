@@ -130,3 +130,16 @@ private hook 有明确所有者，重复 afterRender 不叠加；换 cursor 或 
 仍在 core 原位置执行；renderer、geometry 的实际工作在命令调用时发生。P6/P9 再移除这些隐式消费者。
 Geometry 的两个局部断言分别用于完整 iterator prototype/fields clone 与有界 vendor shape reflection；
 没有 any/index-any，未改候选评分、dot/annotation rejection、same-stem cluster 优先级或 beam 算法。
+
+P6：`src/practice/{input-controller,input-matching,early-grace,expected-notes,scoring,feedback-state,sustain-state}.ts`
+为唯一输入判定实现。均由窄状态/领域数据/命令端口构造，无 DOM、OSMD、Tone、localStorage 或 LED 硬件访问，
+也无创建时 timer/listener 副作用。`src/compatibility/practice.ts` 在 audio composition 后、core 前组装；
+其回调惰性读取 core 的 hand assignment、score UI、keyboard、calibration 和 Wait/Follow advance。
+MIDI 的 dispatch 与虚拟 key wrapper 同进 practiceInput.handle，保留 channel/source/receivedAtMs；
+这些输入元数据不成为另一套计时基准。测试只在 iframe 包装该端口，生产不加载 test API。
+
+旧反馈脚本只剩 renderLooper/enforceLooperBounds，后者依赖 cursor 和 checkbox，随 P7 迁出。
+core 的 clearFeedbackVisualStatePreserveScoring 仅转发 feedback-state，clearVisuals 的总取消规则继续保留。
+OSMD adapter 惰性提供 PracticeSourceEntry/Note，并按原读取顺序保持 Array.forEach 的初始长度与跳过 holes；
+source objects 不越过 practice 边界。getCombinedTieLength 在 adapter 单一实现，显式链接/Notes/cycle 语义不变。
+仍保留经典脚本全局转发，P9 才转为真实 import/export 和显式 bootstrap。

@@ -106,7 +106,7 @@ test('absent cursor leaves timeline dirty and empty; stuck iterator preserves tr
     assert.equal(h.state.ledPreviewTimelineDirty,false);
 });
 
-test('legacy single-hand early input uses shared timeline with no LED globals or output', () => {
+test('single-hand early input uses shared timeline with no LED globals or output', () => {
     const h = harness([event(0,0,[note(48,0)]),event(0,0.25,[note(50,0)]),event(0,0.5,[note(60,1)])],
         {practice:{left:false,right:true}});
     Object.assign(h.state,{practice:{left:false,right:true},expectedNotes:[], mode:'follow',
@@ -118,11 +118,15 @@ test('legacy single-hand early input uses shared timeline with no LED globals or
         getMeasureTimingInfo:()=>({duration:1})});
     h.context.window = {};
     runScript(h.context,'js/generated/domain/timing.js');
-    for (const fn of ['getSinglePracticedHandRole','getRenderableNotesForHandFromTimelineEvent',
-        'findSingleHandPracticeTimelineWindow','getSingleHandPracticeBeatsUntilNextEvent','tryReserveSingleHandEarlyGrace']) {
-        runFunction(h.context,'js/trainer-core.js',fn);
-    }
-    const reservation = vm.runInContext('tryReserveSingleHandEarlyGrace(60)',h.context);
+    runScript(h.context, 'js/generated/practice/early-grace.js');
+    const early = vm.runInContext('PianoTrainerEarlyGrace', h.context).create({
+        state: h.state, getTimeline: h.service.ensurePreviewTimelineBuilt,
+        findTimelineIndex: h.api.findMatchingTimelineIndex,
+        getHandRole: h.context.getAssignedHandRoleForStaff, isPracticeHandEnabled: staff => staff === 1,
+        getBeatsToWait: h.context.window.PTTiming.getTraversalBeatsToWait,
+        getMeasureTimingInfo: h.context.getMeasureTimingInfo
+    });
+    const reservation = early.tryReserveSingleHandEarlyGrace(60);
     assert.equal(reservation.timestamp,0.5);
     assert.equal(reservation.allowTapCarry,true);
     assert.equal(h.state.heldCorrectNotes.get(60),1);

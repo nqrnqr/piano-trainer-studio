@@ -16,13 +16,14 @@
 - `src/score/osmd-adapter.ts` = OSMD graph access, revision-scoped NoteRef registry, private iterator snapshot and painted cursor restoration
 - `src/render/score-viewport.ts`, `score-renderer.ts` = layout/scroll ownership and the unchanged render lifecycle
 - `src/render/geometry-engine.ts`, `feedback-overlay.ts`, `loop-overlay.ts` = stabilized notehead anchors and independent SVG layers
+- `src/practice/*.ts` = typed common input, expected notes, pitch matching, early grace, feedback records, scoring and sustain state; factories consume domain data and narrow ports
 - `js/toolbar-ui.js` = toolbar/menu shell
 - `js/scores-ui.js` = score browser UI shell
 - `js/score-library.js` = score library shell
 - `js/led.js` = LED simulator, calibration, and hardware/WLED output
 - `src/midi/*.ts`, `src/ui/midi-controls.ts` = Web MIDI decoding, service, output and device controls; old js/midi.js is removed
 - `src/audio/*.ts`, `src/domain/velocity.ts` = Tone voice/loading/unlock lifecycle, independent audio/MIDI routing and shared velocity normalization
-- `js/feedback-engine.js` = remaining legacy matching, expected-note construction and feedback state, delegating geometry/overlays to render ports
+- `js/feedback-engine.js` = remaining Loop navigation only, to move with the P7 coordinator
 - `js/feedback-debug.js` = developer-only feedback diagnostics and sticky debug labels
 - `trainer-core.js` = remaining trainer core and orchestration
 
@@ -34,6 +35,19 @@
 - `trainer-core.js` remains the orchestrator that decides **when** each mode advances
 - Realtime structural jumps should use current-measure remainder timing instead of first-note fallbacks or raw iterator deltas
 - Edit the TS source, run `npm run build`, and commit both JS and map. `npm run check` validates types, generated output, and Node behavior tests. See `docs/refactor/DEVELOPMENT.md` for the staged migration and browser checks.
+
+## Practice input boundary
+
+MIDI messages and virtual key events reach the same `practiceInput.handle(TrainerNoteInput)`.
+The input controller preserves physical-key updates, audio monitoring, matching/reservation,
+feedback/scoring, hit marking, advance notification and keyboard/LED presentation order.
+Expected-note construction consumes the OSMD adapter's lazy domain projection; practice code
+has no DOM, vendor object or audio clock access. Ties remain an adapter concern, while hidden/cue,
+rest/continuation, hand and range filtering remain explicit in expected-notes.
+Same-staff pitch merging and cross-staff identities retain their original rules. Feedback records
+belong to practice; SVG overlays only draw them. Sustain timers still use the original shared
+activeTimeouts cancellation list until the coordinator migration. Classic assembly and forwards
+live in `src/compatibility/practice.ts` and will move into bootstrap at P9.
 
 ## Score display modes
 

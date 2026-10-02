@@ -1,7 +1,7 @@
 // Transitional classic composition. P9 moves assembly/lifecycle into bootstrap.
 const midiEchoFilter = PianoTrainerMidiInput.createEchoFilter(AppState, () => performance.now());
 function dispatchTrainerNoteInput(input: PianoTrainerDomain.TrainerNoteInput) {
-    triggerVirtualKey(input.note, input.kind === 'note-on', input.source, input.velocity);
+    practiceInput.handle(input);
 }
 const midiService = PianoTrainerMidiService.create({
     requestAccess: navigator.requestMIDIAccess ? () => navigator.requestMIDIAccess() : null,

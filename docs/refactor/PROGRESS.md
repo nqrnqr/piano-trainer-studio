@@ -122,8 +122,24 @@
 - 命令：npm run build/check，两个 inventory 脚本，显示／practice／render／traversal 浏览器页；.cache 的原算法比较。回退：revert 本阶段恢复旧 display/feedback 与 expected logical source 字段；不清空用户数据或回退音频/MIDI。
 - 下一入口：P6 建立 expected-notes、input-matching、early-grace、scoring；先列出原输入状态与副作用顺序，再迁移共用判定。
 
-## P6–P9
+## P6
+
+- 状态：完成（2026-10-03）；完整目标仍活跃。
+- 范围：input-controller、input-matching、early-grace、expected-notes、scoring、feedback-state、sustain-state。MIDI dispatch 与 virtual key wrapper 同进 handle(TrainerNoteInput)，source/channel/receivedAtMs 保留；音频监听、keyboard/LED、calibration、advance 命令由端口委托。没有新增模式调度器。
+- 迁移顺序与副作用：先记录 [P6_INPUT_CONTRACT.md](P6_INPUT_CONTRACT.md)，再迁出输入。preserved pressed.add → audio → matching/reservation → feedback/score/held/UI → hit → existing advance → render；release 的 marker transfer/render 在 audio off 前。scoring 负责增量，score reset 仍由既有加载/重置流程执行。
+- 期望：OSMD adapter 的惰性 domain projection 和 revision-scoped ref 隔离源对象；practice 明确过滤 hidden/cue/rest/tie continuation、手分配和键域。按原 entry/note 顺序、staff|midi 去重，首次 anchor 缺失时才采用后项 source ref；same pitch 跨谱表仍分两次命中/计分。tie length 迁入 adapter，保持 Notes/NextNote/nextNote 的优先级与 cycle guard。
+- 提前输入：共享 traversal timeline，无 LED 依赖；Follow released tap carry、Realtime held upcoming 1.1 拍、single-hand tap 1.05 拍、当前全部命中 gate 和 repeat occurrence index 规则保持。消费 reservation 仍逐 expected 计分、最后一次 UI 更新，并按原规则清理已消费/过去/无期望目标。
+- 延音：谱面 expiry、same measure duplicate、cross measure 同音先清除后 35ms 重触发、wall-clock expiry、activeTimeouts 登记保持。keyboard 内的 pruning/preExpected 写入改成同位置调用 sustain-state。feedback history 与 visual cleanup 已归 feedback-state；P7 再迁总取消规则。
+- 类型核对：真实 resolver 的 staffId 可为 null，Expected/Sustain/OutOfRange 据此收窄，Number(staffId)-1 保留旧算术。PTTiming 接口补 nullable timestamp，原值传递；保留 null 与 undefined 的旧算术差异并加用例。domain/practice 没有 vendor refs，practice 不读 DOM、storage、Tone 或 OSMD；没有 any 或忽略类型检查。
+- 验证：137/137 Node（新增 28 项输入/构建/预留/反馈/延音行为用例，P3 的 early fixture 改连新端口）；strict typecheck 与 86 文件干净生成比较通过。基线 7a53e65 的 3,000 组 expected 构建、3,000 个输入序列/24,000 次事件、1,000 组 sustain/timer 逐项比较；把 opaque ref 还原为源身份后，状态、副作用、诊断与 debug frame 完全一致。
+- 浏览器：default/no-op 两条路径各 input 40、display 30、practice 53、render 19、audio 23；traversal 30/33、MIDI 20/21，总计 434 项。真实 OSMD 与 mouse/pointercancel DOM 事件、same-pitch staff、partial chord、repeat suppression、grace/hidden/cue、非练习手、tie sustain、range、实际重复/结尾和 audio loading/routing 全通过。记录见 validation/P6-browser.txt。新 fixture 的 muted audio unlock 为已完成 promise，真实 Tone 独立 audio baseline 验证。
+- 清单：604 个 global candidates、53 classic slots、同名函数覆盖为零；290 个直接 AppState 写入，practice 的 state aliases 在 STATE_OWNERSHIP 与 input contract 单独说明。旧 feedback-engine 只剩 Loop 推进，随 P7 迁出。
+- 未验证：实体 MIDI/LED/WLED、可听音质/硬件延迟/metronome 同步、Mac/触屏；生产仍是迁移期 classic composition，完整 bootstrap/module/dispose 收尾属于 P9。用户偏好、库格式、vendor 和 helper 未改变。
+- 命令：npm run build/check、两个 inventory 脚本、input/display/practice/render/traversal/MIDI/audio 浏览器页及 .cache 的旧算法对照。回退：revert 本阶段恢复旧输入/feedback 入口桥接，保留此前 MIDI、audio、render 的独立模块。
+- 下一入口：P7a 先记录 Play/Pause/Reset、count-in/metronome 与 playbackLoop 的时钟/资源/取消契约，再搬运现有 coordinator；P7b 再提取模式策略，保留一个循环及实际 OSMD 反复。
+
+## P7–P9
 
 状态：未开始，仍属于完整目标。
 
-下一最小入口：P6 的期望音符、输入匹配、提前输入与计分；随后依序完成调度、数据/UI 和显式 bootstrap 的终态验收。完整目标仍活跃，P5 完成不代表整个重构完成。
+下一最小入口：P7a 的现有调度、资源和取消规则；随后依序完成模式策略、数据/UI 和显式 bootstrap 的终态验收。完整目标仍活跃，P6 完成不代表整个重构完成。

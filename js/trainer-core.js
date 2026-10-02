@@ -811,7 +811,6 @@ function readScoreFile(file) {
 }
 
 
-
 function cloneScoreRawData(rawData) {
     if (typeof rawData === 'string') return rawData;
     if (rawData instanceof ArrayBuffer) return rawData.slice(0);
@@ -1323,8 +1322,8 @@ function initSongUI() {
     renderLooper(); 
 }
 
-// feedback-engine.js owns feedback-note anchor resolution, expected-note matching,
-// and overlay placement. Keep that subsystem isolated from playback/render refactors.
+// Practice owns input, expectations, scoring and sustain state. Rendering and
+// optional hardware output remain delegated through their established ports.
 
 
 // ===== Virtual keyboard + LED preview coordination =====
@@ -1339,202 +1338,6 @@ function isPracticeHandEnabledForStaff(staffId) {
     return (handRole === 'right' && AppState.practice.right) || (handRole === 'left' && AppState.practice.left);
 }
 
-function getSinglePracticedHandRole() {
-    const left = !!AppState.practice.left;
-    const right = !!AppState.practice.right;
-    if (left === right) return null;
-    return left ? 'left' : 'right';
-}
-
-function getRenderableNotesForHandFromTimelineEvent(event, handRole) {
-    if (!event?.notes?.length || !handRole) return [];
-    return event.notes.filter(note => getAssignedHandRoleForStaff(note.staffId) === handRole);
-}
-
-function findSingleHandPracticeTimelineWindow() {
-    const handRole = getSinglePracticedHandRole();
-    const ctx = AppState.currentExpectedContext;
-    if (!handRole || !ctx) return null;
-
-    const timeline = ensureLedPreviewTimelineBuilt();
-    if (!Array.isArray(timeline) || timeline.length === 0) return null;
-
-    const currentIndex = findMatchingLedPreviewTimelineIndex(
-        timeline,
-        ctx.measureIndex,
-        ctx.timestamp,
-        ctx.signature,
-        0
-    );
-    if (currentIndex < 0) return null;
-
-    let referenceEvent = null;
-    let referenceIndex = -1;
-    for (let i = currentIndex; i >= 0; i--) {
-        const notes = getRenderableNotesForHandFromTimelineEvent(timeline[i], handRole);
-        if (notes.length > 0) {
-            referenceEvent = {
-                measureIndex: timeline[i].measureIndex,
-                timestamp: timeline[i].timestamp,
-                notes
-            };
-            referenceIndex = i;
-            break;
-        }
-    }
-
-    let nextEvent = null;
-    let nextIndex = -1;
-    for (let i = currentIndex + 1; i < timeline.length; i++) {
-        const notes = getRenderableNotesForHandFromTimelineEvent(timeline[i], handRole);
-        if (notes.length > 0) {
-            nextEvent = {
-                measureIndex: timeline[i].measureIndex,
-                timestamp: timeline[i].timestamp,
-                notes
-            };
-            nextIndex = i;
-            break;
-        }
-    }
-
-    return {
-        handRole,
-        timeline,
-        currentIndex,
-        referenceEvent,
-        referenceIndex,
-        nextEvent,
-        nextIndex
-    };
-}
-
-function findNextSingleHandPracticeTimelineEvent() {
-    return findSingleHandPracticeTimelineWindow()?.nextEvent || null;
-}
-
-function getSingleHandPracticeBeatsUntilNextEvent(windowInfo) {
-    const nextEvent = windowInfo?.nextEvent;
-    if (!nextEvent) return Number.POSITIVE_INFINITY;
-
-    const referenceEvent = windowInfo?.referenceEvent;
-    if (!referenceEvent) {
-        const ctx = AppState.currentExpectedContext;
-        if (!ctx || !Number.isFinite(ctx.measureIndex) || !Number.isFinite(ctx.timestamp)) {
-            return Number.POSITIVE_INFINITY;
-        }
-        return window.PTTiming.getTraversalBeatsToWait({
-            currentMeasureIdx: ctx.measureIndex,
-            currentTimestamp: ctx.timestamp,
-            nextMeasureIdx: nextEvent.measureIndex,
-            nextTimestamp: nextEvent.timestamp,
-            fallbackLength: 0.25,
-            getMeasureTimingInfo
-        });
-    }
-
-    return window.PTTiming.getTraversalBeatsToWait({
-        currentMeasureIdx: referenceEvent.measureIndex,
-        currentTimestamp: referenceEvent.timestamp,
-        nextMeasureIdx: nextEvent.measureIndex,
-        nextTimestamp: nextEvent.timestamp,
-        fallbackLength: 0.25,
-        getMeasureTimingInfo
-    });
-}
-
-function tryReserveSingleHandEarlyGrace(midi) {
-    if (!AppState.isPlaying) return null;
-    if (AppState.mode !== 'follow' && AppState.mode !== 'realtime') return null;
-    if (!getSinglePracticedHandRole()) return null;
-    if (AppState.expectedNotes.length > 0 && !AppState.expectedNotes.every(n => n.hit)) return null;
-
-    const practiceWindow = findSingleHandPracticeTimelineWindow();
-    const nextEvent = practiceWindow?.nextEvent || null;
-    if (!nextEvent) return null;
-
-    const matched = nextEvent.notes.find(note => note.midi === midi);
-    if (!matched) return null;
-
-    const beatsUntilTarget = getSingleHandPracticeBeatsUntilNextEvent(practiceWindow);
-    // In Follow Me, early grace should be based on the next cursor for the practiced hand only.
-    // Once we have identified that next practiced-hand event, keep the reservation even if the user
-    // releases before the app reaches any intervening playback-hand cursor steps.
-    const allowTapCarry = AppState.mode === 'follow'
-        ? true
-        : (Number.isFinite(beatsUntilTarget) && beatsUntilTarget <= 1.05);
-    const reservation = {
-        midi,
-        staffId: matched.staffId,
-        measureIndex: nextEvent.measureIndex,
-        timestamp: nextEvent.timestamp,
-        allowTapCarry,
-        beatsUntilTarget: Number.isFinite(beatsUntilTarget) ? beatsUntilTarget : null
-    };
-
-    AppState.earlyGraceReservations.set(midi, reservation);
-    AppState.heldCorrectNotes.set(midi, matched.staffId);
-    AppState.preExpectedHeldNotes.add(midi);
-    return reservation;
-}
-
-
-function tryReserveRealtimeUpcomingHeldNote(midi) {
-    if (!AppState.isPlaying || AppState.mode !== 'realtime') return null;
-    if (!Number.isFinite(midi)) return null;
-    if (!AppState.currentExpectedContext) return null;
-
-    const timeline = ensureLedPreviewTimelineBuilt();
-    if (!Array.isArray(timeline) || timeline.length === 0) return null;
-
-    const ctx = AppState.currentExpectedContext;
-    const currentIndex = findMatchingLedPreviewTimelineIndex(
-        timeline,
-        ctx.measureIndex,
-        ctx.timestamp,
-        ctx.signature,
-        AppState.ledPreviewTraversalIndex >= 0 ? AppState.ledPreviewTraversalIndex : 0
-    );
-    if (currentIndex < 0) return null;
-
-    const maxLookaheadBeats = 1.1;
-
-    for (let i = currentIndex + 1; i < timeline.length; i++) {
-        const event = timeline[i];
-        if (!event?.notes?.length) continue;
-
-        const beatsUntilTarget = window.PTTiming.getTraversalBeatsToWait({
-            currentMeasureIdx: ctx.measureIndex,
-            currentTimestamp: ctx.timestamp,
-            nextMeasureIdx: event.measureIndex,
-            nextTimestamp: event.timestamp,
-            fallbackLength: 0.25,
-            getMeasureTimingInfo
-        });
-
-        if (!Number.isFinite(beatsUntilTarget)) continue;
-        if (beatsUntilTarget > maxLookaheadBeats) break;
-
-        const matched = event.notes.find(note => note.midi === midi && isPracticeHandEnabledForStaff(note.staffId));
-        if (!matched) continue;
-
-        const reservation = {
-            midi,
-            staffId: matched.staffId,
-            measureIndex: event.measureIndex,
-            timestamp: event.timestamp,
-            allowTapCarry: false,
-            beatsUntilTarget
-        };
-
-        AppState.earlyGraceReservations.set(midi, reservation);
-        AppState.heldCorrectNotes.set(midi, matched.staffId);
-        AppState.preExpectedHeldNotes.add(midi);
-        return reservation;
-    }
-
-    return null;
-}
 
 function getFuturePreviewDepth() {
     if (!AppState.futurePreviewEnabled) return 0;
@@ -1594,20 +1397,6 @@ function applyInlineKeyVisual(el, state) {
     el.style.transform = '';
 }
 
-function findSatisfiedOrSustainedMatchForMidi(midi) {
-    const alreadyHit = AppState.expectedNotes.find(n => n.midi === midi && n.hit);
-    if (alreadyHit) {
-        return { midi, staffId: alreadyHit.staffId, mIdx: alreadyHit.mIdx, source: 'already-hit' };
-    }
-
-    const sustained = AppState.sustainedVisuals.find(n => n.midi === midi)
-        || AppState.visualNotesToStart.find(n => n.midi === midi);
-    if (sustained) {
-        return { midi, staffId: sustained.staffId, mIdx: sustained.mIdx ?? null, source: 'sustained-visual' };
-    }
-
-    return null;
-}
 
 function renderVirtualKeyboard(currentEntries = null, currentMeasureIdx = null, currentTimestamp = null) {
     const desiredStates = new Map();
@@ -1634,11 +1423,7 @@ function renderVirtualKeyboard(currentEntries = null, currentMeasureIdx = null, 
         return;
     }
 
-    if ((AppState.mode === 'wait' || AppState.mode === 'follow') && Number.isFinite(currentTimestamp)) {
-        AppState.sustainedVisuals = AppState.sustainedVisuals.filter(n => {
-            return !Number.isFinite(n.endTimestamp) || currentTimestamp < n.endTimestamp;
-        });
-    }
+    practiceSustains.pruneAtTimestamp(currentTimestamp);
 
     AppState.sustainedVisuals.forEach(n => {
         if (!isMidiInPlayerRange(n.midi)) return;
@@ -1676,12 +1461,7 @@ function renderVirtualKeyboard(currentEntries = null, currentMeasureIdx = null, 
 
     AppState.pressedKeys.forEach(midi => {
         const previewState = previewStateMap.get(midi) || null;
-        if (
-            AppState.heldCorrectNotes.has(midi) &&
-            (previewState === 'future1-l' || previewState === 'future1-r')
-        ) {
-            AppState.preExpectedHeldNotes.add(midi);
-        }
+        practiceSustains.markHeldPreview(midi, previewState);
 
         const currentState = desiredStates.get(midi) || null;
         const isCarryHeldIntoExpected =
@@ -1755,73 +1535,9 @@ function renderVirtualKeyboard(currentEntries = null, currentMeasureIdx = null, 
     }
 }
 
-function startVisualSustains() {
-    const RETRIGGER_GAP_MS = 35;
-
-    const pendingVisuals = AppState.visualNotesToStart.slice();
-    AppState.visualNotesToStart = [];
-
-    const startOneVisual = (n) => {
-        const vis = { midi: n.midi, staffId: n.staffId, mIdx: n.mIdx, endTimestamp: n.endTimestamp };
-        AppState.sustainedVisuals.push(vis);
-        renderVirtualKeyboard();
-
-        if (!((AppState.mode === 'wait' || AppState.mode === 'follow') && Number.isFinite(n.endTimestamp))) {
-            const tId = setTimeout(() => {
-                const idx = AppState.sustainedVisuals.indexOf(vis);
-                if (idx > -1) {
-                    AppState.sustainedVisuals.splice(idx, 1);
-                    renderVirtualKeyboard();
-                }
-            }, n.durationMs);
-
-            AppState.activeTimeouts.push(tId);
-        }
-    };
-
-    pendingVisuals.forEach(n => {
-        const sameMeasureAlreadyActive = AppState.sustainedVisuals.some(v =>
-            v.midi === n.midi &&
-            v.staffId === n.staffId &&
-            v.mIdx === n.mIdx
-        );
-
-        if (sameMeasureAlreadyActive) {
-            return;
-        }
-
-        const olderSamePitchActive = AppState.sustainedVisuals.some(v =>
-            v.midi === n.midi &&
-            v.staffId === n.staffId &&
-            v.mIdx !== n.mIdx
-        );
-
-        if (olderSamePitchActive) {
-            AppState.sustainedVisuals = AppState.sustainedVisuals.filter(v =>
-                !(v.midi === n.midi && v.staffId === n.staffId)
-            );
-            renderVirtualKeyboard();
-
-            const gapId = setTimeout(() => {
-                startOneVisual(n);
-            }, RETRIGGER_GAP_MS);
-
-            AppState.activeTimeouts.push(gapId);
-        } else {
-            startOneVisual(n);
-        }
-    });
-}
 
 function clearFeedbackVisualStatePreserveScoring() {
-    GeometryEngine.clearSvgFeedback();
-    AppState.activeHeldIncorrectFeedback.clear();
-    AppState.releasedIncorrectFeedback = [];
-    AppState.correctFeedbackHistory = [];
-    AppState.realtimeWrongPressInCurrentContext = false;
-    if (typeof window.clearStickyDebug === 'function') {
-        window.clearStickyDebug();
-    }
+    practiceFeedback.clearPreserveScoring();
 }
 
 function clearVisuals() {
@@ -1853,7 +1569,6 @@ function clearVisuals() {
 // ==========================================
 let activeVirtualPointerId = null;
 let activeVirtualPointerMidi = null;
-
 
 
 function releaseActiveVirtualPointer(pointerId = null) {
@@ -1983,101 +1698,6 @@ function syncTrainerRoutingUiState() {
 }
 
 // MIDI access/output live in src/midi; device DOM controls live in src/ui/midi-controls.ts.
-
-function triggerVirtualKey(midi, isPressed, source = 'midi', velocity = 100) {
-    if (isPressed) {
-        AppState.pressedKeys.add(midi);
-        
-        audioRouting.monitorNoteOn(midi, source, velocity);
-
-        if (AppState.ledCalibrationMode) {
-            selectLedCalibrationMidi(midi);
-            renderVirtualKeyboard();
-            return;
-        }
-        
-        if (AppState.isPlaying) {
-            const expectedMatch = findExpectedMatchForMidi(midi);
-            const sustainMatch = !expectedMatch ? findSatisfiedOrSustainedMatchForMidi(midi) : null;
-            const repeatCarryReservation = (!expectedMatch && sustainMatch?.source === 'already-hit')
-                ? tryReserveSingleHandEarlyGrace(midi)
-                : null;
-            const realtimeUpcomingReservation = (!expectedMatch && !sustainMatch && !repeatCarryReservation)
-                ? tryReserveRealtimeUpcomingHeldNote(midi)
-                : null;
-            const earlyGraceReservation = (!expectedMatch && !sustainMatch && !realtimeUpcomingReservation)
-                ? tryReserveSingleHandEarlyGrace(midi)
-                : (realtimeUpcomingReservation || repeatCarryReservation);
-            const isCorrect = !!expectedMatch;
-            const isAcceptedRepeat = !expectedMatch && !!sustainMatch;
-            const isEarlyGraceReserved = !!earlyGraceReservation;
-            const targetStaffId = expectedMatch ? expectedMatch.staffId : (sustainMatch ? sustainMatch.staffId : (earlyGraceReservation ? earlyGraceReservation.staffId : null));
-            
-            if (AppState.practice.left || AppState.practice.right) {
-                const forceMIdx = expectedMatch ? expectedMatch.mIdx : null;
-                const anchor = expectedMatch ? expectedMatch.anchor : null;
-
-                debugLogEvent('KEY_PRESS_MATCH_RESULT', {
-                    midi,
-                    isCorrect,
-                    isAcceptedRepeat,
-                    isEarlyGraceReserved,
-                    targetStaffId,
-                    forceMIdx,
-                    sustainMatch: sustainMatch ? {
-                        midi: sustainMatch.midi,
-                        staffId: sustainMatch.staffId,
-                        mIdx: sustainMatch.mIdx,
-                        source: sustainMatch.source
-                    } : null,
-                    anchor: anchor ? { x: anchor.x, y: anchor.y } : null,
-                    expectedMatch: expectedMatch ? {
-                        midi: expectedMatch.midi,
-                        staffId: expectedMatch.staffId,
-                        mIdx: expectedMatch.mIdx,
-                        hit: expectedMatch.hit
-                    } : null
-                });
-
-                if (isCorrect) {
-                    drawFeedbackNote(midi, true, targetStaffId, forceMIdx, anchor);
-                    AppState.score.correct++;
-                    AppState.heldCorrectNotes.set(midi, targetStaffId);
-                    updateScoreDisplay();
-                } else if (isAcceptedRepeat || isEarlyGraceReserved) {
-                    AppState.heldCorrectNotes.set(midi, targetStaffId);
-                } else {
-                    if (AppState.mode === 'realtime') {
-                        AppState.realtimeWrongPressInCurrentContext = true;
-                    }
-                    registerHeldIncorrectFeedback(midi, targetStaffId, forceMIdx, anchor);
-                    AppState.score.wrong++;
-                    updateScoreDisplay();
-                }
-            }
-
-            if (isCorrect) {
-                expectedMatch.hit = true;
-                if (AppState.mode === 'wait' || AppState.mode === 'follow') {
-                    checkWaitModeAdvance();
-                }
-            }
-        }
-    } else {
-        AppState.pressedKeys.delete(midi);
-        AppState.heldCorrectNotes.delete(midi); 
-        AppState.preExpectedHeldNotes.delete(midi);
-        const earlyReservation = AppState.earlyGraceReservations.get(midi);
-        if (!earlyReservation || !earlyReservation.allowTapCarry) {
-            AppState.earlyGraceReservations.delete(midi);
-        }
-        releaseHeldIncorrectFeedback(midi);
-        
-        audioRouting.monitorNoteOff(midi, source);
-    }
-    
-    renderVirtualKeyboard();
-}
 
 
 // ==========================================
@@ -3574,7 +3194,6 @@ updateConnectionStatuses();
 applyModeSettings();
 
 optionalLedOutput.start();
-
 
 
 window.syncTrainerRoutingUiState = syncTrainerRoutingUiState;

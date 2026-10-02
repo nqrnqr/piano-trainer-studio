@@ -61,7 +61,7 @@ var PianoTrainerScoreViewport;
             if (isHorizontal() || changingLayout) {
                 for (const expected of state.expectedNotes) {
                     if (expected.noteRef)
-                        expected.anchor = ports.getAnchor(expected.noteRef, expected.mIdx, expected.staffId - 1);
+                        expected.anchor = ports.getAnchor(expected.noteRef, expected.mIdx, Number(expected.staffId) - 1);
                 }
             }
             score.afterRender(isHorizontal() || changingLayout);

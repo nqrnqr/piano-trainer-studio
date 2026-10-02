@@ -9,11 +9,11 @@ P2 保留一个 `const AppState` 词法对象。Map/Set 泛型、null 和动态�
 | 组 | 当前写入者和别名 | 计划最终所有者 |
 | --- | --- | --- |
 | modeSettings、practice、playback | core 的 `normalizeFollowModeSettings` / `getCurrentModeSettings` / `setFollowPracticeHand` 返回或持有 `follow`、`settings` 引用；复选框监听修改它们 | settings commands / practice coordinator |
-| expectedNotes / hit、score、提前预留 | feedback 构造／漏音与 core 输入、提前输入；`expectedMatch.hit` 和 `expected.hit` 通过局部引用变更 | expected-notes / input-matching / scoring |
+| expectedNotes / hit、score、提前预留 | src/practice 的 expected-notes、input-controller、early-grace、scoring；`expectedMatch.hit` 和 `expected.hit` 通过局部引用变更；总 reset 仍在 core | expected-notes / input-matching / scoring |
 | 当前谱与移调源 | core loader、ScoresUI、TransposeUI 的 `state = ensureTransposeState()`；同一个 transpose 对象 | score-loader / transpose commands |
 | 真实遍历、当前期望、预览 timeline | core playback 与 ensureLedPreviewTimelineBuilt；OSMD iterator 暂在 core | traversal / practice coordinator |
-| feedback / debug 历史与几何锚点 | feedback、FeedbackDebug，ScoreDisplay 通过 `expected` 引用重写 anchor | geometry / overlays；业务与显示数据逐步分开 |
-| played / held / pending / timers | core 输入与调度、feedback 构造／提前预留，LED 键域刷新 | practice / audio scheduler |
+| feedback / debug 历史与几何锚点 | practice/feedback-state、FeedbackDebug，ScoreDisplay 通过 `expected` 引用重写 anchor | practice 记录、geometry / overlays 绘制 |
+| played / held / pending / timers | practice 输入／延音、core 调度与总取消，LED 键域刷新 | practice / audio scheduler |
 | 音频与 MIDI 路由、通道、回声 | preferences 初始化、core UI、midi listeners | audio / midi services；偏好命令更新 |
 | LED / WLED 状态 | led.js、core 虚拟键盘、midi LED test | optional adapter |
 | 共享键域 | src/domain/playable-range.ts 纯计算；src/state/player-range.ts 缓存，旧键盘／判定消费者转发 | domain / explicit controller |
@@ -46,8 +46,22 @@ anchor 刷新仍保留原 horizontal／changingLayout 条件，cache 在每次 r
 
 P5 的反馈／Loop 绘制只读记录与 looper 边界，不写计分、expected hit 或时间线；feedback
 context key 通过旧 practice callback 注入。几何 node/measure cache 归 geometryEngine 实例；
-reset feedback history 仍由 core 负责。布局切换临时保存 realtimeWrongPressInCurrentContext，
+reset feedback history 已由 P6 feedback-state 负责。布局切换临时保存 realtimeWrongPressInCurrentContext，
 zoom/resize 仍执行原 clearFeedbackVisualStatePreserveScoring 的 flag 清理；这是原语义，未合并两条路径。
+
+P6 的 `state` 局部别名写入不在 STATE_WRITES 的直接 AppState 扫描中；完整契约见
+[P6_INPUT_CONTRACT.md](P6_INPUT_CONTRACT.md)。input-controller 拥有 pressed/held/preExpected
+输入变更与 realtime wrong flag，early-grace 拥有预留，expected-notes 拥有数组构建与预留消费，
+scoring 拥有 correct/wrong 增量，feedback-state 拥有 marker/history/visual cleanup。
+输入保留 feedback → score → held → UI → hit → advance 的顺序，构建预留则先 hit/held，再 feedback/score。
+同音跨谱表预留仍按每个期望计分，不能在迁移时以 MIDI 为单位合并。
+
+sustain-state 拥有 pending/sustained 数组、原 35ms retrigger 与 expiry timer 登记；
+pruneAtTimestamp / markHeldPreview 在原 keyboard 呈现位置调用。clearVisuals 的总清理与 activeTimeouts
+取消仍由旧 core 调度入口执行，P7 才统一资源协调。Map/Set 仍保持原实例；数组沿原算法替换。
+解析出的 staffId 确实可空，因此 Expected/Sustained/OutOfRange staffId 补为 number|null；
+使用 Number(staffId)-1 保留旧算术，不新增手分配规则。PTTiming 接口接受 nullable timestamp，
+提前输入按原值传递；null 与 undefined 的旧 JS 算术差异已有用例，算法没有修改。
 
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。

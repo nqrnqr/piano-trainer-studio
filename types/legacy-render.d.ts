@@ -4,5 +4,7 @@ declare function describeLogicalNoteForDebug(note: PianoTrainerOsmdVendor.Note, 
 declare function describeGraphicalNoteForDebug(note: PianoTrainerOsmdVendor.GraphicalNote): Readonly<Record<string, unknown>>;
 declare function debugLogAnchorResolution(name: string, detail: Readonly<Record<string, unknown>>): void;
 declare function clearFeedbackVisualStatePreserveScoring(): void;
-declare function getCurrentFeedbackContext(): {key: string};
-interface Window { FeedbackDebug?: {renderStickyDebug(): void; clearSvgDebug(): void}; }
+interface Window { clearStickyDebug?: () => void; FeedbackDebug?: {
+    renderStickyDebug(): void; clearSvgDebug(): void;
+    pushStickyDebugFrame?(frame: PianoTrainerDomain.FeedbackFrameInput): void;
+}; }

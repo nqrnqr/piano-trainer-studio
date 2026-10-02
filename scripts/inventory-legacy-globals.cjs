@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const html = read('index.html');
 const scripts = [...html.matchAll(/src="(js\/[^"?]+)\?v=/g)].map(match => match[1]);
-const consumers = ['index.html', ...scripts, 'docs/testing/score-display.integration.js', 'docs/testing/practice-baseline.integration.js', 'docs/testing/settings-baseline.integration.js', 'docs/testing/traversal-baseline.integration.js', 'docs/testing/midi-baseline.integration.js', 'docs/testing/audio-baseline.integration.js', 'docs/testing/render-baseline.integration.js'];
+const consumers = ['index.html', ...scripts, 'docs/testing/score-display.integration.js', 'docs/testing/practice-baseline.integration.js', 'docs/testing/settings-baseline.integration.js', 'docs/testing/traversal-baseline.integration.js', 'docs/testing/midi-baseline.integration.js', 'docs/testing/audio-baseline.integration.js', 'docs/testing/render-baseline.integration.js', 'docs/testing/input-baseline.integration.js'];
 const sources = new Map(consumers.map(file => [file, read(file)]));
 const definitions = [];
 for (const file of ['index.html', ...scripts]) {

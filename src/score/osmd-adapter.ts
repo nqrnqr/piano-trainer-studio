@@ -154,12 +154,77 @@ namespace PianoTrainerOsmdAdapter {
                 width: measure.PositionAndShape.Size.width * unitsToPx,
                 height: ((bottomYUnits + paddingUnits) - (topYUnits - paddingUnits)) * unitsToPx};
         }
+        function getCombinedTieLength(note: PianoTrainerScoreTraversal.Note | null | undefined) {
+            if (!note) return 0;
+
+            let total = 0;
+            let current: PianoTrainerScoreTraversal.Note | null = note;
+            const seen = new Set<PianoTrainerScoreTraversal.Note>();
+
+            while (current && !seen.has(current)) {
+                seen.add(current);
+
+                if (current.Length && typeof current.Length.RealValue === 'number') {
+                    total += current.Length.RealValue;
+                }
+
+                const tie: PianoTrainerScoreTraversal.Note['NoteTie'] = current.NoteTie;
+                if (!tie) break;
+
+                // Prefer an explicit next note link if present
+                const next: PianoTrainerScoreTraversal.Note | null =
+                    tie.Notes?.find(n => n !== current) ||
+                    tie.NextNote ||
+                    tie.nextNote ||
+                    null;
+
+                if (!next) break;
+
+                // Only combine true same-pitch ties
+                if (next.halfTone !== current.halfTone) break;
+
+                current = next;
+            }
+
+            return total || (note.Length?.RealValue ?? 0);
+        }
+        // Lazy domain projection preserves original source-note read order.
+        // OSMD objects stay in this adapter; geometry resolves only NoteRef.
+        function* readPracticeEntries(entries: PianoTrainerScoreTraversal.VoiceEntry[], resolveStaffId: (entry: PianoTrainerScoreTraversal.VoiceEntry) => number | null): Iterable<PianoTrainerDomain.PracticeSourceEntry> {
+            // Original Array.forEach skips holes and captures the initial length.
+            const entryCount = entries.length;
+            for (let entryIndex = 0; entryIndex < entryCount; entryIndex++) {
+                if (!(entryIndex in entries)) continue;
+                const entry = entries[entryIndex];
+                const staffId = resolveStaffId(entry);
+                const notes: Iterable<PianoTrainerDomain.PracticeSourceNote> = {
+                    *[Symbol.iterator]() {
+                        const sourceNotes = entry.Notes!, noteCount = sourceNotes.length;
+                        for (let noteIndex = 0; noteIndex < noteCount; noteIndex++) {
+                            if (!(noteIndex in sourceNotes)) continue;
+                            const note = sourceNotes[noteIndex];
+                            yield {
+                                get midi() { return note.halfTone + 12; },
+                                get noteRef() { return noteRef(note); },
+                                get notehead() { return note.Notehead; },
+                                get printObject() { return note.PrintObject; },
+                                get cue() { return note.isCueNote; },
+                                get rest() { return note.isRest!(); },
+                                get tieContinuation() { return !!note.NoteTie && note.NoteTie.StartNote !== note; },
+                                get combinedLengthWhole() { return note.NoteTie && note.NoteTie.StartNote === note ? getCombinedTieLength(note) : note.Length!.RealValue; }
+                            };
+                        }
+                    }
+                };
+                yield {staffId, notes};
+            }
+        }
         function dispose() {
             detachHook();
             displayedIterator = null; displayedSheet = undefined;
             noteRefs = new WeakMap(); sourceNotes.clear(); scoreRevision++;
         }
-        return {noteRef, resolveNote, afterRender, getDefaults, setLayout, getGraphicalNote, getMeasureBox, readPositions, dispose,
+        return {getCombinedTieLength, readPracticeEntries, noteRef, resolveNote, afterRender, getDefaults, setLayout, getGraphicalNote, getMeasureBox, readPositions, dispose,
             getMeasureCount: () => ports.getRenderer().GraphicSheet?.MeasureList.length ?? null,
             // Legacy wrong-note fallback is called with a loaded cursor/sheet.
             // Preserve its missing-measure exception semantics in this boundary.

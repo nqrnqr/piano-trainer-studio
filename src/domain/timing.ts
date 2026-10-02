@@ -18,14 +18,14 @@ namespace PianoTrainerTiming {
 
     export interface RemainingMeasureWaitOptions {
         currentMeasureIdx?: number;
-        currentTimestamp?: WholeNoteTime;
+        currentTimestamp?: WholeNoteTime | null;
         fallbackLength?: WholeNoteTime;
         getMeasureTimingInfo?: (measureIndex: number | undefined) => MeasureTimingInfo | null | undefined;
     }
 
     export interface TraversalWaitOptions extends RemainingMeasureWaitOptions {
         nextMeasureIdx?: number;
-        nextTimestamp?: WholeNoteTime;
+        nextTimestamp?: WholeNoteTime | null;
     }
 
     export interface Api {

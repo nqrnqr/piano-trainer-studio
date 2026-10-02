@@ -14,6 +14,9 @@ namespace PianoTrainerScoreTraversal {
         isCueNote?: boolean;
         NoteTie?: {
             StartNote?: Note;
+            Notes?: Note[];
+            NextNote?: Note;
+            nextNote?: Note;
         };
         isRest?: () => boolean;
     }
