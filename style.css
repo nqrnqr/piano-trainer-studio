@@ -1230,6 +1230,31 @@ body.app-fullscreen-active .score-overlay-controls {
     box-shadow: 0 6px 14px rgba(0,0,0,0.10);
 }
 
+#music-area.score-horizontal {
+    overflow-x: auto;
+    scroll-behavior: auto;
+    overflow-anchor: none;
+}
+
+.score-horizontal .score-overlay-controls {
+    left: 0;
+}
+
+.score-horizontal #canvas-wrapper {
+    min-width: 100%;
+    padding-right: 67vw;
+    box-sizing: content-box;
+}
+
+.score-horizontal .horizontal-score-cursor {
+    border-left: 3px solid #007b9e;
+    box-shadow: -2px 0 5px rgba(0, 123, 158, 0.25);
+    box-sizing: border-box;
+}
+
+.score-layout-row { flex-wrap: wrap; }
+.score-layout-row select { flex: 1; min-width: 0; padding: 7px; }
+
 #cursor-layer,
 #looper-layer,
 #feedback-layer {

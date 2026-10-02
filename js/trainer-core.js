@@ -294,6 +294,7 @@ function restoreDefaultPreferences({ reloadDevices = true } = {}) {
     if (midiOutVirtualCheckbox) midiOutVirtualCheckbox.checked = false;
 
     updatePianoVolume(80);
+    ScoreDisplay.setMode('traditional');
     applyZoom(100);
 
     const autoScrollCheckbox = document.getElementById('check-autoscroll');
@@ -394,6 +395,7 @@ let osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmd-container", {
     autoResize: false, 
     drawTitle: true
 });
+ScoreDisplay.init();
 
 const FOLLOW_ME_TONE_LATENCY_PROFILE = Object.freeze({
     lookAhead: 0.005,
@@ -3244,6 +3246,7 @@ function clearTransientPlaybackState({ clearVisualState = false } = {}) {
 }
 
 function stopPlaybackState({ pauseTransport = true } = {}) {
+    ScoreDisplay.cancel();
     AppState.isPlaying = false;
     AppState.countInActive = false;
     AppState.lastLedPreviewEvents = [];
@@ -3294,6 +3297,7 @@ if (playPauseButton) {
 }
 
 document.getElementById('btn-reset').onclick = () => { 
+    ScoreDisplay.cancel();
     AppState.isPlaying = false; 
     AppState.countInActive = false;
 

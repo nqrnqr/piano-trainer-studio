@@ -22,6 +22,7 @@ function renderScoreAndRefreshGeometry() {
     if (!osmd || !osmd.IsReadyToRender || !osmd.IsReadyToRender()) return;
     osmd.render();
     GeometryEngine.invalidate();
+    ScoreDisplay.afterRender();
     renderFeedbackOverlay();
     GeometryEngine.renderLooper();
     if (window.FeedbackDebug?.renderStickyDebug) {
@@ -615,6 +616,10 @@ function enforceLooperBounds() {
 // VISUAL FEEDBACK & AUTO-SCROLL
 // ==========================================
 function handleAutoScroll() {
+    if (ScoreDisplay.isHorizontal()) {
+        ScoreDisplay.follow();
+        return;
+    }
     const autoScrollCheckbox = document.getElementById('check-autoscroll');
     if (autoScrollCheckbox && !autoScrollCheckbox.checked) return;
     if (!osmd.cursor || !osmd.cursor.cursorElement) return;
@@ -1012,7 +1017,7 @@ function buildExpectedNotesFromEntries(entries, currentMeasureIdx, currentTimest
 
                         const existingExpected = mergedExpected.get(key);
                         if (!existingExpected) {
-                            mergedExpected.set(key, { midi, staffId: sid, hit: false, mIdx: currentMeasureIdx, anchor });
+                            mergedExpected.set(key, { midi, staffId: sid, hit: false, mIdx: currentMeasureIdx, anchor, logicalNote: n });
                         } else {
                             debugLogAnchorResolution('EXPECTED_NOTE_DEDUPE_COLLISION', {
                                 key,
@@ -1031,6 +1036,7 @@ function buildExpectedNotesFromEntries(entries, currentMeasureIdx, currentTimest
                             });
                             if (!existingExpected.anchor && anchor) {
                                 existingExpected.anchor = anchor;
+                                existingExpected.logicalNote = n;
                             }
                         }
 

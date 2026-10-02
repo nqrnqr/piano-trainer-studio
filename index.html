@@ -514,6 +514,13 @@
         <fieldset id="fs-display-popup">
             <legend>🖥 Display</legend>
             <div class="display-popup-grid">
+                <div class="practice-row score-layout-row">
+                    <label for="select-score-layout">Score Layout</label>
+                    <select id="select-score-layout">
+                        <option value="traditional">Traditional (multi-line)</option>
+                        <option value="horizontal">Continuous (horizontal)</option>
+                    </select>
+                </div>
                 <div class="practice-row value-row display-zoom-row">
                     <label for="slider-zoom" class="practice-row-label inline-label display-zoom-label">Zoom</label>
                     <input type="range" id="slider-zoom" min="50" max="150" value="100">
@@ -791,6 +798,7 @@
     <script>document.write('<script src="js/feedback-engine.js?v=' + encodeURIComponent(window.__PT_ASSET_VERSION__ || 'dev') + '"><\/script>');</script>
     <script>document.write('<script src="js/feedback-debug.js?v=' + encodeURIComponent(window.__PT_ASSET_VERSION__ || 'dev') + '"><\/script>');</script>
     <script>document.write('<script src="js/trainer-timing.js?v=' + encodeURIComponent(window.__PT_ASSET_VERSION__ || 'dev') + '"><\/script>');</script>
+    <script>document.write('<script src="js/score-display.js?v=' + encodeURIComponent(window.__PT_ASSET_VERSION__ || 'dev') + '"><\/script>');</script>
     <script>document.write('<script src="js/trainer-core.js?v=' + encodeURIComponent(window.__PT_ASSET_VERSION__ || 'dev') + '"><\/script>');</script>
 </body>
 </html>
