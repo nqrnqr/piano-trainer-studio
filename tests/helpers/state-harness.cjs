@@ -15,9 +15,11 @@ function stateHarness(local = {}, session = {}) {
     const localStorage = storage(local);
     const sessionStorage = storage(session);
     const context = vm.createContext({ window: {}, localStorage, sessionStorage });
+    runScript(context, 'js/generated/domain/playable-range.js');
     for (const file of ['preference-keys', 'app-state', 'preferences', 'settings-backup']) {
         runScript(context, `js/generated/state/${file}.js`);
     }
+    runScript(context, 'js/generated/state/player-range.js');
     const evaluate = code => vm.runInContext(code, context);
     return { context, localStorage, sessionStorage, evaluate, state: evaluate('AppState') };
 }

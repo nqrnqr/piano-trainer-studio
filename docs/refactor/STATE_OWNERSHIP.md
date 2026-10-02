@@ -15,7 +15,8 @@ P2 保留一个 `const AppState` 词法对象。Map/Set 泛型、null 和动态�
 | feedback / debug 历史与几何锚点 | feedback、FeedbackDebug，ScoreDisplay 通过 `expected` 引用重写 anchor | geometry / overlays；业务与显示数据逐步分开 |
 | played / held / pending / timers | core 输入与调度、feedback 构造／提前预留，LED 键域刷新 | practice / audio scheduler |
 | 音频与 MIDI 路由、通道、回声 | preferences 初始化、core UI、midi listeners | audio / midi services；偏好命令更新 |
-| LED / WLED 状态与键域 | led.js、core 虚拟键盘、midi LED test | optional adapter；键域迁往 domain |
+| LED / WLED 状态 | led.js、core 虚拟键盘、midi LED test | optional adapter |
+| 共享键域 | src/domain/playable-range.ts 纯计算；src/state/player-range.ts 缓存，旧键盘／判定消费者转发 | domain / explicit controller |
 | library 抽屉、选中项、管理模式 | ScoresUI 和 toolbar | UI controllers |
 
 运行中追加的字段：`wledDdpLastSendOk`、`wledDdpLastSendAt`、`wledDdpLastError`、

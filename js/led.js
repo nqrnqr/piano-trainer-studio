@@ -1226,49 +1226,17 @@ function initLedOutputControls() {
 }
 
 
-function normalizePlayerPianoType(value) {
-    const numericValue = Number(value);
-    return PLAYER_PIANO_SIZES.includes(numericValue) ? numericValue : 88;
-}
 
-function derivePlayerRangeFromKeyboardSize(keyCount) {
-    const normalizedKeyCount = normalizePlayerPianoType(keyCount);
-    const keysTrimmed = FULL_PIANO_KEY_COUNT - normalizedKeyCount;
-    const trimLow = Math.floor(keysTrimmed / 2);
-    const trimHigh = keysTrimmed - trimLow;
-    const minMidi = FULL_PIANO_MIDI_MIN + trimLow;
-    const maxMidi = FULL_PIANO_MIDI_MAX - trimHigh;
 
-    return {
-        keyCount: normalizedKeyCount,
-        minMidi,
-        maxMidi,
-        trimmedLowKeys: trimLow,
-        trimmedHighKeys: trimHigh
-    };
-}
 
-function getPlayerPlayableRange() {
-    if (!AppState.playerRange || AppState.playerRange.keyCount !== AppState.playerPianoType) {
-        AppState.playerRange = derivePlayerRangeFromKeyboardSize(AppState.playerPianoType);
-    }
-    return AppState.playerRange;
-}
 
-function isMidiInPlayerRange(midi) {
-    const range = getPlayerPlayableRange();
-    return Number(midi) >= range.minMidi && Number(midi) <= range.maxMidi;
-}
 
-function isCurrentOutOfRangeScoreNote(midi) {
-    return AppState.outOfRangeCurrentNotes.some(note => Number(note.midi) === Number(midi));
-}
 
-function getMidiKeyPosition01(midi) {
-    const range = getPlayerPlayableRange();
-    const playableSpan = Math.max(1, range.maxMidi - range.minMidi);
-    return (Number(midi) - range.minMidi) / playableSpan;
-}
+
+
+
+
+
 
 function keyPosition01ToLedIndex(position01) {
     const clamped = Math.max(0, Math.min(1, position01));

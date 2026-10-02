@@ -1,9 +1,11 @@
 {
   "note": "Lexical candidates, not an AST or call graph. Column-zero declarations and window assignments only; property definitions, destructuring, dynamic lookups, comments and shadowed references need review. Side effects are documented by file in GLOBAL_DEPENDENCIES.md. Generated scripts are runtime paths; consult PROGRESS.md for their TS sources.",
   "loadOrder": [
+    "js/generated/domain/playable-range.js",
     "js/generated/state/preference-keys.js",
     "js/generated/state/app-state.js",
     "js/generated/state/preferences.js",
+    "js/generated/state/player-range.js",
     "js/generated/state/settings-backup.js",
     "js/generated/ui/settings-controls.js",
     "js/transpose/transpose-engine.js",
@@ -108,6 +110,7 @@
       "referenceFiles": [
         "js/generated/state/app-state.js",
         "js/generated/state/preferences.js",
+        "js/generated/state/player-range.js",
         "js/transpose/transpose-ui.js",
         "js/toolbar-ui.js",
         "js/scores-ui.js",
@@ -200,12 +203,12 @@
         {
           "symbol": "FULL_PIANO_KEY_COUNT",
           "kind": "const",
-          "file": "js/generated/state/app-state.js",
-          "line": 124
+          "file": "js/generated/domain/playable-range.js",
+          "line": 5
         }
       ],
       "referenceFiles": [
-        "js/generated/state/app-state.js",
+        "js/generated/domain/playable-range.js",
         "js/led.js"
       ]
     },
@@ -215,13 +218,12 @@
         {
           "symbol": "FULL_PIANO_MIDI_MAX",
           "kind": "const",
-          "file": "js/generated/state/app-state.js",
-          "line": 123
+          "file": "js/generated/domain/playable-range.js",
+          "line": 4
         }
       ],
       "referenceFiles": [
-        "js/generated/state/app-state.js",
-        "js/led.js"
+        "js/generated/domain/playable-range.js"
       ]
     },
     {
@@ -230,12 +232,12 @@
         {
           "symbol": "FULL_PIANO_MIDI_MIN",
           "kind": "const",
-          "file": "js/generated/state/app-state.js",
-          "line": 122
+          "file": "js/generated/domain/playable-range.js",
+          "line": 3
         }
       ],
       "referenceFiles": [
-        "js/generated/state/app-state.js",
+        "js/generated/domain/playable-range.js",
         "js/led.js"
       ]
     },
@@ -444,7 +446,7 @@
           "symbol": "LedEngine",
           "kind": "const",
           "file": "js/led.js",
-          "line": 1363
+          "line": 1331
         }
       ],
       "referenceFiles": [
@@ -673,13 +675,12 @@
         {
           "symbol": "PLAYER_PIANO_SIZES",
           "kind": "const",
-          "file": "js/generated/state/app-state.js",
-          "line": 125
+          "file": "js/generated/domain/playable-range.js",
+          "line": 6
         }
       ],
       "referenceFiles": [
-        "js/generated/state/app-state.js",
-        "js/led.js"
+        "js/generated/domain/playable-range.js"
       ]
     },
     {
@@ -1396,7 +1397,7 @@
           "symbol": "WLEDController",
           "kind": "const",
           "file": "js/led.js",
-          "line": 1561
+          "line": 1529
         }
       ],
       "referenceFiles": [
@@ -2638,11 +2639,13 @@
         {
           "symbol": "derivePlayerRangeFromKeyboardSize",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1234
+          "file": "js/generated/domain/playable-range.js",
+          "line": 11
         }
       ],
       "referenceFiles": [
+        "js/generated/domain/playable-range.js",
+        "js/generated/state/player-range.js",
         "js/led.js"
       ]
     },
@@ -3644,11 +3647,12 @@
         {
           "symbol": "getMidiKeyPosition01",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1267
+          "file": "js/generated/state/player-range.js",
+          "line": 15
         }
       ],
       "referenceFiles": [
+        "js/generated/state/player-range.js",
         "js/led.js"
       ]
     },
@@ -3739,16 +3743,32 @@
       ]
     },
     {
+      "symbol": "getPlayableRangePosition01",
+      "definitions": [
+        {
+          "symbol": "getPlayableRangePosition01",
+          "kind": "function",
+          "file": "js/generated/domain/playable-range.js",
+          "line": 29
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/domain/playable-range.js",
+        "js/generated/state/player-range.js"
+      ]
+    },
+    {
       "symbol": "getPlayerPlayableRange",
       "definitions": [
         {
           "symbol": "getPlayerPlayableRange",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1251
+          "file": "js/generated/state/player-range.js",
+          "line": 3
         }
       ],
       "referenceFiles": [
+        "js/generated/state/player-range.js",
         "js/led.js",
         "js/midi.js"
       ]
@@ -4448,7 +4468,7 @@
           "symbol": "initPlayerPianoTypeControl",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1343
+          "line": 1311
         }
       ],
       "referenceFiles": [
@@ -4519,12 +4539,12 @@
         {
           "symbol": "isCurrentOutOfRangeScoreNote",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1263
+          "file": "js/generated/state/player-range.js",
+          "line": 9
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/state/player-range.js"
       ]
     },
     {
@@ -4598,16 +4618,32 @@
       ]
     },
     {
+      "symbol": "isMidiInPlayableRange",
+      "definitions": [
+        {
+          "symbol": "isMidiInPlayableRange",
+          "kind": "function",
+          "file": "js/generated/domain/playable-range.js",
+          "line": 26
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/domain/playable-range.js",
+        "js/generated/state/player-range.js"
+      ]
+    },
+    {
       "symbol": "isMidiInPlayerRange",
       "definitions": [
         {
           "symbol": "isMidiInPlayerRange",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1258
+          "file": "js/generated/state/player-range.js",
+          "line": 12
         }
       ],
       "referenceFiles": [
+        "js/generated/state/player-range.js",
         "js/led.js",
         "js/feedback-engine.js",
         "js/trainer-core.js"
@@ -4704,7 +4740,7 @@
           "symbol": "keyPosition01ToLedIndex",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1273
+          "line": 1241
         }
       ],
       "referenceFiles": [
@@ -5374,11 +5410,12 @@
         {
           "symbol": "normalizePlayerPianoType",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1229
+          "file": "js/generated/domain/playable-range.js",
+          "line": 7
         }
       ],
       "referenceFiles": [
+        "js/generated/domain/playable-range.js",
         "js/led.js"
       ]
     },
@@ -5995,7 +6032,7 @@
           "symbol": "refreshPlayerRangeDependentState",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1309
+          "line": 1277
         }
       ],
       "referenceFiles": [
@@ -6730,7 +6767,7 @@
           "symbol": "setPlayerPianoType",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1324
+          "line": 1292
         }
       ],
       "referenceFiles": [
@@ -7360,7 +7397,7 @@
           "symbol": "syncPlayerPianoTypeControl",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1296
+          "line": 1264
         }
       ],
       "referenceFiles": [
@@ -7704,7 +7741,7 @@
           "symbol": "updateLedKeyMapping",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1279
+          "line": 1247
         }
       ],
       "referenceFiles": [

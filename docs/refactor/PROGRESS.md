@@ -42,6 +42,7 @@
 ## P2
 
 - 状态：完成。
+- Git 检查点：f391f64 — refactor: type shared state and settings boundaries (P2)。
 - 范围：状态及嵌套结构类型化、唯一偏好 key 表、读取／默认值与备份服务、设置 UI 边界。
 - 迁移映射：trainer-state.js → src/state/{app-state,preference-keys,preferences,settings-backup}.ts 和 src/ui/settings-controls.ts。
 - 类型：LegacyAppState、PianoTrainerDomain 下的期望／反馈／提前预留／预览／路由／键域结构；动态字段 optional，Map/Set 明确泛型。
@@ -53,8 +54,19 @@
 - 命令：npm run build、npm run typecheck、npm run build:check、npm test；浏览器三测试页。STATE_WRITES 可用 node scripts/inventory-state-writes.cjs 重建。
 - 回退：revert P2 检查点恢复原 state 及脚本槽位；不迁移或清除用户数据，P0/P1 保持。
 
-## P3–P9
+## P3
+
+- 状态：进行中。
+- 已完成子步骤：共享可弹奏键域提取。
+- 映射：led.js 的 normalizePlayerPianoType、derivePlayerRangeFromKeyboardSize 及 MIDI 范围／归一化位置计算 → src/domain/playable-range.ts；共享缓存及旧名转发 → src/state/player-range.ts。FULL_PIANO_* / PLAYER_PIANO_SIZES 常量迁往 domain。
+- 依赖方向：纯 domain 函数不读 AppState、DOM、storage、Tone、OSMD 或硬件；state 提供同一个 range cache 给旧键盘／判定／预览入口，LED none 仍工作。
+- 行为：保留奇数裁剪、Number coercion、88-key fallback、范围包含端点与位置不夹紧规则；旧 led.js 不再定义这些函数。
+- 验证：64/64 Node 测试（新增 11 项键域专项）通过；旧／新范围 40 次比较一致；显示 30/30、练习／真实反复 53/53 通过，见 validation/P3-range-browser.txt；18 个生成文件与干净临时重建一致。
+- 剩余范围：共享预览 timeline／遍历／位置恢复；MIDI 权限说明、连接状态、更新 UI 从 led 归位；可选 LED adapter / no-op，关闭硬件时不启动 LED 专属 rAF／发现；完整提前输入与两种 adapter 验证。
+- 回退边界：还原本子步骤的函数与常量槽位，不改偏好／数据库或时间算法。
+
+## P4–P9
 
 状态：未开始，仍属于完整目标。
 
-下一最小入口：P3 提取共享键域、遍历／预览时间线、MIDI 提示与连接／更新 UI；建立可选 LED 与 no-op adapter，验证关闭 LED 后单手提前输入与三模式一致。
+下一最小入口：继续 P3 共享时间线与 optional LED 边界；随后依序完成 MIDI、音频、渲染、判定、调度、数据/UI 和显式 bootstrap 的终态验收。

@@ -1,6 +1,6 @@
 # 首轮 TypeScript 开发与运行
 
-当前已迁移 timing、状态与设置。应用继续使用原生 DOM、经典脚本、现有 vendor 和静态资源。
+当前已迁移 timing、状态、设置与共享键域。应用继续使用原生 DOM、经典脚本、现有 vendor 和静态资源。
 练习、音频、MIDI、渲染及 LED 正按后续阶段迁移；完整目标见 [PROGRESS.md](PROGRESS.md)。
 
 ## 运行应用
@@ -39,6 +39,7 @@ npm run build:check
 - `types/legacy-timing.d.ts` 只描述 Window.PTTiming；全局词法 AppState 未改为 Window 属性。
 - P2 状态／设置唯一源码为 `src/state/*.ts` 与 `src/ui/settings-controls.ts`，原 trainer-state.js 已删除。HTML 依次加载 key 表、state、preferences、backup、settings UI，然后保持其他脚本的相对顺序。
 - `types/legacy-state.d.ts` 描述共享对象，`src/domain/practice.ts` 描述嵌套数据；未迁移 JS 的访问尚不受 TS 检查，不能视为整个核心已迁移。
+- P3 的键域纯计算在 `src/domain/playable-range.ts`，AppState 缓存／旧接口在 `src/state/player-range.ts`；LED 专属实现继续保留，optional/no-op 边界尚在迁移中。
 - `npm run build` 先在 `.cache` 新目录编译，成功才替换 compiler 专属的 `js/generated`；失败保留现有输出。
 - 不手改生成文件。构建清理只作用于校验过的生成／临时目录，拒绝向工作区外解析的路径和符号链接。
 - 输出与 TS 源使用 LF，保证 Windows / Unix 重建时 source map 字节稳定。

@@ -119,8 +119,4 @@ const AppState = {
     scoreLibraryManageMode: false,
     scoreLibrarySelectedScoreIds: []
 };
-const FULL_PIANO_MIDI_MIN = 21;
-const FULL_PIANO_MIDI_MAX = 108;
-const FULL_PIANO_KEY_COUNT = 88;
-const PLAYER_PIANO_SIZES = [88, 76, 73, 61, 49, 37, 32, 25];
 //# sourceMappingURL=app-state.js.map

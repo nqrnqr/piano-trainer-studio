@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const ts = require('typescript');
 const root = path.resolve(__dirname, '..');
-const files = ['src/state/app-state.ts', 'src/state/preferences.ts', 'js/trainer-core.js', 'js/led.js', 'js/midi.js', 'js/feedback-engine.js', 'js/feedback-debug.js', 'js/scores-ui.js', 'js/toolbar-ui.js', 'js/score-display.js', 'js/transpose/transpose-ui.js'];
+const files = ['src/state/app-state.ts', 'src/state/preferences.ts', 'src/state/player-range.ts', 'js/trainer-core.js', 'js/led.js', 'js/midi.js', 'js/feedback-engine.js', 'js/feedback-debug.js', 'js/scores-ui.js', 'js/toolbar-ui.js', 'js/score-display.js', 'js/transpose/transpose-ui.js'];
 const writes = [];
 for (const file of files) {
     const source = ts.createSourceFile(file, fs.readFileSync(path.join(root, file), 'utf8'), ts.ScriptTarget.Latest, true);
