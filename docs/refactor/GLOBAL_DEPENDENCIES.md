@@ -143,3 +143,13 @@ core 的 clearFeedbackVisualStatePreserveScoring 仅转发 feedback-state，clea
 OSMD adapter 惰性提供 PracticeSourceEntry/Note，并按原读取顺序保持 Array.forEach 的初始长度与跳过 holes；
 source objects 不越过 practice 边界。getCombinedTieLength 在 adapter 单一实现，显式链接/Notes/cycle 语义不变。
 仍保留经典脚本全局转发，P9 才转为真实 import/export 和显式 bootstrap。
+
+P7a 第一子步骤：core 不再创建 MembraneSynth 或持有 metronome/cache/pulse counters；
+`src/audio/{metronome,metronome-output,playback-clock}.ts` 分别持有节拍决策、节点与时钟资源，
+`src/score/measure-timing.ts` 持有按实际 iterator 构建的小节缓存，`src/ui/tempo-pulse.ts` 操作 DOM。
+`src/compatibility/metronome.ts` 在 audio 后/practice 前无资源组装，core 原节点位置调用 init。
+所有 timing decisions 只读注入状态和端口；MIDI raw percussion bytes/release 捕获由 midi-output 提供，
+Tone/DOM/OSMD/vendor 对象不进入节拍器。最小 source-measure ports 仍位于 score 层而非 domain。
+兼容旧函数名的 const forwards 只有一份实现；UI 改读 getWaitMeasureIndex 与 volume setter。
+Play/Pause/Reset、Tone.Transport 与 playbackLoop/checkWaitModeAdvance 仍由旧 core 协调，
+P7a 后续搬运、P7b 再提取模式策略。普通 Pause 与显式 dispose 的区别在 scheduling contract 中固定。

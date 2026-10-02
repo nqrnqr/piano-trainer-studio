@@ -63,6 +63,14 @@ pruneAtTimestamp / markHeldPreview 在原 keyboard 呈现位置调用。clearVis
 使用 Number(staffId)-1 保留旧算术，不新增手分配规则。PTTiming 接口接受 nullable timestamp，
 提前输入按原值传递；null 与 undefined 的旧 JS 算术差异已有用例，算法没有修改。
 
+P7a 的 metronome `state` alias 仅写 countInActive，以及停止后的 lastLedPreviewEvents /
+ledPreviewTraversalIndex；isPlaying/mode/BPM/routing 开关只读。Play/Pause/Reset 和这些字段的
+总协调仍留在 core，下一子步骤再迁移。measureTimingCache、Wait beat/counter/target/measure、
+window timer IDs、pulse IDs/lastPulse 都由独立实例私有持有，不向 AppState 追加字段。
+playback-clock 持有 metronome timer/rAF 资源及 dispose epoch；普通 Pause 不重置 epoch。
+percussion release timer 与捕获的 MIDI output 由 midi-output 持有，只有显式 dispose 失效。
+这与原 Pause 仍允许已排 attack/release 的规则区分，详见 P7_SCHEDULING_CONTRACT.md。
+
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。
 首次默认值与 input velocity / live low latency 强制开启规则保留。

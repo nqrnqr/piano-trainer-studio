@@ -138,8 +138,20 @@
 - 命令：npm run build/check、两个 inventory 脚本、input/display/practice/render/traversal/MIDI/audio 浏览器页及 .cache 的旧算法对照。回退：revert 本阶段恢复旧输入/feedback 入口桥接，保留此前 MIDI、audio、render 的独立模块。
 - 下一入口：P7a 先记录 Play/Pause/Reset、count-in/metronome 与 playbackLoop 的时钟/资源/取消契约，再搬运现有 coordinator；P7b 再提取模式策略，保留一个循环及实际 OSMD 反复。
 
-## P7–P9
+## P7a：时钟、节拍器与小节缓存检查点
 
-状态：未开始，仍属于完整目标。
+- 状态：第一子步骤完成（2026-10-03）；P7a 的播放协调器仍待迁移，完整目标保持活跃。
+- 范围：原 count-in、Wait 连续节拍、播放窗口节拍、visual pulse、MembraneSynth、MIDI Channel 10 click 与 measure timing cache。先记录 [P7_SCHEDULING_CONTRACT.md](P7_SCHEDULING_CONTRACT.md)，再迁移；Play/Pause/Reset、playbackLoop/checkWaitModeAdvance 与 Loop 边界推进仍是原 JS。
+- 映射：core 的节拍器/计数/资源 → `src/audio/{playback-clock,metronome,metronome-output}.ts`；小节缓存 → `src/score/measure-timing.ts`；pulse DOM → `src/ui/tempo-pulse.ts`；percussion bytes/release → MIDI output。`src/compatibility/metronome.ts` 暂时组装并提供旧名，factory 不创建 timer/node，core 在原位置初始化 MembraneSynth。
+- 行为：沿用原 Tone 秒、performance 毫秒与 wall-clock timeout；首拍同步、末拍再等完整一拍、raw count-in numerator、Wait modulo/tempo rebuild、窗口 epsilon 与 beatOffsetSec 公式、pulse 120ms 去重/170ms 清理、MIDI attack -2ms/捕获 output release 均未改。实际反复构建缓存、100000 上限、首个匹配位置恢复及 repeat boundary 的零长度保持。
+- 取消：普通 Pause 保持原逐项取消规则，不添加 generation reset；快速 Pause/Resume 可能让旧 count-in 回调再次接管、暂停后的已排 MIDI attack 仅由 checkbox gate，均有特征测试。显式 dispose 才取消所有 owned timer/rAF 并失效迟到 callback，供 P9 使用。
+- 类型：Tone 最小声明补 MembraneSynth，OSMD 补 source measure/time signature；measure cache、clock resource list 和 metronome counters 为私有字段。无 any/忽略检查；source-measure/cached lookup 与 count-in loaded assertion 保留旧语义。经典入口检查区分 timing 算法和 measure cache，并仍要求两算法只有一个实现、缓存只有一个加载槽位。
+- 验证：159/159 Node（新增 20 项时钟/节拍器/缓存、2 项 percussion 输出），strict typecheck 与 98 文件干净生成比较通过，见 validation/P7a-metronome-check.txt。基线 1ec34ee 的 1200 个流/14400 个动作、1800 个窗口/1168 个 timer callback、800 组缓存比较一致，包括状态、事件顺序、delay 与 restore 命令。
+- 浏览器：default/no-op 各 metronome 19、audio 23、display 30、practice 53，traversal 30/33，共 313 项通过，见 validation/P7a-metronome-browser.txt。真实 Tone nodes/native timers 与实际 OSMD 验证 count-in cadence、最后整拍、Wait 无输入 tick/stop、Follow target time、Channel 10 bytes、pause/dispose/reinit；MIDI provider 模拟、声音静音。偏好 fixture 串行运行并恢复。
+- 清单：603 个 global candidates/59 classic slots，同名函数覆盖为零；284 个直接 AppState 写入，模块 aliases/私有资源记入 STATE_OWNERSHIP。用户 key、库格式、vendor、helper 与启动器未改。
+- 未验证：可听音频与硬件节拍同步、实体 MIDI/WLED、Mac/触屏；当前 muted native timer 验证不能代替这些手工检查。P7 全阶段矩阵待协调器/策略完成后验收。
+- 命令：npm run build/check、两个 inventory 脚本、metronome/audio/display/practice/traversal 浏览器页、.cache/metronome-parity.cjs 原算法对照。回退：revert 本检查点恢复原节拍器/cache 槽位与 MIDI click bridge；不清空用户数据，P6 输入迁移保留。
 
-下一最小入口：P7a 的现有调度、资源和取消规则；随后依序完成模式策略、数据/UI 和显式 bootstrap 的终态验收。完整目标仍活跃，P6 完成不代表整个重构完成。
+## P7 后续–P9
+
+P7a 接着迁移 Play/Pause/Reset、playbackLoop/checkWaitModeAdvance 与 Loop 协调，按契约保留现有时钟/取消规则。P7b 再从同一个循环提取模式策略，保留实际 OSMD repeat traversal 与 painted/prefetch 两个位置；P8 数据/UI、P9 显式 bootstrap/module/dispose 尚未开始。当前检查点不代表 P7a 或完整重构完成。

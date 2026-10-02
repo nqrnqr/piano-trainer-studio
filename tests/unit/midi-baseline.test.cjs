@@ -48,3 +48,18 @@ test('sole output implementation preserves effective core velocity and uses stat
     h.element('midi-out').value = 'none';
     assert.equal(h.output.noteOn(60), false);
 });
+test('metronome percussion fixes channel 10 and captures the output for its delayed release', async () => {
+    const h = await harness();h.state.midiOutChannel=7;
+    assert.equal(h.output.percussionClick(75.5,59,1),true);
+    assert.deepEqual(h.sent,[[0x99,76,59]]);
+    const timer=[...h.timers.values()][0];assert.equal(timer.delay,20);
+    h.element('midi-out').value='none';timer.cb();
+    assert.deepEqual(h.sent,[[0x99,76,59],[0x89,76,0]]);
+    assert.equal(h.state.recentMidiEchoes.at(-1).status,0x89);
+    assert.equal(h.output.percussionClick(75,118,80),false);
+});
+test('metronome release belongs to output disposal and rejects a captured late callback', async () => {
+    const h = await harness();h.output.percussionClick(75,118,80);
+    const timer=[...h.timers.values()][0];h.output.dispose();assert.equal(h.timers.size,0);
+    timer.cb();assert.deepEqual(h.sent,[[0x99,75,118]]);
+});

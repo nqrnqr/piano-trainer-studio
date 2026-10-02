@@ -225,6 +225,14 @@ namespace PianoTrainerOsmdAdapter {
             noteRefs = new WeakMap(); sourceNotes.clear(); scoreRevision++;
         }
         return {getCombinedTieLength, readPracticeEntries, noteRef, resolveNote, afterRender, getDefaults, setLayout, getGraphicalNote, getMeasureBox, readPositions, dispose,
+            getSourceMeasure: (measureIndex: number | undefined) => ports.getRenderer().Sheet?.SourceMeasures?.[measureIndex!] || null,
+            getSourceMeasureCount: () => ports.getRenderer().Sheet?.SourceMeasures?.length || 0,
+            getCountInBeats: (measureIndex: number) => {
+                const measures = ports.getRenderer().Sheet!.SourceMeasures!;
+                if (measures[measureIndex]?.ActiveTimeSignature) return measures[measureIndex].ActiveTimeSignature!.Numerator;
+                if (measures[0]?.ActiveTimeSignature) return measures[0].ActiveTimeSignature!.Numerator;
+                return 4;
+            },
             getMeasureCount: () => ports.getRenderer().GraphicSheet?.MeasureList.length ?? null,
             // Legacy wrong-note fallback is called with a loaded cursor/sheet.
             // Preserve its missing-measure exception semantics in this boundary.

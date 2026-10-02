@@ -30,6 +30,16 @@ declare namespace PianoTrainerToneVendor {
         };
     }
     interface SamplerOptions {urls: Record<string,string>; release: number; baseUrl: string;}
+    interface MembraneVoice {
+        volume: {value: number};
+        toDestination(): MembraneVoice;
+        triggerAttackRelease(note: string, duration: '64n', time: number, gain: number): void;
+        dispose(): void;
+    }
+    interface MembraneOptions {
+        pitchDecay: number; octaves: number; oscillator: {type:string};
+        envelope: {attack:number;decay:number;sustain:number;release:number};
+    }
     interface Api {
         context: Context;
         getContext?(): Context;
@@ -42,6 +52,7 @@ declare namespace PianoTrainerToneVendor {
         Synth: unknown;
         PolySynth: new (voice: unknown, options: PolySynthOptions) => Voice;
         Sampler: new (options: SamplerOptions) => Voice;
+        MembraneSynth: new (options: MembraneOptions) => MembraneVoice;
     }
 }
 declare const Tone: PianoTrainerToneVendor.Api;

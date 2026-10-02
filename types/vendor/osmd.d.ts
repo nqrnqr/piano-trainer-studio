@@ -41,9 +41,11 @@ declare namespace PianoTrainerOsmdVendor {
         newPageFromXML: boolean;
         followCursor: boolean;
     }
+    interface SourceMeasure {TempoInBPM?: number; ActiveTimeSignature?: {Numerator: number; Denominator: number};}
+    interface Sheet {SourceMeasures?: SourceMeasure[];}
     interface Renderer {
         cursor?: Cursor | null;
-        Sheet?: object | null;
+        Sheet?: Sheet | null;
         GraphicSheet?: GraphicSheet | null;
         EngravingRules: {
             SheetMaximumWidth: number;

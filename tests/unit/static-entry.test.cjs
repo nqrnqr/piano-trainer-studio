@@ -7,7 +7,14 @@ const { root, read } = require('../helpers/legacy-script.cjs');
 
 test('static entry loads exactly one timing implementation before its core consumers', () => {
     const scripts = [...read('index.html').matchAll(/src="(js\/[^"?]+)\?v=/g)].map(match => match[1]);
-    assert.deepEqual(scripts.filter(file => file.includes('timing')), ['js/generated/domain/timing.js']);
+    assert.deepEqual(scripts.filter(file => /(?:^|\/)(?:trainer-)?timing\.js$/.test(file)), ['js/generated/domain/timing.js']);
+    assert.equal(scripts.filter(file => file === 'js/generated/score/measure-timing.js').length, 1,
+        'measure traversal cache is distinct from the shared timing algorithm');
+    const runtime = scripts.map(read).join('\n');
+    for (const method of ['getRemainingMeasureWaitWhole', 'getTraversalBeatsToWait']) {
+        assert.equal([...runtime.matchAll(new RegExp(`window\\.PTTiming\\.${method}\\s*=\\s*function`, 'g'))].length, 1,
+            `${method} has exactly one runtime implementation regardless of file name`);
+    }
     assert.ok(scripts.indexOf('js/generated/domain/timing.js') < scripts.indexOf('js/trainer-core.js'));
     assert.equal(fs.existsSync(path.join(root, 'js/trainer-timing.js')), false);
     assert.notEqual(JSON.parse(read('package.json')).type, 'module');

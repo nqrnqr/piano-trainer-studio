@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Metronome scheduling regression checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1200px;height:440px;border:1px solid #ccc}pre{white-space:pre-wrap;max-height:350px;overflow:auto}</style>
+<h1>Metronome scheduling regression checks</h1>
+<p>Native timers, actual Tone MembraneSynth and context, actual OSMD timing, and simulated MIDI output. All sound is muted. Physical latency and audible synchronization require manual checks.</p>
+<button id="run" disabled>Run checks</button><pre id="results">Loading</pre><iframe title="App under test"></iframe>
+<script>
+const keys=['pt_savedMidiIn','pt_savedMidiInName','pt_savedMidiInChannel','pt_savedMidiOut','pt_savedMidiOutName','pt_savedMidiOutChannel','pt_savedMidiLights','pt_savedMidiLightsName','pt_savedMidiLightsChannel','pt_ledOutputMode'];
+const saved=new Map(keys.map(key=>[key,localStorage.getItem(key)]));
+window.restoreMetronomeTestPreferences=()=>{for(const [key,value]of saved){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value);}};
+window.addEventListener('pagehide',window.restoreMetronomeTestPreferences,{once:true});
+const frame=document.querySelector('iframe');
+frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/metronome-baseline.integration.js';frame.contentDocument.body.append(script);};
+(async()=>{
+ let html=await(await fetch('/index.html')).text();
+ html=html.replace('<head>','<head><base href="/"><script src="/docs/testing/midi-device-fixture.js"><'+'/script>');
+ const slot=html.indexOf("    <script>document.write('<script src=\"js/generated/compatibility/metronome.js");
+ if(slot<0)throw Error('Missing metronome composition slot');
+ frame.srcdoc=html.slice(0,slot)+'<script src="/docs/testing/metronome-tone-fixture.js"><'+'/script>'+html.slice(slot);
+})();
+</script>

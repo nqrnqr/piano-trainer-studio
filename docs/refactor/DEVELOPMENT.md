@@ -1,7 +1,7 @@
 # 首轮 TypeScript 开发与运行
 
-当前已迁移 timing、状态、设置与共享键域。应用继续使用原生 DOM、经典脚本、现有 vendor 和静态资源。
-练习、音频、MIDI、渲染及 LED 正按后续阶段迁移；完整目标见 [PROGRESS.md](PROGRESS.md)。
+当前已迁移 timing、状态、设置、键域/共享遍历、MIDI、音频、渲染与输入判定；P7 正迁移调度。
+应用继续使用原生 DOM、经典脚本、现有 vendor 和静态资源；完整目标见 [PROGRESS.md](PROGRESS.md)。
 
 ## 运行应用
 
@@ -46,6 +46,7 @@ npm run build:check
 - P4b 的音频节点、样本加载／解锁、延迟配置、音量与释放在 `src/audio/tone-adapter.ts`；输入／播放路由在 `src/audio/audio-routing.ts`，共同力度算法在 `src/domain/velocity.ts`。factory 不分配节点，core 在原节点创建位置调用 init；`src/compatibility/audio.ts` 暂时组装与转发五个调度消费者接口。Tone 最小类型位于 `types/vendor/tone.d.ts`，vendor 文件未改。
 - P5 的 OSMD 最小声明在 `types/vendor/osmd.d.ts`，private cursor snapshot 与 NoteRef 在 `src/score/osmd-adapter.ts`。显示、render 生命周期、几何、反馈与 Loop SVG 在 `src/render/*.ts`；旧 score-display.js 已删除，旧 feedback-engine 现在只保留 P7 的 Loop 推进。ExpectedNote 持有不可变 NoteRef，换 Sheet 后旧 ref 失效。compatibility 两个文件暂供经典消费者组装／转发；viewport.init/dispose 可释放自己的事件和帧。
 - P6 的输入/匹配/提前预留/期望/计分/反馈状态/延音位于 `src/practice/*.ts`；只依赖领域数据与端口。OSMD 适配器提供惰性数据和 tie 长度，`src/compatibility/practice.ts` 暂作组装与旧名转发。副作用契约与 state aliases 见 P6_INPUT_CONTRACT.md；旧 feedback-engine 只剩 P7 的 Loop 推进。
+- P7a 的 count-in/节拍器在 `src/audio/metronome.ts`，原时钟的资源所有权在 playback-clock，MembraneSynth 在 metronome-output，pulse DOM 在 `src/ui/tempo-pulse.ts`；小节缓存位于 `src/score/measure-timing.ts`。compatibility/metronome 暂组装，core 在原节点位置 init。Pause 不等同 dispose，取消差异和旧迟到回调语义见 P7_SCHEDULING_CONTRACT.md；播放协调器与模式策略仍待迁移。
 - `npm run build` 先在 `.cache` 新目录编译，成功才替换 compiler 专属的 `js/generated`；失败保留现有输出。
 - 不手改生成文件。构建清理只作用于校验过的生成／临时目录，拒绝向工作区外解析的路径和符号链接。
 - 输出与 TS 源使用 LF，保证 Windows / Unix 重建时 source map 字节稳定。
@@ -68,6 +69,7 @@ P1 仅有初始化空 namespace 的局部类型断言，以及 `Number.isFinite`
 - `/docs/testing/audio-baseline.html`：真实 Tone context／节点、30 个本地样本下载及解码，输出静音；记录 common input、播放路由和释放传给实际 Tone 的参数，并记录模拟 MIDI bytes。默认与 `?led=off` 各 23 项。测试入口注入的 Tone 端口包装不修改生产源码；临时 MIDI/LED 偏好结束／离开时恢复。未加载／失败／迟到回调使用 Node 假时钟与 deferred promise；可听音质、硬件延迟和音频／节拍器同步仍需手工检查。
 - `/docs/testing/render-baseline.html`：默认与 `?led=off` 各 19 项。1200px 固定 iframe 的复杂合成 MusicXML，比较两布局 42 个实测 SVG 锚点与 `geometry.p4b.json`（来源 commit e6f8095、OSMD 1.9.7）；验证 cue/hidden、same-pitch source identity、Wait 重排/zoom、Loop、换谱失效与 viewport lifecycle。该页保留原生 rAF，并要求 visibility=visible；前台运行以完成两个 native follow 断言，不能以后台超时视为算法回归。golden 不适合作 Mac 字体验证的替代。
 - `/docs/testing/input-baseline.html`：默认与 `?led=off` 各 40 项，实际 OSMD 的跨谱表同音、部分和弦、same-staff 去重、grace/hidden/cue、tie sustain、非练习手和键域；真实 virtual key 的 mouse/pointercancel DOM 事件与 MIDI domain bridge 进入同一 typed controller。仅测试 iframe 暂以已完成 promise 替换 audio unlock，音频输出静音；真实 Tone 另用 audio-baseline 验证。这不是触屏设备或实体 MIDI 检查。
+- `/docs/testing/metronome-baseline.html`：默认与 `?led=off` 各 19 项。当前入口创建真实 Tone MembraneSynth，测试包装端口记录实际调用并静音；原生 timer 验证同步首拍、4 拍节奏、末拍完整等待、Wait 连续 tick/stop、Follow immediate target、模拟 MIDI Channel 10 attack/release、pause/dispose/reinit 与 pulse DOM。实际 OSMD repeat cache 保留零长度边界；Node 假时钟另验证精确 delay/顺序及 rapid Pause/Resume 旧回调。该页暂改 MIDI/LED 偏好并恢复，需串行；不证明可听音质或实体同步。
 
 修改／恢复同一 origin 偏好的测试页需依次运行并关闭，再打开下一页；并发运行 MIDI／audio 等
 fixture 会互相改写启动期间读取的 saved channel/device。显示与 practice 的声音路由关闭不证明实体音频表现。
