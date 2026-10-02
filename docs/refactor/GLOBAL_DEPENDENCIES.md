@@ -72,3 +72,18 @@ P4a 收敛时以 core 行为为基线，若需修复小数 MIDI 数据，另做�
 
 P1 保留经典脚本顺序及 `window.PTTiming` 身份。其声明按字段描述，不声明整份 AppState
 或 vendor 为 `any`。源映射内嵌 TS；本地服务器不需开放 `/src`。P2 及以后逐步消除隐式全局。
+
+P3 后，上表中的 LED 键域 provider 已迁至 domain/state；时间线 provider 已迁至
+`src/score/score-traversal.ts`。中性名称的方法通过工厂注入 cursor、共享缓存、谱表／手分配、
+范围检查与 debug port，不读取 DOM、Tone、LED 或 OSMD 全局。`src/compatibility/score-traversal.ts`
+保留旧名只读转发供 core 的提前输入、keyboard、playback 与测试使用；cache 字段仍沿用 P2 的
+`ledPreview*` 名称以保留状态身份，P9 随消费者迁移移除这些 forwards。
+
+MIDI 权限提示、连接状态、更新检查分别归属 `src/ui/{permission-help,connection-status,update-controls}.ts`。
+连接状态通过暂时的 `getLegacyMidiPort` 回调读取实际 MIDI 服务；P4a 替换其 provider。
+更新 UI 在 core 原启动位置独立初始化；LED 设置变化触发的旧更新检查仍保留。
+
+core 的 LED 输出委托 `optionalLedOutput`，不再访问 LedEngine/WLEDController 或自行启动 LED rAF。
+旧 MIDI LED 硬件写入／清屏函数迁回 `led.js`，临时全局 `wipeHardwareLEDs` 只转发 optional port。
+共享 range 控件归属 `src/ui/player-range-controls.ts`；无 LED 时仍维护期望音符／延音过滤。
+显式 no-op 配置及默认行为见 DEVELOPMENT。生产不加载新的测试脚本。

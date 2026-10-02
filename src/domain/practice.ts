@@ -26,7 +26,7 @@ namespace PianoTrainerDomain {
     }
     export interface EarlyGraceReservation {
         midi: MidiNote;
-        staffId: number;
+        staffId: number | null;
         measureIndex: number;
         timestamp: WholeNoteTime | null;
         allowTapCarry: boolean;
@@ -76,7 +76,7 @@ namespace PianoTrainerDomain {
         kind: string;
         notes: DebugNote[];
     }
-    export interface PreviewNote { midi: MidiNote; staffId: number; state: string; }
+    export interface PreviewNote { midi: MidiNote; staffId: number | null; state: string; }
     export interface PreviewEvent {
         measureIndex: number;
         timestamp: WholeNoteTime | null;

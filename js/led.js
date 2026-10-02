@@ -30,57 +30,6 @@ function getConfiguredLedCount() {
 
 let ledCalibration = {};
 
-function setPermissionNote(elementId, message) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    const text = String(message || '').trim();
-    el.textContent = text;
-    el.classList.toggle('hidden', !text);
-}
-
-function showMidiPermissionHelp(message) {
-    setPermissionNote('midi-permission-help', message || '');
-}
-
-function clearMidiPermissionHelp() {
-    setPermissionNote('midi-permission-help', '');
-}
-
-function showWledPermissionHelp(message) {
-    setPermissionNote('wled-permission-help', message || '');
-}
-
-function clearWledPermissionHelp() {
-    setPermissionNote('wled-permission-help', '');
-}
-
-function isLikelyBrowserAccessIssue(err) {
-    const message = String(err?.message || err || '').toLowerCase();
-    return message.includes('failed to fetch') ||
-        message.includes('networkerror') ||
-        message.includes('load failed') ||
-        message.includes('blocked') ||
-        message.includes('mixed content') ||
-        message.includes('connection refused') ||
-        message.includes('cors');
-}
-
-function getMidiPermissionHelpText() {
-    return 'MIDI access appears blocked or unavailable. Allow MIDI/device access in your browser, then refresh. MIDI only works on the device running this browser.';
-}
-
-function getWledPermissionHelpText(kind = 'wled') {
-    if (kind === 'helper') {
-        return 'DDP helper access failed. Allow local device access in your browser, then refresh. If access is already allowed, start the helper on this same device.';
-    }
-    return 'Browser access to local devices may be blocked. Allow local network or local device access for this site, then refresh and try WLED again.';
-}
-
-window.showMidiPermissionHelp = showMidiPermissionHelp;
-window.clearMidiPermissionHelp = clearMidiPermissionHelp;
-window.showWledPermissionHelp = showWledPermissionHelp;
-window.clearWledPermissionHelp = clearWledPermissionHelp;
-
 function loadLedCalibration() {
     try {
         const stored = localStorage.getItem(LED_CALIBRATION_STORAGE_KEY);
@@ -578,206 +527,6 @@ const WLED_HELPER_HEALTH_URL = `${WLED_HELPER_BASE_URL}/api/health`;
 const WLED_HELPER_FRAME_URL = `${WLED_HELPER_BASE_URL}/api/wled/frame`;
 const WLED_HELPER_CLEAR_URL = `${WLED_HELPER_BASE_URL}/api/wled/clear`;
 
-function compareSemverLoose(a, b) {
-    const parse = (value) => String(value || '')
-        .trim()
-        .replace(/^[^\d]*/, '')
-        .split(/[\.-]/)
-        .map(part => {
-            const n = Number(part);
-            return Number.isFinite(n) ? n : 0;
-        });
-    const aa = parse(a);
-    const bb = parse(b);
-    const len = Math.max(aa.length, bb.length, 3);
-    for (let i = 0; i < len; i++) {
-        const av = aa[i] || 0;
-        const bv = bb[i] || 0;
-        if (av > bv) return 1;
-        if (av < bv) return -1;
-    }
-    return 0;
-}
-
-function getAppVersionDisplayText() {
-    return `Version: ${APP_VERSION || 'unknown'}`;
-}
-
-function buildUpdateStatusText() {
-    if (AppState.updateStatus) return AppState.updateStatus;
-    if (!AppState.updateManifestUrl) return 'Update checks are not configured yet.';
-    return 'Update status: not checked yet.';
-}
-
-function isLocalAppRuntime() {
-    const host = String(window.location.hostname || '').toLowerCase();
-    return window.location.protocol === 'file:' || host === 'localhost' || host === '127.0.0.1';
-}
-
-function getUpdateActionUrl() {
-    const downloadUrl = String(AppState.updateInfo?.downloadUrl || '').trim();
-    const releaseUrl = String(AppState.updateInfo?.releaseUrl || '').trim();
-    return downloadUrl || releaseUrl || UPDATE_RELEASES_URL || '';
-}
-
-function getRequestedAssetVersion() {
-    try {
-        const url = new URL(window.location.href);
-        return String(url.searchParams.get('appv') || '').trim();
-    } catch (_) {
-        return '';
-    }
-}
-
-function setAssetVersionOverride(version) {
-    const normalized = String(version || '').trim();
-    if (!normalized) {
-        localStorage.removeItem(ASSET_VERSION_OVERRIDE_STORAGE_KEY);
-        return;
-    }
-    localStorage.setItem(ASSET_VERSION_OVERRIDE_STORAGE_KEY, normalized);
-}
-
-function clearAssetVersionOverrideIfCurrent() {
-    const requested = getRequestedAssetVersion();
-    const stored = String(localStorage.getItem(ASSET_VERSION_OVERRIDE_STORAGE_KEY) || '').trim();
-    if (requested && compareSemverLoose(APP_VERSION, requested) >= 0) {
-        localStorage.removeItem(ASSET_VERSION_OVERRIDE_STORAGE_KEY);
-        try {
-            const url = new URL(window.location.href);
-            url.searchParams.delete('appv');
-            url.searchParams.delete('t');
-            window.history.replaceState({}, '', url.pathname + url.search + url.hash);
-        } catch (_) {}
-        return;
-    }
-    if (stored && compareSemverLoose(APP_VERSION, stored) >= 0) {
-        localStorage.removeItem(ASSET_VERSION_OVERRIDE_STORAGE_KEY);
-    }
-}
-
-function forceReloadToVersion(version) {
-    const normalized = String(version || '').trim();
-    if (!normalized) {
-        window.location.reload();
-        return;
-    }
-
-    setAssetVersionOverride(normalized);
-
-    try {
-        const url = new URL(window.location.href);
-        url.searchParams.set('appv', normalized);
-        url.searchParams.set('t', String(Date.now()));
-        window.location.replace(url.toString());
-    } catch (_) {
-        window.location.reload();
-    }
-}
-
-function syncUpdateControls() {
-    const versionEl = document.getElementById('app-version-display');
-    const statusEl = document.getElementById('update-status');
-    const button = document.getElementById('btn-check-updates');
-
-    if (versionEl) versionEl.textContent = getAppVersionDisplayText();
-    if (statusEl) statusEl.textContent = buildUpdateStatusText();
-
-    if (button) {
-        button.disabled = false;
-        if (AppState.updateInfo?.updateAvailable) {
-            button.textContent = isLocalAppRuntime() ? 'Download Latest' : 'Reload to Update';
-        } else if (AppState.updateInfo && AppState.updateInfo.remoteVersion) {
-            button.textContent = 'Up to Date';
-        } else {
-            button.textContent = 'Check for Updates';
-        }
-    }
-}
-
-async function checkForUpdates({ manual = false } = {}) {
-    const button = document.getElementById('btn-check-updates');
-    if (button) button.disabled = true;
-
-    if (!AppState.updateManifestUrl) {
-        AppState.updateLastCheckedAt = Date.now();
-        AppState.updateInfo = null;
-        AppState.updateStatus = 'Update checks are not configured yet.';
-        syncUpdateControls();
-        return;
-    }
-
-    try {
-        const response = await fetch(`${AppState.updateManifestUrl}${AppState.updateManifestUrl.includes('?') ? '&' : '?'}t=${Date.now()}`, {
-            cache: 'no-store'
-        });
-        if (!response.ok) throw new Error(`Manifest HTTP ${response.status}`);
-        const manifest = await response.json();
-        const remoteVersion = String(manifest?.version || '').trim();
-        const releaseUrl = String(manifest?.releaseUrl || UPDATE_RELEASES_URL || '').trim();
-        const downloadUrl = String(manifest?.downloadUrl || '').trim();
-        const updateAvailable = remoteVersion ? compareSemverLoose(remoteVersion, APP_VERSION) > 0 : false;
-
-        AppState.updateInfo = {
-            currentVersion: APP_VERSION,
-            remoteVersion,
-            updateAvailable,
-            releaseUrl,
-            downloadUrl
-        };
-        AppState.updateLastCheckedAt = Date.now();
-
-        if (!remoteVersion) {
-            AppState.updateStatus = 'Update manifest is missing a version value.';
-        } else if (updateAvailable) {
-            AppState.updateStatus = `Update available: ${remoteVersion}.`;
-            if (!manual && !isLocalAppRuntime()) {
-                AppState.updateStatus = `Updating to ${remoteVersion}...`;
-                syncUpdateControls();
-                forceReloadToVersion(remoteVersion);
-                return;
-            }
-        } else {
-            AppState.updateStatus = 'Up to date.';
-            clearAssetVersionOverrideIfCurrent();
-        }
-    } catch (err) {
-        AppState.updateLastCheckedAt = Date.now();
-        AppState.updateInfo = null;
-        AppState.updateStatus = manual
-            ? `Update check failed: ${err?.message || String(err)}`
-            : 'Update check unavailable.';
-    } finally {
-        syncUpdateControls();
-    }
-}
-
-function initUpdateControls() {
-    AppState.updateManifestUrl = String(localStorage.getItem(UPDATE_MANIFEST_URL_STORAGE_KEY) || UPDATE_MANIFEST_URL || '').trim();
-    AppState.updateStatus = '';
-    clearAssetVersionOverrideIfCurrent();
-    const button = document.getElementById('btn-check-updates');
-    if (button && !button.dataset.boundCheckUpdates) {
-        button.dataset.boundCheckUpdates = 'true';
-        button.addEventListener('click', async () => {
-            if (AppState.updateInfo?.updateAvailable) {
-                if (isLocalAppRuntime()) {
-                    const releaseUrl = getUpdateActionUrl();
-                    if (releaseUrl) window.open(releaseUrl, '_blank', 'noopener');
-                    else window.alert('No release URL is configured yet.');
-                    return;
-                }
-                const shouldReload = window.confirm(`Version ${AppState.updateInfo.remoteVersion} is available. Reload now?`);
-                if (shouldReload) forceReloadToVersion(AppState.updateInfo.remoteVersion);
-                return;
-            }
-            await checkForUpdates({ manual: true });
-        });
-    }
-    syncUpdateControls();
-    checkForUpdates({ manual: false }).catch(() => {});
-}
-
 function hasAcceptedWledDdpWarning() {
     return localStorage.getItem(WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY) === '1';
 }
@@ -924,85 +673,6 @@ window.syncSettingsDebugVisibility = syncWledTransportControls;
 function syncWledStatus() {
     const status = document.getElementById('wled-status');
     if (status) status.textContent = AppState.wledStatus || 'WLED idle.';
-}
-
-function updateConnectionStatusIndicator(elementId, state, labelText = null) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-
-    const dot = el.querySelector('.status-dot');
-    const label = el.querySelector('.status-label');
-    if (!dot || !label) return;
-
-    dot.classList.remove('status-connected', 'status-disconnected', 'status-none');
-    el.classList.remove('status-connected-text', 'status-disconnected-text', 'status-none-text');
-
-    let resolvedText = labelText;
-    if (state === 'connected') {
-        dot.classList.add('status-connected');
-        el.classList.add('status-connected-text');
-        resolvedText = resolvedText || 'Connected';
-    } else if (state === 'disconnected') {
-        dot.classList.add('status-disconnected');
-        el.classList.add('status-disconnected-text');
-        resolvedText = resolvedText || 'Disconnected';
-    } else {
-        dot.classList.add('status-none');
-        el.classList.add('status-none-text');
-        resolvedText = resolvedText || 'None';
-    }
-
-    label.textContent = resolvedText;
-}
-
-function getSelectedMidiInputState() {
-    const midiInSelect = document.getElementById('midi-in');
-    const selectedId = midiInSelect?.value || 'none';
-    if (selectedId === 'none') return 'none';
-    const input = midiAccess?.inputs?.get(selectedId);
-    return input && input.state !== 'disconnected' ? 'connected' : 'disconnected';
-}
-
-function getSelectedMidiOutputState() {
-    const midiOutSelect = document.getElementById('midi-out');
-    const selectedId = midiOutSelect?.value || 'none';
-    if (selectedId === 'none') return 'none';
-    const output = midiAccess?.outputs?.get(selectedId);
-    return output && output.state !== 'disconnected' ? 'connected' : 'disconnected';
-}
-
-function getSelectedLedMidiOutputState() {
-    const midiLightsSelect = document.getElementById('midi-lights');
-    const selectedId = midiLightsSelect?.value || 'none';
-    if (selectedId === 'none') return 'none';
-    const output = midiAccess?.outputs?.get(selectedId);
-    return output && output.state !== 'disconnected' ? 'connected' : 'disconnected';
-}
-
-function updateConnectionStatuses() {
-    if (typeof syncMidiOutChannelVisibility === 'function') {
-        syncMidiOutChannelVisibility();
-    }
-    updateConnectionStatusIndicator('midi-in-connection-status', getSelectedMidiInputState());
-    updateConnectionStatusIndicator('midi-out-connection-status', getSelectedMidiOutputState());
-
-    let ledState = 'none';
-    if (AppState.ledOutputMode === 'midi') {
-        ledState = getSelectedLedMidiOutputState();
-    } else if (AppState.ledOutputMode === 'wled') {
-        if (!String(AppState.wledIp || '').trim()) {
-            ledState = 'none';
-        } else {
-            ledState = AppState.wledConnectionState || 'disconnected';
-        }
-    }
-
-    updateConnectionStatusIndicator('led-connection-status', ledState);
-}
-
-function refreshConnectionStatuses() {
-    updateConnectionStatuses();
-    syncWledStatus();
 }
 
 function syncLedOutputModeControls() {
@@ -1213,7 +883,6 @@ function initLedOutputControls() {
         });
     }
 
-    initUpdateControls();
     syncLedOutputModeControls();
 
     if (AppState.ledOutputMode === 'wled') {
@@ -1224,19 +893,6 @@ function initLedOutputControls() {
         WLEDController.stopHealthCheck();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function keyPosition01ToLedIndex(position01) {
     const clamped = Math.max(0, Math.min(1, position01));
@@ -1259,69 +915,6 @@ function updateLedKeyMapping() {
 
         LedEngine.keyToLed.set(midi, ledIndex);
     }
-}
-
-function syncPlayerPianoTypeControl() {
-    const select = document.getElementById('select-player-piano-type');
-    if (select) {
-        select.value = String(AppState.playerPianoType);
-    }
-
-    const label = document.getElementById('player-piano-range-label');
-    if (label) {
-        const range = getPlayerPlayableRange();
-        label.textContent = `Playable Range: MIDI ${range.minMidi}–${range.maxMidi}`;
-    }
-}
-
-function refreshPlayerRangeDependentState() {
-    AppState.expectedNotes = AppState.expectedNotes.filter(note => isMidiInPlayerRange(note.midi));
-    AppState.visualNotesToStart = AppState.visualNotesToStart.filter(note => isMidiInPlayerRange(note.midi));
-    AppState.sustainedVisuals = AppState.sustainedVisuals.filter(note => isMidiInPlayerRange(note.midi));
-    AppState.outOfRangeCurrentNotes = AppState.outOfRangeCurrentNotes.filter(note => !isMidiInPlayerRange(note.midi));
-    AppState.heldCorrectNotes.forEach((staffId, midi) => {
-        if (!isMidiInPlayerRange(midi)) {
-            AppState.heldCorrectNotes.delete(midi);
-        }
-    });
-    updateLedKeyMapping();
-    WLEDController.clearLastSignature();
-    LedEngine.renderOutputs();
-}
-
-function setPlayerPianoType(value, { save = true, rerender = true } = {}) {
-    AppState.playerPianoType = normalizePlayerPianoType(value);
-    AppState.playerRange = derivePlayerRangeFromKeyboardSize(AppState.playerPianoType);
-
-    if (save) {
-        localStorage.setItem(PLAYER_PIANO_STORAGE_KEY, String(AppState.playerPianoType));
-    }
-
-    syncPlayerPianoTypeControl();
-    refreshPlayerRangeDependentState();
-    AppState.ledPreviewTimelineDirty = true;
-    AppState.lastLedPreviewEvents = [];
-    AppState.ledPreviewTraversalIndex = -1;
-
-    if (rerender) {
-        renderVirtualKeyboard();
-    }
-}
-
-function initPlayerPianoTypeControl() {
-    const saved = localStorage.getItem(PLAYER_PIANO_STORAGE_KEY);
-    setPlayerPianoType(saved ?? 88, { save: false, rerender: false });
-
-    const select = document.getElementById('select-player-piano-type');
-    if (select && !select.dataset.boundPlayerRange) {
-        select.dataset.boundPlayerRange = 'true';
-        select.value = String(AppState.playerPianoType);
-        select.addEventListener('change', (e) => {
-            setPlayerPianoType(e.target.value);
-        });
-    }
-
-    syncPlayerPianoTypeControl();
 }
 
 /* ------------------------------------------------------
@@ -2205,4 +1798,54 @@ const WLEDController = {
     }
 };
 
+
+
+// Optional legacy MIDI LED output; musical input/output belongs to MIDI service.
+function legacyUpdateLEDHardware(midi, newClass, oldClass) {
+    if (AppState.ledOutputMode !== 'midi') return;
+    if (!midiAccess) return;
+    const lightsOutId = document.getElementById('midi-lights').value;
+    if (lightsOutId === 'none') return;
+    const output = midiAccess.outputs.get(lightsOutId);
+    if (!output || output.state === 'disconnected') return;
+
+    const noteWasLit = isMidiLedRenderableState(oldClass);
+    const noteShouldBeLit = isMidiLedRenderableState(newClass);
+    const noteOnStatus = getMidiLightsStatus(0x90);
+    const noteOffStatus = getMidiLightsStatus(0x80);
+
+    if (noteWasLit && !noteShouldBeLit) {
+        rememberOutgoingMidiMessage(noteOffStatus, midi, 0);
+        output.send([noteOffStatus, midi, 0]);
+        return;
+    }
+
+    if (noteShouldBeLit) {
+        const velocity = LedEngine.getMidiVelocityForState(newClass || 'expected-r');
+        rememberOutgoingMidiMessage(noteOnStatus, midi, velocity);
+        output.send([noteOnStatus, midi, velocity]);
+    }
+}
+
+function legacyWipeHardwareLEDs() {
+    if (AppState.ledOutputMode !== 'midi') return;
+    if (!midiAccess) return;
+    const lightsOutId = document.getElementById('midi-lights').value;
+    if (lightsOutId === 'none') return;
+    const output = midiAccess.outputs.get(lightsOutId);
+    if (!output || output.state === 'disconnected') return;
+
+    const noteOffStatus = getMidiLightsStatus(0x80);
+    AppState.hardwareLEDState.forEach((colorClass, midi) => {
+        if (isMidiLedRenderableState(colorClass)) {
+            rememberOutgoingMidiMessage(noteOffStatus, midi, 0);
+            output.send([noteOffStatus, midi, 0]);
+        }
+    });
+    AppState.hardwareLEDState.clear();
+}
+
+function isMidiLedRenderableState(stateClass) {
+    return stateClass === 'expected-l' || stateClass === 'expected-r';
+}
 

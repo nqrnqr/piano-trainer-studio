@@ -6,7 +6,7 @@
 <p>Runs against the local app with a synthetic piano score. Audio and hardware outputs are disabled in the test frame.</p>
 <button id="run" disabled>Run checks</button>
 <pre id="results">Ready</pre>
-<iframe src="../../index.html" title="App under test"></iframe>
+<iframe title="App under test"></iframe>
 <script>
 document.querySelector('iframe').onload = () => { document.getElementById('run').disabled = false; };
 document.getElementById('run').onclick = () => {
@@ -15,4 +15,5 @@ document.getElementById('run').onclick = () => {
     script.src = '/docs/testing/score-display.integration.js';
     document.querySelector('iframe').contentDocument.body.append(script);
 };
+document.querySelector('iframe').src = '../../index.html' + (new URLSearchParams(location.search).get('led') === 'off' ? '?led=off' : '');
 </script>

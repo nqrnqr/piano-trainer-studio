@@ -39,7 +39,9 @@ npm run build:check
 - `types/legacy-timing.d.ts` 只描述 Window.PTTiming；全局词法 AppState 未改为 Window 属性。
 - P2 状态／设置唯一源码为 `src/state/*.ts` 与 `src/ui/settings-controls.ts`，原 trainer-state.js 已删除。HTML 依次加载 key 表、state、preferences、backup、settings UI，然后保持其他脚本的相对顺序。
 - `types/legacy-state.d.ts` 描述共享对象，`src/domain/practice.ts` 描述嵌套数据；未迁移 JS 的访问尚不受 TS 检查，不能视为整个核心已迁移。
-- P3 的键域纯计算在 `src/domain/playable-range.ts`，AppState 缓存／旧接口在 `src/state/player-range.ts`；LED 专属实现继续保留，optional/no-op 边界尚在迁移中。
+- P3 的键域纯计算在 `src/domain/playable-range.ts`，AppState 缓存／旧接口在 `src/state/player-range.ts`；共享时间线在 `src/score/score-traversal.ts`，旧名仅在 compatibility 转发。权限／连接／更新 UI 已移出 LED。
+- LED 默认继续启用。打开 `index.html?led=off` 可选择 no-op，也可由宿主在业务脚本前设置 `window.__PT_BOOT_OPTIONS__ = {ledEnabled:false}`。显式 boolean 配置优先；无额外存储 key，不清空既有 LED/WLED 偏好。no-op 隐藏并禁用 LED 设置，保留 MIDI 提示、键域、音乐预览、虚拟键盘与提前输入。
+- LED 专用 rAF 由 `src/optional/led/legacy-led-adapter.ts` 持有，可 start/dispose；no-op 不初始化 LED 控件或硬件，不创建该循环。经典脚本组装在 `src/compatibility/optional-led.ts`，P9 再移至显式 bootstrap。旧 LED JS 与 helper 不要求 TS 化。
 - `npm run build` 先在 `.cache` 新目录编译，成功才替换 compiler 专属的 `js/generated`；失败保留现有输出。
 - 不手改生成文件。构建清理只作用于校验过的生成／临时目录，拒绝向工作区外解析的路径和符号链接。
 - 输出与 TS 源使用 LF，保证 Windows / Unix 重建时 source map 字节稳定。
@@ -56,6 +58,8 @@ P1 仅有初始化空 namespace 的局部类型断言，以及 `Number.isFinite`
 - `/docs/testing/score-display.html`：30 项原有显示检查。
 - `/docs/testing/practice-baseline.html`：53 项三模式／两布局／真实反复与结尾检查。
 - `/docs/testing/settings-baseline.html`：真实 FileReader、错误导入、两次重载、布局恢复与设置还原；只在可丢弃的本地测试 origin 运行。
+- `/docs/testing/traversal-baseline.html`：30 项共享时间线、三模式／两布局提前输入、键域、权限／更新 UI 和旧 LED 启动检查。添加 `?led=off` 为 33 项，额外验证原有 WLED 配置保留、无发现／重连 timer 与无网络请求。
+- 显示与练习页也接受 `?led=off`，每种 adapter 各跑 30／53 项。traversal 的 no-op 页面会暂设本地 WLED 地址和 DDP 配置，结束／离开页面会恢复这些设置；请使用可丢弃的本地 origin。
 
 页面通过 iframe 注入测试脚本；生产 index.html 不加载测试 API。结束会暂停，重载 iframe
 恢复完整应用状态。显示页用受控 rAF；硬件和音频路由关闭。不要据此声称实体 MIDI 或音频延迟已验证。

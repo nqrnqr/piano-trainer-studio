@@ -8,6 +8,10 @@
 // existing realtime/wait logic, scoring, feedback notes, and audio behavior stay aligned.
 
 let midiAccess = null;
+
+function getLegacyMidiPort(direction, id) {
+    return direction === 'input' ? midiAccess?.inputs?.get(id) : midiAccess?.outputs?.get(id);
+}
 let activeMidiInput = null;
 
 function populateMidiChannelSelect(selectId, selectedValue = 1, { includeAny = false } = {}) {
@@ -479,13 +483,13 @@ const MidiLedTestController = {
 window.MidiLedTestController = MidiLedTestController;
 
 const midiLedTestBtn = document.getElementById('btn-test-midi-led');
-if (midiLedTestBtn && !midiLedTestBtn.dataset.boundMidiLedTest) {
+if (optionalLedOutput.enabled && midiLedTestBtn && !midiLedTestBtn.dataset.boundMidiLedTest) {
     midiLedTestBtn.dataset.boundMidiLedTest = 'true';
     midiLedTestBtn.addEventListener('click', async () => {
         await MidiLedTestController.run();
     });
 }
 
-MidiLedTestController.syncControls();
+if (optionalLedOutput.enabled) MidiLedTestController.syncControls();
 
 

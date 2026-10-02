@@ -327,14 +327,16 @@ function restoreDefaultPreferences({ reloadDevices = true } = {}) {
     setDebugEnabled(false, { clearHistory: true, logChange: false, reason: 'reset-defaults' });
 
     setPlayerPianoType(88);
-    setLedCount(88);
-    setLedMasterBrightness(25);
-    setLedFuture1BrightnessPct(1);
-    setLedFuture2BrightnessPct(1);
-    resetAllLedCalibration();
+    if (optionalLedOutput.enabled) {
+        setLedCount(88);
+        setLedMasterBrightness(25);
+        setLedFuture1BrightnessPct(1);
+        setLedFuture2BrightnessPct(1);
+        resetAllLedCalibration();
 
-    setWledIp('');
-    setLedOutputMode('none');
+        setWledIp('');
+        setLedOutputMode('none');
+    }
 
     const midiInSelect = document.getElementById('midi-in');
     if (midiInSelect) {
@@ -372,11 +374,13 @@ function restoreDefaultPreferences({ reloadDevices = true } = {}) {
     syncHandAssignmentFromControls();
 
     applyModeSettings();
-    syncLedBrightnessControls();
-    syncLedOutputModeControls();
+    if (optionalLedOutput.enabled) {
+        syncLedBrightnessControls();
+        syncLedOutputModeControls();
+    }
     renderLooper();
     renderVirtualKeyboard();
-    positionLedCalibrationPanel();
+    optionalLedOutput.positionCalibrationPanel();
 
     if (reloadDevices) {
         populateMIDIDevices();
@@ -1476,9 +1480,10 @@ function initSongUI() {
 
 // ===== Virtual keyboard + LED preview coordination =====
 
-function getLedPreviewHandStatePrefix(staffId) {
-    return getAssignedHandRoleForStaff(staffId) === 'left' ? 'l' : 'r';
+function getLegacyTraversalCursor() {
+    return osmd?.cursor;
 }
+
 
 function isPracticeHandEnabledForStaff(staffId) {
     const handRole = getAssignedHandRoleForStaff(staffId);
@@ -1687,263 +1692,6 @@ function getFuturePreviewDepth() {
     return AppState.futurePreviewEnabled ? 1 : 0;
 }
 
-function isRenderableAttackNote(note) {
-    if (!note || (note.isRest && note.isRest())) return false;
-
-    const isInvisibleCue =
-        note.Notehead === 'none' ||
-        note.PrintObject === false ||
-        note.isCueNote === true;
-
-    if (isInvisibleCue) return false;
-
-    const tie = note.NoteTie;
-    const isTieContinuation = !!(tie && tie.StartNote && tie.StartNote !== note);
-    if (isTieContinuation) return false;
-
-    return true;
-}
-
-function describeEntryCollectionForLedDebug(entries, measureIndex = null, timestamp = null) {
-    if (!entries || entries.length === 0) {
-        return { measureIndex, timestamp, notes: [] };
-    }
-
-    const notes = [];
-    entries.forEach(entry => {
-        (entry.Notes || []).forEach(note => {
-            notes.push({
-                staffId: getResolvedStaffAssignmentIdFromNote(note),
-                midi: note?.halfTone != null ? note.halfTone + 12 : null,
-                isRest: !!(note?.isRest && note.isRest()),
-                isTieContinuation: !!(note?.NoteTie && note.NoteTie.StartNote && note.NoteTie.StartNote !== note)
-            });
-        });
-    });
-
-    return { measureIndex, timestamp, notes };
-}
-
-function collectRenderablePreviewNotesFromEntries(entries, previewDepthIndex) {
-    const mergedNotes = new Map();
-
-    (entries || []).forEach(entry => {
-        (entry?.Notes || []).forEach(note => {
-            const staffId = getResolvedStaffAssignmentIdFromNote(note);
-            if (!isPracticeHandEnabledForStaff(staffId)) return;
-            if (!isRenderableAttackNote(note)) return;
-
-            const midi = note.halfTone + 12;
-            if (!isMidiInPlayerRange(midi)) return;
-            const key = `${staffId}|${midi}`;
-            if (!mergedNotes.has(key)) {
-                mergedNotes.set(key, {
-                    midi,
-                    staffId,
-                    state: `future${previewDepthIndex}-${getLedPreviewHandStatePrefix(staffId)}`
-                });
-            }
-        });
-    });
-
-    return Array.from(mergedNotes.values());
-}
-
-function makeLedPreviewEntrySignature(entries) {
-    const parts = [];
-
-    (entries || []).forEach(entry => {
-        (entry?.Notes || []).forEach(note => {
-            const staffId = Number(note?.ParentStaff?.id) || 0;
-            const midi = note?.halfTone != null ? note.halfTone + 12 : 'rest';
-            const length = note?.Length?.RealValue ?? 'na';
-            const tieState = (note?.NoteTie && note.NoteTie.StartNote && note.NoteTie.StartNote !== note) ? 'tiecont' : 'attack';
-            const restFlag = (note?.isRest && note.isRest()) ? 'rest' : 'note';
-            parts.push(`${staffId}:${midi}:${length}:${tieState}:${restFlag}`);
-        });
-    });
-
-    parts.sort();
-    return parts.join('|');
-}
-
-function buildLedPreviewTimelineEvent(entries, measureIndex, timestamp) {
-    return {
-        measureIndex,
-        timestamp,
-        signature: makeLedPreviewEntrySignature(entries),
-        notes: collectRenderablePreviewNotesFromEntries(entries, 1)
-    };
-}
-
-
-// WARNING:
-// Cursor restoration is shared by LED preview traversal and score-navigation work.
-// Preserve current iterator stepping assumptions until repeat/jump handling is stabilized.
-function restoreCursorToMeasureAndTimestamp(targetMeasureIndex, targetTimestamp) {
-    if (!osmd?.cursor) return;
-
-    osmd.cursor.reset();
-
-    const safetyMax = 100000;
-    let safety = 0;
-    while (!osmd.cursor.Iterator.EndReached && safety < safetyMax) {
-        const measureIndex = osmd.cursor.Iterator.CurrentMeasureIndex;
-        const timestamp = osmd.cursor.Iterator.currentTimeStamp?.RealValue ?? null;
-        if (measureIndex === targetMeasureIndex && timestamp === targetTimestamp) {
-            break;
-        }
-        osmd.cursor.Iterator.moveToNext();
-        safety += 1;
-    }
-
-    osmd.cursor.update();
-}
-
-function ensureLedPreviewTimelineBuilt() {
-    if (!AppState.ledPreviewTimelineDirty && Array.isArray(AppState.ledPreviewTimeline) && AppState.ledPreviewTimeline.length > 0) {
-        return AppState.ledPreviewTimeline;
-    }
-
-    const cursor = osmd?.cursor;
-    if (!cursor?.Iterator) {
-        AppState.ledPreviewTimeline = [];
-        return AppState.ledPreviewTimeline;
-    }
-
-    const savedMeasureIndex = cursor.Iterator.CurrentMeasureIndex;
-    const savedTimestamp = cursor.Iterator.currentTimeStamp?.RealValue ?? null;
-
-    const timeline = [];
-    const safetyMax = 100000;
-    let safety = 0;
-
-    cursor.reset();
-
-    while (!cursor.Iterator.EndReached && safety < safetyMax) {
-        const entries = cursor.Iterator.CurrentVoiceEntries;
-        if (entries && entries.length > 0) {
-            timeline.push(buildLedPreviewTimelineEvent(
-                entries,
-                cursor.Iterator.CurrentMeasureIndex,
-                cursor.Iterator.currentTimeStamp?.RealValue ?? null
-            ));
-        }
-
-        cursor.Iterator.moveToNext();
-        safety += 1;
-    }
-
-    restoreCursorToMeasureAndTimestamp(savedMeasureIndex, savedTimestamp);
-
-    AppState.ledPreviewTimeline = timeline;
-    AppState.ledPreviewTimelineDirty = false;
-    AppState.ledPreviewTraversalIndex = -1;
-
-    return timeline;
-}
-
-function findMatchingLedPreviewTimelineIndex(timeline, measureIndex, timestamp, signature, startIndex = 0) {
-    if (!Array.isArray(timeline) || timeline.length === 0) return -1;
-
-    for (let i = Math.max(0, startIndex); i < timeline.length; i++) {
-        const event = timeline[i];
-        if (event.measureIndex === measureIndex && event.timestamp === timestamp && event.signature === signature) {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
-
-function resolveLedPreviewTraversalIndex(currentEntries, currentMeasureIdx, currentTimestamp) {
-    const timeline = ensureLedPreviewTimelineBuilt();
-    if (!timeline.length) return -1;
-
-    const signature = makeLedPreviewEntrySignature(currentEntries);
-    const currentIndex = AppState.ledPreviewTraversalIndex;
-
-    if (currentIndex >= 0 && currentIndex < timeline.length) {
-        const currentEvent = timeline[currentIndex];
-        if (currentEvent.measureIndex === currentMeasureIdx && currentEvent.timestamp === currentTimestamp && currentEvent.signature === signature) {
-            return currentIndex;
-        }
-    }
-
-    const forwardIndex = findMatchingLedPreviewTimelineIndex(
-        timeline,
-        currentMeasureIdx,
-        currentTimestamp,
-        signature,
-        currentIndex >= 0 ? currentIndex + 1 : 0
-    );
-    if (forwardIndex !== -1) {
-        AppState.ledPreviewTraversalIndex = forwardIndex;
-        return forwardIndex;
-    }
-
-    const restartIndex = findMatchingLedPreviewTimelineIndex(timeline, currentMeasureIdx, currentTimestamp, signature, 0);
-    AppState.ledPreviewTraversalIndex = restartIndex;
-    return restartIndex;
-}
-
-function collectFutureLedPreviewEvents(currentEntries, currentMeasureIdx, currentTimestamp, depth) {
-    const requestedDepth = Math.max(0, Math.min(2, Number(depth) || 0));
-    if (requestedDepth <= 0) return [];
-    if (!AppState.isPlaying || AppState.countInActive) return [];
-
-    debugLogEvent('LED_PREVIEW_CURSOR_EVENT', describeEntryCollectionForLedDebug(currentEntries, currentMeasureIdx, currentTimestamp));
-
-    const timeline = ensureLedPreviewTimelineBuilt();
-    const currentIndex = resolveLedPreviewTraversalIndex(currentEntries, currentMeasureIdx, currentTimestamp);
-
-    if (!timeline.length || currentIndex < 0) {
-        for (let i = 0; i < requestedDepth; i++) {
-            debugLogEvent(`LED_FUTURE_${i + 1}_SELECTED`, { skipped: true, reason: 'timeline-index-unresolved' });
-        }
-        return [];
-    }
-
-    const currentEvent = timeline[currentIndex];
-    if (!currentEvent?.notes?.length) {
-        for (let i = 0; i < requestedDepth; i++) {
-            debugLogEvent(`LED_FUTURE_${i + 1}_SELECTED`, { skipped: true, reason: 'current-event-has-no-renderable-attacks' });
-        }
-        return [];
-    }
-
-    const results = [];
-    for (let i = currentIndex + 1; i < timeline.length && results.length < requestedDepth; i++) {
-        const event = timeline[i];
-        if (!event?.notes?.length) continue;
-
-        const depthIndex = results.length + 1;
-        const previewEvent = {
-            measureIndex: event.measureIndex,
-            timestamp: event.timestamp,
-            notes: event.notes.map(note => ({
-                ...note,
-                state: `future${depthIndex}-${getLedPreviewHandStatePrefix(note.staffId)}`
-            }))
-        };
-
-        results.push(previewEvent);
-
-        debugLogEvent(`LED_FUTURE_${depthIndex}_SELECTED`, {
-            measureIndex: previewEvent.measureIndex,
-            timestamp: previewEvent.timestamp,
-            notes: previewEvent.notes.map(note => ({ midi: note.midi, staffId: note.staffId, state: note.state }))
-        });
-    }
-
-    for (let i = results.length; i < requestedDepth; i++) {
-        debugLogEvent(`LED_FUTURE_${i + 1}_SELECTED`, { skipped: true, reason: 'end-reached-or-no-playable-event' });
-    }
-
-    return results;
-}
-
 function getLedStatePriority(stateClass) {
     if (!stateClass) return 0;
     if (stateClass === 'expected-l' || stateClass === 'expected-r') return 5;
@@ -1976,64 +1724,11 @@ function applyLedFuturePreviewStates(baseStates, previewEvents) {
 }
 
 // ==========================================
-// HARDWARE LED PROTOCOL & RENDERING ENGINE
+// Virtual keyboard state presentation (hardware output uses the optional port)
 // ==========================================
 
-const LED_PROTOCOL = {
-    'expected-l': 0, // Channel 1 (Blue)
-    'expected-r': 1, // Channel 2 (Green)
-    'pressed-l': 2,  // Channel 3 (Dark Blue)
-    'pressed-r': 3,  // Channel 4 (Dark Green)
-    'wrong': 4,      // Channel 5 (Red)
-    'active': 5      // Channel 6 (Gold/Yellow)
-};
 
 const KEY_STATE_CLASSES = ['expected-l', 'expected-r', 'pressed-l', 'pressed-r', 'wrong', 'active', 'future1-l', 'future1-r'];
-
-function updateLEDHardware(midi, newClass, oldClass) {
-    if (AppState.ledOutputMode !== 'midi') return;
-    if (!midiAccess) return;
-    const lightsOutId = document.getElementById('midi-lights').value;
-    if (lightsOutId === 'none') return;
-    const output = midiAccess.outputs.get(lightsOutId);
-    if (!output || output.state === 'disconnected') return;
-
-    const noteWasLit = isMidiLedRenderableState(oldClass);
-    const noteShouldBeLit = isMidiLedRenderableState(newClass);
-    const noteOnStatus = getMidiLightsStatus(0x90);
-    const noteOffStatus = getMidiLightsStatus(0x80);
-
-    if (noteWasLit && !noteShouldBeLit) {
-        rememberOutgoingMidiMessage(noteOffStatus, midi, 0);
-        output.send([noteOffStatus, midi, 0]);
-        return;
-    }
-
-    if (noteShouldBeLit) {
-        const velocity = LedEngine.getMidiVelocityForState(newClass || 'expected-r');
-        rememberOutgoingMidiMessage(noteOnStatus, midi, velocity);
-        output.send([noteOnStatus, midi, velocity]);
-    }
-}
-
-function wipeHardwareLEDs() {
-    if (AppState.ledOutputMode !== 'midi') return;
-    if (!midiAccess) return;
-    const lightsOutId = document.getElementById('midi-lights').value;
-    if (lightsOutId === 'none') return;
-    const output = midiAccess.outputs.get(lightsOutId);
-    if (!output || output.state === 'disconnected') return;
-
-    const noteOffStatus = getMidiLightsStatus(0x80);
-    AppState.hardwareLEDState.forEach((colorClass, midi) => {
-        if (isMidiLedRenderableState(colorClass)) {
-            rememberOutgoingMidiMessage(noteOffStatus, midi, 0);
-            output.send([noteOffStatus, midi, 0]);
-        }
-    });
-    AppState.hardwareLEDState.clear();
-}
-
 
 function getKeyInlineVisual(state) {
     return {
@@ -2074,8 +1769,7 @@ function renderVirtualKeyboard(currentEntries = null, currentMeasureIdx = null, 
             desiredStates.set(AppState.ledCalibrationSelectedMidi, 'calibration');
         }
 
-        LedEngine.renderFromStates(desiredStates);
-        LedEngine.renderOutputs();
+        optionalLedOutput.render(desiredStates);
 
         for (let i = 21; i <= 108; i++) {
             const desiredClass = AppState.ledCalibrationSelectedMidi === i ? 'active' : null;
@@ -2182,9 +1876,7 @@ function renderVirtualKeyboard(currentEntries = null, currentMeasureIdx = null, 
         ? applyLedFuturePreviewStates(desiredStates, previewEvents)
         : desiredStates;
 
-    LedEngine.config.futurePreview = previewDepth;
-    LedEngine.renderFromStates(displayStates);
-    LedEngine.renderOutputs();
+    optionalLedOutput.render(displayStates, previewDepth);
 
     for (let i = 21; i <= 108; i++) {
         const desiredClass = displayStates.get(i) || null;
@@ -2203,7 +1895,7 @@ function renderVirtualKeyboard(currentEntries = null, currentMeasureIdx = null, 
         const hardwareDesiredClass = desiredStates.get(i) || null;
         const currentHardwareClass = AppState.hardwareLEDState.get(i) || null;
         if (currentHardwareClass !== hardwareDesiredClass) {
-            updateLEDHardware(i, hardwareDesiredClass, currentHardwareClass);
+            optionalLedOutput.updateHardware(i, hardwareDesiredClass, currentHardwareClass);
             
             if (hardwareDesiredClass) {
                 AppState.hardwareLEDState.set(i, hardwareDesiredClass);
@@ -2420,9 +2112,7 @@ function createKeyboard() {
 }
 
 
-function isMidiLedRenderableState(stateClass) {
-    return stateClass === 'expected-l' || stateClass === 'expected-r';
-}
+
 
 function getMidiOutStatus(baseStatus) {
     return typeof getMidiStatus === 'function'
@@ -2919,7 +2609,7 @@ document.getElementById('check-keyboard').addEventListener('change', (e) => {
     } else {
         kbContainer.classList.add('hidden');
     }
-    positionLedCalibrationPanel();
+    optionalLedOutput.positionCalibrationPanel();
     window.dispatchEvent(new Event('resize')); 
 });
 
@@ -3270,7 +2960,7 @@ function stopPlaybackState({ pauseTransport = true } = {}) {
         wipeHardwareLEDs();
     }
     if (AppState.ledOutputMode === 'wled') {
-        WLEDController.forceClear().catch(() => {});
+        optionalLedOutput.clearOutputs().catch(() => {});
     }
 }
 
@@ -3328,7 +3018,7 @@ document.getElementById('btn-reset').onclick = () => {
     AppState.lastLedPreviewEvents = [];
     clearVisuals();
     if (AppState.ledOutputMode === 'wled') {
-        WLEDController.forceClear().catch(() => {});
+        optionalLedOutput.clearOutputs().catch(() => {});
     }
     hideToolbarPanels();
     updatePlayPauseButton();
@@ -3342,7 +3032,7 @@ window.addEventListener('resize', () => {
             clearFeedbackVisualStatePreserveScoring();
             renderScoreAndRefreshGeometry();
         }
-        positionLedCalibrationPanel();
+        optionalLedOutput.positionCalibrationPanel();
     }, 300);
 });
 
@@ -4161,9 +3851,7 @@ if (resetPreferencesButton) {
 
 // INIT Call
 initPlayerPianoTypeControl();
-initLedCountControl();
-initLedBrightnessControls();
-initLedCalibrationControls();
+optionalLedOutput.initControls();
 window.addEventListener('pointerup', (event) => releaseActiveVirtualPointer(`pointer:${event.pointerId}`));
 window.addEventListener('pointercancel', (event) => releaseActiveVirtualPointer(`pointer:${event.pointerId}`));
 window.addEventListener('mouseup', () => releaseActiveVirtualPointer('mouse'));
@@ -4202,9 +3890,8 @@ document.addEventListener('mousedown', () => {
 applyToneLatencyProfileForMode();
 ensurePianoSamplerLoaded().catch(() => {});
 createKeyboard();
-LedEngine.init();
-WLEDController.clearLastSignature();
-initLedOutputControls();
+optionalLedOutput.initOutput();
+initUpdateControls();
 applyPersistedTrainerAndSettingsPreferences();
 if (typeof consumePendingFirstRunNotice === 'function' && consumePendingFirstRunNotice()) {
     window.setTimeout(() => {
@@ -4214,35 +3901,14 @@ if (typeof consumePendingFirstRunNotice === 'function' && consumePendingFirstRun
     }, 0);
 }
 setupMIDI();
-updateLedKeyMapping();
-LedEngine.renderOutputs();
-positionLedCalibrationPanel();
+optionalLedOutput.refreshMapping();
+optionalLedOutput.renderOutputs();
+optionalLedOutput.positionCalibrationPanel();
 updateConnectionStatuses();
 
 applyModeSettings();
 
-function pulseAnimationNeeded() {
-    return false;
-}
-
-function startLedPulseLoop() {
-    let rafId = null;
-
-    function tick() {
-        if (AppState.ledCalibrationMode) {
-            renderVirtualKeyboard();
-        } else {
-            LedEngine.renderOutputs();
-        }
-        rafId = window.requestAnimationFrame(tick);
-    }
-
-    if (rafId === null) {
-        rafId = window.requestAnimationFrame(tick);
-    }
-}
-
-startLedPulseLoop();
+optionalLedOutput.start();
 
 
 

@@ -7,7 +7,7 @@
 <p>Exercises the actual practice engine in both layouts and traverses synthetic MusicXML repeat signs. Audio, metronome and hardware routes are disabled. Reload the frame to restore the app after testing.</p>
 <button id="run" disabled>Run checks</button>
 <pre id="results">Ready</pre>
-<iframe src="../../index.html" title="App under test"></iframe>
+<iframe title="App under test"></iframe>
 <script>
 document.getElementById('environment').textContent = navigator.userAgent;
 document.querySelector('iframe').onload = () => { document.getElementById('run').disabled = false; };
@@ -17,4 +17,5 @@ document.getElementById('run').onclick = () => {
     script.src = '/docs/testing/practice-baseline.integration.js';
     document.querySelector('iframe').contentDocument.body.append(script);
 };
+document.querySelector('iframe').src = '../../index.html' + (new URLSearchParams(location.search).get('led') === 'off' ? '?led=off' : '');
 </script>

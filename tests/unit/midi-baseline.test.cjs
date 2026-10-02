@@ -23,7 +23,7 @@ function harness() {
         window: {}, console, performance: { now: () => now },
         document: { getElementById: element },
         localStorage: { setItem() {}, removeItem() {} },
-        AppState: state,
+        AppState: state, optionalLedOutput: {enabled:true},
         MIDI_IN_ID_STORAGE_KEY: 'pt_midiInId', MIDI_IN_NAME_STORAGE_KEY: 'pt_midiInName',
         updateConnectionStatuses() {},
         triggerVirtualKey: (...args) => received.push(args),

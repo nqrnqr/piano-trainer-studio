@@ -1,0 +1,317 @@
+P3 browser verification — 2026-10-02
+Origin: http://127.0.0.1:8081
+Browser: Chrome/154.0.0.0 (Windows NT 10.0; Win64; x64)
+Static entry: production index.html, existing vendor files.
+Node: 75/75, strict typecheck and clean build comparison (34 files) passed.
+
+Display checks use the existing controlled rAF. Practice and shared traversal use native rAF. Shared traversal tests explicitly step the real OSMD iterator between input/target events; practice baseline verifies actual scheduling separately. Physical MIDI/WLED and real audio synchronization remain unverified.
+No-op traversal temporarily stores WLED/DDP preferences at a local-only address, restores them after tests, and verifies no hardware requests/timers/output frames.
+
+legacyDisplay
+PASS Traditional layout has multiple systems
+PASS 48 measures and both piano staves stay in one system (including XML line break)
+PASS Layout switch preserves playback iterator
+PASS Cursor anchored at 33% of viewport
+PASS New position schedules animation without a sudden jump
+PASS Scroll advances across multiple frames
+PASS Scroll converges on stable cursor region
+PASS Backward repeat/seek converges without stale forward scroll
+PASS Trailing space retains cursor region at the last measure
+PASS Auto Scroll off leaves the viewport alone
+PASS Relayout leaves the ahead-of-display iterator intact
+PASS Relayout preserves the painted cursor while waiting
+PASS Zoom keeps traversal and single-system layout
+PASS wait: waits for expected notes
+PASS wait: cursor does not run ahead while waiting
+PASS wait: switch layouts while waiting preserves current note
+PASS wait: switching preserves score and wrong-note state
+PASS wait: expected-note feedback anchors refresh for horizontal layout
+PASS wait: correct notes advance the visible cursor
+PASS follow: waits for expected notes
+PASS follow: cursor does not run ahead while waiting
+PASS follow: switch layouts while waiting preserves current note
+PASS follow: switching preserves score and wrong-note state
+PASS follow: expected-note feedback anchors refresh for horizontal layout
+PASS follow: correct notes advance the visible cursor
+PASS realtime: scheduled playback advances horizontal cursor
+PASS Reset returns to the first measure with cursor visible (measure=0, x=211.03750610351562, width=1226)
+PASS Traditional layout and normal container width restored
+PASS 390px mobile viewport retains single system and cursor anchor
+PASS 240-measure SVG exceeds 32767px without wrapping or clipping
+
+All checks passed.
+
+noLedDisplay
+PASS Traditional layout has multiple systems
+PASS 48 measures and both piano staves stay in one system (including XML line break)
+PASS Layout switch preserves playback iterator
+PASS Cursor anchored at 33% of viewport
+PASS New position schedules animation without a sudden jump
+PASS Scroll advances across multiple frames
+PASS Scroll converges on stable cursor region
+PASS Backward repeat/seek converges without stale forward scroll
+PASS Trailing space retains cursor region at the last measure
+PASS Auto Scroll off leaves the viewport alone
+PASS Relayout leaves the ahead-of-display iterator intact
+PASS Relayout preserves the painted cursor while waiting
+PASS Zoom keeps traversal and single-system layout
+PASS wait: waits for expected notes
+PASS wait: cursor does not run ahead while waiting
+PASS wait: switch layouts while waiting preserves current note
+PASS wait: switching preserves score and wrong-note state
+PASS wait: expected-note feedback anchors refresh for horizontal layout
+PASS wait: correct notes advance the visible cursor
+PASS follow: waits for expected notes
+PASS follow: cursor does not run ahead while waiting
+PASS follow: switch layouts while waiting preserves current note
+PASS follow: switching preserves score and wrong-note state
+PASS follow: expected-note feedback anchors refresh for horizontal layout
+PASS follow: correct notes advance the visible cursor
+PASS realtime: scheduled playback advances horizontal cursor
+PASS Reset returns to the first measure with cursor visible (measure=0, x=211.03750610351562, width=1226)
+PASS Traditional layout and normal container width restored
+PASS 390px mobile viewport retains single system and cursor anchor
+PASS 240-measure SVG exceeds 32767px without wrapping or clipping
+
+All checks passed.
+
+legacyPractice
+PASS wait/traditional: piano chord builds both staff expectations
+PASS wait/traditional: live iterator prefetches while displayed event stays current
+PASS wait/traditional: wrong input counts once and holds display
+PASS wait/traditional: partial chord holds display
+PASS wait/traditional: already-hit repeat is suppressed from duplicate grading
+PASS wait/traditional: completing chord grades both notes
+PASS wait/traditional: completing chord advances displayed event
+PASS wait/traditional: release clears held input
+PASS wait/traditional: pause suppresses pending advancement
+PASS follow/traditional: piano chord builds both staff expectations
+PASS follow/traditional: live iterator prefetches while displayed event stays current
+PASS follow/traditional: wrong input counts once and holds display
+PASS follow/traditional: partial chord holds display
+PASS follow/traditional: already-hit repeat is suppressed from duplicate grading
+PASS follow/traditional: completing chord grades both notes
+PASS follow/traditional: completing chord advances displayed event
+PASS follow/traditional: release clears held input
+PASS follow/traditional: pause suppresses pending advancement
+PASS realtime/traditional: piano chord builds both staff expectations
+PASS realtime/traditional: live iterator prefetches while displayed event stays current
+PASS realtime/traditional: tempo advances without input
+PASS realtime/traditional: missed chord grades both notes
+PASS realtime/traditional: pause suppresses pending advancement
+PASS wait/horizontal: piano chord builds both staff expectations
+PASS wait/horizontal: live iterator prefetches while displayed event stays current
+PASS wait/horizontal: wrong input counts once and holds display
+PASS wait/horizontal: partial chord holds display
+PASS wait/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS wait/horizontal: completing chord grades both notes
+PASS wait/horizontal: completing chord advances displayed event
+PASS wait/horizontal: release clears held input
+PASS wait/horizontal: pause suppresses pending advancement
+PASS follow/horizontal: piano chord builds both staff expectations
+PASS follow/horizontal: live iterator prefetches while displayed event stays current
+PASS follow/horizontal: wrong input counts once and holds display
+PASS follow/horizontal: partial chord holds display
+PASS follow/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS follow/horizontal: completing chord grades both notes
+PASS follow/horizontal: completing chord advances displayed event
+PASS follow/horizontal: release clears held input
+PASS follow/horizontal: pause suppresses pending advancement
+PASS realtime/horizontal: piano chord builds both staff expectations
+PASS realtime/horizontal: live iterator prefetches while displayed event stays current
+PASS realtime/horizontal: tempo advances without input
+PASS realtime/horizontal: missed chord grades both notes
+PASS realtime/horizontal: pause suppresses pending advancement
+PASS simple-repeat: structural jump 2 → 1 waits one remaining quarter beat
+PASS simple-repeat: actual repeat-sign traversal is 1 → 2 → 1 → 2 → 3
+PASS simple-repeat: repeat and ending skip are exercised
+SNAPSHOT simple-repeat [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1}]
+PASS first-second-ending: structural jump 3 → 1 waits one remaining quarter beat
+PASS first-second-ending: structural jump 2 → 4 waits one remaining quarter beat
+PASS first-second-ending: actual repeat-sign traversal is 1 → 2 → 3 → 1 → 2 → 4 → 5
+PASS first-second-ending: repeat and ending skip are exercised
+SNAPSHOT first-second-ending [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1},{"measure":2,"timestampWhole":2.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":3,"nextTimestampWhole":3,"beats":1},{"measure":3,"timestampWhole":3,"nextMeasure":3,"nextTimestampWhole":3.25,"beats":1},{"measure":3,"timestampWhole":3.25,"nextMeasure":3,"nextTimestampWhole":3.5,"beats":1},{"measure":3,"timestampWhole":3.5,"nextMeasure":3,"nextTimestampWhole":3.75,"beats":1},{"measure":3,"timestampWhole":3.75,"nextMeasure":4,"nextTimestampWhole":4,"beats":1},{"measure":4,"timestampWhole":4,"nextMeasure":4,"nextTimestampWhole":4.25,"beats":1},{"measure":4,"timestampWhole":4.25,"nextMeasure":4,"nextTimestampWhole":4.5,"beats":1},{"measure":4,"timestampWhole":4.5,"nextMeasure":4,"nextTimestampWhole":4.75,"beats":1}]
+
+All checks passed.
+
+noLedPractice
+PASS wait/traditional: piano chord builds both staff expectations
+PASS wait/traditional: live iterator prefetches while displayed event stays current
+PASS wait/traditional: wrong input counts once and holds display
+PASS wait/traditional: partial chord holds display
+PASS wait/traditional: already-hit repeat is suppressed from duplicate grading
+PASS wait/traditional: completing chord grades both notes
+PASS wait/traditional: completing chord advances displayed event
+PASS wait/traditional: release clears held input
+PASS wait/traditional: pause suppresses pending advancement
+PASS follow/traditional: piano chord builds both staff expectations
+PASS follow/traditional: live iterator prefetches while displayed event stays current
+PASS follow/traditional: wrong input counts once and holds display
+PASS follow/traditional: partial chord holds display
+PASS follow/traditional: already-hit repeat is suppressed from duplicate grading
+PASS follow/traditional: completing chord grades both notes
+PASS follow/traditional: completing chord advances displayed event
+PASS follow/traditional: release clears held input
+PASS follow/traditional: pause suppresses pending advancement
+PASS realtime/traditional: piano chord builds both staff expectations
+PASS realtime/traditional: live iterator prefetches while displayed event stays current
+PASS realtime/traditional: tempo advances without input
+PASS realtime/traditional: missed chord grades both notes
+PASS realtime/traditional: pause suppresses pending advancement
+PASS wait/horizontal: piano chord builds both staff expectations
+PASS wait/horizontal: live iterator prefetches while displayed event stays current
+PASS wait/horizontal: wrong input counts once and holds display
+PASS wait/horizontal: partial chord holds display
+PASS wait/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS wait/horizontal: completing chord grades both notes
+PASS wait/horizontal: completing chord advances displayed event
+PASS wait/horizontal: release clears held input
+PASS wait/horizontal: pause suppresses pending advancement
+PASS follow/horizontal: piano chord builds both staff expectations
+PASS follow/horizontal: live iterator prefetches while displayed event stays current
+PASS follow/horizontal: wrong input counts once and holds display
+PASS follow/horizontal: partial chord holds display
+PASS follow/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS follow/horizontal: completing chord grades both notes
+PASS follow/horizontal: completing chord advances displayed event
+PASS follow/horizontal: release clears held input
+PASS follow/horizontal: pause suppresses pending advancement
+PASS realtime/horizontal: piano chord builds both staff expectations
+PASS realtime/horizontal: live iterator prefetches while displayed event stays current
+PASS realtime/horizontal: tempo advances without input
+PASS realtime/horizontal: missed chord grades both notes
+PASS realtime/horizontal: pause suppresses pending advancement
+PASS simple-repeat: structural jump 2 → 1 waits one remaining quarter beat
+PASS simple-repeat: actual repeat-sign traversal is 1 → 2 → 1 → 2 → 3
+PASS simple-repeat: repeat and ending skip are exercised
+SNAPSHOT simple-repeat [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1}]
+PASS first-second-ending: structural jump 3 → 1 waits one remaining quarter beat
+PASS first-second-ending: structural jump 2 → 4 waits one remaining quarter beat
+PASS first-second-ending: actual repeat-sign traversal is 1 → 2 → 3 → 1 → 2 → 4 → 5
+PASS first-second-ending: repeat and ending skip are exercised
+SNAPSHOT first-second-ending [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1},{"measure":2,"timestampWhole":2.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":3,"nextTimestampWhole":3,"beats":1},{"measure":3,"timestampWhole":3,"nextMeasure":3,"nextTimestampWhole":3.25,"beats":1},{"measure":3,"timestampWhole":3.25,"nextMeasure":3,"nextTimestampWhole":3.5,"beats":1},{"measure":3,"timestampWhole":3.5,"nextMeasure":3,"nextTimestampWhole":3.75,"beats":1},{"measure":3,"timestampWhole":3.75,"nextMeasure":4,"nextTimestampWhole":4,"beats":1},{"measure":4,"timestampWhole":4,"nextMeasure":4,"nextTimestampWhole":4.25,"beats":1},{"measure":4,"timestampWhole":4.25,"nextMeasure":4,"nextTimestampWhole":4.5,"beats":1},{"measure":4,"timestampWhole":4.5,"nextMeasure":4,"nextTimestampWhole":4.75,"beats":1}]
+
+All checks passed.
+
+legacyEarlyInput
+PASS adapter selection: legacy
+PASS MIDI permission help remains available
+PASS update UI initializes independently
+PASS LED settings visibility follows explicit adapter configuration
+PASS wait/traditional: shared timeline builds and restores the current playback position
+PASS wait/traditional: early input reservation matches legacy mode semantics
+PASS wait/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: shared timeline builds and restores the current playback position
+PASS follow/traditional: early input reservation matches legacy mode semantics
+PASS follow/traditional: early tap survives release across accompaniment events
+PASS follow/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: reserved released tap grades at the target
+PASS realtime/traditional: shared timeline builds and restores the current playback position
+PASS realtime/traditional: early input reservation matches legacy mode semantics
+PASS realtime/traditional: target event uses the same practiced-hand note source
+PASS realtime/traditional: reserved held key grades at the target
+PASS wait/horizontal: shared timeline builds and restores the current playback position
+PASS wait/horizontal: early input reservation matches legacy mode semantics
+PASS wait/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: shared timeline builds and restores the current playback position
+PASS follow/horizontal: early input reservation matches legacy mode semantics
+PASS follow/horizontal: early tap survives release across accompaniment events
+PASS follow/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: reserved released tap grades at the target
+PASS realtime/horizontal: shared timeline builds and restores the current playback position
+PASS realtime/horizontal: early input reservation matches legacy mode semantics
+PASS realtime/horizontal: target event uses the same practiced-hand note source
+PASS realtime/horizontal: reserved held key grades at the target
+PASS range and keyboard filtering still work with the selected adapter
+PASS legacy LED output loop remains active
+
+All checks passed.
+
+noLedEarlyInput
+PASS adapter selection: no-op
+PASS MIDI permission help remains available
+PASS update UI initializes independently
+PASS LED settings visibility follows explicit adapter configuration
+PASS wait/traditional: shared timeline builds and restores the current playback position
+PASS wait/traditional: early input reservation matches legacy mode semantics
+PASS wait/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: shared timeline builds and restores the current playback position
+PASS follow/traditional: early input reservation matches legacy mode semantics
+PASS follow/traditional: early tap survives release across accompaniment events
+PASS follow/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: reserved released tap grades at the target
+PASS realtime/traditional: shared timeline builds and restores the current playback position
+PASS realtime/traditional: early input reservation matches legacy mode semantics
+PASS realtime/traditional: target event uses the same practiced-hand note source
+PASS realtime/traditional: reserved held key grades at the target
+PASS wait/horizontal: shared timeline builds and restores the current playback position
+PASS wait/horizontal: early input reservation matches legacy mode semantics
+PASS wait/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: shared timeline builds and restores the current playback position
+PASS follow/horizontal: early input reservation matches legacy mode semantics
+PASS follow/horizontal: early tap survives release across accompaniment events
+PASS follow/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: reserved released tap grades at the target
+PASS realtime/horizontal: shared timeline builds and restores the current playback position
+PASS realtime/horizontal: early input reservation matches legacy mode semantics
+PASS realtime/horizontal: target event uses the same practiced-hand note source
+PASS realtime/horizontal: reserved held key grades at the target
+PASS range and keyboard filtering still work with the selected adapter
+PASS no-op runs no LED output frames
+PASS no-op preserves existing WLED mode, address and transport preferences
+PASS no-op owns no hardware discovery or reconnect timer
+PASS no-op startup and practice perform no WLED/helper discovery requests
+
+All checks passed.
+
+Observed no-op console entries:
+[
+  {
+    "level": "error",
+    "message": "Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.",
+    "timestamp": "2026-10-02T15:47:09.853Z"
+  },
+  {
+    "level": "warn",
+    "message": "MIDI Access Denied NotAllowedError: Permission to use Web MIDI API was not granted.",
+    "timestamp": "2026-10-02T15:47:10.559Z",
+    "url": "http://127.0.0.1:8081/js/midi.js?v=1.2.4"
+  },
+  {
+    "level": "error",
+    "message": "File loaded successfully.",
+    "timestamp": "2026-10-02T15:48:23.735Z",
+    "url": "http://127.0.0.1:8081/js/trainer-core.js?v=1.2.4"
+  },
+  {
+    "level": "error",
+    "message": "File loaded successfully.",
+    "timestamp": "2026-10-02T15:48:23.771Z",
+    "url": "http://127.0.0.1:8081/js/trainer-core.js?v=1.2.4"
+  },
+  {
+    "level": "error",
+    "message": "File loaded successfully.",
+    "timestamp": "2026-10-02T15:48:23.797Z",
+    "url": "http://127.0.0.1:8081/js/trainer-core.js?v=1.2.4"
+  },
+  {
+    "level": "error",
+    "message": "File loaded successfully.",
+    "timestamp": "2026-10-02T15:48:23.822Z",
+    "url": "http://127.0.0.1:8081/js/trainer-core.js?v=1.2.4"
+  },
+  {
+    "level": "error",
+    "message": "File loaded successfully.",
+    "timestamp": "2026-10-02T15:48:23.865Z",
+    "url": "http://127.0.0.1:8081/js/trainer-core.js?v=1.2.4"
+  },
+  {
+    "level": "error",
+    "message": "File loaded successfully.",
+    "timestamp": "2026-10-02T15:48:23.890Z",
+    "url": "http://127.0.0.1:8081/js/trainer-core.js?v=1.2.4"
+  }
+]
+Existing injection MutationObserver error has no project URL; core logs successful loading at error level. MIDI permission is denied in the test browser and its user-facing help remains available.

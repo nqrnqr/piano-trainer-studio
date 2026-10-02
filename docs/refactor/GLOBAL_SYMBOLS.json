@@ -13,13 +13,21 @@
     "js/toolbar-ui.js",
     "js/score-library.js",
     "js/scores-ui.js",
+    "js/generated/ui/permission-help.js",
+    "js/generated/ui/connection-status.js",
+    "js/generated/ui/update-controls.js",
     "js/led.js",
+    "js/generated/optional/led/legacy-led-adapter.js",
+    "js/generated/compatibility/optional-led.js",
+    "js/generated/ui/player-range-controls.js",
     "js/midi.js",
     "js/midi-import.js",
     "js/feedback-engine.js",
     "js/feedback-debug.js",
     "js/generated/domain/timing.js",
     "js/score-display.js",
+    "js/generated/score/score-traversal.js",
+    "js/generated/compatibility/score-traversal.js",
     "js/trainer-core.js"
   ],
   "symbols": [
@@ -79,7 +87,7 @@
       "referenceFiles": [
         "js/generated/state/app-state.js",
         "js/generated/state/settings-backup.js",
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -94,7 +102,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -114,11 +122,16 @@
         "js/transpose/transpose-ui.js",
         "js/toolbar-ui.js",
         "js/scores-ui.js",
+        "js/generated/ui/connection-status.js",
+        "js/generated/ui/update-controls.js",
         "js/led.js",
+        "js/generated/compatibility/optional-led.js",
+        "js/generated/ui/player-range-controls.js",
         "js/midi.js",
         "js/feedback-engine.js",
         "js/feedback-debug.js",
         "js/score-display.js",
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
@@ -146,7 +159,7 @@
           "symbol": "DEFAULT_TONE_LATENCY_PROFILE",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 423
+          "line": 427
         }
       ],
       "referenceFiles": [
@@ -176,7 +189,7 @@
           "symbol": "FOLLOW_ME_MIN_WAIT_RATIO",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 447
+          "line": 451
         }
       ],
       "referenceFiles": [
@@ -190,7 +203,7 @@
           "symbol": "FOLLOW_ME_TONE_LATENCY_PROFILE",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 400
+          "line": 404
         }
       ],
       "referenceFiles": [
@@ -265,7 +278,7 @@
           "symbol": "KEY_STATE_CLASSES",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 1991
+          "line": 1731
         }
       ],
       "referenceFiles": [
@@ -367,20 +380,6 @@
       ]
     },
     {
-      "symbol": "LED_PROTOCOL",
-      "definitions": [
-        {
-          "symbol": "LED_PROTOCOL",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1982
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "LED_REVERSE_STORAGE_KEY",
       "definitions": [
         {
@@ -418,7 +417,7 @@
           "symbol": "LOOP_STEPPER_HOLD_DELAY_MS",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3815
+          "line": 3505
         }
       ],
       "referenceFiles": [
@@ -432,7 +431,7 @@
           "symbol": "LOOP_STEPPER_HOLD_REPEAT_MS",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3816
+          "line": 3506
         }
       ],
       "referenceFiles": [
@@ -446,13 +445,13 @@
           "symbol": "LedEngine",
           "kind": "const",
           "file": "js/led.js",
-          "line": 1331
+          "line": 924
         }
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/midi.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js",
+        "js/midi.js"
       ]
     },
     {
@@ -647,11 +646,12 @@
           "symbol": "MidiLedTestController",
           "kind": "const",
           "file": "js/midi.js",
-          "line": 327
+          "line": 331
         }
       ],
       "referenceFiles": [
         "js/led.js",
+        "js/generated/compatibility/optional-led.js",
         "js/midi.js"
       ]
     },
@@ -662,7 +662,7 @@
           "symbol": "PIANO_SAMPLE_EXTENSION",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 462
+          "line": 466
         }
       ],
       "referenceFiles": [
@@ -696,7 +696,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/led.js"
+        "js/generated/ui/player-range-controls.js"
       ]
     },
     {
@@ -725,6 +725,36 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerOptionalLed",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerOptionalLed",
+          "kind": "var",
+          "file": "js/generated/optional/led/legacy-led-adapter.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/optional/led/legacy-led-adapter.js",
+        "js/generated/compatibility/optional-led.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerScoreTraversal",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoreTraversal",
+          "kind": "var",
+          "file": "js/generated/score/score-traversal.js",
+          "line": 4
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/score/score-traversal.js",
+        "js/generated/compatibility/score-traversal.js"
       ]
     },
     {
@@ -1327,7 +1357,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/app-state.js",
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -1343,7 +1373,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/app-state.js",
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -1358,7 +1388,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/app-state.js",
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -1397,12 +1427,12 @@
           "symbol": "WLEDController",
           "kind": "const",
           "file": "js/led.js",
-          "line": 1529
+          "line": 1122
         }
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -1427,7 +1457,7 @@
           "symbol": "WLED_HELPER_BASE_URL",
           "kind": "const",
           "file": "js/led.js",
-          "line": 576
+          "line": 525
         }
       ],
       "referenceFiles": [
@@ -1441,7 +1471,7 @@
           "symbol": "WLED_HELPER_CLEAR_URL",
           "kind": "const",
           "file": "js/led.js",
-          "line": 579
+          "line": 528
         }
       ],
       "referenceFiles": [
@@ -1455,7 +1485,7 @@
           "symbol": "WLED_HELPER_FRAME_URL",
           "kind": "const",
           "file": "js/led.js",
-          "line": 578
+          "line": 527
         }
       ],
       "referenceFiles": [
@@ -1469,7 +1499,7 @@
           "symbol": "WLED_HELPER_HEALTH_URL",
           "kind": "const",
           "file": "js/led.js",
-          "line": 577
+          "line": 526
         }
       ],
       "referenceFiles": [
@@ -1528,7 +1558,7 @@
           "symbol": "accentedDownbeatCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3708
+          "line": 3398
         }
       ],
       "referenceFiles": [
@@ -1542,7 +1572,7 @@
           "symbol": "activeLooperHold",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 3817
+          "line": 3507
         }
       ],
       "referenceFiles": [
@@ -1556,7 +1586,7 @@
           "symbol": "activeMidiInput",
           "kind": "let",
           "file": "js/midi.js",
-          "line": 11
+          "line": 15
         }
       ],
       "referenceFiles": [
@@ -1570,7 +1600,7 @@
           "symbol": "activeVirtualPointerId",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 2313
+          "line": 2005
         }
       ],
       "referenceFiles": [
@@ -1584,7 +1614,7 @@
           "symbol": "activeVirtualPointerMidi",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 2314
+          "line": 2006
         }
       ],
       "referenceFiles": [
@@ -1598,7 +1628,7 @@
           "symbol": "applyInlineKeyVisual",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2046
+          "line": 1741
         }
       ],
       "referenceFiles": [
@@ -1612,7 +1642,7 @@
           "symbol": "applyLedBrightnessSettings",
           "kind": "function",
           "file": "js/led.js",
-          "line": 493
+          "line": 442
         }
       ],
       "referenceFiles": [
@@ -1626,7 +1656,7 @@
           "symbol": "applyLedFuturePreviewStates",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1962
+          "line": 1710
         }
       ],
       "referenceFiles": [
@@ -1640,7 +1670,7 @@
           "symbol": "applyModeSettings",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2789
+          "line": 2479
         }
       ],
       "referenceFiles": [
@@ -1668,7 +1698,7 @@
           "symbol": "applyToneLatencyProfileForMode",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 425
+          "line": 429
         }
       ],
       "referenceFiles": [
@@ -1682,7 +1712,7 @@
           "symbol": "applyZoom",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3366
+          "line": 3056
         }
       ],
       "referenceFiles": [
@@ -1697,7 +1727,7 @@
           "symbol": "armWledIfNeeded",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1047
+          "line": 717
         }
       ],
       "referenceFiles": [
@@ -1739,7 +1769,7 @@
           "symbol": "autoScrollCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3529
+          "line": 3219
         }
       ],
       "referenceFiles": [
@@ -1754,7 +1784,7 @@
           "symbol": "backupSettingsButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 4132
+          "line": 3822
         }
       ],
       "referenceFiles": [
@@ -1768,7 +1798,7 @@
           "symbol": "beginLooperHold",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3834
+          "line": 3524
         }
       ],
       "referenceFiles": [
@@ -1782,7 +1812,7 @@
           "symbol": "bindHandAssignmentControls",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1409
+          "line": 1413
         }
       ],
       "referenceFiles": [
@@ -1796,7 +1826,7 @@
           "symbol": "bindLedCalibrationNudgeButton",
           "kind": "function",
           "file": "js/led.js",
-          "line": 300
+          "line": 249
         }
       ],
       "referenceFiles": [
@@ -1810,7 +1840,7 @@
           "symbol": "bpmInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3388
+          "line": 3078
         }
       ],
       "referenceFiles": [
@@ -2020,7 +2050,7 @@
           "symbol": "buildChromaticTestNotes",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1111
+          "line": 781
         }
       ],
       "referenceFiles": [
@@ -2048,13 +2078,13 @@
       "definitions": [
         {
           "symbol": "buildLedPreviewTimelineEvent",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1770
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 18
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/compatibility/score-traversal.js"
       ]
     },
     {
@@ -2079,12 +2109,12 @@
         {
           "symbol": "buildUpdateStatusText",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 606
+          "file": "js/generated/ui/update-controls.js",
+          "line": 32
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -2108,7 +2138,7 @@
           "symbol": "canUseNativeFullscreen",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3075
+          "line": 2765
         }
       ],
       "referenceFiles": [
@@ -2122,7 +2152,7 @@
           "symbol": "captureToneLatencyProfile",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 414
+          "line": 418
         }
       ],
       "referenceFiles": [
@@ -2135,12 +2165,12 @@
         {
           "symbol": "checkForUpdates",
           "kind": "async function",
-          "file": "js/led.js",
-          "line": 698
+          "file": "js/generated/ui/update-controls.js",
+          "line": 121
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -2150,7 +2180,7 @@
           "symbol": "checkWaitModeAdvance",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2716
+          "line": 2406
         }
       ],
       "referenceFiles": [
@@ -2164,7 +2194,7 @@
           "symbol": "chooseHigherPriorityLedState",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1956
+          "line": 1704
         }
       ],
       "referenceFiles": [
@@ -2178,7 +2208,7 @@
           "symbol": "chooseMusicXmlEntry",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1097
+          "line": 1101
         }
       ],
       "referenceFiles": [
@@ -2191,12 +2221,12 @@
         {
           "symbol": "clearAssetVersionOverrideIfCurrent",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 641
+          "file": "js/generated/ui/update-controls.js",
+          "line": 65
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -2206,7 +2236,7 @@
           "symbol": "clearFeedbackVisualStatePreserveScoring",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2275
+          "line": 1967
         }
       ],
       "referenceFiles": [
@@ -2235,7 +2265,7 @@
           "symbol": "clearLooperHold",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3819
+          "line": 3509
         }
       ],
       "referenceFiles": [
@@ -2248,12 +2278,12 @@
         {
           "symbol": "clearMidiPermissionHelp",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 45
+          "file": "js/generated/ui/permission-help.js",
+          "line": 17
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/ui/permission-help.js",
         "js/midi.js"
       ]
     },
@@ -2280,7 +2310,7 @@
           "symbol": "clearScheduledMetronomeEvents",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 673
+          "line": 677
         }
       ],
       "referenceFiles": [
@@ -2308,7 +2338,7 @@
           "symbol": "clearTempoVisualPulse",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 629
+          "line": 633
         }
       ],
       "referenceFiles": [
@@ -2322,7 +2352,7 @@
           "symbol": "clearTransientPlaybackState",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3233
+          "line": 2923
         }
       ],
       "referenceFiles": [
@@ -2336,7 +2366,7 @@
           "symbol": "clearVisuals",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2286
+          "line": 1978
         }
       ],
       "referenceFiles": [
@@ -2351,11 +2381,12 @@
         {
           "symbol": "clearWledPermissionHelp",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 53
+          "file": "js/generated/ui/permission-help.js",
+          "line": 23
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/permission-help.js",
         "js/led.js"
       ]
     },
@@ -2380,7 +2411,7 @@
           "symbol": "cloneScoreRawData",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 959
+          "line": 963
         }
       ],
       "referenceFiles": [
@@ -2437,12 +2468,13 @@
       "definitions": [
         {
           "symbol": "collectFutureLedPreviewEvents",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1891
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 22
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -2451,13 +2483,13 @@
       "definitions": [
         {
           "symbol": "collectRenderablePreviewNotesFromEntries",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1727
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 17
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/compatibility/score-traversal.js"
       ]
     },
     {
@@ -2466,13 +2498,13 @@
         {
           "symbol": "compareSemverLoose",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 581
+          "file": "js/generated/ui/update-controls.js",
+          "line": 7
         }
       ],
       "referenceFiles": [
         "index.html",
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -2482,7 +2514,7 @@
           "symbol": "confirmAndSetWledTransport",
           "kind": "function",
           "file": "js/led.js",
-          "line": 899
+          "line": 648
         }
       ],
       "referenceFiles": [
@@ -2496,7 +2528,7 @@
           "symbol": "consumeImmediateResumeStartFlag",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2975
+          "line": 2665
         }
       ],
       "referenceFiles": [
@@ -2553,7 +2585,7 @@
           "symbol": "createKeyboard",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2336
+          "line": 2028
         }
       ],
       "referenceFiles": [
@@ -2630,6 +2662,7 @@
       "referenceFiles": [
         "js/feedback-engine.js",
         "js/feedback-debug.js",
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -2646,7 +2679,7 @@
       "referenceFiles": [
         "js/generated/domain/playable-range.js",
         "js/generated/state/player-range.js",
-        "js/led.js"
+        "js/generated/ui/player-range-controls.js"
       ]
     },
     {
@@ -2654,13 +2687,13 @@
       "definitions": [
         {
           "symbol": "describeEntryCollectionForLedDebug",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1707
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 16
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/compatibility/score-traversal.js"
       ]
     },
     {
@@ -2728,7 +2761,7 @@
           "symbol": "doCountInAndStart",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2981
+          "line": 2671
         }
       ],
       "referenceFiles": [
@@ -2742,7 +2775,7 @@
           "symbol": "downloadLedCalibrationBackup",
           "kind": "function",
           "file": "js/led.js",
-          "line": 229
+          "line": 178
         }
       ],
       "referenceFiles": [
@@ -2786,7 +2819,7 @@
           "symbol": "enableHandStaves",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3609
+          "line": 3299
         }
       ],
       "referenceFiles": [
@@ -2800,7 +2833,7 @@
           "symbol": "enableInstrument",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3623
+          "line": 3313
         }
       ],
       "referenceFiles": [
@@ -2814,7 +2847,7 @@
           "symbol": "enableMidiOutHandStaves",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3638
+          "line": 3328
         }
       ],
       "referenceFiles": [
@@ -2828,7 +2861,7 @@
           "symbol": "enableMidiOutInstrument",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3652
+          "line": 3342
         }
       ],
       "referenceFiles": [
@@ -2842,7 +2875,7 @@
           "symbol": "enableMidiOutOther",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3645
+          "line": 3335
         }
       ],
       "referenceFiles": [
@@ -2856,7 +2889,7 @@
           "symbol": "enableMidiOutVirtualKeyboard",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3659
+          "line": 3349
         }
       ],
       "referenceFiles": [
@@ -2870,7 +2903,7 @@
           "symbol": "enableOther",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3616
+          "line": 3306
         }
       ],
       "referenceFiles": [
@@ -2884,7 +2917,7 @@
           "symbol": "enableStaffLh",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3585
+          "line": 3275
         }
       ],
       "referenceFiles": [
@@ -2898,7 +2931,7 @@
           "symbol": "enableStaffRh",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3597
+          "line": 3287
         }
       ],
       "referenceFiles": [
@@ -2912,7 +2945,7 @@
           "symbol": "enableVirtualKeyboard",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3631
+          "line": 3321
         }
       ],
       "referenceFiles": [
@@ -2939,12 +2972,13 @@
       "definitions": [
         {
           "symbol": "ensureLedPreviewTimelineBuilt",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1803
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 20
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -2955,7 +2989,7 @@
           "symbol": "ensureLiveAudioReady",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 2316
+          "line": 2008
         }
       ],
       "referenceFiles": [
@@ -2969,7 +3003,7 @@
           "symbol": "ensurePianoSamplerLoaded",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 497
+          "line": 501
         }
       ],
       "referenceFiles": [
@@ -2997,7 +3031,7 @@
           "symbol": "exitAppFullscreen",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 3118
+          "line": 2808
         }
       ],
       "referenceFiles": [
@@ -3025,7 +3059,7 @@
           "symbol": "extractMusicXmlFromMxl",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 1125
+          "line": 1129
         }
       ],
       "referenceFiles": [
@@ -3039,7 +3073,7 @@
           "symbol": "extractZipEntryText",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 1079
+          "line": 1083
         }
       ],
       "referenceFiles": [
@@ -3066,12 +3100,13 @@
       "definitions": [
         {
           "symbol": "findMatchingLedPreviewTimelineIndex",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1846
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 15
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -3082,7 +3117,7 @@
           "symbol": "findNextSingleHandPracticeTimelineEvent",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1558
+          "line": 1563
         }
       ],
       "referenceFiles": [
@@ -3096,7 +3131,7 @@
           "symbol": "findSatisfiedOrSustainedMatchForMidi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2053
+          "line": 1748
         }
       ],
       "referenceFiles": [
@@ -3110,7 +3145,7 @@
           "symbol": "findSingleHandPracticeTimelineWindow",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1500
+          "line": 1505
         }
       ],
       "referenceFiles": [
@@ -3137,12 +3172,12 @@
         {
           "symbol": "forceReloadToVersion",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 659
+          "file": "js/generated/ui/update-controls.js",
+          "line": 83
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -3180,7 +3215,7 @@
           "symbol": "fullscreenOnPlayCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3536
+          "line": 3226
         }
       ],
       "referenceFiles": [
@@ -3193,12 +3228,12 @@
         {
           "symbol": "getAppVersionDisplayText",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 602
+          "file": "js/generated/ui/update-controls.js",
+          "line": 29
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -3213,6 +3248,7 @@
       ],
       "referenceFiles": [
         "js/feedback-engine.js",
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -3223,7 +3259,7 @@
           "symbol": "getCanonicalMusicXmlForTranspose",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 1151
+          "line": 1155
         }
       ],
       "referenceFiles": [
@@ -3422,7 +3458,7 @@
           "symbol": "getFullscreenElement",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3067
+          "line": 2757
         }
       ],
       "referenceFiles": [
@@ -3436,7 +3472,7 @@
           "symbol": "getFullscreenTargetElement",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3071
+          "line": 2761
         }
       ],
       "referenceFiles": [
@@ -3450,7 +3486,7 @@
           "symbol": "getFuturePreviewDepth",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1685
+          "line": 1690
         }
       ],
       "referenceFiles": [
@@ -3478,7 +3514,7 @@
           "symbol": "getKeyInlineVisual",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2038
+          "line": 1733
         }
       ],
       "referenceFiles": [
@@ -3492,7 +3528,7 @@
           "symbol": "getLedCalibrationOffsetForMidi",
           "kind": "function",
           "file": "js/led.js",
-          "line": 102
+          "line": 51
         }
       ],
       "referenceFiles": [
@@ -3506,25 +3542,11 @@
           "symbol": "getLedCalibrationPreviewLabel",
           "kind": "function",
           "file": "js/led.js",
-          "line": 136
+          "line": 85
         }
       ],
       "referenceFiles": [
         "js/led.js"
-      ]
-    },
-    {
-      "symbol": "getLedPreviewHandStatePrefix",
-      "definitions": [
-        {
-          "symbol": "getLedPreviewHandStatePrefix",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1479
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
       ]
     },
     {
@@ -3534,10 +3556,40 @@
           "symbol": "getLedStatePriority",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1947
+          "line": 1695
         }
       ],
       "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getLegacyMidiPort",
+      "definitions": [
+        {
+          "symbol": "getLegacyMidiPort",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 12
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/connection-status.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "getLegacyTraversalCursor",
+      "definitions": [
+        {
+          "symbol": "getLegacyTraversalCursor",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1483
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -3548,7 +3600,7 @@
           "symbol": "getLiveAudioTime",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2448
+          "line": 2138
         }
       ],
       "referenceFiles": [
@@ -3562,7 +3614,7 @@
           "symbol": "getLiveMonitoringVelocity",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2462
+          "line": 2152
         }
       ],
       "referenceFiles": [
@@ -3576,7 +3628,7 @@
           "symbol": "getMeasureTimingInfo",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 749
+          "line": 753
         }
       ],
       "referenceFiles": [
@@ -3592,7 +3644,7 @@
           "symbol": "getMetronomeClickSpec",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 570
+          "line": 574
         }
       ],
       "referenceFiles": [
@@ -3606,7 +3658,7 @@
           "symbol": "getMetronomeMidiClickSpec",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 577
+          "line": 581
         }
       ],
       "referenceFiles": [
@@ -3620,7 +3672,7 @@
           "symbol": "getMetronomeMidiVelocity",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 584
+          "line": 588
         }
       ],
       "referenceFiles": [
@@ -3634,11 +3686,25 @@
           "symbol": "getMetronomeTimeSignatureNumerator",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 690
+          "line": 694
         }
       ],
       "referenceFiles": [
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getMidiConnectionSelect",
+      "definitions": [
+        {
+          "symbol": "getMidiConnectionSelect",
+          "kind": "function",
+          "file": "js/generated/ui/connection-status.js",
+          "line": 79
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/connection-status.js"
       ]
     },
     {
@@ -3663,10 +3729,11 @@
           "symbol": "getMidiLightsStatus",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2433
+          "line": 2123
         }
       ],
       "referenceFiles": [
+        "js/led.js",
         "js/trainer-core.js"
       ]
     },
@@ -3677,7 +3744,7 @@
           "symbol": "getMidiOutExpressionValue",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2546
+          "line": 2236
         }
       ],
       "referenceFiles": [
@@ -3691,7 +3758,7 @@
           "symbol": "getMidiOutStatus",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2427
+          "line": 2117
         }
       ],
       "referenceFiles": [
@@ -3704,12 +3771,12 @@
         {
           "symbol": "getMidiPermissionHelpText",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 68
+          "file": "js/generated/ui/permission-help.js",
+          "line": 36
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/ui/permission-help.js",
         "js/midi.js"
       ]
     },
@@ -3720,7 +3787,7 @@
           "symbol": "getMidiStatus",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 104
+          "line": 108
         }
       ],
       "referenceFiles": [
@@ -3735,7 +3802,7 @@
           "symbol": "getOsmdLoadPayload",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1178
+          "line": 1182
         }
       ],
       "referenceFiles": [
@@ -3758,6 +3825,20 @@
       ]
     },
     {
+      "symbol": "getPlayerPianoTypeSelect",
+      "definitions": [
+        {
+          "symbol": "getPlayerPianoTypeSelect",
+          "kind": "function",
+          "file": "js/generated/ui/player-range-controls.js",
+          "line": 57
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/player-range-controls.js"
+      ]
+    },
+    {
       "symbol": "getPlayerPlayableRange",
       "definitions": [
         {
@@ -3770,6 +3851,7 @@
       "referenceFiles": [
         "js/generated/state/player-range.js",
         "js/led.js",
+        "js/generated/ui/player-range-controls.js",
         "js/midi.js"
       ]
     },
@@ -3780,7 +3862,7 @@
           "symbol": "getPreferredPianoSampleExtension",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 449
+          "line": 453
         }
       ],
       "referenceFiles": [
@@ -3794,7 +3876,7 @@
           "symbol": "getRenderableNotesForHandFromTimelineEvent",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1495
+          "line": 1500
         }
       ],
       "referenceFiles": [
@@ -3807,12 +3889,12 @@
         {
           "symbol": "getRequestedAssetVersion",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 623
+          "file": "js/generated/ui/update-controls.js",
+          "line": 48
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -3822,7 +3904,7 @@
           "symbol": "getResolvedStaffAssignmentIdFromEntry",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1366
+          "line": 1370
         }
       ],
       "referenceFiles": [
@@ -3837,10 +3919,11 @@
           "symbol": "getResolvedStaffAssignmentIdFromNote",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1346
+          "line": 1350
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -3851,7 +3934,7 @@
           "symbol": "getRoutingEnabledForRole",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2494
+          "line": 2184
         }
       ],
       "referenceFiles": [
@@ -3865,7 +3948,7 @@
           "symbol": "getSamplerNoteName",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 513
+          "line": 517
         }
       ],
       "referenceFiles": [
@@ -3879,7 +3962,7 @@
           "symbol": "getScoreDisplayTitle",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 933
+          "line": 937
         }
       ],
       "referenceFiles": [
@@ -3895,7 +3978,7 @@
           "symbol": "getScoreFileTypeFromName",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 926
+          "line": 930
         }
       ],
       "referenceFiles": [
@@ -3939,12 +4022,12 @@
         {
           "symbol": "getSelectedLedMidiOutputState",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 974
+          "file": "js/generated/ui/connection-status.js",
+          "line": 47
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/connection-status.js"
       ]
     },
     {
@@ -3954,7 +4037,7 @@
           "symbol": "getSelectedMidiInChannel",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 66
+          "line": 70
         }
       ],
       "referenceFiles": [
@@ -3967,12 +4050,12 @@
         {
           "symbol": "getSelectedMidiInputState",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 958
+          "file": "js/generated/ui/connection-status.js",
+          "line": 31
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/connection-status.js"
       ]
     },
     {
@@ -3982,7 +4065,7 @@
           "symbol": "getSelectedMidiLightsChannel",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 62
+          "line": 66
         }
       ],
       "referenceFiles": [
@@ -3996,7 +4079,7 @@
           "symbol": "getSelectedMidiOutChannel",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 58
+          "line": 62
         }
       ],
       "referenceFiles": [
@@ -4010,13 +4093,13 @@
           "symbol": "getSelectedMidiOutOutput",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 70
+          "line": 74
         },
         {
           "symbol": "getSelectedMidiOutOutput",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2439
+          "line": 2129
         }
       ],
       "referenceFiles": [
@@ -4030,12 +4113,12 @@
         {
           "symbol": "getSelectedMidiOutputState",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 966
+          "file": "js/generated/ui/connection-status.js",
+          "line": 39
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/connection-status.js"
       ]
     },
     {
@@ -4045,7 +4128,7 @@
           "symbol": "getSingleHandPracticeBeatsUntilNextEvent",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1562
+          "line": 1567
         }
       ],
       "referenceFiles": [
@@ -4059,7 +4142,7 @@
           "symbol": "getSinglePracticedHandRole",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1488
+          "line": 1493
         }
       ],
       "referenceFiles": [
@@ -4073,7 +4156,7 @@
           "symbol": "getSourceRoleKey",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2498
+          "line": 2188
         }
       ],
       "referenceFiles": [
@@ -4118,11 +4201,26 @@
           "symbol": "getToneContextHandle",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 406
+          "line": 410
         }
       ],
       "referenceFiles": [
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getUnknownErrorMessage",
+      "definitions": [
+        {
+          "symbol": "getUnknownErrorMessage",
+          "kind": "function",
+          "file": "js/generated/ui/permission-help.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/permission-help.js",
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -4131,12 +4229,26 @@
         {
           "symbol": "getUpdateActionUrl",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 617
+          "file": "js/generated/ui/update-controls.js",
+          "line": 43
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
+      ]
+    },
+    {
+      "symbol": "getUpdateCheckButton",
+      "definitions": [
+        {
+          "symbol": "getUpdateCheckButton",
+          "kind": "function",
+          "file": "js/generated/ui/update-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -4145,11 +4257,12 @@
         {
           "symbol": "getWledPermissionHelpText",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 72
+          "file": "js/generated/ui/permission-help.js",
+          "line": 39
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/permission-help.js",
         "js/led.js"
       ]
     },
@@ -4160,7 +4273,7 @@
           "symbol": "getZipEntryDepth",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 988
+          "line": 992
         }
       ],
       "referenceFiles": [
@@ -4174,7 +4287,7 @@
           "symbol": "globalStaffIdentityMap",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 1328
+          "line": 1332
         }
       ],
       "referenceFiles": [
@@ -4205,7 +4318,7 @@
           "symbol": "handleDirectScoreFileSelection",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 1299
+          "line": 1303
         }
       ],
       "referenceFiles": [
@@ -4219,7 +4332,7 @@
           "symbol": "handleLedCalibrationImportFile",
           "kind": "function",
           "file": "js/led.js",
-          "line": 284
+          "line": 233
         }
       ],
       "referenceFiles": [
@@ -4249,7 +4362,7 @@
           "symbol": "hasAcceptedWledDdpWarning",
           "kind": "function",
           "file": "js/led.js",
-          "line": 781
+          "line": 530
         }
       ],
       "referenceFiles": [
@@ -4308,7 +4421,7 @@
           "symbol": "importLedCalibrationFromPayload",
           "kind": "function",
           "file": "js/led.js",
-          "line": 258
+          "line": 207
         }
       ],
       "referenceFiles": [
@@ -4352,7 +4465,7 @@
           "symbol": "importSettingsButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 4139
+          "line": 3829
         }
       ],
       "referenceFiles": [
@@ -4366,7 +4479,7 @@
           "symbol": "importSettingsInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 4140
+          "line": 3830
         }
       ],
       "referenceFiles": [
@@ -4380,7 +4493,7 @@
           "symbol": "inflateZipEntryData",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 1061
+          "line": 1065
         }
       ],
       "referenceFiles": [
@@ -4394,12 +4507,12 @@
           "symbol": "initLedBrightnessControls",
           "kind": "function",
           "file": "js/led.js",
-          "line": 528
+          "line": 477
         }
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -4409,12 +4522,12 @@
           "symbol": "initLedCalibrationControls",
           "kind": "function",
           "file": "js/led.js",
-          "line": 366
+          "line": 315
         }
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -4424,12 +4537,12 @@
           "symbol": "initLedCountControl",
           "kind": "function",
           "file": "js/led.js",
-          "line": 463
+          "line": 412
         }
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -4439,12 +4552,12 @@
           "symbol": "initLedOutputControls",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1140
+          "line": 810
         }
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -4454,7 +4567,7 @@
           "symbol": "initLedSimulatorToggleControl",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2869
+          "line": 2559
         }
       ],
       "referenceFiles": [
@@ -4467,12 +4580,12 @@
         {
           "symbol": "initPlayerPianoTypeControl",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1311
+          "file": "js/generated/ui/player-range-controls.js",
+          "line": 43
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/ui/player-range-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -4497,7 +4610,7 @@
           "symbol": "initSongUI",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1424
+          "line": 1428
         }
       ],
       "referenceFiles": [
@@ -4510,12 +4623,14 @@
         {
           "symbol": "initUpdateControls",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 755
+          "file": "js/generated/ui/update-controls.js",
+          "line": 181
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js",
+        "js/led.js",
+        "js/trainer-core.js"
       ]
     },
     {
@@ -4582,7 +4697,7 @@
           "symbol": "isFullscreenActive",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3080
+          "line": 2770
         }
       ],
       "referenceFiles": [
@@ -4595,11 +4710,12 @@
         {
           "symbol": "isLikelyBrowserAccessIssue",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 57
+          "file": "js/generated/ui/permission-help.js",
+          "line": 26
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/permission-help.js",
         "js/led.js"
       ]
     },
@@ -4609,12 +4725,12 @@
         {
           "symbol": "isLocalAppRuntime",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 612
+          "file": "js/generated/ui/update-controls.js",
+          "line": 39
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -4644,8 +4760,9 @@
       ],
       "referenceFiles": [
         "js/generated/state/player-range.js",
-        "js/led.js",
+        "js/generated/ui/player-range-controls.js",
         "js/feedback-engine.js",
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -4655,12 +4772,12 @@
         {
           "symbol": "isMidiLedRenderableState",
           "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 2423
+          "file": "js/led.js",
+          "line": 1848
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/led.js"
       ]
     },
     {
@@ -4670,10 +4787,11 @@
           "symbol": "isPracticeHandEnabledForStaff",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1483
+          "line": 1488
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -4684,7 +4802,7 @@
           "symbol": "isRecentOutgoingMidiEcho",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 116
+          "line": 120
         }
       ],
       "referenceFiles": [
@@ -4696,13 +4814,14 @@
       "definitions": [
         {
           "symbol": "isRenderableAttackNote",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1690
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 13
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/score/score-traversal.js",
+        "js/generated/compatibility/score-traversal.js"
       ]
     },
     {
@@ -4740,7 +4859,7 @@
           "symbol": "keyPosition01ToLedIndex",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1241
+          "line": 897
         }
       ],
       "referenceFiles": [
@@ -4754,7 +4873,7 @@
           "symbol": "lastTempoPulseAtMs",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 559
+          "line": 563
         }
       ],
       "referenceFiles": [
@@ -4790,13 +4909,43 @@
       ]
     },
     {
+      "symbol": "legacyUpdateLEDHardware",
+      "definitions": [
+        {
+          "symbol": "legacyUpdateLEDHardware",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1804
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/generated/compatibility/optional-led.js"
+      ]
+    },
+    {
+      "symbol": "legacyWipeHardwareLEDs",
+      "definitions": [
+        {
+          "symbol": "legacyWipeHardwareLEDs",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1830
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/generated/compatibility/optional-led.js"
+      ]
+    },
+    {
       "symbol": "listZipEntries",
       "definitions": [
         {
           "symbol": "listZipEntries",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1005
+          "line": 1009
         }
       ],
       "referenceFiles": [
@@ -4810,7 +4959,7 @@
           "symbol": "loadLedCalibration",
           "kind": "function",
           "file": "js/led.js",
-          "line": 84
+          "line": 33
         }
       ],
       "referenceFiles": [
@@ -4824,7 +4973,7 @@
           "symbol": "loadScoreIntoApp",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 1221
+          "line": 1225
         }
       ],
       "referenceFiles": [
@@ -4843,7 +4992,7 @@
           "symbol": "loopCountInCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3699
+          "line": 3389
         }
       ],
       "referenceFiles": [
@@ -4857,7 +5006,7 @@
           "symbol": "loopMaxDecreaseBtn",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3673
+          "line": 3363
         }
       ],
       "referenceFiles": [
@@ -4871,7 +5020,7 @@
           "symbol": "loopMaxIncreaseBtn",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3674
+          "line": 3364
         }
       ],
       "referenceFiles": [
@@ -4885,7 +5034,7 @@
           "symbol": "loopMaxInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3670
+          "line": 3360
         }
       ],
       "referenceFiles": [
@@ -4899,7 +5048,7 @@
           "symbol": "loopMaxSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3668
+          "line": 3358
         }
       ],
       "referenceFiles": [
@@ -4913,7 +5062,7 @@
           "symbol": "loopMinDecreaseBtn",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3671
+          "line": 3361
         }
       ],
       "referenceFiles": [
@@ -4927,7 +5076,7 @@
           "symbol": "loopMinIncreaseBtn",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3672
+          "line": 3362
         }
       ],
       "referenceFiles": [
@@ -4941,7 +5090,7 @@
           "symbol": "loopMinInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3669
+          "line": 3359
         }
       ],
       "referenceFiles": [
@@ -4955,7 +5104,7 @@
           "symbol": "loopMinSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3667
+          "line": 3357
         }
       ],
       "referenceFiles": [
@@ -4983,7 +5132,7 @@
           "symbol": "lowLatencyPlaybackCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3544
+          "line": 3234
         }
       ],
       "referenceFiles": [
@@ -4997,7 +5146,7 @@
           "symbol": "lowLatencyPlaybackSynth",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 465
+          "line": 469
         }
       ],
       "referenceFiles": [
@@ -5009,12 +5158,13 @@
       "definitions": [
         {
           "symbol": "makeLedPreviewEntrySignature",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1752
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 14
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -5053,7 +5203,7 @@
           "symbol": "masterPianoVolume",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 463
+          "line": 467
         }
       ],
       "referenceFiles": [
@@ -5082,7 +5232,7 @@
           "symbol": "measureTimingCache",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 563
+          "line": 567
         }
       ],
       "referenceFiles": [
@@ -5096,7 +5246,7 @@
           "symbol": "metroVolInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3462
+          "line": 3152
         }
       ],
       "referenceFiles": [
@@ -5110,7 +5260,7 @@
           "symbol": "metroVolSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3461
+          "line": 3151
         }
       ],
       "referenceFiles": [
@@ -5124,7 +5274,7 @@
           "symbol": "metronomeCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3736
+          "line": 3426
         }
       ],
       "referenceFiles": [
@@ -5138,7 +5288,7 @@
           "symbol": "metronomeMidiOutCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3725
+          "line": 3415
         }
       ],
       "referenceFiles": [
@@ -5152,7 +5302,7 @@
           "symbol": "metronomeSynth",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 552
+          "line": 556
         }
       ],
       "referenceFiles": [
@@ -5182,7 +5332,7 @@
           "symbol": "midiInBoostInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3490
+          "line": 3180
         }
       ],
       "referenceFiles": [
@@ -5196,7 +5346,7 @@
           "symbol": "midiInBoostSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3489
+          "line": 3179
         }
       ],
       "referenceFiles": [
@@ -5210,7 +5360,7 @@
           "symbol": "midiLedLowVelocityCheckbox",
           "kind": "const",
           "file": "js/midi.js",
-          "line": 312
+          "line": 316
         }
       ],
       "referenceFiles": [
@@ -5224,7 +5374,7 @@
           "symbol": "midiLedTestBtn",
           "kind": "const",
           "file": "js/midi.js",
-          "line": 481
+          "line": 485
         }
       ],
       "referenceFiles": [
@@ -5238,7 +5388,7 @@
           "symbol": "midiOutVolInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3476
+          "line": 3166
         }
       ],
       "referenceFiles": [
@@ -5252,7 +5402,7 @@
           "symbol": "midiOutVolSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3475
+          "line": 3165
         }
       ],
       "referenceFiles": [
@@ -5353,7 +5503,7 @@
           "symbol": "normalizeLedOutputMode",
           "kind": "function",
           "file": "js/led.js",
-          "line": 568
+          "line": 517
         }
       ],
       "referenceFiles": [
@@ -5367,7 +5517,7 @@
           "symbol": "normalizeLiveVelocity",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2453
+          "line": 2143
         }
       ],
       "referenceFiles": [
@@ -5416,7 +5566,7 @@
       ],
       "referenceFiles": [
         "js/generated/domain/playable-range.js",
-        "js/led.js"
+        "js/generated/ui/player-range-controls.js"
       ]
     },
     {
@@ -5426,7 +5576,7 @@
           "symbol": "normalizeWledTransport",
           "kind": "function",
           "file": "js/led.js",
-          "line": 572
+          "line": 521
         }
       ],
       "referenceFiles": [
@@ -5440,7 +5590,7 @@
           "symbol": "normalizeZipEntryPath",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 984
+          "line": 988
         }
       ],
       "referenceFiles": [
@@ -5454,7 +5604,7 @@
           "symbol": "normalizeZoomValue",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3353
+          "line": 3043
         }
       ],
       "referenceFiles": [
@@ -5468,7 +5618,7 @@
           "symbol": "nudgeLedCalibration",
           "kind": "function",
           "file": "js/led.js",
-          "line": 222
+          "line": 171
         }
       ],
       "referenceFiles": [
@@ -5482,7 +5632,7 @@
           "symbol": "openScoreFilePicker",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 920
+          "line": 924
         }
       ],
       "referenceFiles": [
@@ -5502,6 +5652,37 @@
       ],
       "referenceFiles": [
         "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "optionalLedEnabled",
+      "definitions": [
+        {
+          "symbol": "optionalLedEnabled",
+          "kind": "const",
+          "file": "js/generated/compatibility/optional-led.js",
+          "line": 5
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/optional-led.js"
+      ]
+    },
+    {
+      "symbol": "optionalLedOutput",
+      "definitions": [
+        {
+          "symbol": "optionalLedOutput",
+          "kind": "const",
+          "file": "js/generated/compatibility/optional-led.js",
+          "line": 8
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/optional-led.js",
+        "js/generated/ui/player-range-controls.js",
+        "js/midi.js",
+        "js/trainer-core.js"
       ]
     },
     {
@@ -5526,7 +5707,7 @@
           "symbol": "osmd",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 394
+          "line": 398
         }
       ],
       "referenceFiles": [
@@ -5573,7 +5754,7 @@
           "symbol": "pausePlaybackFromToolbar",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3277
+          "line": 2967
         }
       ],
       "referenceFiles": [
@@ -5604,7 +5785,7 @@
           "symbol": "pianoSampler",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 479
+          "line": 483
         }
       ],
       "referenceFiles": [
@@ -5618,7 +5799,7 @@
           "symbol": "pianoSamplerReady",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 494
+          "line": 498
         }
       ],
       "referenceFiles": [
@@ -5632,7 +5813,7 @@
           "symbol": "pianoSamplerReadyPromise",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 495
+          "line": 499
         }
       ],
       "referenceFiles": [
@@ -5646,7 +5827,7 @@
           "symbol": "pianoVolInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3460
+          "line": 3150
         }
       ],
       "referenceFiles": [
@@ -5660,7 +5841,7 @@
           "symbol": "pianoVolSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3459
+          "line": 3149
         }
       ],
       "referenceFiles": [
@@ -5674,7 +5855,7 @@
           "symbol": "playLocalPianoNote",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2468
+          "line": 2158
         }
       ],
       "referenceFiles": [
@@ -5688,7 +5869,7 @@
           "symbol": "playLowLatencyPlaybackNote",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 528
+          "line": 532
         }
       ],
       "referenceFiles": [
@@ -5702,7 +5883,7 @@
           "symbol": "playMetronomeClick",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 611
+          "line": 615
         }
       ],
       "referenceFiles": [
@@ -5716,7 +5897,7 @@
           "symbol": "playPauseButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3064
+          "line": 2754
         }
       ],
       "referenceFiles": [
@@ -5730,7 +5911,7 @@
           "symbol": "playScheduledPlaybackNote",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 544
+          "line": 548
         }
       ],
       "referenceFiles": [
@@ -5744,7 +5925,7 @@
           "symbol": "playbackLoop",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3893
+          "line": 3583
         }
       ],
       "referenceFiles": [
@@ -5760,7 +5941,7 @@
           "symbol": "populateMIDIDevices",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 154
+          "line": 158
         }
       ],
       "referenceFiles": [
@@ -5775,7 +5956,7 @@
           "symbol": "populateMidiChannelSelect",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 13
+          "line": 17
         }
       ],
       "referenceFiles": [
@@ -5803,12 +5984,12 @@
           "symbol": "positionLedCalibrationPanel",
           "kind": "function",
           "file": "js/led.js",
-          "line": 169
+          "line": 118
         }
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -5847,7 +6028,7 @@
           "symbol": "preserveMusicAreaScroll",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3155
+          "line": 2845
         }
       ],
       "referenceFiles": [
@@ -5890,21 +6071,7 @@
           "symbol": "ptNeedsImmediateResumeStart",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 2967
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "pulseAnimationNeeded",
-      "definitions": [
-        {
-          "symbol": "pulseAnimationNeeded",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 4224
+          "line": 2657
         }
       ],
       "referenceFiles": [
@@ -5918,7 +6085,7 @@
           "symbol": "rawDataToArrayBuffer",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 994
+          "line": 998
         }
       ],
       "referenceFiles": [
@@ -5932,7 +6099,7 @@
           "symbol": "readScoreFile",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 939
+          "line": 943
         }
       ],
       "referenceFiles": [
@@ -5947,7 +6114,7 @@
           "symbol": "readUint16LE",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 971
+          "line": 975
         }
       ],
       "referenceFiles": [
@@ -5961,7 +6128,7 @@
           "symbol": "readUint32LE",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 975
+          "line": 979
         }
       ],
       "referenceFiles": [
@@ -5975,7 +6142,7 @@
           "symbol": "rebuildGlobalStaffIdentityMap",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1330
+          "line": 1334
         }
       ],
       "referenceFiles": [
@@ -5989,7 +6156,7 @@
           "symbol": "rebuildMeasureTimingCache",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 769
+          "line": 773
         }
       ],
       "referenceFiles": [
@@ -6003,7 +6170,7 @@
           "symbol": "rebuildWaitModeMetronome",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 743
+          "line": 747
         }
       ],
       "referenceFiles": [
@@ -6016,12 +6183,12 @@
         {
           "symbol": "refreshConnectionStatuses",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1003
+          "file": "js/generated/ui/connection-status.js",
+          "line": 75
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/ui/connection-status.js",
         "js/midi.js"
       ]
     },
@@ -6031,12 +6198,12 @@
         {
           "symbol": "refreshPlayerRangeDependentState",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1277
+          "file": "js/generated/ui/player-range-controls.js",
+          "line": 14
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/player-range-controls.js"
       ]
     },
     {
@@ -6077,7 +6244,7 @@
           "symbol": "releaseActiveVirtualPointer",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2328
+          "line": 2020
         }
       ],
       "referenceFiles": [
@@ -6106,7 +6273,7 @@
           "symbol": "releaseLowLatencySynth",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 4255
+          "line": 3921
         }
       ],
       "referenceFiles": [
@@ -6120,10 +6287,11 @@
           "symbol": "rememberOutgoingMidiMessage",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 108
+          "line": 112
         }
       ],
       "referenceFiles": [
+        "js/led.js",
         "js/midi.js",
         "js/trainer-core.js"
       ]
@@ -6182,11 +6350,13 @@
           "symbol": "renderVirtualKeyboard",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2068
+          "line": 1763
         }
       ],
       "referenceFiles": [
         "js/led.js",
+        "js/generated/compatibility/optional-led.js",
+        "js/generated/ui/player-range-controls.js",
         "js/midi.js",
         "js/trainer-core.js"
       ]
@@ -6198,7 +6368,7 @@
           "symbol": "requestAppFullscreen",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 3098
+          "line": 2788
         }
       ],
       "referenceFiles": [
@@ -6212,7 +6382,7 @@
           "symbol": "resetAllLedCalibration",
           "kind": "function",
           "file": "js/led.js",
-          "line": 127
+          "line": 76
         }
       ],
       "referenceFiles": [
@@ -6227,7 +6397,7 @@
           "symbol": "resetPlaybackForLoadedScore",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3281
+          "line": 2971
         }
       ],
       "referenceFiles": [
@@ -6241,7 +6411,7 @@
           "symbol": "resetPreferencesButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 4153
+          "line": 3843
         }
       ],
       "referenceFiles": [
@@ -6255,7 +6425,7 @@
           "symbol": "resizeTimer",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 3337
+          "line": 3027
         }
       ],
       "referenceFiles": [
@@ -6281,13 +6451,13 @@
       "definitions": [
         {
           "symbol": "resolveLedPreviewTraversalIndex",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1860
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 21
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/compatibility/score-traversal.js"
       ]
     },
     {
@@ -6295,12 +6465,13 @@
       "definitions": [
         {
           "symbol": "restoreCursorToMeasureAndTimestamp",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1783
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 19
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -6339,7 +6510,7 @@
           "symbol": "saveLedCalibration",
           "kind": "function",
           "file": "js/led.js",
-          "line": 94
+          "line": 43
         }
       ],
       "referenceFiles": [
@@ -6353,7 +6524,7 @@
           "symbol": "scheduleMetronomeForPlaybackWindow",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 834
+          "line": 838
         }
       ],
       "referenceFiles": [
@@ -6367,7 +6538,7 @@
           "symbol": "scheduleMidiOutPlaybackNote",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 97
+          "line": 101
         }
       ],
       "referenceFiles": [
@@ -6381,7 +6552,7 @@
           "symbol": "scheduleNextWaitModeMetronomeTick",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 695
+          "line": 699
         }
       ],
       "referenceFiles": [
@@ -6395,7 +6566,7 @@
           "symbol": "schedulePlaybackForDestinations",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2578
+          "line": 2268
         }
       ],
       "referenceFiles": [
@@ -6409,7 +6580,7 @@
           "symbol": "scheduledMetronomeEventIds",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 562
+          "line": 566
         }
       ],
       "referenceFiles": [
@@ -6423,7 +6594,7 @@
           "symbol": "scoreFullscreenButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3065
+          "line": 2755
         }
       ],
       "referenceFiles": [
@@ -6465,7 +6636,7 @@
           "symbol": "selectLedCalibrationMidi",
           "kind": "function",
           "file": "js/led.js",
-          "line": 214
+          "line": 163
         }
       ],
       "referenceFiles": [
@@ -6480,7 +6651,7 @@
           "symbol": "sendMidiOutExpressionLevel",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2551
+          "line": 2241
         }
       ],
       "referenceFiles": [
@@ -6495,7 +6666,7 @@
           "symbol": "sendMidiOutMetronomeClick",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 594
+          "line": 598
         }
       ],
       "referenceFiles": [
@@ -6509,13 +6680,13 @@
           "symbol": "sendMidiOutNoteOff",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 88
+          "line": 92
         },
         {
           "symbol": "sendMidiOutNoteOff",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2569
+          "line": 2259
         }
       ],
       "referenceFiles": [
@@ -6530,13 +6701,13 @@
           "symbol": "sendMidiOutNoteOn",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 78
+          "line": 82
         },
         {
           "symbol": "sendMidiOutNoteOn",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2559
+          "line": 2249
         }
       ],
       "referenceFiles": [
@@ -6564,12 +6735,12 @@
         {
           "symbol": "setAssetVersionOverride",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 632
+          "file": "js/generated/ui/update-controls.js",
+          "line": 57
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -6636,7 +6807,7 @@
           "symbol": "setLedCalibrationMode",
           "kind": "function",
           "file": "js/led.js",
-          "line": 189
+          "line": 138
         }
       ],
       "referenceFiles": [
@@ -6650,7 +6821,7 @@
           "symbol": "setLedCalibrationOffsetForMidi",
           "kind": "function",
           "file": "js/led.js",
-          "line": 108
+          "line": 57
         }
       ],
       "referenceFiles": [
@@ -6664,7 +6835,7 @@
           "symbol": "setLedCount",
           "kind": "function",
           "file": "js/led.js",
-          "line": 446
+          "line": 395
         }
       ],
       "referenceFiles": [
@@ -6679,7 +6850,7 @@
           "symbol": "setLedFuture1BrightnessPct",
           "kind": "function",
           "file": "js/led.js",
-          "line": 510
+          "line": 459
         }
       ],
       "referenceFiles": [
@@ -6694,7 +6865,7 @@
           "symbol": "setLedFuture2BrightnessPct",
           "kind": "function",
           "file": "js/led.js",
-          "line": 519
+          "line": 468
         }
       ],
       "referenceFiles": [
@@ -6709,7 +6880,7 @@
           "symbol": "setLedMasterBrightness",
           "kind": "function",
           "file": "js/led.js",
-          "line": 501
+          "line": 450
         }
       ],
       "referenceFiles": [
@@ -6724,7 +6895,7 @@
           "symbol": "setLedOutputMode",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1066
+          "line": 736
         }
       ],
       "referenceFiles": [
@@ -6739,7 +6910,7 @@
           "symbol": "setLedReverse",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1101
+          "line": 771
         }
       ],
       "referenceFiles": [
@@ -6752,12 +6923,12 @@
         {
           "symbol": "setPermissionNote",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 33
+          "file": "js/generated/ui/permission-help.js",
+          "line": 6
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/permission-help.js"
       ]
     },
     {
@@ -6766,12 +6937,12 @@
         {
           "symbol": "setPlayerPianoType",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1292
+          "file": "js/generated/ui/player-range-controls.js",
+          "line": 28
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/ui/player-range-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -6828,7 +6999,7 @@
           "symbol": "setWledIp",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1121
+          "line": 791
         }
       ],
       "referenceFiles": [
@@ -6843,7 +7014,7 @@
           "symbol": "setWledStatus",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1042
+          "line": 712
         }
       ],
       "referenceFiles": [
@@ -6857,7 +7028,7 @@
           "symbol": "setWledTransport",
           "kind": "function",
           "file": "js/led.js",
-          "line": 862
+          "line": 611
         }
       ],
       "referenceFiles": [
@@ -6871,12 +7042,26 @@
           "symbol": "setupMIDI",
           "kind": "async function",
           "file": "js/midi.js",
-          "line": 128
+          "line": 132
         }
       ],
       "referenceFiles": [
         "js/midi.js",
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "sharedScoreTraversal",
+      "definitions": [
+        {
+          "symbol": "sharedScoreTraversal",
+          "kind": "const",
+          "file": "js/generated/compatibility/score-traversal.js",
+          "line": 4
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js"
       ]
     },
     {
@@ -6886,7 +7071,7 @@
           "symbol": "shouldRouteLiveSourceToLocalAudio",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2536
+          "line": 2226
         }
       ],
       "referenceFiles": [
@@ -6900,7 +7085,7 @@
           "symbol": "shouldRouteLiveSourceToMidiOut",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2541
+          "line": 2231
         }
       ],
       "referenceFiles": [
@@ -6928,7 +7113,7 @@
           "symbol": "shouldUseLowLatencyPlaybackPath",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 523
+          "line": 527
         }
       ],
       "referenceFiles": [
@@ -6942,7 +7127,7 @@
           "symbol": "shouldUseMidiOutMetronome",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 590
+          "line": 594
         }
       ],
       "referenceFiles": [
@@ -6983,12 +7168,12 @@
         {
           "symbol": "showMidiPermissionHelp",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 41
+          "file": "js/generated/ui/permission-help.js",
+          "line": 14
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/ui/permission-help.js",
         "js/midi.js"
       ]
     },
@@ -7027,11 +7212,12 @@
         {
           "symbol": "showWledPermissionHelp",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 49
+          "file": "js/generated/ui/permission-help.js",
+          "line": 20
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/permission-help.js",
         "js/led.js"
       ]
     },
@@ -7042,7 +7228,7 @@
           "symbol": "silencePlaybackOutputsImmediately",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3211
+          "line": 2901
         }
       ],
       "referenceFiles": [
@@ -7056,7 +7242,7 @@
           "symbol": "speedInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3387
+          "line": 3077
         }
       ],
       "referenceFiles": [
@@ -7070,21 +7256,7 @@
           "symbol": "speedSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3386
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "startLedPulseLoop",
-      "definitions": [
-        {
-          "symbol": "startLedPulseLoop",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 4228
+          "line": 3076
         }
       ],
       "referenceFiles": [
@@ -7098,7 +7270,7 @@
           "symbol": "startPlaybackFromToolbar",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 3169
+          "line": 2859
         }
       ],
       "referenceFiles": [
@@ -7112,7 +7284,7 @@
           "symbol": "startVisualSustains",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2217
+          "line": 1909
         }
       ],
       "referenceFiles": [
@@ -7126,7 +7298,7 @@
           "symbol": "startWaitModeMetronome",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 729
+          "line": 733
         }
       ],
       "referenceFiles": [
@@ -7140,7 +7312,7 @@
           "symbol": "stepLooperValue",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3793
+          "line": 3483
         }
       ],
       "referenceFiles": [
@@ -7154,7 +7326,7 @@
           "symbol": "stopPlaybackState",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3248
+          "line": 2938
         }
       ],
       "referenceFiles": [
@@ -7168,7 +7340,7 @@
           "symbol": "stopWaitModeMetronome",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 679
+          "line": 683
         }
       ],
       "referenceFiles": [
@@ -7212,7 +7384,7 @@
           "symbol": "syncFullscreenUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3084
+          "line": 2774
         }
       ],
       "referenceFiles": [
@@ -7226,7 +7398,7 @@
           "symbol": "syncHandAssignmentFromControls",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1375
+          "line": 1379
         }
       ],
       "referenceFiles": [
@@ -7240,7 +7412,7 @@
           "symbol": "syncLedBrightnessControls",
           "kind": "function",
           "file": "js/led.js",
-          "line": 478
+          "line": 427
         }
       ],
       "referenceFiles": [
@@ -7255,7 +7427,7 @@
           "symbol": "syncLedCalibrationControls",
           "kind": "function",
           "file": "js/led.js",
-          "line": 142
+          "line": 91
         }
       ],
       "referenceFiles": [
@@ -7269,7 +7441,7 @@
           "symbol": "syncLedCountControl",
           "kind": "function",
           "file": "js/led.js",
-          "line": 439
+          "line": 388
         }
       ],
       "referenceFiles": [
@@ -7283,7 +7455,7 @@
           "symbol": "syncLedOutputModeControls",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1008
+          "line": 678
         }
       ],
       "referenceFiles": [
@@ -7298,7 +7470,7 @@
           "symbol": "syncLooper",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3757
+          "line": 3447
         }
       ],
       "referenceFiles": [
@@ -7312,7 +7484,7 @@
           "symbol": "syncLooperDependentUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3676
+          "line": 3366
         }
       ],
       "referenceFiles": [
@@ -7326,7 +7498,7 @@
           "symbol": "syncLooperInputIfReady",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3786
+          "line": 3476
         }
       ],
       "referenceFiles": [
@@ -7340,7 +7512,7 @@
           "symbol": "syncLowLatencyPlaybackPreferenceUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2862
+          "line": 2552
         }
       ],
       "referenceFiles": [
@@ -7354,7 +7526,7 @@
           "symbol": "syncMidiInBoostUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3492
+          "line": 3182
         }
       ],
       "referenceFiles": [
@@ -7368,7 +7540,7 @@
           "symbol": "syncMidiInputConfigVisibility",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 36
+          "line": 40
         }
       ],
       "referenceFiles": [
@@ -7382,11 +7554,11 @@
           "symbol": "syncMidiOutChannelVisibility",
           "kind": "function",
           "file": "js/midi.js",
-          "line": 50
+          "line": 54
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/ui/connection-status.js",
         "js/midi.js"
       ]
     },
@@ -7396,12 +7568,12 @@
         {
           "symbol": "syncPlayerPianoTypeControl",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 1264
+          "file": "js/generated/ui/player-range-controls.js",
+          "line": 3
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/player-range-controls.js"
       ]
     },
     {
@@ -7411,7 +7583,7 @@
           "symbol": "syncTempoMetronomeDependentUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3390
+          "line": 3080
         }
       ],
       "referenceFiles": [
@@ -7425,7 +7597,7 @@
           "symbol": "syncTempoPreviewFromPercent",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3423
+          "line": 3113
         }
       ],
       "referenceFiles": [
@@ -7455,7 +7627,7 @@
           "symbol": "syncTrainerRoutingUiState",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2504
+          "line": 2194
         }
       ],
       "referenceFiles": [
@@ -7469,12 +7641,12 @@
         {
           "symbol": "syncUpdateControls",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 678
+          "file": "js/generated/ui/update-controls.js",
+          "line": 100
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -7484,10 +7656,11 @@
           "symbol": "syncWledStatus",
           "kind": "function",
           "file": "js/led.js",
-          "line": 924
+          "line": 673
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/connection-status.js",
         "js/led.js"
       ]
     },
@@ -7498,7 +7671,7 @@
           "symbol": "syncWledTransportControls",
           "kind": "function",
           "file": "js/led.js",
-          "line": 785
+          "line": 534
         }
       ],
       "referenceFiles": [
@@ -7512,7 +7685,7 @@
           "symbol": "syncZoomControls",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3360
+          "line": 3050
         }
       ],
       "referenceFiles": [
@@ -7540,7 +7713,7 @@
           "symbol": "tempoPulseScheduleId",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 561
+          "line": 565
         }
       ],
       "referenceFiles": [
@@ -7554,7 +7727,7 @@
           "symbol": "tempoPulseTimeoutId",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 560
+          "line": 564
         }
       ],
       "referenceFiles": [
@@ -7568,7 +7741,7 @@
           "symbol": "toggleAppFullscreen",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 3132
+          "line": 2822
         }
       ],
       "referenceFiles": [
@@ -7638,7 +7811,7 @@
           "symbol": "triggerTempoVisualPulse",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 642
+          "line": 646
         }
       ],
       "referenceFiles": [
@@ -7652,7 +7825,7 @@
           "symbol": "triggerVirtualKey",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2595
+          "line": 2285
         }
       ],
       "referenceFiles": [
@@ -7669,7 +7842,7 @@
           "symbol": "tryReserveRealtimeUpcomingHeldNote",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1628
+          "line": 1633
         }
       ],
       "referenceFiles": [
@@ -7683,7 +7856,7 @@
           "symbol": "tryReserveSingleHandEarlyGrace",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1592
+          "line": 1597
         }
       ],
       "referenceFiles": [
@@ -7696,12 +7869,12 @@
         {
           "symbol": "updateConnectionStatusIndicator",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 929
+          "file": "js/generated/ui/connection-status.js",
+          "line": 3
         }
       ],
       "referenceFiles": [
-        "js/led.js"
+        "js/generated/ui/connection-status.js"
       ]
     },
     {
@@ -7710,27 +7883,14 @@
         {
           "symbol": "updateConnectionStatuses",
           "kind": "function",
-          "file": "js/led.js",
-          "line": 982
+          "file": "js/generated/ui/connection-status.js",
+          "line": 55
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/connection-status.js",
         "js/led.js",
         "js/midi.js",
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "updateLEDHardware",
-      "definitions": [
-        {
-          "symbol": "updateLEDHardware",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1993
-        }
-      ],
-      "referenceFiles": [
         "js/trainer-core.js"
       ]
     },
@@ -7741,12 +7901,12 @@
           "symbol": "updateLedKeyMapping",
           "kind": "function",
           "file": "js/led.js",
-          "line": 1247
+          "line": 903
         }
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -7756,7 +7916,7 @@
           "symbol": "updateMetroVolume",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3509
+          "line": 3199
         }
       ],
       "referenceFiles": [
@@ -7770,7 +7930,7 @@
           "symbol": "updateMidiInBoost",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3498
+          "line": 3188
         }
       ],
       "referenceFiles": [
@@ -7784,7 +7944,7 @@
           "symbol": "updateMidiOutVolume",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3478
+          "line": 3168
         }
       ],
       "referenceFiles": [
@@ -7798,7 +7958,7 @@
           "symbol": "updatePianoVolume",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3464
+          "line": 3154
         }
       ],
       "referenceFiles": [
@@ -7812,7 +7972,7 @@
           "symbol": "updatePlayPauseButton",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3148
+          "line": 2838
         }
       ],
       "referenceFiles": [
@@ -7826,7 +7986,7 @@
           "symbol": "updateScoreDisplay",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 905
+          "line": 909
         }
       ],
       "referenceFiles": [
@@ -7855,7 +8015,7 @@
           "symbol": "updateTempo",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3432
+          "line": 3122
         }
       ],
       "referenceFiles": [
@@ -7869,7 +8029,7 @@
           "symbol": "visualPulseCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3716
+          "line": 3406
         }
       ],
       "referenceFiles": [
@@ -7883,7 +8043,7 @@
           "symbol": "waitMetronomeActiveMeasureIndex",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 568
+          "line": 572
         }
       ],
       "referenceFiles": [
@@ -7897,7 +8057,7 @@
           "symbol": "waitMetronomeBeatCounter",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 565
+          "line": 569
         }
       ],
       "referenceFiles": [
@@ -7911,7 +8071,7 @@
           "symbol": "waitMetronomeNextClickAtSec",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 567
+          "line": 571
         }
       ],
       "referenceFiles": [
@@ -7925,7 +8085,7 @@
           "symbol": "waitMetronomeNumerator",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 566
+          "line": 570
         }
       ],
       "referenceFiles": [
@@ -7939,7 +8099,7 @@
           "symbol": "waitMetronomeTimeoutId",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 564
+          "line": 568
         }
       ],
       "referenceFiles": [
@@ -7999,11 +8159,12 @@
           "symbol": "window.MidiLedTestController",
           "kind": "window assignment",
           "file": "js/midi.js",
-          "line": 477
+          "line": 481
         }
       ],
       "referenceFiles": [
         "js/led.js",
+        "js/generated/compatibility/optional-led.js",
         "js/midi.js"
       ]
     },
@@ -8193,12 +8354,12 @@
         {
           "symbol": "window.clearMidiPermissionHelp",
           "kind": "window assignment",
-          "file": "js/led.js",
-          "line": 79
+          "file": "js/generated/ui/permission-help.js",
+          "line": 46
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/ui/permission-help.js",
         "js/midi.js"
       ]
     },
@@ -8223,11 +8384,12 @@
         {
           "symbol": "window.clearWledPermissionHelp",
           "kind": "window assignment",
-          "file": "js/led.js",
-          "line": 81
+          "file": "js/generated/ui/permission-help.js",
+          "line": 48
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/permission-help.js",
         "js/led.js"
       ]
     },
@@ -8266,11 +8428,12 @@
           "symbol": "window.getAssignedHandRoleForStaff",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 1372
+          "line": 1376
         }
       ],
       "referenceFiles": [
         "js/feedback-engine.js",
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -8281,7 +8444,7 @@
           "symbol": "window.getResolvedStaffAssignmentIdFromEntry",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 1371
+          "line": 1375
         }
       ],
       "referenceFiles": [
@@ -8296,10 +8459,11 @@
           "symbol": "window.getResolvedStaffAssignmentIdFromNote",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 1369
+          "line": 1373
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-traversal.js",
         "js/trainer-core.js"
       ]
     },
@@ -8310,7 +8474,7 @@
           "symbol": "window.openScoreFilePicker",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 923
+          "line": 927
         }
       ],
       "referenceFiles": [
@@ -8338,12 +8502,12 @@
         {
           "symbol": "window.showMidiPermissionHelp",
           "kind": "window assignment",
-          "file": "js/led.js",
-          "line": 77
+          "file": "js/generated/ui/permission-help.js",
+          "line": 45
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/ui/permission-help.js",
         "js/midi.js"
       ]
     },
@@ -8353,11 +8517,12 @@
         {
           "symbol": "window.showWledPermissionHelp",
           "kind": "window assignment",
-          "file": "js/led.js",
-          "line": 80
+          "file": "js/generated/ui/permission-help.js",
+          "line": 47
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/permission-help.js",
         "js/led.js"
       ]
     },
@@ -8368,7 +8533,7 @@
           "symbol": "window.syncSettingsDebugVisibility",
           "kind": "window assignment",
           "file": "js/led.js",
-          "line": 920
+          "line": 669
         }
       ],
       "referenceFiles": [
@@ -8383,7 +8548,7 @@
           "symbol": "window.syncTrainerRoutingUiState",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 4245
+          "line": 3911
         }
       ],
       "referenceFiles": [
@@ -8397,12 +8562,13 @@
         {
           "symbol": "wipeHardwareLEDs",
           "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 2019
+          "file": "js/generated/compatibility/optional-led.js",
+          "line": 44
         }
       ],
       "referenceFiles": [
         "js/led.js",
+        "js/generated/compatibility/optional-led.js",
         "js/midi.js",
         "js/trainer-core.js"
       ]
@@ -8414,7 +8580,7 @@
           "symbol": "wireLooperHold",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 3851
+          "line": 3541
         }
       ],
       "referenceFiles": [
@@ -8428,7 +8594,7 @@
           "symbol": "zoomInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3350
+          "line": 3040
         }
       ],
       "referenceFiles": [
@@ -8442,7 +8608,7 @@
           "symbol": "zoomSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 3349
+          "line": 3039
         }
       ],
       "referenceFiles": [
