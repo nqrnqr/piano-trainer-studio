@@ -1,0 +1,8377 @@
+{
+  "note": "Lexical candidates, not an AST or call graph. Column-zero declarations and window assignments only; property definitions, destructuring, dynamic lookups, comments and shadowed references need review. Side effects are documented by file in GLOBAL_DEPENDENCIES.md. Generated scripts are runtime paths; consult PROGRESS.md for their TS sources.",
+  "loadOrder": [
+    "js/trainer-state.js",
+    "js/transpose/transpose-engine.js",
+    "js/transpose/transpose-ui.js",
+    "js/toolbar-ui.js",
+    "js/score-library.js",
+    "js/scores-ui.js",
+    "js/led.js",
+    "js/midi.js",
+    "js/midi-import.js",
+    "js/feedback-engine.js",
+    "js/feedback-debug.js",
+    "js/trainer-timing.js",
+    "js/score-display.js",
+    "js/trainer-core.js"
+  ],
+  "symbols": [
+    {
+      "symbol": "ACCENTED_DOWNBEAT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "ACCENTED_DOWNBEAT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 203
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "APP_MANIFEST",
+      "definitions": [
+        {
+          "symbol": "APP_MANIFEST",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 9
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "APP_REPO_SLUG",
+      "definitions": [
+        {
+          "symbol": "APP_REPO_SLUG",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 10
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "APP_VERSION",
+      "definitions": [
+        {
+          "symbol": "APP_VERSION",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 11
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "ASSET_VERSION_OVERRIDE_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "ASSET_VERSION_OVERRIDE_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 24
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "AppState",
+      "definitions": [
+        {
+          "symbol": "AppState",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 26
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/transpose/transpose-ui.js",
+        "js/toolbar-ui.js",
+        "js/scores-ui.js",
+        "js/led.js",
+        "js/midi.js",
+        "js/feedback-engine.js",
+        "js/feedback-debug.js",
+        "js/score-display.js",
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "DEFAULT_PREFERENCES",
+      "definitions": [
+        {
+          "symbol": "DEFAULT_PREFERENCES",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 205
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "DEFAULT_TONE_LATENCY_PROFILE",
+      "definitions": [
+        {
+          "symbol": "DEFAULT_TONE_LATENCY_PROFILE",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 423
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "FIRST_RUN_INIT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "FIRST_RUN_INIT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 217
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "FOLLOW_ME_MIN_WAIT_RATIO",
+      "definitions": [
+        {
+          "symbol": "FOLLOW_ME_MIN_WAIT_RATIO",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 447
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "FOLLOW_ME_TONE_LATENCY_PROFILE",
+      "definitions": [
+        {
+          "symbol": "FOLLOW_ME_TONE_LATENCY_PROFILE",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 400
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "FULL_PIANO_KEY_COUNT",
+      "definitions": [
+        {
+          "symbol": "FULL_PIANO_KEY_COUNT",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 143
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "FULL_PIANO_MIDI_MAX",
+      "definitions": [
+        {
+          "symbol": "FULL_PIANO_MIDI_MAX",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 142
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "FULL_PIANO_MIDI_MIN",
+      "definitions": [
+        {
+          "symbol": "FULL_PIANO_MIDI_MIN",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 141
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "GeometryEngine",
+      "definitions": [
+        {
+          "symbol": "GeometryEngine",
+          "kind": "const",
+          "file": "js/feedback-engine.js",
+          "line": 33
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/feedback-debug.js",
+        "js/score-display.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "KEY_STATE_CLASSES",
+      "definitions": [
+        {
+          "symbol": "KEY_STATE_CLASSES",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 1991
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "LED_CALIBRATION_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "LED_CALIBRATION_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 161
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "LED_COUNT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "LED_COUNT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 150
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "LED_FADE_OUT_MS",
+      "definitions": [
+        {
+          "symbol": "LED_FADE_OUT_MS",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 160
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "LED_FUTURE1_PCT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "LED_FUTURE1_PCT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 158
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "LED_FUTURE2_PCT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "LED_FUTURE2_PCT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 159
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "LED_MASTER_BRIGHTNESS_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "LED_MASTER_BRIGHTNESS_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 157
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "LED_OUTPUT_MODE_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "LED_OUTPUT_MODE_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 151
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "LED_PROTOCOL",
+      "definitions": [
+        {
+          "symbol": "LED_PROTOCOL",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 1982
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "LED_REVERSE_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "LED_REVERSE_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 152
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "LOOP_COUNT_IN_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "LOOP_COUNT_IN_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 200
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "LOOP_STEPPER_HOLD_DELAY_MS",
+      "definitions": [
+        {
+          "symbol": "LOOP_STEPPER_HOLD_DELAY_MS",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3815
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "LOOP_STEPPER_HOLD_REPEAT_MS",
+      "definitions": [
+        {
+          "symbol": "LOOP_STEPPER_HOLD_REPEAT_MS",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3816
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "LedEngine",
+      "definitions": [
+        {
+          "symbol": "LedEngine",
+          "kind": "const",
+          "file": "js/led.js",
+          "line": 1363
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "METRONOME_MIDIOUT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "METRONOME_MIDIOUT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 202
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "METRONOME_VOL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "METRONOME_VOL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 201
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_IN_CHANNEL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_IN_CHANNEL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 195
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_IN_ID_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_IN_ID_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 192
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_IN_NAME_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_IN_NAME_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 146
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_LED_LOW_VELOCITY_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_LED_LOW_VELOCITY_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 198
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_LIGHTS_CHANNEL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_LIGHTS_CHANNEL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 197
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_LIGHTS_ID_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_LIGHTS_ID_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 194
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_LIGHTS_NAME_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_LIGHTS_NAME_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 148
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_OUT_CHANNEL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_OUT_CHANNEL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 196
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_OUT_ID_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_OUT_ID_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 193
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MIDI_OUT_NAME_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "MIDI_OUT_NAME_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 147
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "MidiLedTestController",
+      "definitions": [
+        {
+          "symbol": "MidiLedTestController",
+          "kind": "const",
+          "file": "js/midi.js",
+          "line": 327
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "PIANO_SAMPLE_EXTENSION",
+      "definitions": [
+        {
+          "symbol": "PIANO_SAMPLE_EXTENSION",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 462
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "PLAYER_PIANO_SIZES",
+      "definitions": [
+        {
+          "symbol": "PLAYER_PIANO_SIZES",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 144
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "PLAYER_PIANO_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "PLAYER_PIANO_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 145
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "POPUP_ANIMATION_MS",
+      "definitions": [
+        {
+          "symbol": "POPUP_ANIMATION_MS",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 22
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "RESETTABLE_PREFERENCE_KEYS",
+      "definitions": [
+        {
+          "symbol": "RESETTABLE_PREFERENCE_KEYS",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 252
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "SCORE_LIBRARY_DB_NAME",
+      "definitions": [
+        {
+          "symbol": "SCORE_LIBRARY_DB_NAME",
+          "kind": "const",
+          "file": "js/score-library.js",
+          "line": 9
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "SCORE_LIBRARY_DB_VERSION",
+      "definitions": [
+        {
+          "symbol": "SCORE_LIBRARY_DB_VERSION",
+          "kind": "const",
+          "file": "js/score-library.js",
+          "line": 10
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "SCORE_LIBRARY_FOLDER_STORE",
+      "definitions": [
+        {
+          "symbol": "SCORE_LIBRARY_FOLDER_STORE",
+          "kind": "const",
+          "file": "js/score-library.js",
+          "line": 11
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "SCORE_LIBRARY_SCORE_STORE",
+      "definitions": [
+        {
+          "symbol": "SCORE_LIBRARY_SCORE_STORE",
+          "kind": "const",
+          "file": "js/score-library.js",
+          "line": 12
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "SETTINGS_DEBUG_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "SETTINGS_DEBUG_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 191
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/feedback-debug.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "SKIP_FIRST_RUN_ONCE_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "SKIP_FIRST_RUN_ONCE_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 218
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "STARTER_LIBRARY_ASSET_PATH",
+      "definitions": [
+        {
+          "symbol": "STARTER_LIBRARY_ASSET_PATH",
+          "kind": "const",
+          "file": "js/score-library.js",
+          "line": 13
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "STARTER_LIBRARY_IMPORT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "STARTER_LIBRARY_IMPORT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/score-library.js",
+          "line": 14
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "ScoreDisplay",
+      "definitions": [
+        {
+          "symbol": "ScoreDisplay",
+          "kind": "const",
+          "file": "js/score-display.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/score-display.js",
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "ScoreLibrary",
+      "definitions": [
+        {
+          "symbol": "ScoreLibrary",
+          "kind": "const",
+          "file": "js/score-library.js",
+          "line": 45
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js",
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_AUDIO_HANDS_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_AUDIO_HANDS_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 172
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 174
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_AUDIO_OTHER_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_AUDIO_OTHER_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 173
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_AUDIO_VIRTUAL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_AUDIO_VIRTUAL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 175
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_AUTOSCROLL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_AUTOSCROLL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 188
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 167
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_FEEDBACK_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_FEEDBACK_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 164
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 190
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_FUTURE_DEPTH_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_FUTURE_DEPTH_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 166
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_FUTURE_PREVIEW_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_FUTURE_PREVIEW_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 165
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_INPUT_VELOCITY_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_INPUT_VELOCITY_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 180
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_KEYBOARD_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_KEYBOARD_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 189
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 181
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 182
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_MIDIIN_BOOST_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_MIDIIN_BOOST_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 185
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_MIDIOUT_HANDS_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_MIDIOUT_HANDS_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 176
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 178
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_MIDIOUT_OTHER_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_MIDIOUT_OTHER_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 177
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 179
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_MIDIOUT_VOL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_MIDIOUT_VOL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 184
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_MODE_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_MODE_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 163
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_PIANO_VOL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_PIANO_VOL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 183
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_PLAYBACK_LH_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_PLAYBACK_LH_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 170
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_PLAYBACK_RH_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_PLAYBACK_RH_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 171
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_PRACTICE_LH_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_PRACTICE_LH_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 168
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_PRACTICE_RH_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_PRACTICE_RH_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 169
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_SCORE_LAYOUT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_SCORE_LAYOUT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 187
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/score-display.js"
+      ]
+    },
+    {
+      "symbol": "TRAINER_ZOOM_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "TRAINER_ZOOM_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 186
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "UPDATE_MANIFEST_URL",
+      "definitions": [
+        {
+          "symbol": "UPDATE_MANIFEST_URL",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 15
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "UPDATE_MANIFEST_URL_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "UPDATE_MANIFEST_URL_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 17
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "UPDATE_RELEASES_URL",
+      "definitions": [
+        {
+          "symbol": "UPDATE_RELEASES_URL",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 18
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "UPDATE_TAG_ZIP_URL",
+      "definitions": [
+        {
+          "symbol": "UPDATE_TAG_ZIP_URL",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 21
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "VISUAL_PULSE_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "VISUAL_PULSE_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 199
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "WLEDController",
+      "definitions": [
+        {
+          "symbol": "WLEDController",
+          "kind": "const",
+          "file": "js/led.js",
+          "line": 1561
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "WLED_DDP_DEBUG_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "WLED_DDP_DEBUG_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 156
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "WLED_HELPER_BASE_URL",
+      "definitions": [
+        {
+          "symbol": "WLED_HELPER_BASE_URL",
+          "kind": "const",
+          "file": "js/led.js",
+          "line": 576
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "WLED_HELPER_CLEAR_URL",
+      "definitions": [
+        {
+          "symbol": "WLED_HELPER_CLEAR_URL",
+          "kind": "const",
+          "file": "js/led.js",
+          "line": 579
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "WLED_HELPER_FRAME_URL",
+      "definitions": [
+        {
+          "symbol": "WLED_HELPER_FRAME_URL",
+          "kind": "const",
+          "file": "js/led.js",
+          "line": 578
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "WLED_HELPER_HEALTH_URL",
+      "definitions": [
+        {
+          "symbol": "WLED_HELPER_HEALTH_URL",
+          "kind": "const",
+          "file": "js/led.js",
+          "line": 577
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "WLED_IP_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "WLED_IP_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 153
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "WLED_TRANSPORT_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "WLED_TRANSPORT_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 154
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY",
+      "definitions": [
+        {
+          "symbol": "WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY",
+          "kind": "const",
+          "file": "js/trainer-state.js",
+          "line": 155
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "accentedDownbeatCheckbox",
+      "definitions": [
+        {
+          "symbol": "accentedDownbeatCheckbox",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3708
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "activeLooperHold",
+      "definitions": [
+        {
+          "symbol": "activeLooperHold",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 3817
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "activeMidiInput",
+      "definitions": [
+        {
+          "symbol": "activeMidiInput",
+          "kind": "let",
+          "file": "js/midi.js",
+          "line": 11
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "activeVirtualPointerId",
+      "definitions": [
+        {
+          "symbol": "activeVirtualPointerId",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 2313
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "activeVirtualPointerMidi",
+      "definitions": [
+        {
+          "symbol": "activeVirtualPointerMidi",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 2314
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "applyInlineKeyVisual",
+      "definitions": [
+        {
+          "symbol": "applyInlineKeyVisual",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2046
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "applyLedBrightnessSettings",
+      "definitions": [
+        {
+          "symbol": "applyLedBrightnessSettings",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 493
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "applyLedFuturePreviewStates",
+      "definitions": [
+        {
+          "symbol": "applyLedFuturePreviewStates",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1962
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "applyModeSettings",
+      "definitions": [
+        {
+          "symbol": "applyModeSettings",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2789
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "applyPersistedTrainerAndSettingsPreferences",
+      "definitions": [
+        {
+          "symbol": "applyPersistedTrainerAndSettingsPreferences",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 99
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "applyToneLatencyProfileForMode",
+      "definitions": [
+        {
+          "symbol": "applyToneLatencyProfileForMode",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 425
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "applyZoom",
+      "definitions": [
+        {
+          "symbol": "applyZoom",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3366
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js"
+      ]
+    },
+    {
+      "symbol": "armWledIfNeeded",
+      "definitions": [
+        {
+          "symbol": "armWledIfNeeded",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1047
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "arrayBufferToByteArray",
+      "definitions": [
+        {
+          "symbol": "arrayBufferToByteArray",
+          "kind": "function",
+          "file": "js/score-library.js",
+          "line": 24
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "audioPopup",
+      "definitions": [
+        {
+          "symbol": "audioPopup",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 17
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "autoScrollCheckbox",
+      "definitions": [
+        {
+          "symbol": "autoScrollCheckbox",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3529
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "backupSettingsButton",
+      "definitions": [
+        {
+          "symbol": "backupSettingsButton",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 4132
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "beginLooperHold",
+      "definitions": [
+        {
+          "symbol": "beginLooperHold",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3834
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "bindHandAssignmentControls",
+      "definitions": [
+        {
+          "symbol": "bindHandAssignmentControls",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1409
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "bindLedCalibrationNudgeButton",
+      "definitions": [
+        {
+          "symbol": "bindLedCalibrationNudgeButton",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 300
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "bpmInput",
+      "definitions": [
+        {
+          "symbol": "bpmInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3388
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "btnHelpClose",
+      "definitions": [
+        {
+          "symbol": "btnHelpClose",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 124
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnHelpGotIt",
+      "definitions": [
+        {
+          "symbol": "btnHelpGotIt",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 129
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnLooper",
+      "definitions": [
+        {
+          "symbol": "btnLooper",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 153
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnMore",
+      "definitions": [
+        {
+          "symbol": "btnMore",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 161
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnMoreAudio",
+      "definitions": [
+        {
+          "symbol": "btnMoreAudio",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 191
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnMoreDisplay",
+      "definitions": [
+        {
+          "symbol": "btnMoreDisplay",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 199
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnMoreHelp",
+      "definitions": [
+        {
+          "symbol": "btnMoreHelp",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 215
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnMoreLoop",
+      "definitions": [
+        {
+          "symbol": "btnMoreLoop",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 183
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnMoreTempo",
+      "definitions": [
+        {
+          "symbol": "btnMoreTempo",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 175
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnMoreTranspose",
+      "definitions": [
+        {
+          "symbol": "btnMoreTranspose",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 207
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnPractice",
+      "definitions": [
+        {
+          "symbol": "btnPractice",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 145
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnScores",
+      "definitions": [
+        {
+          "symbol": "btnScores",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 104
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "btnTempo",
+      "definitions": [
+        {
+          "symbol": "btnTempo",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 135
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "buildActionMenu",
+      "definitions": [
+        {
+          "symbol": "buildActionMenu",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 153
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "buildChromaticTestNotes",
+      "definitions": [
+        {
+          "symbol": "buildChromaticTestNotes",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1111
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "buildExpectedNotesFromEntries",
+      "definitions": [
+        {
+          "symbol": "buildExpectedNotesFromEntries",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 961
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "buildLedPreviewTimelineEvent",
+      "definitions": [
+        {
+          "symbol": "buildLedPreviewTimelineEvent",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1770
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "buildSettingsBackupPayload",
+      "definitions": [
+        {
+          "symbol": "buildSettingsBackupPayload",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 359
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "buildUpdateStatusText",
+      "definitions": [
+        {
+          "symbol": "buildUpdateStatusText",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 606
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "byteArrayToArrayBuffer",
+      "definitions": [
+        {
+          "symbol": "byteArrayToArrayBuffer",
+          "kind": "function",
+          "file": "js/score-library.js",
+          "line": 28
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "canUseNativeFullscreen",
+      "definitions": [
+        {
+          "symbol": "canUseNativeFullscreen",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3075
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "captureToneLatencyProfile",
+      "definitions": [
+        {
+          "symbol": "captureToneLatencyProfile",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 414
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "checkForUpdates",
+      "definitions": [
+        {
+          "symbol": "checkForUpdates",
+          "kind": "async function",
+          "file": "js/led.js",
+          "line": 698
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "checkWaitModeAdvance",
+      "definitions": [
+        {
+          "symbol": "checkWaitModeAdvance",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2716
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "chooseHigherPriorityLedState",
+      "definitions": [
+        {
+          "symbol": "chooseHigherPriorityLedState",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1956
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "chooseMusicXmlEntry",
+      "definitions": [
+        {
+          "symbol": "chooseMusicXmlEntry",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1097
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "clearAssetVersionOverrideIfCurrent",
+      "definitions": [
+        {
+          "symbol": "clearAssetVersionOverrideIfCurrent",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 641
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "clearFeedbackVisualStatePreserveScoring",
+      "definitions": [
+        {
+          "symbol": "clearFeedbackVisualStatePreserveScoring",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2275
+        }
+      ],
+      "referenceFiles": [
+        "js/score-display.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "clearFolderLibrarySelection",
+      "definitions": [
+        {
+          "symbol": "clearFolderLibrarySelection",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 127
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "clearLooperHold",
+      "definitions": [
+        {
+          "symbol": "clearLooperHold",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3819
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "clearMidiPermissionHelp",
+      "definitions": [
+        {
+          "symbol": "clearMidiPermissionHelp",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 45
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "clearSavedPreferences",
+      "definitions": [
+        {
+          "symbol": "clearSavedPreferences",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 353
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "clearScheduledMetronomeEvents",
+      "definitions": [
+        {
+          "symbol": "clearScheduledMetronomeEvents",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 673
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "clearScoreLibrarySelection",
+      "definitions": [
+        {
+          "symbol": "clearScoreLibrarySelection",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 453
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "clearTempoVisualPulse",
+      "definitions": [
+        {
+          "symbol": "clearTempoVisualPulse",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 629
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "clearTransientPlaybackState",
+      "definitions": [
+        {
+          "symbol": "clearTransientPlaybackState",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3233
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "clearVisuals",
+      "definitions": [
+        {
+          "symbol": "clearVisuals",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2286
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "clearWledPermissionHelp",
+      "definitions": [
+        {
+          "symbol": "clearWledPermissionHelp",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 53
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "cloneModeRoutingState",
+      "definitions": [
+        {
+          "symbol": "cloneModeRoutingState",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 49
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "cloneScoreRawData",
+      "definitions": [
+        {
+          "symbol": "cloneScoreRawData",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 959
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "closeFirstRunIntro",
+      "definitions": [
+        {
+          "symbol": "closeFirstRunIntro",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 280
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "closeScoresDrawer",
+      "definitions": [
+        {
+          "symbol": "closeScoresDrawer",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 79
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "closeToolbarPanel",
+      "definitions": [
+        {
+          "symbol": "closeToolbarPanel",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 55
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/scores-ui.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "collectFutureLedPreviewEvents",
+      "definitions": [
+        {
+          "symbol": "collectFutureLedPreviewEvents",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1891
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "collectRenderablePreviewNotesFromEntries",
+      "definitions": [
+        {
+          "symbol": "collectRenderablePreviewNotesFromEntries",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1727
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "compareSemverLoose",
+      "definitions": [
+        {
+          "symbol": "compareSemverLoose",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 581
+        }
+      ],
+      "referenceFiles": [
+        "index.html",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "confirmAndSetWledTransport",
+      "definitions": [
+        {
+          "symbol": "confirmAndSetWledTransport",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 899
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "consumeImmediateResumeStartFlag",
+      "definitions": [
+        {
+          "symbol": "consumeImmediateResumeStartFlag",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2975
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "consumePendingFirstRunNotice",
+      "definitions": [
+        {
+          "symbol": "consumePendingFirstRunNotice",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 246
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "createFolderListRow",
+      "definitions": [
+        {
+          "symbol": "createFolderListRow",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 316
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "createFoldersLibraryToolbar",
+      "definitions": [
+        {
+          "symbol": "createFoldersLibraryToolbar",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 211
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "createKeyboard",
+      "definitions": [
+        {
+          "symbol": "createKeyboard",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2336
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "createLibraryFolder",
+      "definitions": [
+        {
+          "symbol": "createLibraryFolder",
+          "kind": "async function",
+          "file": "js/scores-ui.js",
+          "line": 1025
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "createScoreRow",
+      "definitions": [
+        {
+          "symbol": "createScoreRow",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 624
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "createScoresLibraryToolbar",
+      "definitions": [
+        {
+          "symbol": "createScoresLibraryToolbar",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 483
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "debugLogAnchorResolution",
+      "definitions": [
+        {
+          "symbol": "debugLogAnchorResolution",
+          "kind": "function",
+          "file": "js/feedback-debug.js",
+          "line": 272
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "debugLogEvent",
+      "definitions": [
+        {
+          "symbol": "debugLogEvent",
+          "kind": "function",
+          "file": "js/feedback-debug.js",
+          "line": 260
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/feedback-debug.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "derivePlayerRangeFromKeyboardSize",
+      "definitions": [
+        {
+          "symbol": "derivePlayerRangeFromKeyboardSize",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1234
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "describeEntryCollectionForLedDebug",
+      "definitions": [
+        {
+          "symbol": "describeEntryCollectionForLedDebug",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1707
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "describeGraphicalNoteForDebug",
+      "definitions": [
+        {
+          "symbol": "describeGraphicalNoteForDebug",
+          "kind": "function",
+          "file": "js/feedback-debug.js",
+          "line": 268
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "describeLogicalNoteForDebug",
+      "definitions": [
+        {
+          "symbol": "describeLogicalNoteForDebug",
+          "kind": "function",
+          "file": "js/feedback-debug.js",
+          "line": 264
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "deserializeScoreRawData",
+      "definitions": [
+        {
+          "symbol": "deserializeScoreRawData",
+          "kind": "function",
+          "file": "js/score-library.js",
+          "line": 39
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "displayPopup",
+      "definitions": [
+        {
+          "symbol": "displayPopup",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 18
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "doCountInAndStart",
+      "definitions": [
+        {
+          "symbol": "doCountInAndStart",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2981
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "downloadLedCalibrationBackup",
+      "definitions": [
+        {
+          "symbol": "downloadLedCalibrationBackup",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 229
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "downloadSettingsBackup",
+      "definitions": [
+        {
+          "symbol": "downloadSettingsBackup",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 374
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "drawFeedbackNote",
+      "definitions": [
+        {
+          "symbol": "drawFeedbackNote",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 810
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableHandStaves",
+      "definitions": [
+        {
+          "symbol": "enableHandStaves",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3609
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableInstrument",
+      "definitions": [
+        {
+          "symbol": "enableInstrument",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3623
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableMidiOutHandStaves",
+      "definitions": [
+        {
+          "symbol": "enableMidiOutHandStaves",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3638
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableMidiOutInstrument",
+      "definitions": [
+        {
+          "symbol": "enableMidiOutInstrument",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3652
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableMidiOutOther",
+      "definitions": [
+        {
+          "symbol": "enableMidiOutOther",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3645
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableMidiOutVirtualKeyboard",
+      "definitions": [
+        {
+          "symbol": "enableMidiOutVirtualKeyboard",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3659
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableOther",
+      "definitions": [
+        {
+          "symbol": "enableOther",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3616
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableStaffLh",
+      "definitions": [
+        {
+          "symbol": "enableStaffLh",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3585
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableStaffRh",
+      "definitions": [
+        {
+          "symbol": "enableStaffRh",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3597
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enableVirtualKeyboard",
+      "definitions": [
+        {
+          "symbol": "enableVirtualKeyboard",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3631
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "enforceLooperBounds",
+      "definitions": [
+        {
+          "symbol": "enforceLooperBounds",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 597
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "ensureLedPreviewTimelineBuilt",
+      "definitions": [
+        {
+          "symbol": "ensureLedPreviewTimelineBuilt",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1803
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "ensureLiveAudioReady",
+      "definitions": [
+        {
+          "symbol": "ensureLiveAudioReady",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 2316
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "ensurePianoSamplerLoaded",
+      "definitions": [
+        {
+          "symbol": "ensurePianoSamplerLoaded",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 497
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "ensureScoresDrawerOpen",
+      "definitions": [
+        {
+          "symbol": "ensureScoresDrawerOpen",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 97
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "exitAppFullscreen",
+      "definitions": [
+        {
+          "symbol": "exitAppFullscreen",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 3118
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "exportScoreLibraryBackup",
+      "definitions": [
+        {
+          "symbol": "exportScoreLibraryBackup",
+          "kind": "async function",
+          "file": "js/scores-ui.js",
+          "line": 1041
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "extractMusicXmlFromMxl",
+      "definitions": [
+        {
+          "symbol": "extractMusicXmlFromMxl",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 1125
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "extractZipEntryText",
+      "definitions": [
+        {
+          "symbol": "extractZipEntryText",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 1079
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "findExpectedMatchForMidi",
+      "definitions": [
+        {
+          "symbol": "findExpectedMatchForMidi",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 854
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "findMatchingLedPreviewTimelineIndex",
+      "definitions": [
+        {
+          "symbol": "findMatchingLedPreviewTimelineIndex",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1846
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "findNextSingleHandPracticeTimelineEvent",
+      "definitions": [
+        {
+          "symbol": "findNextSingleHandPracticeTimelineEvent",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1558
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "findSatisfiedOrSustainedMatchForMidi",
+      "definitions": [
+        {
+          "symbol": "findSatisfiedOrSustainedMatchForMidi",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2053
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "findSingleHandPracticeTimelineWindow",
+      "definitions": [
+        {
+          "symbol": "findSingleHandPracticeTimelineWindow",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1500
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "firstRunQuickStartActive",
+      "definitions": [
+        {
+          "symbol": "firstRunQuickStartActive",
+          "kind": "let",
+          "file": "js/toolbar-ui.js",
+          "line": 122
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "forceReloadToVersion",
+      "definitions": [
+        {
+          "symbol": "forceReloadToVersion",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 659
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "formatScorePaneSummary",
+      "definitions": [
+        {
+          "symbol": "formatScorePaneSummary",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 439
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "formatStaffAssignmentValue",
+      "definitions": [
+        {
+          "symbol": "formatStaffAssignmentValue",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 36
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "fullscreenOnPlayCheckbox",
+      "definitions": [
+        {
+          "symbol": "fullscreenOnPlayCheckbox",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3536
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getAppVersionDisplayText",
+      "definitions": [
+        {
+          "symbol": "getAppVersionDisplayText",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 602
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getAssignedHandRoleForStaff",
+      "definitions": [
+        {
+          "symbol": "getAssignedHandRoleForStaff",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 41
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getCanonicalMusicXmlForTranspose",
+      "definitions": [
+        {
+          "symbol": "getCanonicalMusicXmlForTranspose",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 1151
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getClampedNumber",
+      "definitions": [
+        {
+          "symbol": "getClampedNumber",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 342
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getCombinedTieLength",
+      "definitions": [
+        {
+          "symbol": "getCombinedTieLength",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 926
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getConfiguredLedCount",
+      "definitions": [
+        {
+          "symbol": "getConfiguredLedCount",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 23
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getConfiguredLedFuture1Pct",
+      "definitions": [
+        {
+          "symbol": "getConfiguredLedFuture1Pct",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 15
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getConfiguredLedFuture2Pct",
+      "definitions": [
+        {
+          "symbol": "getConfiguredLedFuture2Pct",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 19
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getConfiguredLedMasterBrightness",
+      "definitions": [
+        {
+          "symbol": "getConfiguredLedMasterBrightness",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 11
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getCurrentFeedbackContext",
+      "definitions": [
+        {
+          "symbol": "getCurrentFeedbackContext",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 698
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js"
+      ]
+    },
+    {
+      "symbol": "getCurrentModeSettings",
+      "definitions": [
+        {
+          "symbol": "getCurrentModeSettings",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 68
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getCursorSvgX",
+      "definitions": [
+        {
+          "symbol": "getCursorSvgX",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 847
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js"
+      ]
+    },
+    {
+      "symbol": "getDefaultStaffAssignment",
+      "definitions": [
+        {
+          "symbol": "getDefaultStaffAssignment",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 22
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getFeedbackContextKey",
+      "definitions": [
+        {
+          "symbol": "getFeedbackContextKey",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 694
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js"
+      ]
+    },
+    {
+      "symbol": "getFilteredLibraryScores",
+      "definitions": [
+        {
+          "symbol": "getFilteredLibraryScores",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 475
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "getFolderLibrarySelectionSet",
+      "definitions": [
+        {
+          "symbol": "getFolderLibrarySelectionSet",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 119
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "getFullscreenElement",
+      "definitions": [
+        {
+          "symbol": "getFullscreenElement",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3067
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getFullscreenTargetElement",
+      "definitions": [
+        {
+          "symbol": "getFullscreenTargetElement",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3071
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getFuturePreviewDepth",
+      "definitions": [
+        {
+          "symbol": "getFuturePreviewDepth",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1685
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getGraphicalNote",
+      "definitions": [
+        {
+          "symbol": "getGraphicalNote",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 644
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js"
+      ]
+    },
+    {
+      "symbol": "getKeyInlineVisual",
+      "definitions": [
+        {
+          "symbol": "getKeyInlineVisual",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2038
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getLedCalibrationOffsetForMidi",
+      "definitions": [
+        {
+          "symbol": "getLedCalibrationOffsetForMidi",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 102
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getLedCalibrationPreviewLabel",
+      "definitions": [
+        {
+          "symbol": "getLedCalibrationPreviewLabel",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 136
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getLedPreviewHandStatePrefix",
+      "definitions": [
+        {
+          "symbol": "getLedPreviewHandStatePrefix",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1479
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getLedStatePriority",
+      "definitions": [
+        {
+          "symbol": "getLedStatePriority",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1947
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getLiveAudioTime",
+      "definitions": [
+        {
+          "symbol": "getLiveAudioTime",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2448
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getLiveMonitoringVelocity",
+      "definitions": [
+        {
+          "symbol": "getLiveMonitoringVelocity",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2462
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getMeasureTimingInfo",
+      "definitions": [
+        {
+          "symbol": "getMeasureTimingInfo",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 749
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-timing.js",
+        "js/trainer-core.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "getMetronomeClickSpec",
+      "definitions": [
+        {
+          "symbol": "getMetronomeClickSpec",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 570
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getMetronomeMidiClickSpec",
+      "definitions": [
+        {
+          "symbol": "getMetronomeMidiClickSpec",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 577
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getMetronomeMidiVelocity",
+      "definitions": [
+        {
+          "symbol": "getMetronomeMidiVelocity",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 584
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getMetronomeTimeSignatureNumerator",
+      "definitions": [
+        {
+          "symbol": "getMetronomeTimeSignatureNumerator",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 690
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getMidiKeyPosition01",
+      "definitions": [
+        {
+          "symbol": "getMidiKeyPosition01",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1267
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getMidiLightsStatus",
+      "definitions": [
+        {
+          "symbol": "getMidiLightsStatus",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2433
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getMidiOutExpressionValue",
+      "definitions": [
+        {
+          "symbol": "getMidiOutExpressionValue",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2546
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getMidiOutStatus",
+      "definitions": [
+        {
+          "symbol": "getMidiOutStatus",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2427
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getMidiPermissionHelpText",
+      "definitions": [
+        {
+          "symbol": "getMidiPermissionHelpText",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 68
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "getMidiStatus",
+      "definitions": [
+        {
+          "symbol": "getMidiStatus",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 104
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getOsmdLoadPayload",
+      "definitions": [
+        {
+          "symbol": "getOsmdLoadPayload",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1178
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getPlayerPlayableRange",
+      "definitions": [
+        {
+          "symbol": "getPlayerPlayableRange",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1251
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "getPreferredPianoSampleExtension",
+      "definitions": [
+        {
+          "symbol": "getPreferredPianoSampleExtension",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 449
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getRenderableNotesForHandFromTimelineEvent",
+      "definitions": [
+        {
+          "symbol": "getRenderableNotesForHandFromTimelineEvent",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1495
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getRequestedAssetVersion",
+      "definitions": [
+        {
+          "symbol": "getRequestedAssetVersion",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 623
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getResolvedStaffAssignmentIdFromEntry",
+      "definitions": [
+        {
+          "symbol": "getResolvedStaffAssignmentIdFromEntry",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1366
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getResolvedStaffAssignmentIdFromNote",
+      "definitions": [
+        {
+          "symbol": "getResolvedStaffAssignmentIdFromNote",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1346
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getRoutingEnabledForRole",
+      "definitions": [
+        {
+          "symbol": "getRoutingEnabledForRole",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2494
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getSamplerNoteName",
+      "definitions": [
+        {
+          "symbol": "getSamplerNoteName",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 513
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getScoreDisplayTitle",
+      "definitions": [
+        {
+          "symbol": "getScoreDisplayTitle",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 933
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js",
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getScoreFileTypeFromName",
+      "definitions": [
+        {
+          "symbol": "getScoreFileTypeFromName",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 926
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js",
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getScoreLibraryFolderLabel",
+      "definitions": [
+        {
+          "symbol": "getScoreLibraryFolderLabel",
+          "kind": "function",
+          "file": "js/score-library.js",
+          "line": 364
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js",
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "getScoreLibrarySelectionSet",
+      "definitions": [
+        {
+          "symbol": "getScoreLibrarySelectionSet",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 445
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "getSelectedLedMidiOutputState",
+      "definitions": [
+        {
+          "symbol": "getSelectedLedMidiOutputState",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 974
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getSelectedMidiInChannel",
+      "definitions": [
+        {
+          "symbol": "getSelectedMidiInChannel",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 66
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "getSelectedMidiInputState",
+      "definitions": [
+        {
+          "symbol": "getSelectedMidiInputState",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 958
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getSelectedMidiLightsChannel",
+      "definitions": [
+        {
+          "symbol": "getSelectedMidiLightsChannel",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 62
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "getSelectedMidiOutChannel",
+      "definitions": [
+        {
+          "symbol": "getSelectedMidiOutChannel",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 58
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "getSelectedMidiOutOutput",
+      "definitions": [
+        {
+          "symbol": "getSelectedMidiOutOutput",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 70
+        },
+        {
+          "symbol": "getSelectedMidiOutOutput",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2439
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getSelectedMidiOutputState",
+      "definitions": [
+        {
+          "symbol": "getSelectedMidiOutputState",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 966
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getSingleHandPracticeBeatsUntilNextEvent",
+      "definitions": [
+        {
+          "symbol": "getSingleHandPracticeBeatsUntilNextEvent",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1562
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getSinglePracticedHandRole",
+      "definitions": [
+        {
+          "symbol": "getSinglePracticedHandRole",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1488
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getSourceRoleKey",
+      "definitions": [
+        {
+          "symbol": "getSourceRoleKey",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2498
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getStoredBool",
+      "definitions": [
+        {
+          "symbol": "getStoredBool",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 329
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js",
+        "js/feedback-debug.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getStoredNumber",
+      "definitions": [
+        {
+          "symbol": "getStoredNumber",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 337
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "getToneContextHandle",
+      "definitions": [
+        {
+          "symbol": "getToneContextHandle",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 406
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "getUpdateActionUrl",
+      "definitions": [
+        {
+          "symbol": "getUpdateActionUrl",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 617
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getWledPermissionHelpText",
+      "definitions": [
+        {
+          "symbol": "getWledPermissionHelpText",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 72
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "getZipEntryDepth",
+      "definitions": [
+        {
+          "symbol": "getZipEntryDepth",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 988
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "globalStaffIdentityMap",
+      "definitions": [
+        {
+          "symbol": "globalStaffIdentityMap",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 1328
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "handleAutoScroll",
+      "definitions": [
+        {
+          "symbol": "handleAutoScroll",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 618
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/score-display.js",
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js"
+      ]
+    },
+    {
+      "symbol": "handleDirectScoreFileSelection",
+      "definitions": [
+        {
+          "symbol": "handleDirectScoreFileSelection",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 1299
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "handleLedCalibrationImportFile",
+      "definitions": [
+        {
+          "symbol": "handleLedCalibrationImportFile",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 284
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "handleSettingsBackupImportFile",
+      "definitions": [
+        {
+          "symbol": "handleSettingsBackupImportFile",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 424
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "hasAcceptedWledDdpWarning",
+      "definitions": [
+        {
+          "symbol": "hasAcceptedWledDdpWarning",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 781
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "helpOverlay",
+      "definitions": [
+        {
+          "symbol": "helpOverlay",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 20
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "hideToolbarPanels",
+      "definitions": [
+        {
+          "symbol": "hideToolbarPanels",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 90
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "importFilesToLibrary",
+      "definitions": [
+        {
+          "symbol": "importFilesToLibrary",
+          "kind": "async function",
+          "file": "js/scores-ui.js",
+          "line": 947
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "importLedCalibrationFromPayload",
+      "definitions": [
+        {
+          "symbol": "importLedCalibrationFromPayload",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 258
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "importScoreLibraryBackupFile",
+      "definitions": [
+        {
+          "symbol": "importScoreLibraryBackupFile",
+          "kind": "async function",
+          "file": "js/scores-ui.js",
+          "line": 1062
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "importSettingsBackupPayload",
+      "definitions": [
+        {
+          "symbol": "importSettingsBackupPayload",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 393
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "importSettingsButton",
+      "definitions": [
+        {
+          "symbol": "importSettingsButton",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 4139
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "importSettingsInput",
+      "definitions": [
+        {
+          "symbol": "importSettingsInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 4140
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "inflateZipEntryData",
+      "definitions": [
+        {
+          "symbol": "inflateZipEntryData",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 1061
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "initLedBrightnessControls",
+      "definitions": [
+        {
+          "symbol": "initLedBrightnessControls",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 528
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "initLedCalibrationControls",
+      "definitions": [
+        {
+          "symbol": "initLedCalibrationControls",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 366
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "initLedCountControl",
+      "definitions": [
+        {
+          "symbol": "initLedCountControl",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 463
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "initLedOutputControls",
+      "definitions": [
+        {
+          "symbol": "initLedOutputControls",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1140
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "initLedSimulatorToggleControl",
+      "definitions": [
+        {
+          "symbol": "initLedSimulatorToggleControl",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2869
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "initPlayerPianoTypeControl",
+      "definitions": [
+        {
+          "symbol": "initPlayerPianoTypeControl",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1343
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "initScoresDrawerShell",
+      "definitions": [
+        {
+          "symbol": "initScoresDrawerShell",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 1079
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "initSongUI",
+      "definitions": [
+        {
+          "symbol": "initSongUI",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1424
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "initUpdateControls",
+      "definitions": [
+        {
+          "symbol": "initUpdateControls",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 755
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "isAnyToolbarPanelOpen",
+      "definitions": [
+        {
+          "symbol": "isAnyToolbarPanelOpen",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 223
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "isCurrentOutOfRangeScoreNote",
+      "definitions": [
+        {
+          "symbol": "isCurrentOutOfRangeScoreNote",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1263
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "isDebugEnabled",
+      "definitions": [
+        {
+          "symbol": "isDebugEnabled",
+          "kind": "function",
+          "file": "js/feedback-debug.js",
+          "line": 276
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "isFolderLibraryManageMode",
+      "definitions": [
+        {
+          "symbol": "isFolderLibraryManageMode",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 131
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "isFullscreenActive",
+      "definitions": [
+        {
+          "symbol": "isFullscreenActive",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3080
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "isLikelyBrowserAccessIssue",
+      "definitions": [
+        {
+          "symbol": "isLikelyBrowserAccessIssue",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 57
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "isLocalAppRuntime",
+      "definitions": [
+        {
+          "symbol": "isLocalAppRuntime",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 612
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "isMidiInPlayerRange",
+      "definitions": [
+        {
+          "symbol": "isMidiInPlayerRange",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1258
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "isMidiLedRenderableState",
+      "definitions": [
+        {
+          "symbol": "isMidiLedRenderableState",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2423
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "isPracticeHandEnabledForStaff",
+      "definitions": [
+        {
+          "symbol": "isPracticeHandEnabledForStaff",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1483
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "isRecentOutgoingMidiEcho",
+      "definitions": [
+        {
+          "symbol": "isRecentOutgoingMidiEcho",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 116
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "isRenderableAttackNote",
+      "definitions": [
+        {
+          "symbol": "isRenderableAttackNote",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1690
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "isScoreLibraryManageMode",
+      "definitions": [
+        {
+          "symbol": "isScoreLibraryManageMode",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 457
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "isSystemFolderOption",
+      "definitions": [
+        {
+          "symbol": "isSystemFolderOption",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 149
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "keyPosition01ToLedIndex",
+      "definitions": [
+        {
+          "symbol": "keyPosition01ToLedIndex",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1273
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "lastTempoPulseAtMs",
+      "definitions": [
+        {
+          "symbol": "lastTempoPulseAtMs",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 559
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "launchFromMore",
+      "definitions": [
+        {
+          "symbol": "launchFromMore",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 169
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "ledCalibration",
+      "definitions": [
+        {
+          "symbol": "ledCalibration",
+          "kind": "let",
+          "file": "js/led.js",
+          "line": 31
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "listZipEntries",
+      "definitions": [
+        {
+          "symbol": "listZipEntries",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1005
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loadLedCalibration",
+      "definitions": [
+        {
+          "symbol": "loadLedCalibration",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 84
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "loadScoreIntoApp",
+      "definitions": [
+        {
+          "symbol": "loadScoreIntoApp",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 1221
+        }
+      ],
+      "referenceFiles": [
+        "js/transpose/transpose-ui.js",
+        "js/scores-ui.js",
+        "js/midi-import.js",
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "loopCountInCheckbox",
+      "definitions": [
+        {
+          "symbol": "loopCountInCheckbox",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3699
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loopMaxDecreaseBtn",
+      "definitions": [
+        {
+          "symbol": "loopMaxDecreaseBtn",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3673
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loopMaxIncreaseBtn",
+      "definitions": [
+        {
+          "symbol": "loopMaxIncreaseBtn",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3674
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loopMaxInput",
+      "definitions": [
+        {
+          "symbol": "loopMaxInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3670
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loopMaxSlider",
+      "definitions": [
+        {
+          "symbol": "loopMaxSlider",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3668
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loopMinDecreaseBtn",
+      "definitions": [
+        {
+          "symbol": "loopMinDecreaseBtn",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3671
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loopMinIncreaseBtn",
+      "definitions": [
+        {
+          "symbol": "loopMinIncreaseBtn",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3672
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loopMinInput",
+      "definitions": [
+        {
+          "symbol": "loopMinInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3669
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "loopMinSlider",
+      "definitions": [
+        {
+          "symbol": "loopMinSlider",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3667
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "looperPopup",
+      "definitions": [
+        {
+          "symbol": "looperPopup",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 15
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "lowLatencyPlaybackCheckbox",
+      "definitions": [
+        {
+          "symbol": "lowLatencyPlaybackCheckbox",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3544
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "lowLatencyPlaybackSynth",
+      "definitions": [
+        {
+          "symbol": "lowLatencyPlaybackSynth",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 465
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "makeLedPreviewEntrySignature",
+      "definitions": [
+        {
+          "symbol": "makeLedPreviewEntrySignature",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1752
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "makeLibraryId",
+      "definitions": [
+        {
+          "symbol": "makeLibraryId",
+          "kind": "function",
+          "file": "js/score-library.js",
+          "line": 19
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "markFirstRunIntroSeen",
+      "definitions": [
+        {
+          "symbol": "markFirstRunIntroSeen",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 285
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "masterPianoVolume",
+      "definitions": [
+        {
+          "symbol": "masterPianoVolume",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 463
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "maybeShowFirstRunIntro",
+      "definitions": [
+        {
+          "symbol": "maybeShowFirstRunIntro",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 289
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "measureTimingCache",
+      "definitions": [
+        {
+          "symbol": "measureTimingCache",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 563
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "metroVolInput",
+      "definitions": [
+        {
+          "symbol": "metroVolInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3462
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "metroVolSlider",
+      "definitions": [
+        {
+          "symbol": "metroVolSlider",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3461
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "metronomeCheckbox",
+      "definitions": [
+        {
+          "symbol": "metronomeCheckbox",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3736
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "metronomeMidiOutCheckbox",
+      "definitions": [
+        {
+          "symbol": "metronomeMidiOutCheckbox",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3725
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "metronomeSynth",
+      "definitions": [
+        {
+          "symbol": "metronomeSynth",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 552
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "midiAccess",
+      "definitions": [
+        {
+          "symbol": "midiAccess",
+          "kind": "let",
+          "file": "js/midi.js",
+          "line": 10
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "midiInBoostInput",
+      "definitions": [
+        {
+          "symbol": "midiInBoostInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3490
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "midiInBoostSlider",
+      "definitions": [
+        {
+          "symbol": "midiInBoostSlider",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3489
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "midiLedLowVelocityCheckbox",
+      "definitions": [
+        {
+          "symbol": "midiLedLowVelocityCheckbox",
+          "kind": "const",
+          "file": "js/midi.js",
+          "line": 312
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "midiLedTestBtn",
+      "definitions": [
+        {
+          "symbol": "midiLedTestBtn",
+          "kind": "const",
+          "file": "js/midi.js",
+          "line": 481
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "midiOutVolInput",
+      "definitions": [
+        {
+          "symbol": "midiOutVolInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3476
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "midiOutVolSlider",
+      "definitions": [
+        {
+          "symbol": "midiOutVolSlider",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3475
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "morePopup",
+      "definitions": [
+        {
+          "symbol": "morePopup",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 16
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "normalizeComparableScoreName",
+      "definitions": [
+        {
+          "symbol": "normalizeComparableScoreName",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 419
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "normalizeFollowModeSettings",
+      "definitions": [
+        {
+          "symbol": "normalizeFollowModeSettings",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 56
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "normalizeLedCount",
+      "definitions": [
+        {
+          "symbol": "normalizeLedCount",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 311
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "normalizeLedFuturePct",
+      "definitions": [
+        {
+          "symbol": "normalizeLedFuturePct",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 323
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "normalizeLedMasterBrightness",
+      "definitions": [
+        {
+          "symbol": "normalizeLedMasterBrightness",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 317
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "normalizeLedOutputMode",
+      "definitions": [
+        {
+          "symbol": "normalizeLedOutputMode",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 568
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "normalizeLiveVelocity",
+      "definitions": [
+        {
+          "symbol": "normalizeLiveVelocity",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2453
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "normalizeMidiChannel",
+      "definitions": [
+        {
+          "symbol": "normalizeMidiChannel",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 443
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "normalizeMidiInputChannel",
+      "definitions": [
+        {
+          "symbol": "normalizeMidiInputChannel",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 449
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "normalizePlayerPianoType",
+      "definitions": [
+        {
+          "symbol": "normalizePlayerPianoType",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1229
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "normalizeWledTransport",
+      "definitions": [
+        {
+          "symbol": "normalizeWledTransport",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 572
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "normalizeZipEntryPath",
+      "definitions": [
+        {
+          "symbol": "normalizeZipEntryPath",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 984
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "normalizeZoomValue",
+      "definitions": [
+        {
+          "symbol": "normalizeZoomValue",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3353
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "nudgeLedCalibration",
+      "definitions": [
+        {
+          "symbol": "nudgeLedCalibration",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 222
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "openScoreFilePicker",
+      "definitions": [
+        {
+          "symbol": "openScoreFilePicker",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 920
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "openScoresImportPicker",
+      "definitions": [
+        {
+          "symbol": "openScoresImportPicker",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 90
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "optionsOverlay",
+      "definitions": [
+        {
+          "symbol": "optionsOverlay",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 12
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "osmd",
+      "definitions": [
+        {
+          "symbol": "osmd",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 394
+        }
+      ],
+      "referenceFiles": [
+        "index.html",
+        "js/feedback-engine.js",
+        "js/score-display.js",
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "panelButtonMap",
+      "definitions": [
+        {
+          "symbol": "panelButtonMap",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 23
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "parseStaffAssignmentValue",
+      "definitions": [
+        {
+          "symbol": "parseStaffAssignmentValue",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 30
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "pausePlaybackFromToolbar",
+      "definitions": [
+        {
+          "symbol": "pausePlaybackFromToolbar",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3277
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "pendingFirstRunNotice",
+      "definitions": [
+        {
+          "symbol": "pendingFirstRunNotice",
+          "kind": "let",
+          "file": "js/trainer-state.js",
+          "line": 219
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "pianoSampler",
+      "definitions": [
+        {
+          "symbol": "pianoSampler",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 479
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "pianoSamplerReady",
+      "definitions": [
+        {
+          "symbol": "pianoSamplerReady",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 494
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "pianoSamplerReadyPromise",
+      "definitions": [
+        {
+          "symbol": "pianoSamplerReadyPromise",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 495
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "pianoVolInput",
+      "definitions": [
+        {
+          "symbol": "pianoVolInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3460
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "pianoVolSlider",
+      "definitions": [
+        {
+          "symbol": "pianoVolSlider",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3459
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "playLocalPianoNote",
+      "definitions": [
+        {
+          "symbol": "playLocalPianoNote",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2468
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "playLowLatencyPlaybackNote",
+      "definitions": [
+        {
+          "symbol": "playLowLatencyPlaybackNote",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 528
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "playMetronomeClick",
+      "definitions": [
+        {
+          "symbol": "playMetronomeClick",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 611
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "playPauseButton",
+      "definitions": [
+        {
+          "symbol": "playPauseButton",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3064
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "playScheduledPlaybackNote",
+      "definitions": [
+        {
+          "symbol": "playScheduledPlaybackNote",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 544
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "playbackLoop",
+      "definitions": [
+        {
+          "symbol": "playbackLoop",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3893
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "populateMIDIDevices",
+      "definitions": [
+        {
+          "symbol": "populateMIDIDevices",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 154
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "populateMidiChannelSelect",
+      "definitions": [
+        {
+          "symbol": "populateMidiChannelSelect",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 13
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "popupPanels",
+      "definitions": [
+        {
+          "symbol": "popupPanels",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 21
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "positionLedCalibrationPanel",
+      "definitions": [
+        {
+          "symbol": "positionLedCalibrationPanel",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 169
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "positionScoresPanel",
+      "definitions": [
+        {
+          "symbol": "positionScoresPanel",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 252
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "practicePopup",
+      "definitions": [
+        {
+          "symbol": "practicePopup",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 14
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "preserveMusicAreaScroll",
+      "definitions": [
+        {
+          "symbol": "preserveMusicAreaScroll",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3155
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "processMissedNotes",
+      "definitions": [
+        {
+          "symbol": "processMissedNotes",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 1148
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "promptForLibraryFolderChoice",
+      "definitions": [
+        {
+          "symbol": "promptForLibraryFolderChoice",
+          "kind": "async function",
+          "file": "js/scores-ui.js",
+          "line": 9
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "ptNeedsImmediateResumeStart",
+      "definitions": [
+        {
+          "symbol": "ptNeedsImmediateResumeStart",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 2967
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "pulseAnimationNeeded",
+      "definitions": [
+        {
+          "symbol": "pulseAnimationNeeded",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 4224
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "rawDataToArrayBuffer",
+      "definitions": [
+        {
+          "symbol": "rawDataToArrayBuffer",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 994
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "readScoreFile",
+      "definitions": [
+        {
+          "symbol": "readScoreFile",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 939
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "readUint16LE",
+      "definitions": [
+        {
+          "symbol": "readUint16LE",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 971
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "readUint32LE",
+      "definitions": [
+        {
+          "symbol": "readUint32LE",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 975
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "rebuildGlobalStaffIdentityMap",
+      "definitions": [
+        {
+          "symbol": "rebuildGlobalStaffIdentityMap",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1330
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "rebuildMeasureTimingCache",
+      "definitions": [
+        {
+          "symbol": "rebuildMeasureTimingCache",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 769
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "rebuildWaitModeMetronome",
+      "definitions": [
+        {
+          "symbol": "rebuildWaitModeMetronome",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 743
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "refreshConnectionStatuses",
+      "definitions": [
+        {
+          "symbol": "refreshConnectionStatuses",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1003
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "refreshPlayerRangeDependentState",
+      "definitions": [
+        {
+          "symbol": "refreshPlayerRangeDependentState",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1309
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "refreshScoresDrawer",
+      "definitions": [
+        {
+          "symbol": "refreshScoresDrawer",
+          "kind": "async function",
+          "file": "js/scores-ui.js",
+          "line": 770
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "registerHeldIncorrectFeedback",
+      "definitions": [
+        {
+          "symbol": "registerHeldIncorrectFeedback",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 770
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "releaseActiveVirtualPointer",
+      "definitions": [
+        {
+          "symbol": "releaseActiveVirtualPointer",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2328
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "releaseHeldIncorrectFeedback",
+      "definitions": [
+        {
+          "symbol": "releaseHeldIncorrectFeedback",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 801
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "releaseLowLatencySynth",
+      "definitions": [
+        {
+          "symbol": "releaseLowLatencySynth",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 4255
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "rememberOutgoingMidiMessage",
+      "definitions": [
+        {
+          "symbol": "rememberOutgoingMidiMessage",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 108
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "renderFeedbackOverlay",
+      "definitions": [
+        {
+          "symbol": "renderFeedbackOverlay",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 751
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "renderLooper",
+      "definitions": [
+        {
+          "symbol": "renderLooper",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 593
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "renderScoreAndRefreshGeometry",
+      "definitions": [
+        {
+          "symbol": "renderScoreAndRefreshGeometry",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 21
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/score-display.js",
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js"
+      ]
+    },
+    {
+      "symbol": "renderVirtualKeyboard",
+      "definitions": [
+        {
+          "symbol": "renderVirtualKeyboard",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2068
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "requestAppFullscreen",
+      "definitions": [
+        {
+          "symbol": "requestAppFullscreen",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 3098
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "resetAllLedCalibration",
+      "definitions": [
+        {
+          "symbol": "resetAllLedCalibration",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 127
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "resetPlaybackForLoadedScore",
+      "definitions": [
+        {
+          "symbol": "resetPlaybackForLoadedScore",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3281
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "resetPreferencesButton",
+      "definitions": [
+        {
+          "symbol": "resetPreferencesButton",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 4153
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "resizeTimer",
+      "definitions": [
+        {
+          "symbol": "resizeTimer",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 3337
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "resolveFeedbackAnchor",
+      "definitions": [
+        {
+          "symbol": "resolveFeedbackAnchor",
+          "kind": "function",
+          "file": "js/feedback-engine.js",
+          "line": 708
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js"
+      ]
+    },
+    {
+      "symbol": "resolveLedPreviewTraversalIndex",
+      "definitions": [
+        {
+          "symbol": "resolveLedPreviewTraversalIndex",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1860
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "restoreCursorToMeasureAndTimestamp",
+      "definitions": [
+        {
+          "symbol": "restoreCursorToMeasureAndTimestamp",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1783
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "restoreDefaultPreferences",
+      "definitions": [
+        {
+          "symbol": "restoreDefaultPreferences",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 232
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "saveCurrentScoreToLibrary",
+      "definitions": [
+        {
+          "symbol": "saveCurrentScoreToLibrary",
+          "kind": "async function",
+          "file": "js/scores-ui.js",
+          "line": 986
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "saveLedCalibration",
+      "definitions": [
+        {
+          "symbol": "saveLedCalibration",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 94
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "scheduleMetronomeForPlaybackWindow",
+      "definitions": [
+        {
+          "symbol": "scheduleMetronomeForPlaybackWindow",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 834
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "scheduleMidiOutPlaybackNote",
+      "definitions": [
+        {
+          "symbol": "scheduleMidiOutPlaybackNote",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 97
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "scheduleNextWaitModeMetronomeTick",
+      "definitions": [
+        {
+          "symbol": "scheduleNextWaitModeMetronomeTick",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 695
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "schedulePlaybackForDestinations",
+      "definitions": [
+        {
+          "symbol": "schedulePlaybackForDestinations",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2578
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "scheduledMetronomeEventIds",
+      "definitions": [
+        {
+          "symbol": "scheduledMetronomeEventIds",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 562
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "scoreFullscreenButton",
+      "definitions": [
+        {
+          "symbol": "scoreFullscreenButton",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3065
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "scoresPanel",
+      "definitions": [
+        {
+          "symbol": "scoresPanel",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 11
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "seedFirstRunDefaults",
+      "definitions": [
+        {
+          "symbol": "seedFirstRunDefaults",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 221
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "selectLedCalibrationMidi",
+      "definitions": [
+        {
+          "symbol": "selectLedCalibrationMidi",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 214
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "sendMidiOutExpressionLevel",
+      "definitions": [
+        {
+          "symbol": "sendMidiOutExpressionLevel",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2551
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "sendMidiOutMetronomeClick",
+      "definitions": [
+        {
+          "symbol": "sendMidiOutMetronomeClick",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 594
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "sendMidiOutNoteOff",
+      "definitions": [
+        {
+          "symbol": "sendMidiOutNoteOff",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 88
+        },
+        {
+          "symbol": "sendMidiOutNoteOff",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2569
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "sendMidiOutNoteOn",
+      "definitions": [
+        {
+          "symbol": "sendMidiOutNoteOn",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 78
+        },
+        {
+          "symbol": "sendMidiOutNoteOn",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2559
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "serializeScoreRawData",
+      "definitions": [
+        {
+          "symbol": "serializeScoreRawData",
+          "kind": "function",
+          "file": "js/score-library.js",
+          "line": 32
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js"
+      ]
+    },
+    {
+      "symbol": "setAssetVersionOverride",
+      "definitions": [
+        {
+          "symbol": "setAssetVersionOverride",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 632
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "setDebugEnabled",
+      "definitions": [
+        {
+          "symbol": "setDebugEnabled",
+          "kind": "function",
+          "file": "js/feedback-debug.js",
+          "line": 284
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-debug.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setFolderLibraryManageMode",
+      "definitions": [
+        {
+          "symbol": "setFolderLibraryManageMode",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 135
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "setFolderLibrarySelection",
+      "definitions": [
+        {
+          "symbol": "setFolderLibrarySelection",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 123
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "setFollowPracticeHand",
+      "definitions": [
+        {
+          "symbol": "setFollowPracticeHand",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 88
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setLedCalibrationMode",
+      "definitions": [
+        {
+          "symbol": "setLedCalibrationMode",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 189
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "setLedCalibrationOffsetForMidi",
+      "definitions": [
+        {
+          "symbol": "setLedCalibrationOffsetForMidi",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 108
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "setLedCount",
+      "definitions": [
+        {
+          "symbol": "setLedCount",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 446
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setLedFuture1BrightnessPct",
+      "definitions": [
+        {
+          "symbol": "setLedFuture1BrightnessPct",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 510
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setLedFuture2BrightnessPct",
+      "definitions": [
+        {
+          "symbol": "setLedFuture2BrightnessPct",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 519
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setLedMasterBrightness",
+      "definitions": [
+        {
+          "symbol": "setLedMasterBrightness",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 501
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setLedOutputMode",
+      "definitions": [
+        {
+          "symbol": "setLedOutputMode",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1066
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setLedReverse",
+      "definitions": [
+        {
+          "symbol": "setLedReverse",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1101
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "setPermissionNote",
+      "definitions": [
+        {
+          "symbol": "setPermissionNote",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 33
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "setPlayerPianoType",
+      "definitions": [
+        {
+          "symbol": "setPlayerPianoType",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1324
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setScoreLibraryManageMode",
+      "definitions": [
+        {
+          "symbol": "setScoreLibraryManageMode",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 461
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "setScoreLibrarySelection",
+      "definitions": [
+        {
+          "symbol": "setScoreLibrarySelection",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 449
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "setStoredBool",
+      "definitions": [
+        {
+          "symbol": "setStoredBool",
+          "kind": "function",
+          "file": "js/trainer-state.js",
+          "line": 349
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-state.js",
+        "js/led.js",
+        "js/midi.js",
+        "js/feedback-debug.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setWledIp",
+      "definitions": [
+        {
+          "symbol": "setWledIp",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1121
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "setWledStatus",
+      "definitions": [
+        {
+          "symbol": "setWledStatus",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1042
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "setWledTransport",
+      "definitions": [
+        {
+          "symbol": "setWledTransport",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 862
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "setupMIDI",
+      "definitions": [
+        {
+          "symbol": "setupMIDI",
+          "kind": "async function",
+          "file": "js/midi.js",
+          "line": 128
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "shouldRouteLiveSourceToLocalAudio",
+      "definitions": [
+        {
+          "symbol": "shouldRouteLiveSourceToLocalAudio",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2536
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "shouldRouteLiveSourceToMidiOut",
+      "definitions": [
+        {
+          "symbol": "shouldRouteLiveSourceToMidiOut",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2541
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "shouldShowScoreFileName",
+      "definitions": [
+        {
+          "symbol": "shouldShowScoreFileName",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 427
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "shouldUseLowLatencyPlaybackPath",
+      "definitions": [
+        {
+          "symbol": "shouldUseLowLatencyPlaybackPath",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 523
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "shouldUseMidiOutMetronome",
+      "definitions": [
+        {
+          "symbol": "shouldUseMidiOutMetronome",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 590
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "showFirstRunIntro",
+      "definitions": [
+        {
+          "symbol": "showFirstRunIntro",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 271
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "showFolderRowActionMenu",
+      "definitions": [
+        {
+          "symbol": "showFolderRowActionMenu",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 201
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "showMidiPermissionHelp",
+      "definitions": [
+        {
+          "symbol": "showMidiPermissionHelp",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 41
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "showScoreRowActionMenu",
+      "definitions": [
+        {
+          "symbol": "showScoreRowActionMenu",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 612
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "showToolbarPanel",
+      "definitions": [
+        {
+          "symbol": "showToolbarPanel",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 40
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "showWledPermissionHelp",
+      "definitions": [
+        {
+          "symbol": "showWledPermissionHelp",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 49
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "silencePlaybackOutputsImmediately",
+      "definitions": [
+        {
+          "symbol": "silencePlaybackOutputsImmediately",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3211
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "speedInput",
+      "definitions": [
+        {
+          "symbol": "speedInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3387
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "speedSlider",
+      "definitions": [
+        {
+          "symbol": "speedSlider",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3386
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "startLedPulseLoop",
+      "definitions": [
+        {
+          "symbol": "startLedPulseLoop",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 4228
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "startPlaybackFromToolbar",
+      "definitions": [
+        {
+          "symbol": "startPlaybackFromToolbar",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 3169
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "startVisualSustains",
+      "definitions": [
+        {
+          "symbol": "startVisualSustains",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2217
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "startWaitModeMetronome",
+      "definitions": [
+        {
+          "symbol": "startWaitModeMetronome",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 729
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "stepLooperValue",
+      "definitions": [
+        {
+          "symbol": "stepLooperValue",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3793
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "stopPlaybackState",
+      "definitions": [
+        {
+          "symbol": "stopPlaybackState",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3248
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "stopWaitModeMetronome",
+      "definitions": [
+        {
+          "symbol": "stopWaitModeMetronome",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 679
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncActiveHandStateFromMode",
+      "definitions": [
+        {
+          "symbol": "syncActiveHandStateFromMode",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 80
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "syncDebugCheckbox",
+      "definitions": [
+        {
+          "symbol": "syncDebugCheckbox",
+          "kind": "function",
+          "file": "js/feedback-debug.js",
+          "line": 280
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "syncFullscreenUi",
+      "definitions": [
+        {
+          "symbol": "syncFullscreenUi",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3084
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncHandAssignmentFromControls",
+      "definitions": [
+        {
+          "symbol": "syncHandAssignmentFromControls",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1375
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncLedBrightnessControls",
+      "definitions": [
+        {
+          "symbol": "syncLedBrightnessControls",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 478
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncLedCalibrationControls",
+      "definitions": [
+        {
+          "symbol": "syncLedCalibrationControls",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 142
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "syncLedCountControl",
+      "definitions": [
+        {
+          "symbol": "syncLedCountControl",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 439
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "syncLedOutputModeControls",
+      "definitions": [
+        {
+          "symbol": "syncLedOutputModeControls",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1008
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncLooper",
+      "definitions": [
+        {
+          "symbol": "syncLooper",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3757
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncLooperDependentUi",
+      "definitions": [
+        {
+          "symbol": "syncLooperDependentUi",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3676
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncLooperInputIfReady",
+      "definitions": [
+        {
+          "symbol": "syncLooperInputIfReady",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3786
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncLowLatencyPlaybackPreferenceUi",
+      "definitions": [
+        {
+          "symbol": "syncLowLatencyPlaybackPreferenceUi",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2862
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncMidiInBoostUi",
+      "definitions": [
+        {
+          "symbol": "syncMidiInBoostUi",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3492
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncMidiInputConfigVisibility",
+      "definitions": [
+        {
+          "symbol": "syncMidiInputConfigVisibility",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 36
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "syncMidiOutChannelVisibility",
+      "definitions": [
+        {
+          "symbol": "syncMidiOutChannelVisibility",
+          "kind": "function",
+          "file": "js/midi.js",
+          "line": 50
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "syncPlayerPianoTypeControl",
+      "definitions": [
+        {
+          "symbol": "syncPlayerPianoTypeControl",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1296
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "syncTempoMetronomeDependentUi",
+      "definitions": [
+        {
+          "symbol": "syncTempoMetronomeDependentUi",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3390
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncTempoPreviewFromPercent",
+      "definitions": [
+        {
+          "symbol": "syncTempoPreviewFromPercent",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3423
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncToolbarButtonStates",
+      "definitions": [
+        {
+          "symbol": "syncToolbarButtonStates",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 32
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/scores-ui.js",
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "syncTrainerRoutingUiState",
+      "definitions": [
+        {
+          "symbol": "syncTrainerRoutingUiState",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2504
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "syncUpdateControls",
+      "definitions": [
+        {
+          "symbol": "syncUpdateControls",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 678
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "syncWledStatus",
+      "definitions": [
+        {
+          "symbol": "syncWledStatus",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 924
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "syncWledTransportControls",
+      "definitions": [
+        {
+          "symbol": "syncWledTransportControls",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 785
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "syncZoomControls",
+      "definitions": [
+        {
+          "symbol": "syncZoomControls",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3360
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "tempoPopup",
+      "definitions": [
+        {
+          "symbol": "tempoPopup",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 13
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "tempoPulseScheduleId",
+      "definitions": [
+        {
+          "symbol": "tempoPulseScheduleId",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 561
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "tempoPulseTimeoutId",
+      "definitions": [
+        {
+          "symbol": "tempoPulseTimeoutId",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 560
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "toggleAppFullscreen",
+      "definitions": [
+        {
+          "symbol": "toggleAppFullscreen",
+          "kind": "async function",
+          "file": "js/trainer-core.js",
+          "line": 3132
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "toggleFolderLibrarySelection",
+      "definitions": [
+        {
+          "symbol": "toggleFolderLibrarySelection",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 142
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "toggleScoreLibrarySelection",
+      "definitions": [
+        {
+          "symbol": "toggleScoreLibrarySelection",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 468
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "toggleToolbarPanel",
+      "definitions": [
+        {
+          "symbol": "toggleToolbarPanel",
+          "kind": "function",
+          "file": "js/toolbar-ui.js",
+          "line": 94
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "transposePopup",
+      "definitions": [
+        {
+          "symbol": "transposePopup",
+          "kind": "const",
+          "file": "js/toolbar-ui.js",
+          "line": 19
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "triggerTempoVisualPulse",
+      "definitions": [
+        {
+          "symbol": "triggerTempoVisualPulse",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 642
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "triggerVirtualKey",
+      "definitions": [
+        {
+          "symbol": "triggerVirtualKey",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2595
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js",
+        "docs/testing/score-display.integration.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "tryReserveRealtimeUpcomingHeldNote",
+      "definitions": [
+        {
+          "symbol": "tryReserveRealtimeUpcomingHeldNote",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1628
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "tryReserveSingleHandEarlyGrace",
+      "definitions": [
+        {
+          "symbol": "tryReserveSingleHandEarlyGrace",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1592
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updateConnectionStatusIndicator",
+      "definitions": [
+        {
+          "symbol": "updateConnectionStatusIndicator",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 929
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "updateConnectionStatuses",
+      "definitions": [
+        {
+          "symbol": "updateConnectionStatuses",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 982
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updateLEDHardware",
+      "definitions": [
+        {
+          "symbol": "updateLEDHardware",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 1993
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updateLedKeyMapping",
+      "definitions": [
+        {
+          "symbol": "updateLedKeyMapping",
+          "kind": "function",
+          "file": "js/led.js",
+          "line": 1279
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updateMetroVolume",
+      "definitions": [
+        {
+          "symbol": "updateMetroVolume",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3509
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updateMidiInBoost",
+      "definitions": [
+        {
+          "symbol": "updateMidiInBoost",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3498
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updateMidiOutVolume",
+      "definitions": [
+        {
+          "symbol": "updateMidiOutVolume",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3478
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updatePianoVolume",
+      "definitions": [
+        {
+          "symbol": "updatePianoVolume",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3464
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updatePlayPauseButton",
+      "definitions": [
+        {
+          "symbol": "updatePlayPauseButton",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3148
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updateScoreDisplay",
+      "definitions": [
+        {
+          "symbol": "updateScoreDisplay",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 905
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updateScoresActionButtonsState",
+      "definitions": [
+        {
+          "symbol": "updateScoresActionButtonsState",
+          "kind": "function",
+          "file": "js/scores-ui.js",
+          "line": 110
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "updateTempo",
+      "definitions": [
+        {
+          "symbol": "updateTempo",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3432
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "visualPulseCheckbox",
+      "definitions": [
+        {
+          "symbol": "visualPulseCheckbox",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3716
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "waitMetronomeActiveMeasureIndex",
+      "definitions": [
+        {
+          "symbol": "waitMetronomeActiveMeasureIndex",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 568
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "waitMetronomeBeatCounter",
+      "definitions": [
+        {
+          "symbol": "waitMetronomeBeatCounter",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 565
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "waitMetronomeNextClickAtSec",
+      "definitions": [
+        {
+          "symbol": "waitMetronomeNextClickAtSec",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 567
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "waitMetronomeNumerator",
+      "definitions": [
+        {
+          "symbol": "waitMetronomeNumerator",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 566
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "waitMetronomeTimeoutId",
+      "definitions": [
+        {
+          "symbol": "waitMetronomeTimeoutId",
+          "kind": "let",
+          "file": "js/trainer-core.js",
+          "line": 564
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.FeedbackDebug",
+      "definitions": [
+        {
+          "symbol": "window.FeedbackDebug",
+          "kind": "window assignment",
+          "file": "js/feedback-debug.js",
+          "line": 9
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "window.IntroUI",
+      "definitions": [
+        {
+          "symbol": "window.IntroUI",
+          "kind": "window assignment",
+          "file": "js/toolbar-ui.js",
+          "line": 306
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.MidiImport",
+      "definitions": [
+        {
+          "symbol": "window.MidiImport",
+          "kind": "window assignment",
+          "file": "js/midi-import.js",
+          "line": 206
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js",
+        "js/midi-import.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.MidiLedTestController",
+      "definitions": [
+        {
+          "symbol": "window.MidiLedTestController",
+          "kind": "window assignment",
+          "file": "js/midi.js",
+          "line": 477
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "window.PTTiming",
+      "definitions": [
+        {
+          "symbol": "window.PTTiming",
+          "kind": "window assignment",
+          "file": "js/trainer-timing.js",
+          "line": 6
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-timing.js",
+        "js/trainer-core.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "window.PTTiming.getRemainingMeasureWaitWhole",
+      "definitions": [
+        {
+          "symbol": "window.PTTiming.getRemainingMeasureWaitWhole",
+          "kind": "window assignment",
+          "file": "js/trainer-timing.js",
+          "line": 13
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-timing.js"
+      ]
+    },
+    {
+      "symbol": "window.PTTiming.getTraversalBeatsToWait",
+      "definitions": [
+        {
+          "symbol": "window.PTTiming.getTraversalBeatsToWait",
+          "kind": "window assignment",
+          "file": "js/trainer-timing.js",
+          "line": 40
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-timing.js",
+        "js/trainer-core.js",
+        "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "window.ScoreLibrary",
+      "definitions": [
+        {
+          "symbol": "window.ScoreLibrary",
+          "kind": "window assignment",
+          "file": "js/score-library.js",
+          "line": 369
+        }
+      ],
+      "referenceFiles": [
+        "js/score-library.js",
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.ScoresUI",
+      "definitions": [
+        {
+          "symbol": "window.ScoresUI",
+          "kind": "window assignment",
+          "file": "js/scores-ui.js",
+          "line": 1163
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.ToolbarUI",
+      "definitions": [
+        {
+          "symbol": "window.ToolbarUI",
+          "kind": "window assignment",
+          "file": "js/toolbar-ui.js",
+          "line": 296
+        }
+      ],
+      "referenceFiles": [
+        "js/toolbar-ui.js",
+        "js/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "window.TransposeEngine",
+      "definitions": [
+        {
+          "symbol": "window.TransposeEngine",
+          "kind": "window assignment",
+          "file": "js/transpose/transpose-engine.js",
+          "line": 362
+        }
+      ],
+      "referenceFiles": [
+        "js/transpose/transpose-engine.js",
+        "js/transpose/transpose-ui.js"
+      ]
+    },
+    {
+      "symbol": "window.TransposeUI",
+      "definitions": [
+        {
+          "symbol": "window.TransposeUI",
+          "kind": "window assignment",
+          "file": "js/transpose/transpose-ui.js",
+          "line": 250
+        }
+      ],
+      "referenceFiles": [
+        "js/transpose/transpose-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.__PT_APP_MANIFEST__",
+      "definitions": [
+        {
+          "symbol": "window.__PT_APP_MANIFEST__",
+          "kind": "window assignment",
+          "file": "index.html",
+          "line": 82
+        }
+      ],
+      "referenceFiles": [
+        "index.html",
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "window.__PT_ASSET_VERSION__",
+      "definitions": [
+        {
+          "symbol": "window.__PT_ASSET_VERSION__",
+          "kind": "window assignment",
+          "file": "index.html",
+          "line": 84
+        }
+      ],
+      "referenceFiles": [
+        "index.html",
+        "js/trainer-state.js"
+      ]
+    },
+    {
+      "symbol": "window.__PT_DEBUG_BOOT__",
+      "definitions": [
+        {
+          "symbol": "window.__PT_DEBUG_BOOT__",
+          "kind": "window assignment",
+          "file": "js/trainer-core.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.__ptDebugHeartbeat",
+      "definitions": [
+        {
+          "symbol": "window.__ptDebugHeartbeat",
+          "kind": "window assignment",
+          "file": "js/feedback-debug.js",
+          "line": 244
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "window.clearMidiPermissionHelp",
+      "definitions": [
+        {
+          "symbol": "window.clearMidiPermissionHelp",
+          "kind": "window assignment",
+          "file": "js/led.js",
+          "line": 79
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "window.clearStickyDebug",
+      "definitions": [
+        {
+          "symbol": "window.clearStickyDebug",
+          "kind": "window assignment",
+          "file": "js/feedback-debug.js",
+          "line": 319
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-debug.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.clearWledPermissionHelp",
+      "definitions": [
+        {
+          "symbol": "window.clearWledPermissionHelp",
+          "kind": "window assignment",
+          "file": "js/led.js",
+          "line": 81
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "window.debugStickyAnchors",
+      "definitions": [
+        {
+          "symbol": "window.debugStickyAnchors",
+          "kind": "window assignment",
+          "file": "js/feedback-debug.js",
+          "line": 195
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "window.forcePianoTrainerDebugStatus",
+      "definitions": [
+        {
+          "symbol": "window.forcePianoTrainerDebugStatus",
+          "kind": "window assignment",
+          "file": "js/feedback-debug.js",
+          "line": 286
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "window.getAssignedHandRoleForStaff",
+      "definitions": [
+        {
+          "symbol": "window.getAssignedHandRoleForStaff",
+          "kind": "window assignment",
+          "file": "js/trainer-core.js",
+          "line": 1372
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.getResolvedStaffAssignmentIdFromEntry",
+      "definitions": [
+        {
+          "symbol": "window.getResolvedStaffAssignmentIdFromEntry",
+          "kind": "window assignment",
+          "file": "js/trainer-core.js",
+          "line": 1371
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-engine.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.getResolvedStaffAssignmentIdFromNote",
+      "definitions": [
+        {
+          "symbol": "window.getResolvedStaffAssignmentIdFromNote",
+          "kind": "window assignment",
+          "file": "js/trainer-core.js",
+          "line": 1369
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.openScoreFilePicker",
+      "definitions": [
+        {
+          "symbol": "window.openScoreFilePicker",
+          "kind": "window assignment",
+          "file": "js/trainer-core.js",
+          "line": 923
+        }
+      ],
+      "referenceFiles": [
+        "js/scores-ui.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.setDebugStickyFrames",
+      "definitions": [
+        {
+          "symbol": "window.setDebugStickyFrames",
+          "kind": "window assignment",
+          "file": "js/feedback-debug.js",
+          "line": 305
+        }
+      ],
+      "referenceFiles": [
+        "js/feedback-debug.js"
+      ]
+    },
+    {
+      "symbol": "window.showMidiPermissionHelp",
+      "definitions": [
+        {
+          "symbol": "window.showMidiPermissionHelp",
+          "kind": "window assignment",
+          "file": "js/led.js",
+          "line": 77
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js"
+      ]
+    },
+    {
+      "symbol": "window.showWledPermissionHelp",
+      "definitions": [
+        {
+          "symbol": "window.showWledPermissionHelp",
+          "kind": "window assignment",
+          "file": "js/led.js",
+          "line": 80
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js"
+      ]
+    },
+    {
+      "symbol": "window.syncSettingsDebugVisibility",
+      "definitions": [
+        {
+          "symbol": "window.syncSettingsDebugVisibility",
+          "kind": "window assignment",
+          "file": "js/led.js",
+          "line": 920
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "window.syncTrainerRoutingUiState",
+      "definitions": [
+        {
+          "symbol": "window.syncTrainerRoutingUiState",
+          "kind": "window assignment",
+          "file": "js/trainer-core.js",
+          "line": 4245
+        }
+      ],
+      "referenceFiles": [
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "wipeHardwareLEDs",
+      "definitions": [
+        {
+          "symbol": "wipeHardwareLEDs",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 2019
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/midi.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "wireLooperHold",
+      "definitions": [
+        {
+          "symbol": "wireLooperHold",
+          "kind": "function",
+          "file": "js/trainer-core.js",
+          "line": 3851
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "zoomInput",
+      "definitions": [
+        {
+          "symbol": "zoomInput",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3350
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "zoomSlider",
+      "definitions": [
+        {
+          "symbol": "zoomSlider",
+          "kind": "const",
+          "file": "js/trainer-core.js",
+          "line": 3349
+        }
+      ],
+      "referenceFiles": [
+        "js/trainer-core.js"
+      ]
+    }
+  ]
+}
