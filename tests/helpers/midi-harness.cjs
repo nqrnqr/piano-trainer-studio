@@ -14,9 +14,9 @@ async function midiHarness() {
     ]),onstatechange:null};
     const context=vm.createContext({});
     for(const name of ['normalizeMidiChannel','normalizeMidiInputChannel'])runFunction(context,'js/generated/state/preferences.js',name);
-    runFunction(context,'js/trainer-core.js','normalizeLiveVelocity');
+    runScript(context,'js/generated/domain/velocity.js');
     for(const file of ['midi-input','midi-service','midi-output'])runScript(context,`js/generated/midi/${file}.js`);
-    const api=vm.runInContext('({input:PianoTrainerMidiInput,service:PianoTrainerMidiService,output:PianoTrainerMidiOutput})',context);
+    const api=vm.runInContext('({input:PianoTrainerMidiInput,service:PianoTrainerMidiService,output:PianoTrainerMidiOutput,velocity:PianoTrainerVelocity})',context);
     const echo=api.input.createEchoFilter(state,()=>now);
     const service=api.service.create({requestAccess:async()=>{requests++;return access;},
         onReady:()=>events.push('ready'),onDevicesChanged:()=>events.push('devices'),onAccessError:error=>events.push(error),
@@ -27,7 +27,7 @@ async function midiHarness() {
     const output=api.output.create({
         getOutput:()=>{const id=element('midi-out').value;const port=service.getOutput(id);return port&&port.state!=='disconnected'?port:null;},
         getChannel:()=>state.midiOutChannel,getVolume:()=>state.midiOutVolume,
-        normalizeChannel:value=>context.normalizeMidiChannel(value,1),normalizeVelocity:value=>context.normalizeLiveVelocity(value).midi,
+        normalizeChannel:value=>context.normalizeMidiChannel(value,1),normalizeVelocity:value=>api.velocity.normalizeLiveVelocity(value).midi,
         remember:echo.remember,setTimer:(cb,delay)=>{timers.set(++timerSeq,{cb,delay});return timerSeq;},clearTimer:id=>timers.delete(id)});
     await service.init();
     element('midi-in-channel').value='0';element('midi-out-channel').value='1';element('midi-out').value='test-output';

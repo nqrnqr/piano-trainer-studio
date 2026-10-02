@@ -25,6 +25,12 @@ P3/P4a 后，共享 timeline 的 cache 写入通过 `score-traversal` 注入的 
 由 `midi-controls` 的窄 `state` 引用写入。`STATE_WRITES.md` 现在动态扫描所有 src TS 和
 HTML 当前加载的 legacy JS，避免继续引用已经删除的脚本；别名写入仍由本表解释。
 
+P4b：audioOutput 通过窄 state 只读 mode／lowLatencyPlaybackEnabled／audioEnabled；
+audioRouting 只读输入力度、boost 与两类 routing。偏好写入仍由当前 core UI 持有。
+sampler ready/promise、Tone nodes、初始 context profile 与 sample release timers 是 adapter 私有字段，
+不追加到 AppState；routing 的 MIDI release timers 也由端口实例拥有。AudioRouting 的可选 left/right
+仅描述旧 delayed sampler guard，不新增偏好或默认属性；hands-only 在未加载时不补播放的旧行为保留。
+
 运行中追加的字段：`wledDdpLastSendOk`、`wledDdpLastSendAt`、`wledDdpLastError`、
 `scoreLibrarySelectedFolderIds`、`scoreLibraryFolderManageMode`。初始对象仍没有这些 own properties。
 左／右谱表分配可以是 null。future 显示事件没有 signature，timeline 事件有；它们是不同接口。

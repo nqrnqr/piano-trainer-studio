@@ -23,7 +23,11 @@ namespace PianoTrainerDomain {
     export interface SvgPoint { x: number; y: number; }
     export interface HandSelection { left: boolean; right: boolean; }
     export interface ModeSettings { practice: HandSelection; playback: HandSelection; }
-    export interface AudioRouting { hands: boolean; other: boolean; instrument: boolean; virtual: boolean; }
+    export interface AudioRouting {
+        hands: boolean; other: boolean; instrument: boolean; virtual: boolean;
+        // Legacy deferred sampler guard still reads these optional keys.
+        left?: boolean; right?: boolean;
+    }
     export interface ExpectedContext { measureIndex: number; timestamp: WholeNoteTime; signature: string; }
     export interface ExpectedNote {
         midi: MidiNote;

@@ -88,8 +88,24 @@
 - 未验证：实体 MIDI 权限／设备／硬件输出、真实音频、Mac 仍按基线手工清单；模拟 provider 不冒充硬件。普通测试浏览器的 Web MIDI permission denied 路径仍能显示独立提示。
 - 命令：npm run build、npm run check；MIDI/显示/练习浏览器页；两个 inventory 脚本。回退：revert 本阶段恢复原 midi slot 和 core 输出；不改用户 key／数据库／vendor，P3 optional 边界保留。
 
-## P4b–P9
+## P4b
+
+- 状态：完成（2026-10-03），完整目标仍进行中。
+- 范围：Tone 节点、样本加载／解锁、延迟 profile、释放、力度／音量和音频／MIDI 路由；原 playbackLoop、metronome、count-in、时钟未改。
+- 迁移映射：core 资源／音频 helper → `src/audio/tone-adapter.ts`；输入与播放路由 → `src/audio/audio-routing.ts`；normalizeLiveVelocity → `src/domain/velocity.ts`；codec probe → `src/ui/audio-capabilities.ts`。MIDI output 改用唯一的领域力度算法；没有保留 core 副本。无消费者且读不存在 lowLatencySynth 的 dead helper 已删除。
+- 新类型／端口：Tone 14.8.49 最小已用接口，`AudioOutput.Ports/Service/LiveOptions` 与 routing 的 State/Ports/Destinations。状态为只读窄 Pick；opaque Synth token 用 unknown。资源 assertion 仅位于 init 后或 epoch/dispose 保护下；没有 any 或忽略检查。
+- compatibility：`src/compatibility/audio.ts` 组装无资源 factory，core 在原节点创建位置 init。五个全局转发仍供 core 的 profile、load/unlock/time、播放 destinations 调用；输入／暂停／音量改为直接端口委托。UI 音量校验／存储和播放计时留在后续阶段。
+- 原行为：30 个样本与 codec fallback、Triangle envelope/max polyphony、Follow 5ms 参数、样本加载 promise/cache failure、等待加载后 unlock、fresh immediate/now time、retrigger/gain floor、正时长 release、local boost 与独立未 boost MIDI 力度、local→MIDI 顺序、CC silence 均保留。未加载时 global guard 不读 hands、pause 不取消旧 one-shot release、NaN duration 由原 setTimeout coercion 处理等旧语义都有特征测试。
+- 严格模式差异：真实浏览器发现 Tone latencyHint 只有 getter；旧 sloppy JS 忽略写入，TS strict 会抛 warning。使用 Reflect.set 保留静默 false 与可写字段赋值；抛错 setter 仍走原 warning。vendor 未修改。
+- 生命周期完善：重复 init 不多分配；dispose 释放三个节点、取消 owned timers，并用 epoch 阻止加载／unlock／release 的迟到结果影响新实例。只在显式 dispose 生效；pause 取消规则不改变。P9 再统一启动／销毁所有权。
+- 验证：95/95 Node（新增 13 项资源／异步／路由行为测试）；strict typecheck 与 54 文件产物干净比较通过。真实 Tone audio default/no-op 各 23；MIDI 20/21；显示 30、三模式／两布局练习／真实反复 53，共 170 项浏览器检查，见 validation/P4b-browser.txt。30 个本地 sampler 请求及解码成功；全局函数覆盖为零（578 候选、38 classic scripts），336 个直接 state 写入。
+- 测试隔离：一次 no-op audio 运行与 MIDI 页的同 origin channel 偏好改写重叠，固定 channel 断言失败；保持原断言、关闭另一页并重载串行通过。DEVELOPMENT 已记录这些 fixture 必须依次运行，不能并发改同一 storage。
+- 未验证：目标音频静音，真实 context／node／解码通过不等于可听音质、硬件延迟或节拍器同步；实体 MIDI/WLED、Mac、触屏仍需手工检查。
+- 命令：npm run build/check，显示／练习／MIDI／audio 浏览器页与两个 inventory 脚本。回退：revert 本阶段恢复音频 core 与 MIDI 的原归一化连接；不修改用户 key、数据库、vendor 或其他阶段。
+- 下一阶段最小入口：P5 OSMD adapter、score-display 与几何／绘制位置／NoteRef；保留 render 生命周期和两个位置语义。
+
+## P5–P9
 
 状态：未开始，仍属于完整目标。
 
-下一最小入口：P4b 的 sampler、低延迟 synth、解锁／释放、力度音量与音频路由；随后依序完成渲染、判定、调度、数据/UI 和显式 bootstrap 的终态验收。完整目标仍活跃，P4a 完成不代表整个重构完成。
+下一最小入口：P5 的 OSMD／渲染与几何边界；随后依序完成判定、调度、数据/UI 和显式 bootstrap 的终态验收。完整目标仍活跃，P4b 完成不代表整个重构完成。

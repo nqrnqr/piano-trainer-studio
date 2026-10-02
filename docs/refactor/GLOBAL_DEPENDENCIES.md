@@ -97,5 +97,18 @@ UI 键盘仍走同一个 triggerVirtualKey；P6 再迁出其判定职责。
 
 core 和 optional LED 不再读全局 midiAccess/activeMidiInput；前者只读输出端口，后者使用
 getLegacyMidiOutput。旧 MIDI LED 测试控制器迁往 `js/optional/midi-led-test.js`，由 adapter
-初始化，保持独立 legacy 实现。core 的 normalizeLiveVelocity 暂由声明接入 output，P4b
-迁移到音频边界；没有为了早加载另一份力度算法。P9 删除 classic composition 与转发。
+初始化，保持独立 legacy 实现。P4b 已把 normalizeLiveVelocity 移到 domain/velocity，
+MIDI output 与音频共享唯一算法。P9 删除 classic composition 与转发。
+
+P4b：Tone 资源仅由 `src/audio/tone-adapter.ts` 拥有，factory 定义本身不分配资源。
+`src/compatibility/audio.ts` 在 core 前组装窄端口；core 在原节点创建位置调用 `audioOutput.init()`。
+输入监听和播放路由由 `src/audio/audio-routing.ts` 决定，状态、声音、MIDI、timer 均注入，
+不读取 DOM/OSMD/global Tone。UI codec probe 位于 `src/ui/audio-capabilities.ts`。
+剩余五个全局转发只供未迁移的 core：profile、sampler loaded、live unlock/time 和 schedule destinations。
+输入／暂停／音量的委托已直接使用 audioOutput/audioRouting。dead releaseLowLatencySynth 没有消费者，已删除。
+core 的 metronome synth、Tone.Transport 与播放循环仍留待 P7，不能据此声称整个 Tone 调度已迁出。
+
+sample release 与 routed MIDI note-off timer 分别由 audioOutput/audioRouting 持有；dispose 清除并
+失效迟到回调。Pause 仍只 silence，不取消旧 one-shot release；P7 需单独记录这一原有语义。
+Tone 的 latencyHint getter 无 setter；旧 sloppy JS 静默忽略赋值。迁移使用 Reflect.set 忽略 false，
+保留该行为，避免 TS strict 引入警告；有抛错的 setter 仍落入原 warning 路径。

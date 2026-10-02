@@ -401,157 +401,9 @@ let osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmd-container", {
 });
 ScoreDisplay.init();
 
-const FOLLOW_ME_TONE_LATENCY_PROFILE = Object.freeze({
-    lookAhead: 0.005,
-    updateInterval: 0.005,
-    latencyHint: 0.001
-});
-
-function getToneContextHandle() {
-    try {
-        return typeof Tone?.getContext === 'function' ? Tone.getContext() : Tone?.context;
-    } catch (_) {
-        return null;
-    }
-}
-
-function captureToneLatencyProfile() {
-    const ctx = getToneContextHandle();
-    return {
-        lookAhead: Number.isFinite(Number(ctx?.lookAhead)) ? Number(ctx.lookAhead) : null,
-        updateInterval: Number.isFinite(Number(ctx?.updateInterval)) ? Number(ctx.updateInterval) : null,
-        latencyHint: ctx?.latencyHint ?? null
-    };
-}
-
-const DEFAULT_TONE_LATENCY_PROFILE = captureToneLatencyProfile();
-
-function applyToneLatencyProfileForMode(mode = AppState.mode) {
-    const ctx = getToneContextHandle();
-    if (!ctx) return;
-
-    const useFollowProfile = mode === 'follow';
-    const nextProfile = useFollowProfile ? FOLLOW_ME_TONE_LATENCY_PROFILE : DEFAULT_TONE_LATENCY_PROFILE;
-
-    try {
-        if (nextProfile.lookAhead != null && 'lookAhead' in ctx) {
-            ctx.lookAhead = nextProfile.lookAhead;
-        }
-        if (nextProfile.updateInterval != null && 'updateInterval' in ctx) {
-            ctx.updateInterval = nextProfile.updateInterval;
-        }
-        if (nextProfile.latencyHint != null && 'latencyHint' in ctx) {
-            ctx.latencyHint = nextProfile.latencyHint;
-        }
-    } catch (err) {
-        console.warn('Could not apply Tone.js latency profile for mode.', err);
-    }
-}
+audioOutput.init();
 
 const FOLLOW_ME_MIN_WAIT_RATIO = 0.6;
-
-function getPreferredPianoSampleExtension() {
-    try {
-        const probe = document.createElement('audio');
-        const oggSupport = typeof probe.canPlayType === 'function'
-            ? probe.canPlayType('audio/ogg; codecs="vorbis"')
-            : '';
-        return oggSupport && oggSupport !== 'no' ? 'ogg' : 'mp3';
-    } catch (_) {
-        return 'mp3';
-    }
-}
-
-
-const PIANO_SAMPLE_EXTENSION = getPreferredPianoSampleExtension();
-const masterPianoVolume = new Tone.Volume(0).toDestination();
-
-const lowLatencyPlaybackSynth = new Tone.PolySynth(Tone.Synth, {
-    maxPolyphony: 24,
-    volume: -6,
-    options: {
-        oscillator: { type: 'triangle' },
-        envelope: {
-            attack: 0.001,
-            decay: 0.08,
-            sustain: 0.18,
-            release: 0.12
-        }
-    }
-}).connect(masterPianoVolume);
-
-const pianoSampler = new Tone.Sampler({
-    urls: {
-        "A0": `A0.${PIANO_SAMPLE_EXTENSION}`, "C1": `C1.${PIANO_SAMPLE_EXTENSION}`, "D#1": `Ds1.${PIANO_SAMPLE_EXTENSION}`, "F#1": `Fs1.${PIANO_SAMPLE_EXTENSION}`,
-        "A1": `A1.${PIANO_SAMPLE_EXTENSION}`, "C2": `C2.${PIANO_SAMPLE_EXTENSION}`, "D#2": `Ds2.${PIANO_SAMPLE_EXTENSION}`, "F#2": `Fs2.${PIANO_SAMPLE_EXTENSION}`,
-        "A2": `A2.${PIANO_SAMPLE_EXTENSION}`, "C3": `C3.${PIANO_SAMPLE_EXTENSION}`, "D#3": `Ds3.${PIANO_SAMPLE_EXTENSION}`, "F#3": `Fs3.${PIANO_SAMPLE_EXTENSION}`,
-        "A3": `A3.${PIANO_SAMPLE_EXTENSION}`, "C4": `C4.${PIANO_SAMPLE_EXTENSION}`, "D#4": `Ds4.${PIANO_SAMPLE_EXTENSION}`, "F#4": `Fs4.${PIANO_SAMPLE_EXTENSION}`,
-        "A4": `A4.${PIANO_SAMPLE_EXTENSION}`, "C5": `C5.${PIANO_SAMPLE_EXTENSION}`, "D#5": `Ds5.${PIANO_SAMPLE_EXTENSION}`, "F#5": `Fs5.${PIANO_SAMPLE_EXTENSION}`,
-        "A5": `A5.${PIANO_SAMPLE_EXTENSION}`, "C6": `C6.${PIANO_SAMPLE_EXTENSION}`, "D#6": `Ds6.${PIANO_SAMPLE_EXTENSION}`, "F#6": `Fs6.${PIANO_SAMPLE_EXTENSION}`,
-        "A6": `A6.${PIANO_SAMPLE_EXTENSION}`, "C7": `C7.${PIANO_SAMPLE_EXTENSION}`, "D#7": `Ds7.${PIANO_SAMPLE_EXTENSION}`, "F#7": `Fs7.${PIANO_SAMPLE_EXTENSION}`,
-        "A7": `A7.${PIANO_SAMPLE_EXTENSION}`, "C8": `C8.${PIANO_SAMPLE_EXTENSION}`
-    },
-    release: 1,
-    baseUrl: "assets/audio/salamander/"
-}).connect(masterPianoVolume);
-
-let pianoSamplerReady = false;
-let pianoSamplerReadyPromise = null;
-
-function ensurePianoSamplerLoaded() {
-    if (pianoSamplerReady) return Promise.resolve(true);
-    if (!pianoSamplerReadyPromise) {
-        pianoSamplerReadyPromise = Promise.resolve(typeof Tone.loaded === 'function' ? Tone.loaded() : null)
-            .then(() => {
-                pianoSamplerReady = true;
-                return true;
-            })
-            .catch((err) => {
-                console.warn('Piano sampler assets did not finish loading.', err);
-                throw err;
-            });
-    }
-    return pianoSamplerReadyPromise;
-}
-
-function getSamplerNoteName(midi) {
-    const value = Number(midi);
-    if (!Number.isFinite(value)) return null;
-    try {
-        return Tone.Frequency(value, 'midi').toNote();
-    } catch (_) {
-        return null;
-    }
-}
-
-function shouldUseLowLatencyPlaybackPath() {
-    if (!AppState.lowLatencyPlaybackEnabled) return false;
-    return AppState.mode === 'follow' || AppState.mode === 'realtime';
-}
-
-function playLowLatencyPlaybackNote(midi, velocity = 100, durationMs = null) {
-    const noteName = getSamplerNoteName(midi);
-    if (!noteName) return;
-
-    const normalized = normalizeLiveVelocity(velocity);
-    const liveTime = getLiveAudioTime();
-
-    if (Number.isFinite(durationMs) && durationMs > 0) {
-        lowLatencyPlaybackSynth.triggerAttackRelease(noteName, Math.max(0.01, durationMs / 1000), liveTime, normalized.gain);
-        return;
-    }
-
-    lowLatencyPlaybackSynth.triggerRelease(noteName, liveTime);
-    lowLatencyPlaybackSynth.triggerAttack(noteName, liveTime, normalized.gain);
-}
-
-function playScheduledPlaybackNote(midi, velocity = 100, durationMs = null) {
-    if (shouldUseLowLatencyPlaybackPath()) {
-        playLowLatencyPlaybackNote(midi, velocity, durationMs);
-        return;
-    }
-    playLocalPianoNote(midi, velocity, durationMs);
-}
 
 const metronomeSynth = new Tone.MembraneSynth({
     pitchDecay: 0.008,
@@ -922,7 +774,7 @@ function updateScoreDisplay() {
 // FILE LOADER & UI INIT
 // ==========================================
 function openScoreFilePicker() {
-    if (Tone.context.state !== 'running') Tone.context.resume();
+    audioOutput.resumeWithoutWaiting();
     document.getElementById('file-input').click();
 }
 window.openScoreFilePicker = openScoreFilePicker;
@@ -2002,17 +1854,7 @@ function clearVisuals() {
 let activeVirtualPointerId = null;
 let activeVirtualPointerMidi = null;
 
-async function ensureLiveAudioReady() {
-    try {
-        await ensurePianoSamplerLoaded().catch(() => false);
-        if (Tone.context.state !== 'running') {
-            await Tone.start();
-            await Tone.context.resume();
-        }
-    } catch (err) {
-        console.warn('Could not resume Tone.js audio context from user gesture.', err);
-    }
-}
+
 
 function releaseActiveVirtualPointer(pointerId = null) {
     if (activeVirtualPointerMidi == null) return;
@@ -2108,62 +1950,6 @@ function createKeyboard() {
     }
 }
 
-function getLiveAudioTime() {
-    if (typeof Tone?.immediate === 'function') return Tone.immediate();
-    return Tone.now();
-}
-
-function normalizeLiveVelocity(velocity) {
-    const numericVelocity = Number(velocity);
-    const clampedMidi = Math.max(1, Math.min(127, Number.isFinite(numericVelocity) ? numericVelocity : 100));
-    return {
-        midi: clampedMidi,
-        gain: Math.max(0.05, Math.min(1, clampedMidi / 127))
-    };
-}
-
-function getLiveMonitoringVelocity(source, velocity = 100) {
-    if (source !== 'midi') return velocity;
-    const boostPercent = Math.max(50, Math.min(200, Number(AppState.midiInBoost) || 100));
-    return Math.max(1, Math.min(127, Math.round((Number(velocity) || 100) * (boostPercent / 100))));
-}
-
-function playLocalPianoNote(midi, velocity = 100, durationMs = null, options = {}) {
-    if (!Number.isFinite(midi) || midi < 0) return;
-    const noteName = getSamplerNoteName(midi);
-    if (!noteName) return;
-
-    if (!pianoSamplerReady) {
-        ensurePianoSamplerLoaded()
-            .then(() => {
-                if (!AppState.audioEnabled?.virtual && !AppState.audioEnabled?.instrument && !AppState.audioEnabled?.left && !AppState.audioEnabled?.right && !AppState.audioEnabled?.other) return;
-                playLocalPianoNote(midi, velocity, durationMs, options);
-            })
-            .catch(() => {});
-        return;
-    }
-
-    const normalized = normalizeLiveVelocity(velocity);
-    const liveTime = getLiveAudioTime();
-    if (options.lowLatencyLive || options.retrigger !== false) {
-        pianoSampler.triggerRelease(noteName, liveTime);
-    }
-    pianoSampler.triggerAttack(noteName, liveTime, normalized.gain);
-    if (Number.isFinite(durationMs) && durationMs > 0) {
-        setTimeout(() => pianoSampler.triggerRelease(noteName, getLiveAudioTime()), durationMs);
-    }
-}
-
-function getRoutingEnabledForRole(bucket, roleKey) {
-    return !!(bucket && bucket[roleKey]);
-}
-
-function getSourceRoleKey(source) {
-    if (source === 'midi') return 'instrument';
-    if (source === 'ui') return 'virtual';
-    return null;
-}
-
 function syncTrainerRoutingUiState() {
     const hasMidiOut = !!getSelectedMidiOutOutput();
     const summary = document.getElementById('trainer-midi-out-summary');
@@ -2196,50 +1982,13 @@ function syncTrainerRoutingUiState() {
     syncTempoMetronomeDependentUi();
 }
 
-function shouldRouteLiveSourceToLocalAudio(source) {
-    const roleKey = getSourceRoleKey(source);
-    return roleKey ? getRoutingEnabledForRole(AppState.audioEnabled, roleKey) : false;
-}
-
-function shouldRouteLiveSourceToMidiOut(source) {
-    const roleKey = getSourceRoleKey(source);
-    return roleKey ? getRoutingEnabledForRole(AppState.midiOutEnabled, roleKey) : false;
-}
-
-function schedulePlaybackForDestinations(midi, durationMs, velocity = 100, options = {}) {
-    if (!Number.isFinite(midi) || midi < 0) return;
-    if (durationMs <= 0) return;
-
-    if (options.toLocalAudio) {
-        playScheduledPlaybackNote(midi, velocity, durationMs);
-    }
-
-    if (options.toMidiOut && sendMidiOutNoteOn(midi, velocity)) {
-        setTimeout(() => {
-            sendMidiOutNoteOff(midi);
-        }, durationMs);
-    }
-}
-
 // MIDI access/output live in src/midi; device DOM controls live in src/ui/midi-controls.ts.
 
 function triggerVirtualKey(midi, isPressed, source = 'midi', velocity = 100) {
     if (isPressed) {
         AppState.pressedKeys.add(midi);
         
-        const liveVelocity = (source === 'midi' && AppState.inputVelocityEnabled) ? velocity : 100;
-        const localAudioVelocity = getLiveMonitoringVelocity(source, liveVelocity);
-
-        if (shouldRouteLiveSourceToLocalAudio(source)) {
-            playLocalPianoNote(midi, localAudioVelocity, null, {
-                lowLatencyLive: source === 'ui' ? true : !!AppState.liveLowLatencyMonitoringEnabled,
-                retrigger: true
-            });
-        }
-
-        if (shouldRouteLiveSourceToMidiOut(source)) {
-            sendMidiOutNoteOn(midi, normalizeLiveVelocity(liveVelocity).midi, { scaleVolume: source === 'ui' });
-        }
+        audioRouting.monitorNoteOn(midi, source, velocity);
 
         if (AppState.ledCalibrationMode) {
             selectLedCalibrationMidi(midi);
@@ -2324,14 +2073,7 @@ function triggerVirtualKey(midi, isPressed, source = 'midi', velocity = 100) {
         }
         releaseHeldIncorrectFeedback(midi);
         
-        if (shouldRouteLiveSourceToLocalAudio(source)) {
-            const noteName = getSamplerNoteName(midi);
-            if (noteName) pianoSampler.triggerRelease(noteName, getLiveAudioTime());
-        }
-
-        if (shouldRouteLiveSourceToMidiOut(source)) {
-            sendMidiOutNoteOff(midi);
-        }
+        audioRouting.monitorNoteOff(midi, source);
     }
     
     renderVirtualKeyboard();
@@ -2840,13 +2582,7 @@ async function startPlaybackFromToolbar() {
 }
 
 function silencePlaybackOutputsImmediately() {
-    try {
-        pianoSampler.releaseAll?.();
-        lowLatencyPlaybackSynth.releaseAll?.();
-    } catch (err) {
-        console.warn('Could not release Tone.js playback voices immediately.', err);
-    }
-
+    audioOutput.silence();
     midiOutput.silence();
 }
 
@@ -3088,8 +2824,7 @@ function updatePianoVolume(value, { save = true } = {}) {
     if (save) {
         localStorage.setItem(TRAINER_PIANO_VOL_STORAGE_KEY, String(val));
     }
-    if (val === 0) masterPianoVolume.volume.value = -Infinity;
-    else masterPianoVolume.volume.value = 20 * Math.log10(val / 100);
+    audioOutput.setPianoVolume(val);
 }
 
 const midiOutVolSlider = document.getElementById('slider-midiout-vol');
@@ -3168,7 +2903,7 @@ if (lowLatencyPlaybackCheckbox) {
         AppState.lowLatencyPlaybackEnabled = e.target.checked;
         setStoredBool(TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY, AppState.lowLatencyPlaybackEnabled);
         if (!AppState.lowLatencyPlaybackEnabled) {
-            try { lowLatencyPlaybackSynth.releaseAll?.(); } catch (_) {}
+            audioOutput.releaseLowLatencyPlayback();
         }
     });
 }
@@ -3843,10 +3578,3 @@ optionalLedOutput.start();
 
 
 window.syncTrainerRoutingUiState = syncTrainerRoutingUiState;
-
-// ensure synth cleanup
-function releaseLowLatencySynth() {
-    if (lowLatencySynth) {
-        try { lowLatencySynth.releaseAll(); } catch(e) {}
-    }
-}
