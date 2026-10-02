@@ -9,7 +9,8 @@
 - `/docs` = architecture notes and development notes
 
 ## Current modules
-- `js/trainer-state.js` = shared state and persisted preference helpers
+- `src/state/app-state.ts`, `preference-keys.ts`, `preferences.ts`, `settings-backup.ts` = typed shared state, canonical settings keys, persistence and backup format; generated classic scripts retain the original lexical bindings
+- `src/ui/settings-controls.ts` = settings download, FileReader import, alert and reload boundary
 - `src/domain/timing.ts` → `js/generated/domain/timing.js` = shared timing math for traversal waits, measure remainder checks, and playback scheduling inputs
 - `js/score-display.js` = score layout preference, single-system engraving, and horizontal viewport following
 - `js/toolbar-ui.js` = toolbar/menu shell

@@ -2,6 +2,10 @@
 
 记录日期：2026-10-02。P0 基线为 `be6d51c`；P1 仅替换 timing 槽位。
 
+P2 将原第 1 槽位展开为 generated/state 的 preference-keys、app-state、preferences、
+settings-backup 与 generated/ui/settings-controls，依次同步执行。其余相对顺序保持，
+原 trainer-state.js 已移除；下表第 1 行是历史职责汇总。默认值副作用在 preferences 执行末尾。
+
 完整符号候选、定义行、引用文件及实际加载顺序见 [GLOBAL_SYMBOLS.json](GLOBAL_SYMBOLS.json)。
 运行 `node scripts/inventory-legacy-globals.cjs` 可从当前入口重建。它扫描列首声明和
 `window.*` 赋值，引用是词法匹配，包含注释、局部遮蔽等候选；不是调用图或完整 AST。

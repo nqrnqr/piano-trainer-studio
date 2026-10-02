@@ -9,7 +9,7 @@
 // Central trainer orchestration, score render lifecycle coordination, and playback scheduling.
 // This file remains the integration layer while repeat/jump timing and metronome behavior are being stabilized.
 
-// State and persisted preference helpers now load from js/trainer-state.js.
+// State and persisted preference helpers load from generated/state TS modules.
 // Keep trainer-core.js focused on orchestration and cross-module coordination.
 
 // IMPORTANT:

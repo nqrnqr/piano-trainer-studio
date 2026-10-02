@@ -1,7 +1,7 @@
 # 首轮 TypeScript 开发与运行
 
-当前迁移范围只有 timing。应用继续使用原生 DOM、经典脚本、现有 vendor 和静态资源。
-状态、练习、音频、MIDI、渲染及 LED 尚未迁移；下一步见 [PROGRESS.md](PROGRESS.md)。
+当前已迁移 timing、状态与设置。应用继续使用原生 DOM、经典脚本、现有 vendor 和静态资源。
+练习、音频、MIDI、渲染及 LED 正按后续阶段迁移；完整目标见 [PROGRESS.md](PROGRESS.md)。
 
 ## 运行应用
 
@@ -37,6 +37,8 @@ npm run build:check
 - 唯一 timing 源码：`src/domain/timing.ts`。
 - 静态输出：`js/generated/domain/timing.js` 与 `timing.js.map`，必须随源码一起提交。
 - `types/legacy-timing.d.ts` 只描述 Window.PTTiming；全局词法 AppState 未改为 Window 属性。
+- P2 状态／设置唯一源码为 `src/state/*.ts` 与 `src/ui/settings-controls.ts`，原 trainer-state.js 已删除。HTML 依次加载 key 表、state、preferences、backup、settings UI，然后保持其他脚本的相对顺序。
+- `types/legacy-state.d.ts` 描述共享对象，`src/domain/practice.ts` 描述嵌套数据；未迁移 JS 的访问尚不受 TS 检查，不能视为整个核心已迁移。
 - `npm run build` 先在 `.cache` 新目录编译，成功才替换 compiler 专属的 `js/generated`；失败保留现有输出。
 - 不手改生成文件。构建清理只作用于校验过的生成／临时目录，拒绝向工作区外解析的路径和符号链接。
 - 输出与 TS 源使用 LF，保证 Windows / Unix 重建时 source map 字节稳定。
@@ -52,6 +54,7 @@ P1 仅有初始化空 namespace 的局部类型断言，以及 `Number.isFinite`
 
 - `/docs/testing/score-display.html`：30 项原有显示检查。
 - `/docs/testing/practice-baseline.html`：53 项三模式／两布局／真实反复与结尾检查。
+- `/docs/testing/settings-baseline.html`：真实 FileReader、错误导入、两次重载、布局恢复与设置还原；只在可丢弃的本地测试 origin 运行。
 
 页面通过 iframe 注入测试脚本；生产 index.html 不加载测试 API。结束会暂停，重载 iframe
 恢复完整应用状态。显示页用受控 rAF；硬件和音频路由关闭。不要据此声称实体 MIDI 或音频延迟已验证。

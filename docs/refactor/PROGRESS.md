@@ -1,6 +1,6 @@
 # TypeScript 重构进度
 
-执行日期：2026-10-02。首轮范围：P0、P1，遵照重构计划第 1、11 节。
+执行日期：2026-10-02。首轮完成 P0、P1；用户随后授权继续完成 P2–P9，完整目标保持进行中。
 
 ## P0
 
@@ -39,11 +39,22 @@
 - 回退：revert P1 提交即可恢复旧 timing 与槽位；不涉及用户设置／数据库。生成目录仅由构建脚本管理。
 - 下一阶段最小入口：P2 的 state 类型与偏好验证；本轮结束于 P1。
 
-## P2–P9
+## P2
 
-状态：未开始。本轮不扩展至剩余阶段。
+- 状态：完成。
+- 范围：状态及嵌套结构类型化、唯一偏好 key 表、读取／默认值与备份服务、设置 UI 边界。
+- 迁移映射：trainer-state.js → src/state/{app-state,preference-keys,preferences,settings-backup}.ts 和 src/ui/settings-controls.ts。
+- 类型：LegacyAppState、PianoTrainerDomain 下的期望／反馈／提前预留／预览／路由／键域结构；动态字段 optional，Map/Set 明确泛型。
+- 行为：保留共享身份、初始化、key、白名单、强制默认值、导入 coercion 和跳过首次 seed；未变更 IndexedDB。
+- 所有权：STATE_WRITES.md 收集 349 个直接写入点，STATE_OWNERSHIP.md 补充别名变更与最终边界。
+- 验证：strict 类型检查和构建通过；完整 Node 53/53（含 10 项设置专项）、显示 30/30、练习与反复 53/53、真实 FileReader／两次 reload 设置 10/10 通过。旧／新状态与偏好 540 次比较一致。结果见 validation/P2-browser.txt；14 个产物由干净临时目录重建并比较。
+- 验证范围：保留首次默认值／特殊强制值、既有／异常配置、备份往返／错误拒绝／恢复默认、共享 Map/Set 身份、模式独立手配置、布局持久化与重载恢复；设置测试结束还原原有支持键。
+- 未验证：实体 MIDI/WLED 与真实音频、Mac 等前述硬件清单仍未实测；旧 JS 业务消费者尚未全部受类型检查。
+- 命令：npm run build、npm run typecheck、npm run build:check、npm test；浏览器三测试页。STATE_WRITES 可用 node scripts/inventory-state-writes.cjs 重建。
+- 回退：revert P2 检查点恢复原 state 及脚本槽位；不迁移或清除用户数据，P0/P1 保持。
 
-P2 最小后续入口：读取 state 所有调用与动态字段；建立 LegacyAppState、ExpectedContext、
-FollowAdvanceInfo、提前预留与 Map/Set 类型；先仅迁移 state 槽位并保持共享对象身份。
-随后拆设置读写和备份格式，将下载／confirm／reload 留在 UI；测试首次默认值、强制设置、
-`pt_scoreLayout` 恢复、异常数据及模式独立手配置，不修改 IndexedDB schema。
+## P3–P9
+
+状态：未开始，仍属于完整目标。
+
+下一最小入口：P3 提取共享键域、遍历／预览时间线、MIDI 提示与连接／更新 UI；建立可选 LED 与 no-op adapter，验证关闭 LED 后单手提前输入与三模式一致。

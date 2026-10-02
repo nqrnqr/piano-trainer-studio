@@ -1,7 +1,11 @@
 {
   "note": "Lexical candidates, not an AST or call graph. Column-zero declarations and window assignments only; property definitions, destructuring, dynamic lookups, comments and shadowed references need review. Side effects are documented by file in GLOBAL_DEPENDENCIES.md. Generated scripts are runtime paths; consult PROGRESS.md for their TS sources.",
   "loadOrder": [
-    "js/trainer-state.js",
+    "js/generated/state/preference-keys.js",
+    "js/generated/state/app-state.js",
+    "js/generated/state/preferences.js",
+    "js/generated/state/settings-backup.js",
+    "js/generated/ui/settings-controls.js",
     "js/transpose/transpose-engine.js",
     "js/transpose/transpose-ui.js",
     "js/toolbar-ui.js",
@@ -23,12 +27,12 @@
         {
           "symbol": "ACCENTED_DOWNBEAT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 203
+          "file": "js/generated/state/preference-keys.js",
+          "line": 122
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -38,12 +42,12 @@
         {
           "symbol": "APP_MANIFEST",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 9
+          "file": "js/generated/state/app-state.js",
+          "line": 3
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/app-state.js"
       ]
     },
     {
@@ -52,12 +56,12 @@
         {
           "symbol": "APP_REPO_SLUG",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 10
+          "file": "js/generated/state/app-state.js",
+          "line": 4
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/app-state.js"
       ]
     },
     {
@@ -66,12 +70,13 @@
         {
           "symbol": "APP_VERSION",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 11
+          "file": "js/generated/state/app-state.js",
+          "line": 5
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/app-state.js",
+        "js/generated/state/settings-backup.js",
         "js/led.js"
       ]
     },
@@ -81,12 +86,12 @@
         {
           "symbol": "ASSET_VERSION_OVERRIDE_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 24
+          "file": "js/generated/state/preference-keys.js",
+          "line": 66
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/led.js"
       ]
     },
@@ -96,12 +101,13 @@
         {
           "symbol": "AppState",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 26
+          "file": "js/generated/state/app-state.js",
+          "line": 9
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/app-state.js",
+        "js/generated/state/preferences.js",
         "js/transpose/transpose-ui.js",
         "js/toolbar-ui.js",
         "js/scores-ui.js",
@@ -112,7 +118,8 @@
         "js/score-display.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
-        "docs/testing/practice-baseline.integration.js"
+        "docs/testing/practice-baseline.integration.js",
+        "docs/testing/settings-baseline.integration.js"
       ]
     },
     {
@@ -121,12 +128,12 @@
         {
           "symbol": "DEFAULT_PREFERENCES",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 205
+          "file": "js/generated/state/preferences.js",
+          "line": 3
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preferences.js"
       ]
     },
     {
@@ -149,12 +156,14 @@
         {
           "symbol": "FIRST_RUN_INIT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 217
+          "file": "js/generated/state/preference-keys.js",
+          "line": 123
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
+        "js/generated/state/settings-backup.js"
       ]
     },
     {
@@ -191,12 +200,12 @@
         {
           "symbol": "FULL_PIANO_KEY_COUNT",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 143
+          "file": "js/generated/state/app-state.js",
+          "line": 124
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/app-state.js",
         "js/led.js"
       ]
     },
@@ -206,12 +215,12 @@
         {
           "symbol": "FULL_PIANO_MIDI_MAX",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 142
+          "file": "js/generated/state/app-state.js",
+          "line": 123
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/app-state.js",
         "js/led.js"
       ]
     },
@@ -221,12 +230,12 @@
         {
           "symbol": "FULL_PIANO_MIDI_MIN",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 141
+          "file": "js/generated/state/app-state.js",
+          "line": 122
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/app-state.js",
         "js/led.js"
       ]
     },
@@ -267,12 +276,12 @@
         {
           "symbol": "LED_CALIBRATION_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 161
+          "file": "js/generated/state/preference-keys.js",
+          "line": 81
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/led.js"
       ]
     },
@@ -282,27 +291,14 @@
         {
           "symbol": "LED_COUNT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 150
+          "file": "js/generated/state/preference-keys.js",
+          "line": 71
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/led.js"
-      ]
-    },
-    {
-      "symbol": "LED_FADE_OUT_MS",
-      "definitions": [
-        {
-          "symbol": "LED_FADE_OUT_MS",
-          "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 160
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-state.js"
       ]
     },
     {
@@ -311,12 +307,13 @@
         {
           "symbol": "LED_FUTURE1_PCT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 158
+          "file": "js/generated/state/preference-keys.js",
+          "line": 79
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/led.js"
       ]
     },
@@ -326,12 +323,13 @@
         {
           "symbol": "LED_FUTURE2_PCT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 159
+          "file": "js/generated/state/preference-keys.js",
+          "line": 80
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/led.js"
       ]
     },
@@ -341,12 +339,13 @@
         {
           "symbol": "LED_MASTER_BRIGHTNESS_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 157
+          "file": "js/generated/state/preference-keys.js",
+          "line": 78
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/led.js"
       ]
     },
@@ -356,12 +355,12 @@
         {
           "symbol": "LED_OUTPUT_MODE_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 151
+          "file": "js/generated/state/preference-keys.js",
+          "line": 72
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/led.js"
       ]
     },
@@ -385,12 +384,13 @@
         {
           "symbol": "LED_REVERSE_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 152
+          "file": "js/generated/state/preference-keys.js",
+          "line": 73
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/led.js"
       ]
     },
@@ -400,12 +400,12 @@
         {
           "symbol": "LOOP_COUNT_IN_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 200
+          "file": "js/generated/state/preference-keys.js",
+          "line": 119
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -459,12 +459,12 @@
         {
           "symbol": "METRONOME_MIDIOUT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 202
+          "file": "js/generated/state/preference-keys.js",
+          "line": 121
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -474,12 +474,13 @@
         {
           "symbol": "METRONOME_VOL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 201
+          "file": "js/generated/state/preference-keys.js",
+          "line": 120
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/trainer-core.js"
       ]
     },
@@ -489,12 +490,13 @@
         {
           "symbol": "MIDI_IN_CHANNEL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 195
+          "file": "js/generated/state/preference-keys.js",
+          "line": 114
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/midi.js"
       ]
     },
@@ -504,12 +506,12 @@
         {
           "symbol": "MIDI_IN_ID_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 192
+          "file": "js/generated/state/preference-keys.js",
+          "line": 111
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/midi.js"
       ]
     },
@@ -519,12 +521,12 @@
         {
           "symbol": "MIDI_IN_NAME_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 146
+          "file": "js/generated/state/preference-keys.js",
+          "line": 68
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/midi.js"
       ]
     },
@@ -534,12 +536,13 @@
         {
           "symbol": "MIDI_LED_LOW_VELOCITY_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 198
+          "file": "js/generated/state/preference-keys.js",
+          "line": 117
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/midi.js"
       ]
     },
@@ -549,12 +552,13 @@
         {
           "symbol": "MIDI_LIGHTS_CHANNEL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 197
+          "file": "js/generated/state/preference-keys.js",
+          "line": 116
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/midi.js"
       ]
     },
@@ -564,12 +568,12 @@
         {
           "symbol": "MIDI_LIGHTS_ID_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 194
+          "file": "js/generated/state/preference-keys.js",
+          "line": 113
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/midi.js"
       ]
     },
@@ -579,12 +583,12 @@
         {
           "symbol": "MIDI_LIGHTS_NAME_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 148
+          "file": "js/generated/state/preference-keys.js",
+          "line": 70
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/midi.js"
       ]
     },
@@ -594,12 +598,13 @@
         {
           "symbol": "MIDI_OUT_CHANNEL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 196
+          "file": "js/generated/state/preference-keys.js",
+          "line": 115
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/midi.js"
       ]
     },
@@ -609,12 +614,12 @@
         {
           "symbol": "MIDI_OUT_ID_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 193
+          "file": "js/generated/state/preference-keys.js",
+          "line": 112
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/midi.js"
       ]
     },
@@ -624,12 +629,12 @@
         {
           "symbol": "MIDI_OUT_NAME_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 147
+          "file": "js/generated/state/preference-keys.js",
+          "line": 69
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/midi.js"
       ]
     },
@@ -668,12 +673,12 @@
         {
           "symbol": "PLAYER_PIANO_SIZES",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 144
+          "file": "js/generated/state/app-state.js",
+          "line": 125
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/app-state.js",
         "js/led.js"
       ]
     },
@@ -683,12 +688,13 @@
         {
           "symbol": "PLAYER_PIANO_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 145
+          "file": "js/generated/state/preference-keys.js",
+          "line": 67
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/led.js"
       ]
     },
@@ -707,17 +713,33 @@
       ]
     },
     {
+      "symbol": "PREFERENCE_STORAGE_KEYS",
+      "definitions": [
+        {
+          "symbol": "PREFERENCE_STORAGE_KEYS",
+          "kind": "const",
+          "file": "js/generated/state/preference-keys.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/state/preference-keys.js"
+      ]
+    },
+    {
       "symbol": "RESETTABLE_PREFERENCE_KEYS",
       "definitions": [
         {
           "symbol": "RESETTABLE_PREFERENCE_KEYS",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 252
+          "file": "js/generated/state/preference-keys.js",
+          "line": 125
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
+        "js/generated/state/settings-backup.js"
       ]
     },
     {
@@ -782,12 +804,12 @@
         {
           "symbol": "SETTINGS_DEBUG_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 191
+          "file": "js/generated/state/preference-keys.js",
+          "line": 110
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/feedback-debug.js",
         "js/trainer-core.js"
       ]
@@ -798,12 +820,14 @@
         {
           "symbol": "SKIP_FIRST_RUN_ONCE_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 218
+          "file": "js/generated/state/preference-keys.js",
+          "line": 124
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
+        "js/generated/state/settings-backup.js"
       ]
     },
     {
@@ -849,7 +873,8 @@
         "js/score-display.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
-        "docs/testing/practice-baseline.integration.js"
+        "docs/testing/practice-baseline.integration.js",
+        "docs/testing/settings-baseline.integration.js"
       ]
     },
     {
@@ -874,12 +899,12 @@
         {
           "symbol": "TRAINER_AUDIO_HANDS_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 172
+          "file": "js/generated/state/preference-keys.js",
+          "line": 91
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -889,12 +914,12 @@
         {
           "symbol": "TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 174
+          "file": "js/generated/state/preference-keys.js",
+          "line": 93
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -904,12 +929,12 @@
         {
           "symbol": "TRAINER_AUDIO_OTHER_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 173
+          "file": "js/generated/state/preference-keys.js",
+          "line": 92
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -919,12 +944,12 @@
         {
           "symbol": "TRAINER_AUDIO_VIRTUAL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 175
+          "file": "js/generated/state/preference-keys.js",
+          "line": 94
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -934,12 +959,12 @@
         {
           "symbol": "TRAINER_AUTOSCROLL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 188
+          "file": "js/generated/state/preference-keys.js",
+          "line": 107
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -949,12 +974,12 @@
         {
           "symbol": "TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 167
+          "file": "js/generated/state/preference-keys.js",
+          "line": 86
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -964,12 +989,12 @@
         {
           "symbol": "TRAINER_FEEDBACK_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 164
+          "file": "js/generated/state/preference-keys.js",
+          "line": 83
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -979,12 +1004,12 @@
         {
           "symbol": "TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 190
+          "file": "js/generated/state/preference-keys.js",
+          "line": 109
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -994,12 +1019,12 @@
         {
           "symbol": "TRAINER_FUTURE_DEPTH_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 166
+          "file": "js/generated/state/preference-keys.js",
+          "line": 85
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preference-keys.js"
       ]
     },
     {
@@ -1008,12 +1033,12 @@
         {
           "symbol": "TRAINER_FUTURE_PREVIEW_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 165
+          "file": "js/generated/state/preference-keys.js",
+          "line": 84
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -1023,12 +1048,13 @@
         {
           "symbol": "TRAINER_INPUT_VELOCITY_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 180
+          "file": "js/generated/state/preference-keys.js",
+          "line": 99
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/trainer-core.js"
       ]
     },
@@ -1038,12 +1064,12 @@
         {
           "symbol": "TRAINER_KEYBOARD_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 189
+          "file": "js/generated/state/preference-keys.js",
+          "line": 108
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -1053,12 +1079,13 @@
         {
           "symbol": "TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 181
+          "file": "js/generated/state/preference-keys.js",
+          "line": 100
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/trainer-core.js"
       ]
     },
@@ -1068,12 +1095,13 @@
         {
           "symbol": "TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 182
+          "file": "js/generated/state/preference-keys.js",
+          "line": 101
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/trainer-core.js"
       ]
     },
@@ -1083,12 +1111,13 @@
         {
           "symbol": "TRAINER_MIDIIN_BOOST_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 185
+          "file": "js/generated/state/preference-keys.js",
+          "line": 104
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/trainer-core.js"
       ]
     },
@@ -1098,12 +1127,12 @@
         {
           "symbol": "TRAINER_MIDIOUT_HANDS_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 176
+          "file": "js/generated/state/preference-keys.js",
+          "line": 95
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -1113,12 +1142,12 @@
         {
           "symbol": "TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 178
+          "file": "js/generated/state/preference-keys.js",
+          "line": 97
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -1128,12 +1157,12 @@
         {
           "symbol": "TRAINER_MIDIOUT_OTHER_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 177
+          "file": "js/generated/state/preference-keys.js",
+          "line": 96
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -1143,12 +1172,12 @@
         {
           "symbol": "TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 179
+          "file": "js/generated/state/preference-keys.js",
+          "line": 98
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -1158,12 +1187,13 @@
         {
           "symbol": "TRAINER_MIDIOUT_VOL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 184
+          "file": "js/generated/state/preference-keys.js",
+          "line": 103
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/trainer-core.js"
       ]
     },
@@ -1173,12 +1203,12 @@
         {
           "symbol": "TRAINER_MODE_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 163
+          "file": "js/generated/state/preference-keys.js",
+          "line": 82
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -1188,12 +1218,13 @@
         {
           "symbol": "TRAINER_PIANO_VOL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 183
+          "file": "js/generated/state/preference-keys.js",
+          "line": 102
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/preferences.js",
         "js/trainer-core.js"
       ]
     },
@@ -1203,12 +1234,12 @@
         {
           "symbol": "TRAINER_PLAYBACK_LH_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 170
+          "file": "js/generated/state/preference-keys.js",
+          "line": 89
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preference-keys.js"
       ]
     },
     {
@@ -1217,12 +1248,12 @@
         {
           "symbol": "TRAINER_PLAYBACK_RH_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 171
+          "file": "js/generated/state/preference-keys.js",
+          "line": 90
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preference-keys.js"
       ]
     },
     {
@@ -1231,12 +1262,12 @@
         {
           "symbol": "TRAINER_PRACTICE_LH_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 168
+          "file": "js/generated/state/preference-keys.js",
+          "line": 87
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preference-keys.js"
       ]
     },
     {
@@ -1245,12 +1276,12 @@
         {
           "symbol": "TRAINER_PRACTICE_RH_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 169
+          "file": "js/generated/state/preference-keys.js",
+          "line": 88
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preference-keys.js"
       ]
     },
     {
@@ -1259,12 +1290,12 @@
         {
           "symbol": "TRAINER_SCORE_LAYOUT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 187
+          "file": "js/generated/state/preference-keys.js",
+          "line": 106
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/score-display.js"
       ]
     },
@@ -1274,12 +1305,12 @@
         {
           "symbol": "TRAINER_ZOOM_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 186
+          "file": "js/generated/state/preference-keys.js",
+          "line": 105
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -1289,12 +1320,12 @@
         {
           "symbol": "UPDATE_MANIFEST_URL",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 15
+          "file": "js/generated/state/app-state.js",
+          "line": 6
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/app-state.js",
         "js/led.js"
       ]
     },
@@ -1304,12 +1335,13 @@
         {
           "symbol": "UPDATE_MANIFEST_URL_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 17
+          "file": "js/generated/state/preference-keys.js",
+          "line": 65
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
+        "js/generated/state/app-state.js",
         "js/led.js"
       ]
     },
@@ -1319,12 +1351,12 @@
         {
           "symbol": "UPDATE_RELEASES_URL",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 18
+          "file": "js/generated/state/app-state.js",
+          "line": 7
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/app-state.js",
         "js/led.js"
       ]
     },
@@ -1334,12 +1366,12 @@
         {
           "symbol": "UPDATE_TAG_ZIP_URL",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 21
+          "file": "js/generated/state/app-state.js",
+          "line": 8
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/app-state.js"
       ]
     },
     {
@@ -1348,12 +1380,12 @@
         {
           "symbol": "VISUAL_PULSE_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 199
+          "file": "js/generated/state/preference-keys.js",
+          "line": 118
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/trainer-core.js"
       ]
     },
@@ -1378,12 +1410,12 @@
         {
           "symbol": "WLED_DDP_DEBUG_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 156
+          "file": "js/generated/state/preference-keys.js",
+          "line": 77
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/led.js"
       ]
     },
@@ -1449,12 +1481,12 @@
         {
           "symbol": "WLED_IP_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 153
+          "file": "js/generated/state/preference-keys.js",
+          "line": 74
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/led.js"
       ]
     },
@@ -1464,12 +1496,12 @@
         {
           "symbol": "WLED_TRANSPORT_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 154
+          "file": "js/generated/state/preference-keys.js",
+          "line": 75
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/led.js"
       ]
     },
@@ -1479,12 +1511,12 @@
         {
           "symbol": "WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY",
           "kind": "const",
-          "file": "js/trainer-state.js",
-          "line": 155
+          "file": "js/generated/state/preference-keys.js",
+          "line": 76
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preference-keys.js",
         "js/led.js"
       ]
     },
@@ -2030,12 +2062,14 @@
         {
           "symbol": "buildSettingsBackupPayload",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 359
+          "file": "js/generated/state/settings-backup.js",
+          "line": 2
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/settings-backup.js",
+        "js/generated/ui/settings-controls.js",
+        "docs/testing/settings-baseline.integration.js"
       ]
     },
     {
@@ -2228,12 +2262,13 @@
         {
           "symbol": "clearSavedPreferences",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 353
+          "file": "js/generated/state/preferences.js",
+          "line": 84
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
+        "js/generated/state/settings-backup.js",
         "js/trainer-core.js"
       ]
     },
@@ -2473,12 +2508,12 @@
         {
           "symbol": "consumePendingFirstRunNotice",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 246
+          "file": "js/generated/state/preferences.js",
+          "line": 37
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
         "js/trainer-core.js"
       ]
     },
@@ -2717,12 +2752,12 @@
         {
           "symbol": "downloadSettingsBackup",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 374
+          "file": "js/generated/ui/settings-controls.js",
+          "line": 3
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/ui/settings-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -3198,12 +3233,12 @@
         {
           "symbol": "getClampedNumber",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 342
+          "file": "js/generated/state/preferences.js",
+          "line": 74
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
         "js/led.js",
         "js/trainer-core.js"
       ]
@@ -4031,12 +4066,12 @@
         {
           "symbol": "getStoredBool",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 329
+          "file": "js/generated/state/preferences.js",
+          "line": 60
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
         "js/led.js",
         "js/feedback-debug.js",
         "js/trainer-core.js"
@@ -4048,12 +4083,12 @@
         {
           "symbol": "getStoredNumber",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 337
+          "file": "js/generated/state/preferences.js",
+          "line": 70
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preferences.js"
       ]
     },
     {
@@ -4177,13 +4212,14 @@
         {
           "symbol": "handleSettingsBackupImportFile",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 424
+          "file": "js/generated/ui/settings-controls.js",
+          "line": 22
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
-        "js/trainer-core.js"
+        "js/generated/ui/settings-controls.js",
+        "js/trainer-core.js",
+        "docs/testing/settings-baseline.integration.js"
       ]
     },
     {
@@ -4279,12 +4315,14 @@
         {
           "symbol": "importSettingsBackupPayload",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 393
+          "file": "js/generated/state/settings-backup.js",
+          "line": 16
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/settings-backup.js",
+        "js/generated/ui/settings-controls.js",
+        "docs/testing/settings-baseline.integration.js"
       ]
     },
     {
@@ -5233,12 +5271,12 @@
         {
           "symbol": "normalizeLedCount",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 311
+          "file": "js/generated/state/preferences.js",
+          "line": 42
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
         "js/led.js"
       ]
     },
@@ -5248,12 +5286,12 @@
         {
           "symbol": "normalizeLedFuturePct",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 323
+          "file": "js/generated/state/preferences.js",
+          "line": 54
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
         "js/led.js"
       ]
     },
@@ -5263,12 +5301,12 @@
         {
           "symbol": "normalizeLedMasterBrightness",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 317
+          "file": "js/generated/state/preferences.js",
+          "line": 48
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
         "js/led.js"
       ]
     },
@@ -5306,12 +5344,12 @@
         {
           "symbol": "normalizeMidiChannel",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 443
+          "file": "js/generated/state/preferences.js",
+          "line": 89
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
         "js/midi.js"
       ]
     },
@@ -5321,12 +5359,12 @@
         {
           "symbol": "normalizeMidiInputChannel",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 449
+          "file": "js/generated/state/preferences.js",
+          "line": 95
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
         "js/midi.js"
       ]
     },
@@ -5513,12 +5551,13 @@
         {
           "symbol": "pendingFirstRunNotice",
           "kind": "let",
-          "file": "js/trainer-state.js",
-          "line": 219
+          "file": "js/generated/state/preferences.js",
+          "line": 14
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preferences.js",
+        "js/generated/state/settings-backup.js"
       ]
     },
     {
@@ -6374,12 +6413,12 @@
         {
           "symbol": "seedFirstRunDefaults",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 221
+          "file": "js/generated/state/preferences.js",
+          "line": 15
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js"
+        "js/generated/state/preferences.js"
       ]
     },
     {
@@ -6733,12 +6772,12 @@
         {
           "symbol": "setStoredBool",
           "kind": "function",
-          "file": "js/trainer-state.js",
-          "line": 349
+          "file": "js/generated/state/preferences.js",
+          "line": 81
         }
       ],
       "referenceFiles": [
-        "js/trainer-state.js",
+        "js/generated/state/preferences.js",
         "js/led.js",
         "js/midi.js",
         "js/feedback-debug.js",
@@ -8065,7 +8104,7 @@
       ],
       "referenceFiles": [
         "index.html",
-        "js/trainer-state.js"
+        "js/generated/state/app-state.js"
       ]
     },
     {
@@ -8080,7 +8119,7 @@
       ],
       "referenceFiles": [
         "index.html",
-        "js/trainer-state.js"
+        "js/generated/state/app-state.js"
       ]
     },
     {

@@ -29,7 +29,7 @@ function harness() {
         triggerVirtualKey: (...args) => received.push(args),
         access: { inputs: new Map([[input.id, input], [second.id, second]]), outputs: new Map([['test-output', { state: 'connected', send: bytes => sent.push(Array.from(bytes)) }]]) }
     });
-    for (const name of ['normalizeMidiChannel', 'normalizeMidiInputChannel']) runFunction(context, 'js/trainer-state.js', name);
+    for (const name of ['normalizeMidiChannel', 'normalizeMidiInputChannel']) runFunction(context, 'js/generated/state/preferences.js', name);
     runScript(context, 'js/midi.js');
     vm.runInContext('midiAccess = access', context);
     element('midi-in-channel').value = '0';

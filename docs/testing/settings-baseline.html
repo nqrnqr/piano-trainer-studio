@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Settings migration regression checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:100%;height:500px;border:1px solid #ccc}pre{white-space:pre-wrap;max-height:230px;overflow:auto}h1{font-size:18px}</style>
+<h1>Settings migration regression checks</h1>
+<p>Uses the actual FileReader import handler and iframe reload. Saves supported settings first, tests imports, then restores the saved values. Run on a disposable local test origin.</p>
+<button id="run" disabled>Run checks</button>
+<pre id="results">Ready</pre>
+<iframe src="../../index.html" title="App under test"></iframe>
+<script>
+const frame = document.querySelector('iframe');
+window.SettingsBaseline = {
+    phase: 'idle', original: null, alerts: [], failed: false,
+    inject() {
+        const script = document.createElement('script');
+        script.src = '/docs/testing/settings-baseline.integration.js';
+        frame.contentDocument.body.append(script);
+    }
+};
+frame.onload = () => {
+    if (SettingsBaseline.phase === 'idle' || SettingsBaseline.phase === 'done') document.getElementById('run').disabled = false;
+    else SettingsBaseline.inject();
+};
+document.getElementById('run').onclick = () => {
+    document.getElementById('run').disabled = true;
+    document.getElementById('results').textContent = '';
+    SettingsBaseline.phase = 'initial';
+    SettingsBaseline.alerts = [];
+    SettingsBaseline.failed = false;
+    SettingsBaseline.inject();
+};
+</script>
