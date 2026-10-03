@@ -33,3 +33,11 @@ count-in 的 beats 优先当前 source measure 的 ActiveTimeSignature，其次�
 - Tone.Transport 仅 stop/pause/start 与 bpm.value；没有 schedule/scheduleRepeat 事件可取消。生产 audio/tone-transport 直接调用同一 API，UI 的原 seek/tempo 也使用这一个端口。
 - playback-clock 的 timer/rAF 列表只为 dispose 所有权增加 bookkeeping；普通 Pause/Reset 不清空它，guard 与先前相同。dispose 在同一 coordinator 内取消 event clock 与 count-in/metronome，重复 dispose 不创建/重复释放资源。
 - 实际 Tone 调用还有既有模式差异：Wait tick 的 local metronome 使用 Tone.now（含 context lookAhead），而钢琴使用 immediate time；Follow/Realtime 的播放窗口 click 使用 getLiveAudioTime/immediate。原生测试保存两种 target 和 count-in callback 之后的整拍 handoff，不在 P7 借同步断言调整 API 或消除旧偏移。输出静音，不能据此声明可听/硬件同步。
+
+## P7b 策略边界
+
+- mode-policy 仅返回伴奏/metronome deferral、input/timed group、anchor 规则、hit delay 与 callback guard。没有 state write、timer、DOM 或 vendor 访问；coordinator 继续拥有同一个推进循环和全部副作用。
+- 不把 mode 缓存为整轮快照。audio/sustain 端口后、metronome/anchor 各原分支位置及回调执行时重新读取模式；否则重入的模式切换会改变旧行为。
+- Follow 的 remaining 恰好等于 full × .6 时保留；小于阈值或非正数时恢复 full，命中 delay 使用 Math.round。missing/nonfinite followInfo 仍走 Wait 10ms 且只允许 Wait 回调，保留旧 Follow 不推进的结果。无效存储 mode 字符串沿原 Realtime 分支。
+- Wait hit / Follow hit 分别要求当前 exact mode；input-gap/already-hit 允许 Wait 或 Follow；Realtime 与 Loop 回调仅要求 playing。没有新增普通 Pause/Reset epoch。
+- displayed 记录 advance 前的 measure/timestamp，prefetched 记录 advance 后的位置；Follow window 用前者，遍历 timing 用两者。两个数字都不是完整恢复 token，OSMD 仍拥有真实 repeat/ending iterator。

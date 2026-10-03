@@ -61,6 +61,7 @@
     "js/generated/audio/tone-transport.js",
     "js/generated/ui/playback-controls.js",
     "js/generated/practice/playback-state.js",
+    "js/generated/practice/mode-policy.js",
     "js/generated/practice/playback-coordinator.js",
     "js/generated/compatibility/playback.js",
     "js/trainer-core.js"
@@ -980,6 +981,21 @@
       "referenceFiles": [
         "js/generated/midi/midi-service.js",
         "js/generated/compatibility/midi.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerModePolicy",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerModePolicy",
+          "kind": "var",
+          "file": "js/generated/practice/mode-policy.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/practice/mode-policy.js",
+        "js/generated/practice/playback-coordinator.js"
       ]
     },
     {

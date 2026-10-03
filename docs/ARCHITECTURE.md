@@ -102,9 +102,11 @@ The test harness drives animation frames deterministically because background br
 may suspend native animation callbacks. Production following uses native requestAnimationFrame.
 
 ## Why playback keeps one coordinator
-The original mode branches remain together in `src/practice/playback-coordinator.ts` for P7a.
-P7b will extract decisions while keeping this one event loop, existing flags, real repeat traversal,
-painted/prefetched positions and native clock behavior. Metronome and count-in own their separate
+`src/practice/mode-policy.ts` owns pure Wait/Follow/Realtime decisions; the coordinator owns one
+event loop, state writes and effects. It resolves the current mode at the original decision points,
+including after sustain/audio effects and inside pending callbacks. Displayed and prefetched numeric
+positions are separate observations; only the OSMD adapter retains full iterator/repeat state.
+Existing flags, real repeat traversal and native clock behavior are preserved. Metronome and count-in own their separate
 clock resources, but handoff remains a coordinator command. No independent cursor clock or tempo
 scheduler has been added. Remaining loader and UI bindings in core move at P8; classic assembly
 and forwards are temporary until the P9 bootstrap and module bundle.

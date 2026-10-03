@@ -159,8 +159,13 @@ checkWaitModeAdvance/playbackLoop 的唯一实现；原 core 函数与 feedback-
 core 保留原位置的 DOM binding，转发仅在 `src/compatibility/playback.ts`，P8/P9 再移除。
 clearVisuals/clearTransient 在 playback-state，Transport 原 API 在 audio/tone-transport，Loop/metro
 checkbox/min/max 读取在 ui/playback-controls；coordinator 不读 DOM、Tone、OSMD、storage。
+
 OSMD adapter 捕获 entry array，惰性投影领域 PlaybackEvent；旧 keyboard 只在 composition 边界
 取回这些 entries，不把 vendor 对象传入 practice。adapter 的 loaded cursor/source assertions 与既有
 异常条件一致；fallback 是 raw first-note Length，不能用 combined tie 替代。
 工厂均无创建时 timer/node/listener 副作用；计时/资源实际工作在命令调用时发生，
 显式 dispose 统一清除 event clock 和 count-in/metronome，普通 Pause 保留旧 callback gates。
+
+P7b：新增 `PianoTrainerModePolicy` classic namespace，加载在唯一 coordinator 前；纯策略
+不调用全局服务或写 AppState。原 Follow comfort 常量归此模块，coordinator 只调用策略。
+旧名和输入推进仍只有 compatibility/playback 一份转发，P9 再改为源码 import/export。

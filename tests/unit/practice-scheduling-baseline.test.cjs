@@ -14,7 +14,7 @@ function harness(mode, { now = 10, anchor = 10.8, hit = true } = {}) {
         followAdvanceInfo: { currentMeasureIdx: 0, currentTimestamp: 0, waitSeconds: 1, beatsToWait: 2 }
     };
     const h = playbackHarness({now, state});
-    assert.equal(h.api('PianoTrainerPlaybackCoordinator').FOLLOW_ME_MIN_WAIT_RATIO, 0.6);
+    assert.equal(h.api('PianoTrainerModePolicy').FOLLOW_ME_MIN_WAIT_RATIO, 0.6);
     h.ports.audio.schedule = (...args) => events.push(['audio', ...args]);
     h.ports.practice.startSustains = () => events.push('sustains');
     h.ports.metronome.scheduleMetronomeForPlaybackWindow = (...args) => events.push(['metronome', ...args]);

@@ -1,13 +1,24 @@
 "use strict";
-// Moved from 3a76224. Mode decisions stay in this single coordinator for P7a.
+// One event loop. Pure policies decide mode rules; this factory owns effects.
 var PianoTrainerPlaybackCoordinator;
 (function (PianoTrainerPlaybackCoordinator) {
-    PianoTrainerPlaybackCoordinator.FOLLOW_ME_MIN_WAIT_RATIO = 0.6;
     function create(ports) {
         const state = ports.state;
         let epoch = 0, disposed = false;
+        const policy = () => PianoTrainerModePolicy.forMode(state.mode);
+        function scheduleAdvance(delayMs, guard, gradeMisses) {
+            ports.clock.setTimer(() => {
+                if (!PianoTrainerModePolicy.allowsAdvance(guard, state))
+                    return;
+                if (gradeMisses)
+                    ports.practice.processMisses();
+                ports.score.update();
+                ports.ui.scroll();
+                playbackLoop();
+            }, delayMs);
+        }
         function checkWaitModeAdvance() {
-            if (!state.isPlaying || (state.mode !== 'wait' && state.mode !== 'follow') || !state.isAudioBusy)
+            if (!state.isPlaying || !policy().waitsForInput || !state.isAudioBusy)
                 return;
             if (state.expectedNotes.length === 0)
                 return;
@@ -24,41 +35,21 @@ var PianoTrainerPlaybackCoordinator;
                 // longer expected or visually sustained.
                 ports.practice.startSustains();
                 const followInfo = state.followAdvanceInfo || null;
-                const shouldFollow = state.mode === 'follow' && followInfo && Number.isFinite(followInfo.waitSeconds);
-                if (shouldFollow) {
-                    const fullWaitSeconds = Math.max(0, followInfo.waitSeconds);
+                const hitAdvance = policy().afterHit(followInfo);
+                if (hitAdvance.kind === 'follow') {
+                    const fullWaitSeconds = hitAdvance.fullWaitSeconds;
                     const rawRemainingSeconds = Number.isFinite(state.anchorTime)
                         ? (state.anchorTime - ports.clock.nowSeconds())
                         : fullWaitSeconds;
                     // Keep the original beat grid when the player is on time or early.
                     // If the player arrives late, do not collapse the next delay into a tiny
                     // catch-up burst. Let Follow Me breathe from the player's actual hit time.
-                    let effectiveWaitSeconds = rawRemainingSeconds > 0
-                        ? rawRemainingSeconds
-                        : fullWaitSeconds;
-                    const minimumComfortWaitSeconds = fullWaitSeconds * PianoTrainerPlaybackCoordinator.FOLLOW_ME_MIN_WAIT_RATIO;
-                    if (effectiveWaitSeconds < minimumComfortWaitSeconds) {
-                        effectiveWaitSeconds = fullWaitSeconds;
-                    }
-                    effectiveWaitSeconds = Math.max(0, effectiveWaitSeconds);
-                    ports.metronome.scheduleMetronomeForPlaybackWindow(ports.clock.nowSeconds(), followInfo.currentMeasureIdx, followInfo.currentTimestamp, effectiveWaitSeconds, followInfo.beatsToWait);
-                    const delayMs = Math.max(0, Math.round(effectiveWaitSeconds * 1000));
-                    ports.clock.setTimer(() => {
-                        if (state.isPlaying && state.mode === 'follow') {
-                            ports.score.update();
-                            ports.ui.scroll();
-                            playbackLoop();
-                        }
-                    }, delayMs);
+                    const effectiveWaitSeconds = PianoTrainerModePolicy.followWaitSeconds(fullWaitSeconds, rawRemainingSeconds);
+                    ports.metronome.scheduleMetronomeForPlaybackWindow(ports.clock.nowSeconds(), hitAdvance.info.currentMeasureIdx, hitAdvance.info.currentTimestamp, effectiveWaitSeconds, hitAdvance.info.beatsToWait);
+                    scheduleAdvance(PianoTrainerModePolicy.followHitDelayMs(effectiveWaitSeconds), hitAdvance.guard, false);
                     return;
                 }
-                ports.clock.setTimer(() => {
-                    if (state.isPlaying && state.mode === 'wait') {
-                        ports.score.update();
-                        ports.ui.scroll();
-                        playbackLoop();
-                    }
-                }, 10);
+                scheduleAdvance(hitAdvance.delayMs, hitAdvance.guard, false);
             }
         }
         async function startPlaybackFromToolbar() {
@@ -95,7 +86,7 @@ var PianoTrainerPlaybackCoordinator;
                 ports.ui.scroll();
                 ports.transport.setBpm(state.baseBpm * state.speedPercent);
                 ports.transport.start();
-                if (state.mode === 'wait' && ports.controls.isMetronomeEnabled()) {
+                if (policy().startsWaitMetronome && ports.controls.isMetronomeEnabled()) {
                     ports.metronome.startWaitModeMetronome(ports.score.hasCursor() ? ports.score.getMeasureIndex() : 0);
                 }
                 playbackLoop();
@@ -162,8 +153,10 @@ var PianoTrainerPlaybackCoordinator;
                 ports.clock.requestFrame(playbackLoop);
                 return;
             }
-            const currentTimestamp = ports.score.getTimestamp();
-            const currentMeasureIdx = ports.score.getMeasureIndex();
+            // Numeric observations of the painted event; never a repeat restore token.
+            const displayed = { timestampWhole: ports.score.getTimestamp(), measureIndex: ports.score.getMeasureIndex() };
+            const currentTimestamp = displayed.timestampWhole;
+            const currentMeasureIdx = displayed.measureIndex;
             const tempoInBpm = ports.score.getTempo(currentMeasureIdx);
             if (tempoInBpm && tempoInBpm !== state.baseBpm) {
                 state.baseBpm = tempoInBpm;
@@ -198,7 +191,7 @@ var PianoTrainerPlaybackCoordinator;
                                 const combinedLength = n.combinedLengthWhole;
                                 const noteDurationSeconds = (combinedLength * 4) * (60 / (state.baseBpm * state.speedPercent));
                                 const durationMs = (noteDurationSeconds * 1000) * 0.9;
-                                if ((state.mode === 'wait' || state.mode === 'follow') && state.expectedNotes.length > 0 && !isPracticingThisHand) {
+                                if (policy().deferAccompaniment(state.expectedNotes.length, isPracticingThisHand)) {
                                     state.pendingAudio.push({ midi: m, durationMs, velocity: 100, toLocalAudio: routeToLocalAudio, toMidiOut: routeToMidiOut });
                                 }
                                 else {
@@ -210,8 +203,10 @@ var PianoTrainerPlaybackCoordinator;
                 }
             }
             ports.score.advance();
-            const nextMeasureIdx = ports.score.getMeasureIndex();
-            let nextTimestamp = ports.score.getTimestamp();
+            // The actual iterator is now prefetched; OSMD keeps its complete repeat state.
+            const prefetched = { measureIndex: ports.score.getMeasureIndex(), timestampWhole: ports.score.getTimestamp() };
+            const nextMeasureIdx = prefetched.measureIndex;
+            let nextTimestamp = prefetched.timestampWhole;
             const isEndReached = ports.score.isEndReached();
             const fallbackLength = entries.fallbackLengthWhole;
             if (isEndReached) {
@@ -227,9 +222,9 @@ var PianoTrainerPlaybackCoordinator;
             });
             const currentRunningBpm = state.baseBpm * state.speedPercent;
             const waitSeconds = beatsToWait * (60 / currentRunningBpm);
-            const playbackWindowStartSec = (state.mode === 'wait' || state.mode === 'follow') ? ports.clock.nowSeconds() : state.anchorTime;
-            const shouldDeferFollowScheduling = state.mode === 'follow' && state.expectedNotes.length > 0;
-            if (!shouldDeferFollowScheduling) {
+            const playbackWindowStartSec = policy().usesRelativeAnchor ? ports.clock.nowSeconds() : state.anchorTime;
+            const deferMetronomeWindow = policy().deferMetronome(state.expectedNotes.length);
+            if (!deferMetronomeWindow) {
                 ports.metronome.scheduleMetronomeForPlaybackWindow(playbackWindowStartSec, currentMeasureIdx, currentTimestamp, waitSeconds, beatsToWait);
             }
             else {
@@ -272,7 +267,7 @@ var PianoTrainerPlaybackCoordinator;
                 }, timeToWaitMs);
                 return;
             }
-            if (state.mode === 'wait' || state.mode === 'follow') {
+            if (policy().usesRelativeAnchor) {
                 state.anchorTime = ports.clock.nowSeconds() + waitSeconds;
             }
             else {
@@ -281,59 +276,37 @@ var PianoTrainerPlaybackCoordinator;
             timeToWaitMs = (state.anchorTime - ports.clock.nowSeconds()) * 1000;
             if (timeToWaitMs < 0) {
                 timeToWaitMs = 0;
-                if (state.mode === 'wait' || state.mode === 'follow') {
+                if (policy().usesRelativeAnchor) {
                     state.anchorTime = ports.clock.nowSeconds();
                 }
             }
-            if (state.mode === 'wait' || state.mode === 'follow') {
+            if (policy().waitsForInput) {
                 state.isAudioBusy = true;
-                state.followAdvanceInfo = state.mode === 'follow' ? {
-                    currentMeasureIdx,
-                    currentTimestamp,
-                    waitSeconds,
-                    beatsToWait
-                } : null;
-                if (state.expectedNotes.length > 0) {
-                    const allExpectedAlreadyHit = state.expectedNotes.every(n => n.hit);
-                    if (allExpectedAlreadyHit) {
-                        // One-hand early-grace reservations can promote held notes to hit as soon as
-                        // a new expected group is built. In wait/follow modes, that means this step
-                        // is already satisfied before any fresh keydown event occurs, so we need to
-                        // advance immediately instead of deadlocking on an already-hit group.
-                        ports.clock.setTimer(() => {
-                            if (!state.isPlaying || (state.mode !== 'wait' && state.mode !== 'follow'))
-                                return;
-                            checkWaitModeAdvance();
-                        }, 0);
-                    }
-                    // Otherwise engine waits for user input.
-                }
-                else {
-                    ports.practice.startSustains();
-                    const advanceDelayMs = state.mode === 'follow' ? Math.max(0, timeToWaitMs) : 10;
-                    if (state.mode === 'follow') {
-                        ports.metronome.scheduleMetronomeForPlaybackWindow(playbackWindowStartSec, currentMeasureIdx, currentTimestamp, waitSeconds, beatsToWait);
-                    }
+                state.followAdvanceInfo = policy().followInfo({ displayed, waitSeconds, beatsToWait });
+            }
+            const groupDecision = policy().group(state.expectedNotes);
+            if (groupDecision.kind === 'input') {
+                if (groupDecision.alreadyHit) {
+                    // Early-grace reservations can satisfy a group before a fresh keydown.
                     ports.clock.setTimer(() => {
-                        if (state.isPlaying && (state.mode === 'wait' || state.mode === 'follow')) {
-                            ports.practice.processMisses();
-                            ports.score.update();
-                            ports.ui.scroll();
-                            playbackLoop();
-                        }
-                    }, advanceDelayMs);
+                        if (!PianoTrainerModePolicy.allowsAdvance('input-modes', state))
+                            return;
+                        checkWaitModeAdvance();
+                    }, 0);
                 }
+                // Otherwise engine waits for user input.
+            }
+            else if (groupDecision.kind === 'input-gap') {
+                ports.practice.startSustains();
+                const gap = PianoTrainerModePolicy.inputGap(state.mode, timeToWaitMs);
+                if (gap.repeatMetronome) {
+                    ports.metronome.scheduleMetronomeForPlaybackWindow(playbackWindowStartSec, currentMeasureIdx, currentTimestamp, waitSeconds, beatsToWait);
+                }
+                scheduleAdvance(gap.delayMs, 'input-modes', true);
             }
             else {
                 ports.practice.startSustains();
-                ports.clock.setTimer(() => {
-                    if (state.isPlaying) {
-                        ports.practice.processMisses();
-                        ports.score.update();
-                        ports.ui.scroll();
-                        playbackLoop();
-                    }
-                }, timeToWaitMs);
+                scheduleAdvance(timeToWaitMs, 'playing', true);
             }
         }
         function resetPlaybackFromToolbar() {

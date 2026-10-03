@@ -79,6 +79,10 @@ Reset/loaded-score/Loop 的 visual cleanup 才执行原列表取消。pressed ke
 event clock timer/rAF 为独立实例资源，不进入 AppState；只在显式 dispose 取消全部，
 async start generation 也只在 dispose 更新。Tempo UI 和模式/手设置仍在 core，P8 再移到 UI commands。
 
+P7b 的 mode-policy 不拥有可写 AppState、timer 或 vendor 引用。coordinator 在原 decision
+边界调用策略，所有 busy/playing/anchor/followInfo/pendingAudio 写入仍归 coordinator；guard
+按回调当下状态判断。displayed/prefetched 为只读数值观察，不能取代 adapter 的 iterator snapshot。
+
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。
 首次默认值与 input velocity / live low latency 强制开启规则保留。

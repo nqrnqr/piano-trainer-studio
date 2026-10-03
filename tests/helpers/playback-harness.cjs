@@ -5,7 +5,7 @@ const note=(midi,staffId=1,length=.25,extra={})=>({halfTone:midi-12,ParentStaff:
 const entry=(...notes)=>({Notes:notes});
 function harness(options={}){
  const context=vm.createContext({window:{}});
- for(const file of ['domain/timing','score/score-traversal','score/osmd-adapter','audio/playback-clock','practice/playback-state','practice/playback-coordinator'])runScript(context,`js/generated/${file}.js`);
+ for(const file of ['domain/timing','score/score-traversal','score/osmd-adapter','audio/playback-clock','practice/playback-state','practice/mode-policy','practice/playback-coordinator'])runScript(context,`js/generated/${file}.js`);
  const api=name=>vm.runInContext(name,context);
  const state={mode:'wait',isPlaying:true,countInActive:false,fullscreenOnPlay:false,baseBpm:120,speedPercent:1,anchorTime:10,
   expectedNotes:[],pendingAudio:[],followAdvanceInfo:null,currentExpectedContext:null,isAudioBusy:false,score:{correct:0,wrong:0},

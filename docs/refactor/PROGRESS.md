@@ -167,6 +167,18 @@
 - 清单：612 global candidates/63 classic slots、同名函数覆盖为零；229 直接 AppState 写入，state aliases/owned timers 见 STATE_OWNERSHIP 与 scheduling contract。偏好、库 schema/格式、vendor/helper/启动器未改。
 - 命令：npm run build/check、两个 inventory 脚本、全部 playback/metronome/input/practice/display/render/audio/MIDI/traversal 页、.cache/playback-parity.cjs。回退：revert 此 coordinator 检查点恢复完整旧循环与槽位；不同时运行半套旧/新 timer，不清空用户数据，上一 metronome 检查点保留。
 
-## P7b–P9
+## P7b：模式策略
 
-下一入口：从同一个 coordinator 提取 Wait/Follow/Realtime 的决策策略，继续保持 flags、event 顺序与真实 repeats；P8 数据/UI、P9 显式 bootstrap/module/dispose 尚未开始。P7a 完成不代表整个 P7 或完整重构完成。
+- 状态：完成（2026-10-03）；P7 两部分均完成，完整目标仍活跃，P8/P9 尚待完成。
+- 范围：`src/practice/mode-policy.ts` 提取 Wait/Follow/Realtime 的 input/timed、伴奏/metronome deferral、relative/accumulated anchor、Follow comfort/hit delay 与 callback guard；coordinator 仍拥有唯一循环、时钟、状态写入和全部副作用。没有引入新状态机、tempo scheduler 或 repeat 展开。
+- 观察位置：displayed 为 advance 前的 measure/timestamp，prefetched 为 advance 后的位置。Follow window 使用 displayed，timing 使用两者；数字不是完整恢复 token，实际 repeat/ending context 仍由 OSMD adapter 保持。
+- 读取顺序：模式在原 decision 边界重新解析，包括 audio/sustain effects 之后和 timer 执行时。Follow 恰好 .6 保留 remaining，短于 .6 恢复 full；missing/nonfinite info 保留 Wait-only 10ms fallback。invalid saved mode 仍走 timed branch，普通 Pause/Reset 不添加取消规则。
+- 验证：192/192 Node（新增 10 项 threshold/取整、immutable input、displayed/prefetched、invalid Follow info、重入模式变化和 callback guard）；strict typecheck 与 110 文件干净生成比较通过，见 validation/P7b-check.txt。
+- 对照：基线 `9f62db2` 的 2,000 流/48,000 动作、1,461 timer/50 frame callbacks、200 Play/count-in/dispose；其中 1,000 流的时钟每次读取变化，400 流在 audio/sustain 内切换 mode。状态、事件顺序、精确 delay、clock read order、iterator commands、dispose 均一致，命令为 `.cache/mode-policy-parity.cjs`。
+- 浏览器：744/744；default/no-op 各 playback 127、practice 53、input 40、display 30、metronome 28、audio 23、render 19，MIDI 20/21、traversal 30/33。沿 P7 全矩阵检查三模式×两布局、输入/评分、Play/count-in/Pause/Resume/Reset/Loop、速度、换谱、实际 repeats/endings、native Tone/metronome 同步目标。最终记录见 validation/P7b-browser.txt；静音模拟输出不能证明可听或实体硬件同步。
+- 清单：613 global candidates/64 classic slots、同名函数覆盖为零；229 直接 AppState 写入。纯策略无状态/资源写入；偏好、库 schema/格式、vendor/helper/启动器未改。映射与读取契约已更新。
+- 回退：revert 本 P7b 提交恢复整个 P7a coordinator 与 HTML slot。无需同时运行旧/新循环，无数据迁移。P7a 的调度/时钟端口保留。
+
+## P8–P9
+
+下一入口：先记录 core loader、XML/MXL/ZIP/转换/移调的数据与返回契约，迁移独立 score 数据流程；随后 library repository/backup、UI controllers。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。

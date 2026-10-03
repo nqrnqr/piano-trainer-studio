@@ -1,6 +1,6 @@
 # 首轮 TypeScript 开发与运行
 
-当前已迁移 timing、状态、设置、键域/共享遍历、MIDI、音频、渲染与输入判定；P7 正迁移调度。
+当前已迁移 timing、状态、设置、键域/共享遍历、MIDI、音频、渲染、输入判定与 P7 调度/模式策略；P8 数据/UI 与 P9 入口仍待完成。
 应用继续使用原生 DOM、经典脚本、现有 vendor 和静态资源；完整目标见 [PROGRESS.md](PROGRESS.md)。
 
 ## 运行应用
@@ -47,7 +47,7 @@ npm run build:check
 - P5 的 OSMD 最小声明在 `types/vendor/osmd.d.ts`，private cursor snapshot 与 NoteRef 在 `src/score/osmd-adapter.ts`。显示、render 生命周期、几何、反馈与 Loop SVG 在 `src/render/*.ts`；旧 score-display.js 已删除，旧 feedback-engine 已随 P7a 的 Loop 推进迁移删除。ExpectedNote 持有不可变 NoteRef，换 Sheet 后旧 ref 失效。compatibility 两个文件暂供经典消费者组装／转发；viewport.init/dispose 可释放自己的事件和帧。
 - P6 的输入/匹配/提前预留/期望/计分/反馈状态/延音位于 `src/practice/*.ts`；只依赖领域数据与端口。OSMD 适配器提供惰性数据和 tie 长度，`src/compatibility/practice.ts` 暂作组装与旧名转发。副作用契约与 state aliases 见 P6_INPUT_CONTRACT.md。
 - P7a 的 count-in/节拍器在 `src/audio/metronome.ts`，原时钟的资源所有权在 playback-clock，MembraneSynth 在 metronome-output，pulse DOM 在 `src/ui/tempo-pulse.ts`；小节缓存位于 `src/score/measure-timing.ts`。compatibility/metronome 暂组装，core 在原节点位置 init。Pause 不等同 dispose，取消差异和旧迟到回调语义见 P7_SCHEDULING_CONTRACT.md。
-- Play/Pause/Reset、checkWaitModeAdvance/playbackLoop 与 Loop 边界已迁至 `src/practice/playback-coordinator.ts`，原 transient/visual cleanup 在 playback-state。Tone.Transport 通过 audio/tone-transport 唯一端口调用；Loop/metro DOM 读取在 ui/playback-controls，旧 UI binding 暂留 core。compatibility/playback 仅无资源组装/转发。P7b 接着提取模式策略，仍使用这一个 coordinator。
+- Play/Pause/Reset、checkWaitModeAdvance/playbackLoop 与 Loop 边界已迁至 `src/practice/playback-coordinator.ts`，原 transient/visual cleanup 在 playback-state。Tone.Transport 通过 audio/tone-transport 唯一端口调用；Loop/metro DOM 读取在 ui/playback-controls，旧 UI binding 暂留 core。compatibility/playback 仅无资源组装/转发。`practice/mode-policy.ts` 只返回模式决策，不拥有时钟/资源/状态写入；coordinator 在原读取位置解析模式，仍保持唯一循环。
 - `npm run build` 先在 `.cache` 新目录编译，成功才替换 compiler 专属的 `js/generated`；失败保留现有输出。
 - 不手改生成文件。构建清理只作用于校验过的生成／临时目录，拒绝向工作区外解析的路径和符号链接。
 - 输出与 TS 源使用 LF，保证 Windows / Unix 重建时 source map 字节稳定。
