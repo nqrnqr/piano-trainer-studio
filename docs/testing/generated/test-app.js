@@ -12757,7 +12757,7 @@
       },
       captureInputs: () => {
         const state = getServices().AppState;
-        inputs = { pressed: state.pressedKeys, reservations: state.earlyGraceReservations };
+        inputs = { state, pressed: state.pressedKeys, reservations: state.earlyGraceReservations };
       },
       readSnapshot: () => {
         const s = getServices(), state = s.AppState;
@@ -12784,6 +12784,7 @@
           horizontal: s.ScoreDisplay.isHorizontal(),
           zoom: state.zoom,
           realtimeSame: !!realtime && realtime === state.modeSettings.realtime,
+          stateSame: !!inputs && inputs.state === state,
           pressedSame: !!inputs && inputs.pressed === state.pressedKeys,
           reservationsSame: !!inputs && inputs.reservations === state.earlyGraceReservations
         };
@@ -12955,6 +12956,52 @@
     } };
   }
 
+  // src/testing/debug-checks.ts
+  function createDebugChecks(getServices) {
+    return Object.freeze({
+      init: () => getServices().feedbackDebug.init(),
+      dispose: () => getServices().feedbackDebug.dispose(),
+      setFrameLimit: (count) => getServices().feedbackDebug.setDebugStickyFrames(count),
+      pushFrame: (frame) => getServices().feedbackDebug.pushStickyDebugFrame(frame),
+      readSnapshot: () => {
+        const state = getServices().AppState;
+        return {
+          anchors: state.debugPersistentAnchors,
+          events: state.debugEventFlow,
+          matches: state.debugMatchLogs,
+          resolution: state.debugAnchorResolution,
+          sequence: state.debugFrameSeq,
+          history: state.debugAnchorHistory.map((frame) => ({
+            ...frame,
+            notes: frame.notes.map((note) => ({ ...note, anchor: { ...note.anchor } }))
+          }))
+        };
+      },
+      readFirstNote: () => {
+        const adapter = getServices().osmdAdapter;
+        const first = [...adapter.readPlaybackEvent(adapter.resolveStaffIdFromEntry).entries].flatMap((entry) => [...entry.notes])[0];
+        const note = first && adapter.resolveNote(first.noteRef);
+        if (!note) throw Error("Missing debug fixture note");
+        return {
+          diagnostic: PianoTrainerOsmdDebugObservation.describeLogicalNoteForDebug(note, 0, 0),
+          sourceMidi: note.halfTone === void 0 ? null : note.halfTone + 12,
+          sourceLength: note.Length?.RealValue ?? null
+        };
+      }
+    });
+  }
+
+  // src/testing/settings-checks.ts
+  function createSettingsChecks(getServices) {
+    return Object.freeze({
+      initFiles: () => getServices().settingsFiles.init(),
+      disposeFiles: () => getServices().settingsFiles.dispose(),
+      importFile: (file) => getServices().settingsFiles.handleSettingsBackupImportFile(file),
+      readBackup: () => structuredClone(getServices().settingsBackup.buildSettingsBackupPayload()),
+      importBackup: (payload) => getServices().settingsBackup.importSettingsBackupPayload(payload)
+    });
+  }
+
   // src/testing/facade.ts
   function createTestFacade(options = {}, injectedPorts = {}, libraryFixture) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
@@ -12993,6 +13040,8 @@
       preferences: preferenceChecks.commands,
       keyboard: keyboardChecks.commands,
       devices: deviceChecks.commands,
+      debug: createDebugChecks(() => services),
+      settings: createSettingsChecks(() => services),
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",

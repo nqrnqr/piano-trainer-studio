@@ -105,8 +105,9 @@ readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命�
 `score-display`、`playback-baseline`、`midi-baseline`、`audio-baseline` 和 `metronome-baseline`
 以及 `loader-baseline`、`transpose-baseline`、`library-baseline`、`native-controls-baseline`
 以及 `preference-controls-baseline`、`keyboard-controls-baseline`、`device-controls-baseline`
-已迁移到窄 facade；default/no-op 连同 bootstrap 共 34 页 1322 项通过。
-原 53/40/30或33/19/30/127/20或21/23/28/28/52/38/39/39/36/19 项行为断言保留，playback 每配置新增
+以及 `settings-debug-baseline`、`settings-baseline` 已迁移到窄 facade；
+default/no-op 连同 bootstrap 共 38 页 1384 项通过。
+原 53/40/30或33/19/30/127/20或21/23/28/28/52/38/39/39/36/19/20/11 项行为断言保留，playback 每配置新增
 一项受控时钟销毁检查；几何与反复基线未替换。
 `module-test-frame.js` 加载原生产 HTML/vendors 与独立测试 bundle，使用内存偏好和随机库。
 测试完成先 dispose/清理库，再发布通过终态。身份捕获保留在测试实例内，返回 token/布尔观察；
@@ -155,7 +156,12 @@ callback 捕获只返回 token，清理恢复实际 ready port。原 880 key/12 
 range 场景使用完整领域记录，held identity 私有捕获、状态观察复制。原生 fetch/AbortSignal
 从 source map 识别归属，实际 version manifest、迟到 commit/finally gating 与重新启动均保留原断言。
 
-其余曲库抽屉/UI 浏览器页面和原断言保留，
+Debug 通过 `testing/debug-checks.ts` 复制历史/flags/原 vendor diagnostics，实际 SVG 直接从 DOM 观察；
+settings facade 执行实际 FileReader 和备份服务。`settings-reload-fixture.js` 在真实 iframe reload
+前后保留随机 DB 命名空间与内存 local/session preferences，每次 pagehide dispose 旧应用，
+最终统一删除自己的库。两次真实 reload、强制 monitoring/布局/通道与原值恢复保留原 11 项。
+
+其余曲库抽屉/legacy LED 浏览器页面和原断言保留，
 仍引用已经移除的经典全局接口，**尚未完成剩余窄 facade 迁移及模块入口的全量浏览器回归**。
 新的 37 项启动检查不能代替这些行为矩阵；后续必须逐页迁移并保留原验证范围。
 原生权限、实体 MIDI/WLED、可听同步、Mac 启动器不由静音模拟证明。

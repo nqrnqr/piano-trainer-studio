@@ -3,7 +3,7 @@ import type {createServices} from '../app/services';
 type Services=ReturnType<typeof createServices>;
 export function createPreferenceChecks(getServices:() => Services) {
     let realtime:Services['AppState']['modeSettings']['realtime']|null=null;
-    let inputs:{pressed:Services['AppState']['pressedKeys'];reservations:Services['AppState']['earlyGraceReservations']}|null=null;
+    let inputs:{state:Services['AppState'];pressed:Services['AppState']['pressedKeys'];reservations:Services['AppState']['earlyGraceReservations']}|null=null;
     const controllers=() => {const s=getServices();return [s.practiceControls,s.handAssignmentControls,s.settingsActions];};
     return {clear:() => {realtime=null;inputs=null;},commands:Object.freeze({
         init:() => {for(const controller of controllers())controller.init();},
@@ -12,7 +12,7 @@ export function createPreferenceChecks(getServices:() => Services) {
         restoreDefaults:() => getServices().preferenceControls.restoreDefaultPreferences({reloadDevices:false}),
         setFeedback:(value:boolean) => {getServices().AppState.feedbackEnabled=value;},
         captureRealtime:() => {realtime=getServices().AppState.modeSettings.realtime;},
-        captureInputs:() => {const state=getServices().AppState;inputs={pressed:state.pressedKeys,reservations:state.earlyGraceReservations};},
+        captureInputs:() => {const state=getServices().AppState;inputs={state,pressed:state.pressedKeys,reservations:state.earlyGraceReservations};},
         readSnapshot:() => {
             const s=getServices(),state=s.AppState;
             return {mode:state.mode,practice:{...state.practice},playback:{...state.playback},audio:{...state.audioEnabled},midi:{...state.midiOutEnabled},
@@ -23,6 +23,7 @@ export function createPreferenceChecks(getServices:() => Services) {
                 midiOutVolume:state.midiOutVolume,midiInBoost:state.midiInBoost,inputVelocity:state.inputVelocityEnabled,
                 liveLowLatency:state.liveLowLatencyMonitoringEnabled,horizontal:s.ScoreDisplay.isHorizontal(),zoom:state.zoom,
                 realtimeSame:!!realtime&&realtime===state.modeSettings.realtime,
+                stateSame:!!inputs&&inputs.state===state,
                 pressedSame:!!inputs&&inputs.pressed===state.pressedKeys,reservationsSame:!!inputs&&inputs.reservations===state.earlyGraceReservations};
         }
     })};

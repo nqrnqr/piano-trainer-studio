@@ -460,3 +460,14 @@
 - 浏览器：device/preferences/MIDI/keyboard/bootstrap两配置共10页303/303，累计34页1322项；validation/P9q-device-facade-browser.txt。实际DOM/OSMD/native请求，通过终态在full dispose与自己DB cleanup之后发布，所有自建标签关闭。
 - 验证：两套final strict、四文件clean comparison、338/338 Node，validation/P9q-device-facade-check.txt。production bundle/vendor/资源/用户prefs/DB schema/backup/launcher不改。
 - 回退：revert本检查点恢复P9p测试入口/页面与fixture，无需清库；下一步debug/settings/library-ui/legacy-led与最终全量。当前1322项不替代全集，实体硬件/可听/Mac/LAN客户端限制保持，只有本地Git提交，无push。
+
+## P9r：debug、settings FileReader 与真实 reload facade
+
+- 状态：原settings-debug/settings两个套件迁移检查点完成（2026-10-04）；P9 library-ui/legacy-led与最终全集/门槛复验仍未完成，完整目标活跃。
+- 映射：旧feedbackDebug/settings commands与AppState/OSMD → testing/debug-checks.ts/settings-checks.ts，flags/history深复制，vendor diagnostics只返实际原字段和用于对照的primitive。SVG用与生产相同DOMselector观察，帧payload直接传actualservice以保留anchor mutation/cloning断言。设置备份复制、原native FileReader不替换。
+- Debug/file：每配置原20项保持，真实checkbox/all flags/storage、anchor geometry过滤/值快照、nativeSVG ring/label/color/radius/limit/seq、actualOSMD diagnostics、reload新SVG、外部layer保留、heartbeat4000ms/nativebindmarker init/dispose/reinit、ordinary invalidbackup、pending native reader abort/removecallbacks、captured old onload不能import/alert/reload、freshreader与全资源归零。source map识别实际debug interval/listener/settings reader归属。
+- Settings：每配置原11项保持，nativeFileReader unsupported backup与原state/Set identity、production successalert/nativeiframe reload、imported mode/layout/channel/volume/forcedmonitoring、original supportedsettings恢复后二次realreload。两配置均报告NATIVE_RELOADS boots3/pageHides2/databases1。
+- 隔离：reloadfixture在libraryfixture前提供parent所有的随机DBprefix/registry与memory local/session preferences，native pagehide同步dispose旧app，新frame打开同一自己的库，最终dispose/cleanup。普通其他testframe路径不变，真实用户local/session设置与DB不写入。
+- 浏览器：debug/settings/bootstrap/preferences/render/loader两配置共12页308/308，累计38页1384项；validation/P9r-settings-debug-facade-browser.txt。终态在所有owner关闭和自己DB cleanup之后发布，所有自建标签关闭。
+- 验证：两套final strict、四文件cleancomparison、338/338 Node，validation/P9r-settings-debug-facade-check.txt。生产bundle/vendor/assets/schema/backup/launcher不改。
+- 回退：revert本检查点恢复P9q测试入口、页面与fixture，无数据迁移；继续library-ui/legacy-led与最终全量。当前1384项不替代剩余套件，实体硬件/可听/Mac/LAN客户端限制保持。只有本地Git提交，无push。
