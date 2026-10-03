@@ -301,3 +301,15 @@
 - 测试修正：VM async跨realm的response/JSON microtasks须等到controlled phase确实开始；用setImmediate确认JSON正在await、第二请求完整完成后才完成第一请求，保留普通completion order断言。parity新增storage writes统一计数，排除只由new harness添加的save-range diagnostic marker；实际storage操作顺序仍逐项比较，生产行为无改动。
 - 清单：505 candidates/114 classic slots、重复函数零；53 direct AppState writes。vendor/helper、prefs/schema/backup/data、资源/启动器未改。
 - 回退：revert本检查点恢复三个原global modules与slots；之前P8/P9a保留，无数据迁移。下一入口：明确并参数化legacy LED/MIDI LED factory contract，再统一源码imports/bundle/bootstrap与窄test facade。
+
+## P9c：参数化 optional legacy LED 启动契约
+
+- 状态：准备子步骤完成（2026-10-03）；P9 imports/single bundle/bootstrap/test facade/最终严格配置与启动验收仍待完成，完整目标活跃。
+- 两份保留JS只发布`Window.PianoTrainerLegacyLed.create` / `PianoTrainerLegacyMidiLedTest.create`。应用state/命令/storage/native DOM/fetch/resources由typed ports传入；校准、传输与扫灯实例私有。classic compatibility在原slot显式创建，后续bootstrap直接接管。native资源与async generation契约见`P9_LED_CONTRACT.md`。
+- 原adapter调用不存在的`stopHealthChecks()`，现使用实际`stopHealthCheck()`；真实optional dispose已验证。重复dispose去重，旧rAF在fresh start不会创建第二循环。无消费者的三个staff Window forwards、原LED/MIDI-test ambient commands与清空的legacy-midi/practice声明文件删除；硬件无需OSMD/staff对象。
+- 验证：326/326 Node（新增10组retained JS/接口/资源/async、1组旧rAF重入），strict typecheck/232文件干净build一致，static entry验证唯一factory slots与旧forwards缺失。`validation/P9c-legacy-led-check.txt`。
+- 对照：b77d935，3,000普通LED commands逐步state/DOM/storage/effect/frame/MIDI/下载一致；10 HTTP/helper成功/失败/JSON/fallback routes、2完整/取消MIDI sweeps一致。旧源码仅临时Git抽到ignored .cache；`P9c-legacy-led-parity.txt`。
+- 浏览器：28页991/991。default/no-op：新LED19/6、traversal30/33、MIDI20/21；practice53/input40/playback127/preferences39/device19/keyboard36/render19/native39/settings11/loader28/debug20各两配置。真实FileReader abort/fresh read、local native fetch/AbortSignal、长按计时器、dispose/reinit及无迟到请求均通过。全部自建标签关闭，内存偏好/随机DB结束只删除自己数据；`P9c-legacy-led-browser.txt`。不证明实体WLED/MIDI/可听同步。
+- 新fixture误读不存在的AppState.osmd，改为adapter measure count；sweep对照改为创建时callback读取同一个range对象，保留全部行为断言。native资源统计分别记录listeners与markers。最终报告只记录成功的唯一页面。
+- 清单：117 classic slots、453 candidates、重复函数零、53 direct writes（LED为闭包内注入state alias）。vendor/helper、存储/DB/备份、音色/WASM/启动器不变；经典组成尚非最终模块化。
+- 回退：revert本检查点恢复原LED scripts/ambient/slots，之前P8/P9a/P9b保留，不清用户数据。下一入口：真实imports/exports、唯一typed bootstrap与单bundle、有限test entry；最终严格配置/clean install/原启动器验收。

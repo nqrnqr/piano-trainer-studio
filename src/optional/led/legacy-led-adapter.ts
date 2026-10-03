@@ -44,16 +44,18 @@ namespace PianoTrainerOptionalLed {
     export function createLegacy(ports: LegacyPorts): Output {
         let rafId: number | null = null;
         let running = false;
-        function tick() {
-            if (!running) return;
+        let active = true;
+        let generation = 0;
+        function tick(token: number) {
+            if (!running || token !== generation) return;
             if (ports.isCalibrating()) ports.renderKeyboard();
             else ports.renderOutputs();
-            rafId = ports.requestFrame(tick);
+            rafId = ports.requestFrame(() => tick(token));
         }
         return {
             enabled:true,
-            initControls: () => ports.initControls(),
-            initOutput: () => ports.initOutput(),
+            initControls: () => { active = true; ports.initControls(); },
+            initOutput: () => { active = true; ports.initOutput(); },
             refreshMapping: () => ports.refreshMapping(),
             invalidate: () => ports.invalidate(),
             positionCalibrationPanel: () => ports.positionCalibrationPanel(),
@@ -64,10 +66,15 @@ namespace PianoTrainerOptionalLed {
             clearOutputs: () => ports.clearOutputs(),
             start() {
                 if (running) return;
+                active = true;
                 running = true;
-                rafId = ports.requestFrame(tick);
+                const token = generation;
+                rafId = ports.requestFrame(() => tick(token));
             },
             dispose() {
+                if (!active) return;
+                active = false;
+                generation += 1;
                 running = false;
                 if (rafId !== null) ports.cancelFrame(rafId);
                 rafId = null;

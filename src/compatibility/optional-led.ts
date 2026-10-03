@@ -8,12 +8,14 @@ const optionalLedEnabled = typeof window.__PT_BOOT_OPTIONS__?.ledEnabled === 'bo
 const optionalLedOutput = optionalLedEnabled
     ? PianoTrainerOptionalLed.createLegacy({
         initControls: () => {
+            legacyLed.activate();
             initLegacyMidiLedTest();
             initLedCountControl();
             initLedBrightnessControls();
             initLedCalibrationControls();
         },
         initOutput: () => {
+            legacyLed.activate();
             LedEngine.init();
             WLEDController.clearLastSignature();
             initLedOutputControls();
@@ -29,16 +31,14 @@ const optionalLedOutput = optionalLedEnabled
         renderOutputs: () => LedEngine.renderOutputs(),
         updateHardware: (midi, next, previous) => legacyUpdateLEDHardware(midi, next, previous),
         wipeHardware: () => legacyWipeHardwareLEDs(),
-        clearOutputs: () => WLEDController.forceClear(),
+        clearOutputs: async () => { await WLEDController.forceClear(); },
         isCalibrating: () => AppState.ledCalibrationMode,
         renderKeyboard: () => renderVirtualKeyboard(),
         requestFrame: callback => window.requestAnimationFrame(callback),
         cancelFrame: id => window.cancelAnimationFrame(id),
         stopHardwareResources: () => {
-            WLEDController.cancelReconnect();
-            WLEDController.stopHealthChecks();
-            window.MidiLedTestController?.stop().catch(() => {});
-            legacyWipeHardwareLEDs();
+            legacyMidiLedTest.dispose();
+            legacyLed.dispose();
         }
     }) : PianoTrainerOptionalLed.createNoop();
 

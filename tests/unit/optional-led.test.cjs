@@ -31,9 +31,18 @@ test('legacy adapter preserves per-frame output/calibration behavior and release
     assert.deepEqual(output,['output','keyboard']);
     assert.equal(frames.size,1);
     adapter.dispose();
+    adapter.dispose();
     assert.equal(frames.size,0);
     assert.equal(cleanup,1);
     adapter.start(); frame(); adapter.dispose();
     assert.equal(frames.size,0);
     assert.deepEqual(output,['output','keyboard','keyboard']);
+});
+
+test('a captured old LED frame cannot create a second loop after fresh start', () => {
+    const frames=new Map();let sequence=0,renders=0,cleanups=0;
+    const adapter=load().createLegacy({requestFrame:callback=>{frames.set(++sequence,callback);return sequence;},cancelFrame:id=>frames.delete(id),
+        isCalibrating:()=>false,renderOutputs:()=>renders++,stopHardwareResources:()=>cleanups++});
+    adapter.start();const old=[...frames.values()][0];adapter.dispose();adapter.dispose();adapter.start();old(0);
+    assert.equal(frames.size,1);assert.equal(renders,0);assert.equal(cleanups,1);adapter.dispose();assert.equal(frames.size,0);
 });

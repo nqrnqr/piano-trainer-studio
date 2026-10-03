@@ -37,7 +37,9 @@
     "js/generated/app/update-controller.js",
     "js/generated/ui/update-controls.js",
     "js/generated/compatibility/device-controls.js",
+    "js/generated/optional/led/legacy-led-resources.js",
     "js/led.js",
+    "js/generated/compatibility/legacy-led.js",
     "js/generated/optional/led/legacy-led-adapter.js",
     "js/generated/compatibility/optional-led.js",
     "js/generated/ui/player-range-controls.js",
@@ -48,6 +50,7 @@
     "js/generated/ui/midi-controls.js",
     "js/generated/compatibility/midi.js",
     "js/optional/midi-led-test.js",
+    "js/generated/compatibility/midi-led-test.js",
     "js/generated/ui/score-file-reader.js",
     "js/generated/score/webmscore-adapter.js",
     "js/generated/score/score-conversion.js",
@@ -213,10 +216,12 @@
         "js/generated/compatibility/scores-ui.js",
         "js/generated/compatibility/device-controls.js",
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/optional-led.js",
         "js/generated/compatibility/player-range-controls.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js",
         "js/generated/compatibility/geometry.js",
         "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js",
@@ -283,7 +288,8 @@
       ],
       "referenceFiles": [
         "js/generated/domain/playable-range.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -312,7 +318,8 @@
       ],
       "referenceFiles": [
         "js/generated/domain/playable-range.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -347,7 +354,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -363,7 +371,8 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -379,7 +388,8 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -395,7 +405,8 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -411,7 +422,8 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -426,7 +438,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -442,7 +455,8 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -459,23 +473,6 @@
         "js/generated/state/preference-keys.js",
         "js/generated/compatibility/native-controls.js",
         "js/generated/ui/preference-controls.js"
-      ]
-    },
-    {
-      "symbol": "LedEngine",
-      "definitions": [
-        {
-          "symbol": "LedEngine",
-          "kind": "const",
-          "file": "js/led.js",
-          "line": 924
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js",
-        "js/optional/midi-led-test.js",
-        "docs/testing/traversal-baseline.integration.js"
       ]
     },
     {
@@ -672,15 +669,13 @@
         {
           "symbol": "MidiLedTestController",
           "kind": "const",
-          "file": "js/optional/midi-led-test.js",
-          "line": 2
+          "file": "js/generated/compatibility/midi-led-test.js",
+          "line": 9
         }
       ],
       "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js",
-        "js/generated/compatibility/midi.js",
-        "js/optional/midi-led-test.js"
+        "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -1029,6 +1024,21 @@
       "referenceFiles": [
         "js/generated/domain/keyboard-state.js",
         "js/generated/app/keyboard-controller.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerLegacyLedResources",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerLegacyLedResources",
+          "kind": "var",
+          "file": "js/generated/optional/led/legacy-led-resources.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/optional/led/legacy-led-resources.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -2519,22 +2529,6 @@
       ]
     },
     {
-      "symbol": "WLEDController",
-      "definitions": [
-        {
-          "symbol": "WLEDController",
-          "kind": "const",
-          "file": "js/led.js",
-          "line": 1122
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js",
-        "docs/testing/traversal-baseline.integration.js"
-      ]
-    },
-    {
       "symbol": "WLED_DDP_DEBUG_STORAGE_KEY",
       "definitions": [
         {
@@ -2546,63 +2540,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "WLED_HELPER_BASE_URL",
-      "definitions": [
-        {
-          "symbol": "WLED_HELPER_BASE_URL",
-          "kind": "const",
-          "file": "js/led.js",
-          "line": 525
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "WLED_HELPER_CLEAR_URL",
-      "definitions": [
-        {
-          "symbol": "WLED_HELPER_CLEAR_URL",
-          "kind": "const",
-          "file": "js/led.js",
-          "line": 528
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "WLED_HELPER_FRAME_URL",
-      "definitions": [
-        {
-          "symbol": "WLED_HELPER_FRAME_URL",
-          "kind": "const",
-          "file": "js/led.js",
-          "line": 527
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "WLED_HELPER_HEALTH_URL",
-      "definitions": [
-        {
-          "symbol": "WLED_HELPER_HEALTH_URL",
-          "kind": "const",
-          "file": "js/led.js",
-          "line": 526
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -2617,7 +2556,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -2632,7 +2572,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -2647,21 +2588,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "applyLedBrightnessSettings",
-      "definitions": [
-        {
-          "symbol": "applyLedBrightnessSettings",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 442
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -2737,20 +2665,6 @@
       ]
     },
     {
-      "symbol": "armWledIfNeeded",
-      "definitions": [
-        {
-          "symbol": "armWledIfNeeded",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 717
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
       "symbol": "audioLevelControls",
       "definitions": [
         {
@@ -2801,35 +2715,6 @@
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
         "docs/testing/audio-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "bindLedCalibrationNudgeButton",
-      "definitions": [
-        {
-          "symbol": "bindLedCalibrationNudgeButton",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 249
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "buildChromaticTestNotes",
-      "definitions": [
-        {
-          "symbol": "buildChromaticTestNotes",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 781
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/optional/midi-led-test.js"
       ]
     },
     {
@@ -3055,7 +2940,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/permission-help.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -3072,7 +2958,8 @@
         "js/generated/ui/toolbar.js",
         "js/generated/compatibility/toolbar.js",
         "js/generated/ui/scores-drawer.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -3119,20 +3006,6 @@
         "js/generated/domain/version.js",
         "js/generated/app/update-controller.js",
         "js/generated/compatibility/device-controls.js"
-      ]
-    },
-    {
-      "symbol": "confirmAndSetWledTransport",
-      "definitions": [
-        {
-          "symbol": "confirmAndSetWledTransport",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 648
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
       ]
     },
     {
@@ -3192,6 +3065,21 @@
         "js/generated/ui/virtual-keyboard-controls.js",
         "js/generated/compatibility/keyboard-and-score-controls.js",
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "createLegacyLedResources",
+      "definitions": [
+        {
+          "symbol": "createLegacyLedResources",
+          "kind": "function",
+          "file": "js/generated/compatibility/legacy-led.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/legacy-led.js",
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -3354,20 +3242,6 @@
         "js/generated/practice/playback-coordinator.js",
         "docs/testing/metronome-baseline.integration.js",
         "docs/testing/playback-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "downloadLedCalibrationBackup",
-      "definitions": [
-        {
-          "symbol": "downloadLedCalibrationBackup",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 178
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
       ]
     },
     {
@@ -3641,6 +3515,7 @@
       "referenceFiles": [
         "js/generated/state/preferences.js",
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js",
         "docs/testing/metronome-baseline.integration.js"
@@ -3659,62 +3534,6 @@
       "referenceFiles": [
         "js/generated/score/osmd-adapter.js",
         "js/generated/compatibility/practice.js"
-      ]
-    },
-    {
-      "symbol": "getConfiguredLedCount",
-      "definitions": [
-        {
-          "symbol": "getConfiguredLedCount",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 23
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "getConfiguredLedFuture1Pct",
-      "definitions": [
-        {
-          "symbol": "getConfiguredLedFuture1Pct",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 15
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "getConfiguredLedFuture2Pct",
-      "definitions": [
-        {
-          "symbol": "getConfiguredLedFuture2Pct",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 19
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "getConfiguredLedMasterBrightness",
-      "definitions": [
-        {
-          "symbol": "getConfiguredLedMasterBrightness",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 11
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
       ]
     },
     {
@@ -3781,34 +3600,6 @@
       ]
     },
     {
-      "symbol": "getLedCalibrationOffsetForMidi",
-      "definitions": [
-        {
-          "symbol": "getLedCalibrationOffsetForMidi",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 51
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "getLedCalibrationPreviewLabel",
-      "definitions": [
-        {
-          "symbol": "getLedCalibrationPreviewLabel",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 85
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
       "symbol": "getLegacyMidiOutput",
       "definitions": [
         {
@@ -3820,8 +3611,10 @@
       ],
       "referenceFiles": [
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/midi.js",
-        "js/optional/midi-led-test.js"
+        "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -3949,7 +3742,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/player-range.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -3964,6 +3758,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/midi.js"
       ]
     },
@@ -4023,7 +3818,8 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/midi.js",
-        "js/optional/midi-led-test.js"
+        "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -4054,8 +3850,10 @@
       "referenceFiles": [
         "js/generated/state/player-range.js",
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/player-range-controls.js",
-        "js/optional/midi-led-test.js"
+        "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -4102,8 +3900,7 @@
       "referenceFiles": [
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js",
-        "js/generated/compatibility/playback.js",
-        "js/generated/compatibility/keyboard-and-score-controls.js"
+        "js/generated/compatibility/playback.js"
       ]
     },
     {
@@ -4118,8 +3915,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-rendering.js",
-        "js/generated/compatibility/score-traversal.js",
-        "js/generated/compatibility/keyboard-and-score-controls.js"
+        "js/generated/compatibility/score-traversal.js"
       ]
     },
     {
@@ -4227,7 +4023,8 @@
       "referenceFiles": [
         "js/generated/ui/midi-controls.js",
         "js/generated/compatibility/midi.js",
-        "js/optional/midi-led-test.js"
+        "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -4305,6 +4102,7 @@
       "referenceFiles": [
         "js/generated/state/preferences.js",
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/feedback-debug.js",
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js"
@@ -4353,7 +4151,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/permission-help.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -4434,20 +4233,6 @@
       ]
     },
     {
-      "symbol": "handleLedCalibrationImportFile",
-      "definitions": [
-        {
-          "symbol": "handleLedCalibrationImportFile",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 233
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
       "symbol": "handleSettingsBackupImportFile",
       "definitions": [
         {
@@ -4463,20 +4248,6 @@
         "js/generated/ui/settings-actions.js",
         "js/generated/compatibility/preference-controls.js",
         "docs/testing/settings-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "hasAcceptedWledDdpWarning",
-      "definitions": [
-        {
-          "symbol": "hasAcceptedWledDdpWarning",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 530
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
       ]
     },
     {
@@ -4507,20 +4278,6 @@
       ]
     },
     {
-      "symbol": "importLedCalibrationFromPayload",
-      "definitions": [
-        {
-          "symbol": "importLedCalibrationFromPayload",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 207
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
       "symbol": "importSettingsBackupPayload",
       "definitions": [
         {
@@ -4537,78 +4294,19 @@
       ]
     },
     {
-      "symbol": "initLedBrightnessControls",
-      "definitions": [
-        {
-          "symbol": "initLedBrightnessControls",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 477
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "initLedCalibrationControls",
-      "definitions": [
-        {
-          "symbol": "initLedCalibrationControls",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 315
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "initLedCountControl",
-      "definitions": [
-        {
-          "symbol": "initLedCountControl",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 412
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "initLedOutputControls",
-      "definitions": [
-        {
-          "symbol": "initLedOutputControls",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 810
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
       "symbol": "initLegacyMidiLedTest",
       "definitions": [
         {
           "symbol": "initLegacyMidiLedTest",
-          "kind": "function",
-          "file": "js/optional/midi-led-test.js",
-          "line": 155
+          "kind": "const",
+          "file": "js/generated/compatibility/midi-led-test.js",
+          "line": 10
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/optional-led.js",
-        "js/optional/midi-led-test.js"
+        "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -4672,6 +4370,7 @@
         "js/generated/ui/update-controls.js",
         "js/generated/compatibility/device-controls.js",
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/trainer-core.js"
       ]
     },
@@ -4750,7 +4449,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/permission-help.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -4786,20 +4486,6 @@
         "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/input-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "isMidiLedRenderableState",
-      "definitions": [
-        {
-          "symbol": "isMidiLedRenderableState",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 1846
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
       ]
     },
     {
@@ -4849,20 +4535,6 @@
       ]
     },
     {
-      "symbol": "keyPosition01ToLedIndex",
-      "definitions": [
-        {
-          "symbol": "keyPosition01ToLedIndex",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 897
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
       "symbol": "keyboardController",
       "definitions": [
         {
@@ -4877,47 +4549,63 @@
       ]
     },
     {
-      "symbol": "ledCalibration",
+      "symbol": "legacyLed",
       "definitions": [
         {
-          "symbol": "ledCalibration",
-          "kind": "let",
-          "file": "js/led.js",
-          "line": 31
+          "symbol": "legacyLed",
+          "kind": "const",
+          "file": "js/generated/compatibility/legacy-led.js",
+          "line": 14
         }
       ],
       "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "legacyUpdateLEDHardware",
-      "definitions": [
-        {
-          "symbol": "legacyUpdateLEDHardware",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 1804
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/optional-led.js"
       ]
     },
     {
-      "symbol": "legacyWipeHardwareLEDs",
+      "symbol": "legacyLedResources",
       "definitions": [
         {
-          "symbol": "legacyWipeHardwareLEDs",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 1829
+          "symbol": "legacyLedResources",
+          "kind": "const",
+          "file": "js/generated/compatibility/legacy-led.js",
+          "line": 13
         }
       ],
       "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
+        "js/generated/compatibility/legacy-led.js"
+      ]
+    },
+    {
+      "symbol": "legacyMidiLedTest",
+      "definitions": [
+        {
+          "symbol": "legacyMidiLedTest",
+          "kind": "const",
+          "file": "js/generated/compatibility/midi-led-test.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/legacy-led.js",
+        "js/generated/compatibility/optional-led.js",
+        "js/generated/compatibility/midi.js",
+        "js/generated/compatibility/midi-led-test.js"
+      ]
+    },
+    {
+      "symbol": "legacyMidiLedTestResources",
+      "definitions": [
+        {
+          "symbol": "legacyMidiLedTestResources",
+          "kind": "const",
+          "file": "js/generated/compatibility/midi-led-test.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -5002,20 +4690,6 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "loadLedCalibration",
-      "definitions": [
-        {
-          "symbol": "loadLedCalibration",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 33
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
       ]
     },
     {
@@ -5200,7 +4874,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preferences.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -5215,7 +4890,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preferences.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -5230,21 +4906,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preferences.js",
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "normalizeLedOutputMode",
-      "definitions": [
-        {
-          "symbol": "normalizeLedOutputMode",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 517
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -5294,34 +4957,6 @@
       ]
     },
     {
-      "symbol": "normalizeWledTransport",
-      "definitions": [
-        {
-          "symbol": "normalizeWledTransport",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 521
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "nudgeLedCalibration",
-      "definitions": [
-        {
-          "symbol": "nudgeLedCalibration",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 171
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
       "symbol": "openScoreFilePicker",
       "definitions": [
         {
@@ -5368,6 +5003,7 @@
         "js/generated/compatibility/player-range-controls.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js",
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/native-controls.js",
         "js/generated/compatibility/preference-controls.js",
@@ -5624,21 +5260,6 @@
       "referenceFiles": [
         "js/generated/ui/midi-controls.js",
         "js/generated/compatibility/midi.js"
-      ]
-    },
-    {
-      "symbol": "positionLedCalibrationPanel",
-      "definitions": [
-        {
-          "symbol": "positionLedCalibrationPanel",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 118
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -5957,8 +5578,10 @@
       ],
       "referenceFiles": [
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/midi.js",
-        "js/optional/midi-led-test.js"
+        "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -6035,10 +5658,12 @@
       ],
       "referenceFiles": [
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/optional-led.js",
         "js/generated/compatibility/player-range-controls.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
         "js/generated/ui/preference-controls.js",
@@ -6074,21 +5699,6 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-rendering.js"
-      ]
-    },
-    {
-      "symbol": "resetAllLedCalibration",
-      "definitions": [
-        {
-          "symbol": "resetAllLedCalibration",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 76
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -6181,20 +5791,6 @@
         "js/generated/ui/preference-controls.js",
         "js/generated/ui/settings-actions.js",
         "js/generated/compatibility/preference-controls.js"
-      ]
-    },
-    {
-      "symbol": "saveLedCalibration",
-      "definitions": [
-        {
-          "symbol": "saveLedCalibration",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 43
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
       ]
     },
     {
@@ -6461,21 +6057,6 @@
       ]
     },
     {
-      "symbol": "selectLedCalibrationMidi",
-      "definitions": [
-        {
-          "symbol": "selectLedCalibrationMidi",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 163
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/practice.js"
-      ]
-    },
-    {
       "symbol": "sendMidiOutExpressionLevel",
       "definitions": [
         {
@@ -6554,123 +6135,6 @@
       ]
     },
     {
-      "symbol": "setLedCalibrationMode",
-      "definitions": [
-        {
-          "symbol": "setLedCalibrationMode",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 138
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "setLedCalibrationOffsetForMidi",
-      "definitions": [
-        {
-          "symbol": "setLedCalibrationOffsetForMidi",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 57
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "setLedCount",
-      "definitions": [
-        {
-          "symbol": "setLedCount",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 395
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "setLedFuture1BrightnessPct",
-      "definitions": [
-        {
-          "symbol": "setLedFuture1BrightnessPct",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 459
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "setLedFuture2BrightnessPct",
-      "definitions": [
-        {
-          "symbol": "setLedFuture2BrightnessPct",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 468
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "setLedMasterBrightness",
-      "definitions": [
-        {
-          "symbol": "setLedMasterBrightness",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 450
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "setLedOutputMode",
-      "definitions": [
-        {
-          "symbol": "setLedOutputMode",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 736
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "setLedReverse",
-      "definitions": [
-        {
-          "symbol": "setLedReverse",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 771
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
       "symbol": "setPermissionNote",
       "definitions": [
         {
@@ -6716,54 +6180,12 @@
       "referenceFiles": [
         "js/generated/state/preferences.js",
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/ui/midi-controls.js",
         "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/native-controls.js",
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js"
-      ]
-    },
-    {
-      "symbol": "setWledIp",
-      "definitions": [
-        {
-          "symbol": "setWledIp",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 791
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "setWledStatus",
-      "definitions": [
-        {
-          "symbol": "setWledStatus",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 712
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "setWledTransport",
-      "definitions": [
-        {
-          "symbol": "setWledTransport",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 611
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
       ]
     },
     {
@@ -6873,7 +6295,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/permission-help.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -7053,64 +6476,6 @@
       ]
     },
     {
-      "symbol": "syncLedBrightnessControls",
-      "definitions": [
-        {
-          "symbol": "syncLedBrightnessControls",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 427
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
-      "symbol": "syncLedCalibrationControls",
-      "definitions": [
-        {
-          "symbol": "syncLedCalibrationControls",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 91
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "syncLedCountControl",
-      "definitions": [
-        {
-          "symbol": "syncLedCountControl",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 388
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "syncLedOutputModeControls",
-      "definitions": [
-        {
-          "symbol": "syncLedOutputModeControls",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 678
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
-      ]
-    },
-    {
       "symbol": "syncLooperDependentUi",
       "definitions": [
         {
@@ -7208,7 +6573,8 @@
         "js/generated/ui/toolbar.js",
         "js/generated/compatibility/toolbar.js",
         "js/generated/compatibility/scores-ui.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -7226,36 +6592,6 @@
         "js/generated/ui/practice-controls.js",
         "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "syncWledStatus",
-      "definitions": [
-        {
-          "symbol": "syncWledStatus",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 673
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/connection-status.js",
-        "js/generated/compatibility/device-controls.js",
-        "js/led.js"
-      ]
-    },
-    {
-      "symbol": "syncWledTransportControls",
-      "definitions": [
-        {
-          "symbol": "syncWledTransportControls",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 534
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js"
       ]
     },
     {
@@ -7463,6 +6799,7 @@
         "js/generated/ui/connection-status.js",
         "js/generated/compatibility/device-controls.js",
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/midi.js",
         "js/trainer-core.js"
       ]
@@ -7493,21 +6830,6 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/device-controls.js"
-      ]
-    },
-    {
-      "symbol": "updateLedKeyMapping",
-      "definitions": [
-        {
-          "symbol": "updateLedKeyMapping",
-          "kind": "function",
-          "file": "js/led.js",
-          "line": 903
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -7729,23 +7051,6 @@
       ]
     },
     {
-      "symbol": "window.MidiLedTestController",
-      "definitions": [
-        {
-          "symbol": "window.MidiLedTestController",
-          "kind": "window assignment",
-          "file": "js/optional/midi-led-test.js",
-          "line": 151
-        }
-      ],
-      "referenceFiles": [
-        "js/led.js",
-        "js/generated/compatibility/optional-led.js",
-        "js/generated/compatibility/midi.js",
-        "js/optional/midi-led-test.js"
-      ]
-    },
-    {
       "symbol": "window.PTTiming",
       "definitions": [
         {
@@ -7792,6 +7097,36 @@
         "js/generated/practice/playback-coordinator.js",
         "js/generated/compatibility/playback.js",
         "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "window.PianoTrainerLegacyLed",
+      "definitions": [
+        {
+          "symbol": "window.PianoTrainerLegacyLed",
+          "kind": "window assignment",
+          "file": "js/led.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
+      ]
+    },
+    {
+      "symbol": "window.PianoTrainerLegacyMidiLedTest",
+      "definitions": [
+        {
+          "symbol": "window.PianoTrainerLegacyMidiLedTest",
+          "kind": "window assignment",
+          "file": "js/optional/midi-led-test.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -7876,7 +7211,7 @@
           "symbol": "window.__PT_APP_MANIFEST__",
           "kind": "window assignment",
           "file": "index.html",
-          "line": 82
+          "line": 83
         }
       ],
       "referenceFiles": [
@@ -7891,7 +7226,7 @@
           "symbol": "window.__PT_ASSET_VERSION__",
           "kind": "window assignment",
           "file": "index.html",
-          "line": 84
+          "line": 85
         }
       ],
       "referenceFiles": [
@@ -7957,7 +7292,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/permission-help.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -7973,58 +7309,6 @@
       "referenceFiles": [
         "js/generated/ui/feedback-debug.js",
         "js/generated/compatibility/feedback-debug.js"
-      ]
-    },
-    {
-      "symbol": "window.getAssignedHandRoleForStaff",
-      "definitions": [
-        {
-          "symbol": "window.getAssignedHandRoleForStaff",
-          "kind": "window assignment",
-          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
-          "line": 37
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/domain/hand-routing.js",
-        "js/generated/compatibility/hand-routing.js",
-        "js/generated/compatibility/score-traversal.js",
-        "js/generated/compatibility/practice.js",
-        "js/generated/compatibility/playback.js",
-        "js/generated/compatibility/keyboard-and-score-controls.js"
-      ]
-    },
-    {
-      "symbol": "window.getResolvedStaffAssignmentIdFromEntry",
-      "definitions": [
-        {
-          "symbol": "window.getResolvedStaffAssignmentIdFromEntry",
-          "kind": "window assignment",
-          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
-          "line": 36
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/compatibility/score-rendering.js",
-        "js/generated/compatibility/practice.js",
-        "js/generated/compatibility/playback.js",
-        "js/generated/compatibility/keyboard-and-score-controls.js"
-      ]
-    },
-    {
-      "symbol": "window.getResolvedStaffAssignmentIdFromNote",
-      "definitions": [
-        {
-          "symbol": "window.getResolvedStaffAssignmentIdFromNote",
-          "kind": "window assignment",
-          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
-          "line": 35
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/compatibility/score-rendering.js",
-        "js/generated/compatibility/score-traversal.js",
-        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -8114,7 +7398,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/permission-help.js",
-        "js/led.js"
+        "js/led.js",
+        "js/generated/compatibility/legacy-led.js"
       ]
     },
     {
@@ -8123,12 +7408,12 @@
         {
           "symbol": "window.syncSettingsDebugVisibility",
           "kind": "window assignment",
-          "file": "js/led.js",
-          "line": 669
+          "file": "js/generated/compatibility/legacy-led.js",
+          "line": 30
         }
       ],
       "referenceFiles": [
-        "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/ui/practice-controls.js",
         "js/generated/compatibility/preference-controls.js"
       ]
@@ -8162,9 +7447,11 @@
       ],
       "referenceFiles": [
         "js/led.js",
+        "js/generated/compatibility/legacy-led.js",
         "js/generated/compatibility/optional-led.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
+        "js/generated/compatibility/midi-led-test.js",
         "js/generated/compatibility/playback.js"
       ]
     }

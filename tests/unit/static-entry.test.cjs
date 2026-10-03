@@ -75,6 +75,18 @@ test('static entry loads exactly one timing implementation before its core consu
     for (const name of ['domain/version','app/update-controller','compatibility/device-controls','compatibility/player-range-controls']) {
         assert.equal(scripts.filter(file=>file===`js/generated/${name}.js`).length,1);
     }
+    for (const name of ['optional/led/legacy-led-resources','compatibility/legacy-led','compatibility/midi-led-test']) {
+        assert.equal(scripts.filter(file=>file===`js/generated/${name}.js`).length,1);
+    }
+    assert.ok(scripts.indexOf('js/led.js') < scripts.indexOf('js/generated/compatibility/legacy-led.js'));
+    assert.ok(scripts.indexOf('js/optional/midi-led-test.js') < scripts.indexOf('js/generated/compatibility/midi-led-test.js'));
+    assert.equal(runtime.includes('stopHealthChecks'),false,'legacy cleanup uses the actual singular controller method');
+    for (const file of ['types/legacy-midi.d.ts','types/legacy-practice.d.ts']) {
+        assert.equal(fs.existsSync(path.join(root,file)),false,'empty ambient files are removed after explicit LED assembly');
+    }
+    for (const name of ['getResolvedStaffAssignmentIdFromNote','getResolvedStaffAssignmentIdFromEntry','getAssignedHandRoleForStaff']) {
+        assert.equal(runtime.includes(`window.${name} =`),false,'optional hardware no longer consumes staff/vendor globals');
+    }
 });
 
 test('served source map embeds the unique TS source and maps both timing calculations', () => {

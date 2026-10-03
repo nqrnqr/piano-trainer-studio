@@ -13,19 +13,21 @@ var PianoTrainerOptionalLed;
     function createLegacy(ports) {
         let rafId = null;
         let running = false;
-        function tick() {
-            if (!running)
+        let active = true;
+        let generation = 0;
+        function tick(token) {
+            if (!running || token !== generation)
                 return;
             if (ports.isCalibrating())
                 ports.renderKeyboard();
             else
                 ports.renderOutputs();
-            rafId = ports.requestFrame(tick);
+            rafId = ports.requestFrame(() => tick(token));
         }
         return {
             enabled: true,
-            initControls: () => ports.initControls(),
-            initOutput: () => ports.initOutput(),
+            initControls: () => { active = true; ports.initControls(); },
+            initOutput: () => { active = true; ports.initOutput(); },
             refreshMapping: () => ports.refreshMapping(),
             invalidate: () => ports.invalidate(),
             positionCalibrationPanel: () => ports.positionCalibrationPanel(),
@@ -37,10 +39,16 @@ var PianoTrainerOptionalLed;
             start() {
                 if (running)
                     return;
+                active = true;
                 running = true;
-                rafId = ports.requestFrame(tick);
+                const token = generation;
+                rafId = ports.requestFrame(() => tick(token));
             },
             dispose() {
+                if (!active)
+                    return;
+                active = false;
+                generation += 1;
                 running = false;
                 if (rafId !== null)
                     ports.cancelFrame(rafId);

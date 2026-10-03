@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>Optional legacy LED lifetime checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1200px;height:600px;border:1px solid #ccc}pre{white-space:pre-wrap;max-height:420px;overflow:auto}</style>
+<h1>Optional legacy LED lifetime checks</h1><p>Native calibration controls, file reads, local fetch and explicit disposal.</p>
+<button id="run" disabled>Run checks</button><pre id="results">Loading</pre><iframe title="App under test"></iframe>
+<script>
+const frame=document.querySelector('iframe');frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/legacy-led-baseline.integration.js';frame.contentDocument.body.append(script);};
+(async()=>{const html=await(await fetch('/index.html')).text(),boot=new URLSearchParams(location.search).get('led')==='off'?'<script>window.__PT_BOOT_OPTIONS__={ledEnabled:false};<'+'/script>':'';
+frame.srcdoc=html.replace('<head>','<head><base href="/">'+boot+'<script src="/docs/testing/library-fixture.js"><'+'/script><script>localStorage.setItem("pt_firstRunIntroSeen","true");<'+'/script><script src="/docs/testing/legacy-led-fixture.js"><'+'/script>');})();
+</script>

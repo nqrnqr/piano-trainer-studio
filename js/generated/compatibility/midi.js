@@ -35,7 +35,7 @@ const midiOutput = PianoTrainerMidiOutput.create({
 });
 const midiControls = PianoTrainerMidiControls.create({
     state: AppState, service: midiService, optionalLedEnabled: optionalLedOutput.enabled,
-    ledTest: () => window.MidiLedTestController,
+    ledTest: () => legacyMidiLedTest.controller,
     updateConnections: () => updateConnectionStatuses(),
     refreshConnections: () => refreshConnectionStatuses(),
     clearPermissionHelp: () => clearMidiPermissionHelp(),

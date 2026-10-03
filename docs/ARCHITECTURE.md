@@ -142,6 +142,12 @@ Score seeking delegates to the existing real iterator; loaded-score UI uses type
 Core now retains the original startup sequence. Classic composition and forwards remain temporary
 until the P9 bootstrap and module bundle.
 
+Optional hardware JavaScript now receives explicit factory ports for settings, range, MIDI output
+and UI commands. Its private native resource owner releases handlers, timers, frames, pending
+reads/requests and downloads; old continuations stay invalid after a fresh lifetime starts. It
+requires no score/vendor observation. Classic assembly remains temporary until the single
+module entry takes ownership of initialization and disposal.
+
 ## Fragile systems
 - Feedback-note anchor positioning and resize stability
 - Beam/layout rendering stability

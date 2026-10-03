@@ -4,4 +4,3 @@ interface Window {
     showWledPermissionHelp: typeof showWledPermissionHelp;
     clearWledPermissionHelp: typeof clearWledPermissionHelp;
 }
-declare function syncWledStatus(): void;

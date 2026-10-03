@@ -32,6 +32,3 @@ const scoreSeekController = PianoTrainerScoreSeek.create({state: AppState, hasGr
     isEndReached: osmdAdapter.isEndReached, getCurrentMeasureIndex: osmdAdapter.getCurrentMeasureIndex, advance: osmdAdapter.advance,
     updateCursor: osmdAdapter.updateCursor, scroll: () => handleAutoScroll(), clearVisuals: () => clearVisuals()});
 const scoreSeekControls = PianoTrainerScoreSeekControls.create({document, seek: scoreSeekController.seek});
-window.getResolvedStaffAssignmentIdFromNote = getResolvedStaffAssignmentIdFromNote;
-window.getResolvedStaffAssignmentIdFromEntry = getResolvedStaffAssignmentIdFromEntry;
-window.getAssignedHandRoleForStaff = getAssignedHandRoleForStaff;

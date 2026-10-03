@@ -171,3 +171,10 @@ update-controller用narrow state、clock/storage/location/fetch ports持有pendi
 只explicit dispose abort own pending requests、失效fetch/JSON await/catch/finally后的state/UI/navigation。
 ordinary并发仍按完成次序commit，普通LED init重复检查不cancel旧请求。update UI单独拥有一个
 button listener/marker；bootstrap须dispose UI及controller，不能把UI cleanup当作request取消。
+
+P9c direct writes仍53，LED的AppState是factory注入的narrow state alias。calibration/WLED queue/
+helper promise/test tokens/MIDI active notes在私有闭包，native owner持有31 listeners/21 markers，
+MIDI test为1/1。explicit dispose才取消owned资源；old callbacks/await/Promise跨fresh activate仍
+失效，waits解析为false。completed request/read与外部timer/marker保留，普通operation语义不变。
+核心仍拥有同一hardwareLEDState Map；LED释放cache对应输出，MIDI test只停止自己active run。
+硬件发送失败仍完成native cleanup。完整契约见P9_LED_CONTRACT.md。

@@ -1,6 +1,7 @@
 # 首轮 TypeScript 开发与运行
 
-当前已迁移 timing、状态、设置、键域/共享遍历、MIDI、音频、渲染、输入判定与 P7 调度/模式策略；P8 数据、曲库、工具栏和练习/偏好控件已迁移，键盘/score seek/score UI 与 P9 入口仍待完成。
+核心与P8数据/曲库/全部控件已迁移；P9a–c已完成剩余UI生命周期与legacy LED参数化契约。
+P9真实imports、single bundle、统一bootstrap、有限test facade与最终严格配置仍待完成。
 应用继续使用原生 DOM、经典脚本、现有 vendor 和静态资源；完整目标见 [PROGRESS.md](PROGRESS.md)。
 
 ## 运行应用
@@ -119,6 +120,14 @@ fixture 会互相改写启动期间读取的 saved channel/device。显示与 pr
 - P9b 315项Node/224文件build、16页632项browser、2,000旧版commands对照见validation/
   P9b-device-controls-*.txt。LED普通mode/IP设置会再次init update UI，保留每次state刷新和check，
   只对native button binding去重；explicit dispose才abort requests。完整bootstrap/module仍待后续。
+
+- `/docs/testing/legacy-led-baseline.html`：default19项/no-op6项，native calibration hold、20MB
+  FileReader abort/fresh import、本地fetch/AbortSignal、dispose/reinit及owned资源归零。
+  偏好在内存，随机DB结束只删除自己；保持页面前台至DONE，串行关闭。
+- P9c hardware JS只发布factory APIs，typed ports/native owner位于`optional/led`；classic
+  compatibility在原slot显式创建。326项Node/232文件build、28页991项browser、3,000命令/
+  10传输routes/2MIDI sweeps对照见`validation/P9c-legacy-led-*.txt`，契约见P9_LED_CONTRACT.md。
+  static paths/原启动器继续保留；imports/single bundle/bootstrap/test facade尚未切换。
 
 `timing.js` 的 sourceMappingURL 指向同目录 map，含完整 TS 源；无需开放 `/src`。
 自动测试确认两项算法的生成行映射到 TS 对应行，HTTP 确认 map 可访问。

@@ -239,3 +239,10 @@ compatibility/device-controls、player-range-controls只组装/转发actual MIDI
 调用继续read settings/clear status/check updates，不能把它们改成整个init早退；仅button binding去重。
 unconsumed status/range/update helpers不再global转发，compareSemverLoose暂供旧测试；剩余header
 version bootstrap允许独立version信息，最终模块entry仍待切换。114 slots、505 candidates、重复函数零。
+
+P9c：保留LED/MIDI LED JS改为两个显式Window factory，应用依赖由typed ports传入；calibration/
+WLED/engine/test controller成为实例闭包。native resource owner负责listener/marker/timer/frame/
+capture/reader/request/download/wait，classic compatibility在旧slot显式组装，后续bootstrap接管。
+三个无消费者的staff Window forwards与原LED ambient commands删除。hardware internals暂保留
+untyped JS，但无OSMD/private score或隐式核心free identifiers，AST semantic gate验证边界。
+当前117 classic slots、453 lexical candidates、重复函数零；imports/bundle仍待完成。
