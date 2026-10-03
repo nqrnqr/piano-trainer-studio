@@ -102,8 +102,8 @@ readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命�
 不返回整个 AppState 或 OSMD；生产构建与测试构建入口分开。
 
 `practice-baseline`、`input-baseline`、`traversal-baseline`、`render-baseline`、
-`score-display` 和 `playback-baseline` 已迁移到窄 facade；default/no-op 连同 bootstrap
-共 14 页 677 项通过。原 53/40/30或33/19/30/127 项行为断言保留，playback 每配置新增
+`score-display`、`playback-baseline` 和 `midi-baseline` 已迁移到窄 facade；default/no-op 连同 bootstrap
+共 16 页 718 项通过。原 53/40/30或33/19/30/127/20或21 项行为断言保留，playback 每配置新增
 一项受控时钟销毁检查；几何与反复基线未替换。
 `module-test-frame.js` 加载原生产 HTML/vendors 与独立测试 bundle，使用内存偏好和随机库。
 测试完成先 dispose/清理库，再发布通过终态。身份捕获保留在测试实例内，返回 token/布尔观察；
@@ -115,7 +115,10 @@ timers/frames/count-in callbacks，facade 只提供触发、清理、时长及�
 不再加载旧 playback-clock-fixture 或修改 Window 工厂。完整矩阵涵盖速度、Pause/resume、
 快速 Play/Pause、Reset、Loop/count-in、反复/结尾/结束/换谱与旧 pending callback gating。
 
-其余 MIDI/audio/metronome/数据/UI 浏览器页面和原断言保留，
+MIDI 测试在原生 Web MIDI port fixture 上执行实际服务与控件，设备切换、消息解码、
+回声与 init/dispose 均通过命令和复制快照观察，不暴露服务实例或状态引用。
+
+其余 audio/metronome/数据/UI 浏览器页面和原断言保留，
 仍引用已经移除的经典全局接口，**尚未完成剩余窄 facade 迁移及模块入口的全量浏览器回归**。
 新的 37 项启动检查不能代替这些行为矩阵；后续必须逐页迁移并保留原验证范围。
 原生权限、实体 MIDI/WLED、可听同步、Mac 启动器不由静音模拟证明。

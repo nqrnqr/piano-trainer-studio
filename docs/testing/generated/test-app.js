@@ -12157,6 +12157,9 @@
           return match ? { ...match } : null;
         },
         readInputs: () => inputs.map((input) => ({ ...input })),
+        clearInputs: () => {
+          inputs.length = 0;
+        },
         rebuildTimeline: () => {
           const services = getServices();
           services.AppState.ledPreviewTimelineDirty = true;
@@ -12362,6 +12365,20 @@
     };
   }
 
+  // src/testing/midi-checks.ts
+  function createMidiChecks(getServices) {
+    return Object.freeze({
+      initService: () => getServices().midiService.init(),
+      disposeService: () => getServices().midiService.dispose(),
+      initControls: () => getServices().midiControls.init(),
+      disposeControls: () => getServices().midiControls.dispose(),
+      populateDevices: () => getServices().midiControls.populateMIDIDevices(),
+      noteOn: (note, velocity = 100) => getServices().midiOutput.noteOn(note, velocity),
+      noteOff: (note) => getServices().midiOutput.noteOff(note),
+      readChannels: () => ({ input: getServices().AppState.midiInChannel, output: getServices().AppState.midiOutChannel })
+    });
+  }
+
   // src/testing/facade.ts
   function createTestFacade(options = {}) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
@@ -12384,6 +12401,7 @@
       practice: checks.commands,
       render: renderChecks.commands,
       playback: playbackChecks?.commands,
+      midi: createMidiChecks(() => services),
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",

@@ -100,6 +100,7 @@ export function createPracticeChecks(getServices: () => Services) {
                 return match ? {...match} : null;
             },
             readInputs:() => inputs.map(input => ({...input})),
+            clearInputs:() => {inputs.length = 0;},
             rebuildTimeline:() => {
                 const services = getServices(); services.AppState.ledPreviewTimelineDirty = true;
                 return services.sharedScoreTraversal.ensurePreviewTimelineBuilt().map(event => ({...event,notes:event.notes.map(n => ({...n}))}));

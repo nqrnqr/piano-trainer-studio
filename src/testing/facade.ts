@@ -3,6 +3,7 @@ import type {PianoTrainerDomain} from '../domain/model';
 import {createPracticeChecks} from './practice-checks';
 import {createRenderChecks} from './render-checks';
 import {createPlaybackChecks} from './playback-checks';
+import {createMidiChecks} from './midi-checks';
 
 // Separate test entry: commands and copied observations, with no state/vendor object.
 export function createTestFacade(options: {controlledPlayback?:boolean} = {}) {
@@ -20,6 +21,7 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}) {
         practice:checks.commands,
         render:renderChecks.commands,
         playback:playbackChecks?.commands,
+        midi:createMidiChecks(() => services),
         dispatchNote:(input:PianoTrainerDomain.TrainerNoteInput)=>services.practiceInput.handle({...input}),
         readViewportSnapshot:()=>({layout:services.ScoreDisplay.isHorizontal()?'horizontal':'traditional',
             ...services.osmdAdapter.readPositions(),measureCount:services.osmdAdapter.getMeasureCount(),

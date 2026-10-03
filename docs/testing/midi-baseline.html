@@ -7,22 +7,10 @@
 <button id="run" disabled>Run checks</button>
 <pre id="results">Loading</pre>
 <iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script>
 <script>
-const keys=['pt_savedMidiIn','pt_savedMidiInName','pt_savedMidiInChannel','pt_savedMidiOut','pt_savedMidiOutName','pt_savedMidiOutChannel','pt_savedMidiLights','pt_savedMidiLightsName','pt_savedMidiLightsChannel','pt_ledOutputMode'];
-const saved=new Map(keys.map(key=>[key,localStorage.getItem(key)]));
-window.restoreMidiTestPreferences=()=>{for(const [key,value]of saved){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value);}};
-window.addEventListener('pagehide',window.restoreMidiTestPreferences,{once:true});
 const frame=document.querySelector('iframe');
 frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
-document.getElementById('run').onclick=()=>{
-    document.getElementById('run').disabled=true;
-    const script=document.createElement('script');script.src='/docs/testing/midi-baseline.integration.js';
-    frame.contentDocument.body.append(script);
-};
-(async()=>{
-    const html=await (await fetch('/index.html')).text();
-    // Production script order and markup remain authoritative; only the test
-    // provider and resource base are inserted before that entry boots.
-    frame.srcdoc=html.replace('<head>','<head><base href="/"><script src="/docs/testing/midi-device-fixture.js"><'+'/script>');
-})();
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/midi-baseline.integration.js';frame.contentDocument.body.append(script);};
+mountModuleTestFrame(frame,{fixtures:['midi-device-fixture.js']});
 </script>

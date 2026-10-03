@@ -379,3 +379,12 @@
 - 浏览器：14 页677/677，playback128/practice53/input40/render19/display30/bootstrap37各default/no-op，traversal30/33；几何golden/原生scroll及普通native应用销毁归零复跑。通过终态在完整dispose/随机DB cleanup之后发布，所有自建标签关闭。`validation/P9i-playback-facade-browser.txt`。
 - 静态/Node：两套最终严格配置、四文件 clean comparison、336/336 Node；生产 test API/配置与test source map隔离gate保持，`validation/P9i-playback-facade-check.txt`。94 ES modules、3slots、4runtime candidates、52 direct writes，inventory已更新。原生产启动器/vendor/resources/DB/settings/backup不改。
 - 下一步：剩余 native fixture 对单bundle的资源归属需要用实际 source map/显式注入适配，不能删除资源断言。继续 MIDI/audio/metronome/loader/library/transpose及UI suites；当前677项不替代全量。Mac实际/实体硬件/可听/LAN客户端限制保持。回退本检查点恢复P9h组成端口与测试文件，不清数据，只有本地提交。
+
+## P9j：原生 MIDI 协议与设备控件 facade
+
+- 状态：MIDI suite 迁移检查点完成（2026-10-04）；P9 audio/metronome/数据/UI suites 尚未完成，完整目标活跃。
+- 映射：原 MIDI globals/AppState → `testing/midi-checks.ts` 的服务/控件生命周期、输出与复制通道观察；实际输入通过 native MIDI fixture 和原生 select change，练习快照只返回复制后的来源/通道/力度信息。fixture 不修改模块工厂，也不返回应用内部状态。
+- 行为：原 default20/no-op21 全部保留，覆盖 raw messages/零力度/通道/回声/device switching/监听释放/重新初始化/缺失 LED DOM。原 cleanup 对 MIDI 释放命令的参数形状错误已改为实际输入清理命令，最终完整 dispose/随机库 cleanup 后发布终态。
+- 浏览器：受影响 MIDI/bootstrap/input/playback 两种配置共8页451/451；此前其余已迁移套件结果保持，累计16页718项。`validation/P9j-midi-facade-browser.txt`，自建标签均关闭。
+- 静态/Node：生产与测试最终严格配置、四文件 clean comparison、336/336 Node；`validation/P9j-midi-facade-check.txt`。只新增测试命令与构建后的 test bundle，生产 bundle/vendor/数据结构/设置/资源/启动器不改。
+- 下一步：audio/metronome fixture 改为显式 Tone port 注入，保留实际节点、资源加载和原生计时；之后迁移数据/UI 与资源归属断言。当前718项不替代全量；实体硬件、可听、Mac与LAN客户端限制保持。回退本检查点恢复P9i测试入口/页面，无需清库，只有本地提交。
