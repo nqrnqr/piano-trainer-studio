@@ -10638,7 +10638,7 @@
   })(PianoTrainerVirtualKeyboardControls || (PianoTrainerVirtualKeyboardControls = {}));
 
   // src/app/services.ts
-  function createServices() {
+  function createServices(ports = {}) {
     const permissionHelp = createPermissionHelp(document);
     const { showMidiPermissionHelp, clearMidiPermissionHelp, showWledPermissionHelp, clearWledPermissionHelp } = permissionHelp;
     let osmd;
@@ -11449,7 +11449,7 @@
     function buildExpectedNotesFromEntries(entries, measureIndex, timestamp = null) {
       practiceExpectedNotes.build(osmdAdapter.readPracticeEntries(entries, (entry) => getResolvedStaffAssignmentIdFromEntry(entry)), measureIndex, timestamp);
     }
-    const playbackClock = PianoTrainerPlaybackClock.create({
+    const playbackClock = PianoTrainerPlaybackClock.create(ports.playbackClock ?? {
       nowSeconds: () => Tone.now(),
       monotonicMilliseconds: () => performance.now(),
       setTimer: (callback, delay) => window.setTimeout(callback, delay),
@@ -11488,7 +11488,7 @@
       audio: {
         schedule: audioRouting.schedulePlaybackForDestinations,
         silence: audioOutput.silence,
-        ensureReady: audioOutput.ensureLiveAudioReady,
+        ensureReady: ports.ensurePlaybackReady ?? audioOutput.ensureLiveAudioReady,
         applyLatencyProfile: () => audioOutput.applyToneLatencyProfileForMode()
       },
       midi: midiOutput,
@@ -12087,6 +12087,7 @@
         playing: state.isPlaying,
         countIn: state.countInActive,
         score: { ...state.score },
+        fileName: state.currentScoreFileName,
         pressed: [...state.pressedKeys],
         context: state.currentExpectedContext ? { ...state.currentExpectedContext } : null,
         expected: state.expectedNotes.map((n) => ({
@@ -12249,14 +12250,128 @@
     return { commands, clear: () => captures.clear() };
   }
 
+  // src/testing/playback-checks.ts
+  function createPlaybackChecks() {
+    const timers = /* @__PURE__ */ new Map();
+    const frames = /* @__PURE__ */ new Map();
+    const countIns = [];
+    let now = 10, nextId = 1e5, unlocks = 0;
+    let getServices;
+    let restoreCountIn;
+    const clock = {
+      nowSeconds: () => now,
+      monotonicMilliseconds: () => performance.now(),
+      setTimer: (callback, delay) => {
+        const id = ++nextId;
+        timers.set(id, { callback, delay, due: now + Math.max(0, delay) / 1e3 });
+        return id;
+      },
+      clearTimer: (id) => {
+        timers.delete(id);
+      },
+      requestFrame: (callback) => {
+        const id = ++nextId;
+        frames.set(id, callback);
+        return id;
+      },
+      cancelFrame: (id) => {
+        frames.delete(id);
+      }
+    };
+    const ports = { playbackClock: clock, ensurePlaybackReady: async () => {
+      unlocks++;
+    } };
+    const nextTimer = () => [...timers].sort((a, b) => a[1].due - b[1].due || a[0] - b[0])[0];
+    const commands = Object.freeze({
+      setNow: (value) => {
+        now = value;
+      },
+      readClock: () => ({
+        now,
+        unlocks,
+        timers: timers.size,
+        frames: frames.size,
+        countIns: countIns.length,
+        owned: getServices().playbackClock.readResources()
+      }),
+      nextTimer: () => {
+        const next = nextTimer();
+        return next ? [next[0], { delay: next[1].delay, due: next[1].due }] : void 0;
+      },
+      fireNext: () => {
+        const next = nextTimer();
+        if (!next) throw Error("Missing scheduled playback event");
+        timers.delete(next[0]);
+        now = Math.max(now, next[1].due);
+        next[1].callback();
+        return next[1].delay;
+      },
+      finishCountIn: () => {
+        const callback = countIns.shift();
+        if (!callback) throw Error("Missing count-in callback");
+        const state = getServices().AppState;
+        state.countInActive = false;
+        if (state.isPlaying) callback();
+      },
+      clearCountIns: () => {
+        countIns.length = 0;
+      },
+      disposeCoordinator: () => getServices().trainerPlayback.dispose(),
+      selectMode: (mode, syncHands = true) => {
+        const services = getServices(), state = services.AppState;
+        state.mode = mode;
+        if (syncHands) services.handRouting.syncActiveHandStateFromMode();
+        state.practice.left = state.practice.right = true;
+        state.speedPercent = 1;
+        state.fullscreenOnPlay = false;
+      },
+      prepareScenario: () => {
+        const services = getServices(), state = services.AppState;
+        services.playbackState.clearVisuals();
+        state.loopCountInEnabled = false;
+        state.score.correct = state.score.wrong = 0;
+      },
+      disablePulse: () => {
+        getServices().AppState.visualPulseEnabled = false;
+      },
+      enableLoopCountIn: () => {
+        getServices().AppState.loopCountInEnabled = true;
+      },
+      updateSpeed: (value) => getServices().tempoControls.updateTempo("percent", value)
+    });
+    return {
+      ports,
+      commands,
+      attach: (services) => {
+        getServices = services;
+        const metronome = getServices().trainerMetronome, original = metronome.doCountInAndStart;
+        metronome.doCountInAndStart = (callback) => {
+          getServices().AppState.countInActive = true;
+          countIns.push(callback);
+        };
+        restoreCountIn = () => {
+          metronome.doCountInAndStart = original;
+        };
+      },
+      dispose: () => {
+        restoreCountIn?.();
+        countIns.length = 0;
+        timers.clear();
+        frames.clear();
+      }
+    };
+  }
+
   // src/testing/facade.ts
-  function createTestFacade() {
-    let services = createServices();
+  function createTestFacade(options = {}) {
+    const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
+    let services = createServices(playbackChecks?.ports);
+    playbackChecks?.attach(() => services);
     services.init();
     const checks = createPracticeChecks(() => services);
     const renderChecks = createRenderChecks(() => services);
     return Object.freeze({
-      loadScore: (raw, options = {}) => services.scoreLoader.loadScoreIntoApp(raw, options),
+      loadScore: (raw, options2 = {}) => services.scoreLoader.loadScoreIntoApp(raw, options2),
       dispatchInput: (note, down) => services.practiceInput.handle({
         kind: down ? "note-on" : "note-off",
         note,
@@ -12268,6 +12383,7 @@
       readPracticeSnapshot: checks.snapshot,
       practice: checks.commands,
       render: renderChecks.commands,
+      playback: playbackChecks?.commands,
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",
@@ -12303,11 +12419,14 @@
       dispose: () => {
         services.dispose();
         renderChecks.clear();
+        playbackChecks?.dispose();
       },
       recreate: () => {
         services.dispose();
         renderChecks.clear();
-        services = createServices();
+        playbackChecks?.dispose();
+        services = createServices(playbackChecks?.ports);
+        playbackChecks?.attach(() => services);
         services.init();
         checks.observe();
       }
@@ -12315,6 +12434,6 @@
   }
 
   // src/testing/main.ts
-  window.PianoTrainerTest = createTestFacade();
+  window.PianoTrainerTest = createTestFacade(window.__PT_TEST_OPTIONS__);
 })();
 //# sourceMappingURL=test-app.js.map

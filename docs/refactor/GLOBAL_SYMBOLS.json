@@ -516,6 +516,7 @@
         }
       ],
       "exports": [
+        "ServicePorts",
         "createServices"
       ]
     },

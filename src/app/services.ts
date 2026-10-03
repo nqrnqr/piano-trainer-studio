@@ -83,7 +83,11 @@ import {PianoTrainerToolbar} from '../ui/toolbar';
 import {PianoTrainerTransposeControls} from '../ui/transpose-controls';
 import {PianoTrainerUpdateControls} from '../ui/update-controls';
 import {PianoTrainerVirtualKeyboardControls} from '../ui/virtual-keyboard-controls';
-export function createServices() {
+export interface ServicePorts {
+    playbackClock?: PianoTrainerPlaybackClock.Ports;
+    ensurePlaybackReady?: () => Promise<void>;
+}
+export function createServices(ports: ServicePorts = {}) {
 const permissionHelp = createPermissionHelp(document);
 const {showMidiPermissionHelp,clearMidiPermissionHelp,showWledPermissionHelp,clearWledPermissionHelp}=permissionHelp;
 let osmd: PianoTrainerOsmdVendor.Renderer;
@@ -700,7 +704,7 @@ function buildExpectedNotesFromEntries(entries: PianoTrainerScoreTraversal.Voice
 
 
 // playback.ts composition
-const playbackClock = PianoTrainerPlaybackClock.create({
+const playbackClock = PianoTrainerPlaybackClock.create(ports.playbackClock ?? {
     nowSeconds: () => Tone.now(), monotonicMilliseconds: () => performance.now(),
     setTimer: (callback, delay) => window.setTimeout(callback, delay), clearTimer: id => window.clearTimeout(id),
     requestFrame: callback => window.requestAnimationFrame(callback), cancelFrame: id => window.cancelAnimationFrame(id)
@@ -724,7 +728,7 @@ const trainerPlayback = PianoTrainerPlaybackCoordinator.create({
     },
     audio: {
         schedule: audioRouting.schedulePlaybackForDestinations, silence: audioOutput.silence,
-        ensureReady: audioOutput.ensureLiveAudioReady, applyLatencyProfile: () => audioOutput.applyToneLatencyProfileForMode()
+        ensureReady: ports.ensurePlaybackReady ?? audioOutput.ensureLiveAudioReady, applyLatencyProfile: () => audioOutput.applyToneLatencyProfileForMode()
     },
     midi: midiOutput,
     practice: {

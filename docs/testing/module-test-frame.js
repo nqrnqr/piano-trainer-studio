@@ -8,6 +8,7 @@ window.mountModuleTestFrame = async function (frame, options = {}) {
     const fixtures = ['library-fixture.js', ...(options.fixtures || [])]
         .map(name => '<script src="/docs/testing/'+ name +'"><'+'/script>').join('');
     const seed = '<script>for(const [key,value]of Object.entries('+ JSON.stringify(preferences) +'))localStorage.setItem(key,value);<'+'/script>';
+    const ports = '<script>window.__PT_TEST_OPTIONS__='+JSON.stringify(options.ports || {})+';<'+'/script>';
     frame.srcdoc = html.replace('js/generated/app.js','docs/testing/generated/test-app.js')
-        .replace('<head>','<head><base href="/">'+boot+fixtures+seed);
+        .replace('<head>','<head><base href="/">'+boot+fixtures+seed+ports);
 };

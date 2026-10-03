@@ -368,3 +368,14 @@
 - 静态：20 个真实资源请求含 icons/style、两个optional factory、prod app/map/version、Tone/OSMD、starter JSON、mp3/ogg及webmscore JS/WASM/data，均HTTP200；原生产map不含测试源码/入口。`validation/P9h-static-resources.txt`。没有上线/推送或改服务/launcher/schema/prefs，正常生产启动的曲库行为保持。
 - Mac：原四个 .command 在 Git Bash `-n` 语法检查通过，`validation/P9h-mac-launcher-syntax.txt`；Windows 环境不能证明 macOS `open`/平台执行。LAN客户端、实体MIDI/WLED/可听同步未验证，明确保留手工限制。
 - 回退：revert 本工具链检查点恢复原 preparer/命令，生产 bundle 不受影响。下一步继续剩余 playback/MIDI/audio/metronome/数据/UI browser facade，保留全部原断言。只作本地 Git 提交。
+
+## P9i：真实播放调度与受控端口 facade
+
+- 状态：原 playback suite 迁移检查点完成（2026-10-04）；P9 尚有 MIDI/audio/metronome/数据/UI suites 未迁移，完整目标活跃。
+- 映射：旧 Window factory monkeypatch、playback-clock-fixture.js 与全局状态访问 → `testing/playback-checks.ts` 的私有 controlled clock/count-in + façade commands/复制观察。旧 fixture 删除；共用 test frame 仅在独立入口传 controlledPlayback flag，生产不存在测试选项/API。
+- 组成端口：`app/services.ts` 接收可选类型化 playbackClock/ensurePlaybackReady，未传时仍使用原 Tone/performance/native timer/rAF/audio ready。没有新调度器/tempo算法；测试提供控制时间和 muted readiness，真实 coordinator/OSMD/DOM/input/Transport 仍为同一生产实例。
+- 观察：private timers/frames/count-in callback 不返回到 Window。fire/finish/clear/setTime/readClock 命令保留原 clock order/due/epoch，快照复制 delays/counts 与原 service owned resources。换 Sheet 通过 adapter revision（真实 Sheet identity 变化时更新）及 fileName 观察，不返回 vendor Sheet。
+- 行为：原 127 项每配置全部保留，新增一个 final disposal 检查，default/no-op 各128。三模式×双布局、首次 count-in、错音/命中/misses、10/500/333/1000÷3 等原等待值、BPM变化、Pause残留callback gating、resume/rapid PlayPause、Reset/Loop/count-in、真实反复与一/二结尾28 events、song end/换谱均通过。
+- 浏览器：14 页677/677，playback128/practice53/input40/render19/display30/bootstrap37各default/no-op，traversal30/33；几何golden/原生scroll及普通native应用销毁归零复跑。通过终态在完整dispose/随机DB cleanup之后发布，所有自建标签关闭。`validation/P9i-playback-facade-browser.txt`。
+- 静态/Node：两套最终严格配置、四文件 clean comparison、336/336 Node；生产 test API/配置与test source map隔离gate保持，`validation/P9i-playback-facade-check.txt`。94 ES modules、3slots、4runtime candidates、52 direct writes，inventory已更新。原生产启动器/vendor/resources/DB/settings/backup不改。
+- 下一步：剩余 native fixture 对单bundle的资源归属需要用实际 source map/显式注入适配，不能删除资源断言。继续 MIDI/audio/metronome/loader/library/transpose及UI suites；当前677项不替代全量。Mac实际/实体硬件/可听/LAN客户端限制保持。回退本检查点恢复P9h组成端口与测试文件，不清数据，只有本地提交。

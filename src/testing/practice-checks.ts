@@ -56,7 +56,7 @@ export function createPracticeChecks(getServices: () => Services) {
     }
     const snapshot = () => {
         const state = getServices().AppState;
-        return {mode:state.mode,playing:state.isPlaying,countIn:state.countInActive,score:{...state.score},
+        return {mode:state.mode,playing:state.isPlaying,countIn:state.countInActive,score:{...state.score},fileName:state.currentScoreFileName,
             pressed:[...state.pressedKeys],context:state.currentExpectedContext ? {...state.currentExpectedContext} : null,
             expected:state.expectedNotes.map(n => ({midi:n.midi,hit:n.hit,staffId:n.staffId,noteId:n.noteRef.id,
                 revision:n.noteRef.scoreRevision,mIdx:n.mIdx,anchor:n.anchor ? {...n.anchor} : null})),

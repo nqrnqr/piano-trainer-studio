@@ -10638,7 +10638,7 @@
   })(PianoTrainerVirtualKeyboardControls || (PianoTrainerVirtualKeyboardControls = {}));
 
   // src/app/services.ts
-  function createServices() {
+  function createServices(ports = {}) {
     const permissionHelp = createPermissionHelp(document);
     const { showMidiPermissionHelp, clearMidiPermissionHelp, showWledPermissionHelp, clearWledPermissionHelp } = permissionHelp;
     let osmd;
@@ -11449,7 +11449,7 @@
     function buildExpectedNotesFromEntries(entries, measureIndex, timestamp = null) {
       practiceExpectedNotes.build(osmdAdapter.readPracticeEntries(entries, (entry) => getResolvedStaffAssignmentIdFromEntry(entry)), measureIndex, timestamp);
     }
-    const playbackClock = PianoTrainerPlaybackClock.create({
+    const playbackClock = PianoTrainerPlaybackClock.create(ports.playbackClock ?? {
       nowSeconds: () => Tone.now(),
       monotonicMilliseconds: () => performance.now(),
       setTimer: (callback, delay) => window.setTimeout(callback, delay),
@@ -11488,7 +11488,7 @@
       audio: {
         schedule: audioRouting.schedulePlaybackForDestinations,
         silence: audioOutput.silence,
-        ensureReady: audioOutput.ensureLiveAudioReady,
+        ensureReady: ports.ensurePlaybackReady ?? audioOutput.ensureLiveAudioReady,
         applyLatencyProfile: () => audioOutput.applyToneLatencyProfileForMode()
       },
       midi: midiOutput,

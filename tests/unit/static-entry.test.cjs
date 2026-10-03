@@ -18,6 +18,7 @@ test('static entry loads one private production bundle after the optional hardwa
   assert.equal(new RegExp(`window\\.${property}\\s*=`).test(app),false,`${property} is private to the module graph`);
  }
  assert.equal(app.includes('PianoTrainerTest'),false,'production bundle contains no test facade');
+ assert.equal(app.includes('__PT_TEST_OPTIONS__'),false,'production bundle contains no test entry configuration');
  assert.equal(html.includes('test-app.js'),false,'production HTML does not load a test entry');
  assert.equal(app.includes('stopHealthChecks'),false,'optional cleanup uses its actual singular controller method');
  assert.notEqual(JSON.parse(read('package.json')).type,'module','native Node launchers keep CommonJS');

@@ -5,16 +5,10 @@
 <h1>Playback coordinator regression checks</h1>
 <p>Actual OSMD, toolbar DOM, input grading and repeat traversal; injected coordinator clock/count-in handoff. Sound and metronome output are disabled. Native audio/metronome timing is checked separately.</p>
 <button id="run" disabled>Run checks</button><pre id="results">Loading</pre><iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script>
 <script>
 const frame=document.querySelector('iframe');
 frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
 document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/playback-baseline.integration.js';frame.contentDocument.body.append(script);};
-(async()=>{
- let html=await(await fetch('/index.html')).text();
- const boot=new URLSearchParams(location.search).get('led')==='off'?'<script>window.__PT_BOOT_OPTIONS__={ledEnabled:false};<'+'/script>':'';
- html=html.replace('<head>','<head><base href="/">'+boot);
- const slot=html.indexOf("    <script>document.write('<script src=\"js/generated/compatibility/playback.js");
- if(slot<0)throw Error('Missing playback composition slot');
- frame.srcdoc=html.slice(0,slot)+'<script src="/docs/testing/playback-clock-fixture.js"><'+'/script>'+html.slice(slot);
-})();
+mountModuleTestFrame(frame,{ports:{controlledPlayback:true}});
 </script>
