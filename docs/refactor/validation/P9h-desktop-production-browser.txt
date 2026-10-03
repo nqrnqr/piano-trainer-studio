@@ -1,0 +1,86 @@
+Original Windows desktop BAT launched the Git archive on port 8084.
+Production entry has no test bundle.
+PASS initial library shows 16 starter scores
+PASS native Scores button loads Hot Cross Buns with Loaded badge
+PASS real OSMD rendered 1 SVG
+
+- navigation:
+  - button "🎼 Scores" [expanded] [active]
+  - button "▶ Play"
+  - button "⏮ Reset"
+  - button "🎹 Practice ▾"
+  - button "♪ Tempo ▾"
+  - button "🔁 Loop ▾"
+  - button "⋯ More ▾"
+  - text: "Score:"
+  - generic: 100%
+  - button "⚙ Settings"
+- button "Open File"
+- button "Save to Library"
+- button "Backup Library"
+- button "Import Library (Merge)"
+- generic: Library
+- button "New Folder"
+- button "Manage"
+- button "All Scores"
+- button "Unfiled"
+- button "1. Starter"
+- button "Actions for folder 1. Starter": ⋯
+- button "2. Early Repertoire"
+- button "Actions for folder 2. Early Repertoire": ⋯
+- button "3. Showcase"
+- button "Actions for folder 3. Showcase": ⋯
+- generic: 16 scores • All Scores
+- button "Add File(s)"
+- button "Manage"
+- button "Bach Musette in D BWV anh 126":
+  - generic: Bach Musette in D BWV anh 126
+- button "Actions for Bach Musette in D BWV anh 126": ⋯
+- button "Canon in D":
+  - generic: Canon in D
+- button "Actions for Canon in D": ⋯
+- button "Ecossaise in G":
+  - generic: Ecossaise in G
+- button "Actions for Ecossaise in G": ⋯
+- button "Fur Elise":
+  - generic: Fur Elise
+- button "Actions for Fur Elise": ⋯
+- button "Fur Elise Easy Piano":
+  - generic: Fur Elise Easy Piano
+- button "Actions for Fur Elise Easy Piano": ⋯
+- button "Happy Birthday":
+  - generic: Happy Birthday
+- button "Actions for Happy Birthday": ⋯
+- button "Hot Cross Buns Loaded":
+  - generic: Hot Cross Buns
+  - generic: Loaded
+- button "Actions for Hot Cross Buns": ⋯
+- button "Mary Had a Little Lamb":
+  - generic: Mary Had a Little Lamb
+- button "Actions for Mary Had a Little Lamb": ⋯
+- button "Minuet in G Major":
+  - generic: Minuet in G Major
+- button "Actions for Minuet in G Major": ⋯
+- button "Moonlight Sonata 1st Movement":
+  - generic: Moonlight Sonata 1st Movement
+- button "Actions for Moonlight Sonata 1st Movement": ⋯
+- button "Ode to Joy":
+  - generic: Ode to Joy
+- button "Actions for Ode to Joy": ⋯
+- button "Prelude I in C major BWV 846":
+  - generic: Prelude I in C major BWV 846
+- button "Actions for Prelude I in C major BWV 846": ⋯
+- button "Sonata No. 16 1st Movement K. 545":
+  - generic: Sonata No. 16 1st Movement K. 545
+- button "Actions for Sonata No. 16 1st Movement K. 545": ⋯
+- button "The Entertainer":
+  - generic: The Entertainer
+- button "Actions for The Entertainer": ⋯
+- button "Twinkle Twinkle Little Star":
+  - generic: Twinkle Twinkle Little Star
+- button "Actions for Twinkle Twinkle Little Star": ⋯
+- button "Waltz in A Minor":
+  - generic: Waltz in A Minor
+- button "Actions for Waltz in A Minor": ⋯
+- generic "Score view controls":
+  - button "Enter full screen": ⛶ Enter full screen

@@ -1,0 +1,5 @@
+PASS syntax only: Piano Trainer - Desktop.command
+PASS syntax only: Piano Trainer - iPad (Wi-Fi).command
+PASS syntax only: WLED Helper - Low Latency (DDP).command
+PASS syntax only: WLED Helper - iPad-Tablet via This Computer (Low Latency).command
+Actual macOS execution not verified in the Windows environment

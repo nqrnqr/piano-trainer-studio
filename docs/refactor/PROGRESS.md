@@ -356,3 +356,15 @@
 - 浏览器：12 页 421/421，default/no-op 各 practice53/input40/render19/display30/bootstrap37、traversal30/33。既有几何 golden、三模式×两布局、early reservation/错音/tie、真实反复、原生 scroll/full disposal 再次通过，所有自建标签关闭；`validation/P9g-strict-modules-browser.txt`。
 - 清单：94 ES modules、三个应用 slots、四个 runtime candidates、重复函数零、52 direct state writes；库存行号重建。原 vendor/LED JS 为明确类型化边界，资源/prefs/DB/schema/backup/启动器不变。
 - 未验证与下一步：剩余 playback/MIDI/audio/metronome/数据/UI 浏览器 facade 仍待迁移；clean install/静态部署/原 launcher 门槛待完成。实体硬件/可听与 Mac 环境不可由模拟证明。回退本检查点恢复上一严格配置与源码，不清数据；继续剩余套件，仅本地提交。
+
+## P9h：干净安装、失败构建恢复与原 Windows 启动器
+
+- 状态：运行工具链检查点完成（2026-10-04）；P9 剩余浏览器 facade 全集仍未完成，完整目标活跃。
+- 干净来源：`git archive 1838069` 解压到 ignored `.cache/p9h-clean-source`，无 .git/node_modules/内层 .cache；固定开发包由已验证缓存 `npm ci --offline --cache .../.cache/npm` 安装（3 packages，0 vulnerabilities）。原四份静态产物 clean comparison 通过。
+- 实际问题：原 unit preparer 在首次 checkout 对不存在的 .cache 调用 realpath，ENOENT。现安全创建 cache，校验绝对/实际目标及顶层/嵌套链接后替换输出。fresh checkout/stale output 回归新增一个 Node case；fixture 在工作区独立空目录运行，避免本环境 native bundler 对系统 Temp 父目录的限制。
+- Candidate 验证：该 Git archive 只应用本检查点的 preparer fix、新回归 case 和 build:watch alias；`npm run check` 336/336、两套严格类型和四文件产物一致，`validation/P9h-clean-check.txt`。当前工作区同命令 336/336，`validation/P9h-workspace-check.txt`。生产业务与 bundle 未修改。
+- Build/watch：真实 regular build 类型错误 exit1，四产物 hashes 保持；真实 native --watch 发现错误仍保持旧产物，合法编辑更新两份内嵌 map，恢复源码四 hashes 完全一致。5 项，`validation/P9h-build-watch.txt`。watcher 已终止，临时错误源码已恢复。
+- Windows：原 Desktop BAT 在独立8084直接启动，日志确认服务该源码包；生产页面原 Scores 控件列出16个 starter scores、加载 Hot Cross Buns/Loaded badge、真实OSMD一个SVG。原 Wi-Fi BAT 在8085直接绑定0.0.0.0，app/connection-info HTTP200及URLs正确。所有自建 Browser 标签与这两棵启动器进程已关闭；未中断原8081验证服务或其他用户进程。报告 `P9h-desktop-production-browser.txt`、`P9h-wifi-launcher.txt`。
+- 静态：20 个真实资源请求含 icons/style、两个optional factory、prod app/map/version、Tone/OSMD、starter JSON、mp3/ogg及webmscore JS/WASM/data，均HTTP200；原生产map不含测试源码/入口。`validation/P9h-static-resources.txt`。没有上线/推送或改服务/launcher/schema/prefs，正常生产启动的曲库行为保持。
+- Mac：原四个 .command 在 Git Bash `-n` 语法检查通过，`validation/P9h-mac-launcher-syntax.txt`；Windows 环境不能证明 macOS `open`/平台执行。LAN客户端、实体MIDI/WLED/可听同步未验证，明确保留手工限制。
+- 回退：revert 本工具链检查点恢复原 preparer/命令，生产 bundle 不受影响。下一步继续剩余 playback/MIDI/audio/metronome/数据/UI browser facade，保留全部原断言。只作本地 Git 提交。

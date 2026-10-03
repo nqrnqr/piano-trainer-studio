@@ -46,7 +46,15 @@ npm run check
 `build:check` 检查完整生成目录与字节，Git checkout 中也拒绝未跟踪生成文件。
 构建新增输出后先暂存 `js/generated` 和 `docs/testing/generated`，再执行检查。
 下载 ZIP 没有 `.git` 时仍验证输出一致性。
-`npm run watch` 观察 src/types/config，重新执行同一检查与构建流程；失败继续保留最后一次成功输出。
+`npm run watch` / `npm run build:watch` 观察 src/types/config，重新执行同一检查与构建流程；
+实际失败/恢复验证确认保留最后成功输出，修复后两套 map 更新，恢复源码可重建相同字节。
+`test:unit` 在 fresh checkout 自动创建自己的 `.cache`，替换前检查目录与嵌套链接。
+
+P9h 在 Git archive 中使用 `npm ci --offline --cache <已验证的包缓存>` 干净安装三个固定
+开发包，两套类型检查、四文件比较与 336 项测试通过；没有依赖工作区 node_modules 或临时源码。
+Windows 原 Desktop / Wi-Fi BAT 直接运行成功，原生产页面从初始曲库加载真实 OSMD SVG，
+20 个静态路径含 vendor、两种音频、初始库和 WASM/data 返回 HTTP 200。
+Mac 四个 launcher 仅 shell syntax 检查通过，实际 macOS、LAN 客户端/实体硬件/可听仍未验证。
 
 ## 源码与所有权
 
@@ -106,7 +114,7 @@ readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命�
 原生权限、实体 MIDI/WLED、可听同步、Mac 启动器不由静音模拟证明。
 生产与测试入口已开启 noUncheckedIndexedAccess、exactOptionalPropertyTypes 和
 verbatimModuleSyntax，局部不变量/原错误路径见 [STRICT_MODULE_CONTRACT.md](STRICT_MODULE_CONTRACT.md)。
-干净安装/重建、全量浏览器迁移与原启动器门槛仍归 P9。
+干净安装/重建、Windows 原启动器和静态资源门槛已验证；全量浏览器迁移仍归 P9。
 
 ## 调试与回退
 

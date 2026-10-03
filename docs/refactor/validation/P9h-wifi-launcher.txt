@@ -1,0 +1,17 @@
+PASS original Windows Wi-Fi launcher runs unchanged
+PASS server binds 0.0.0.0:8085
+PASS connection-info responds HTTP 200 with port 8085 URLs
+PASS application responds HTTP 200
+LAN client/device connectivity not verified
+
+Piano Trainer - iPad/Tablet (Wi-Fi)
+Hosts the Piano Trainer app on your LAN for iPad/tablet use.
+Node.js is required for this launcher.
+
+Piano Trainer app server listening on http://0.0.0.0:8085
+Serving site files from E:\Project\piano-trainer-studio\.cache\p9h-clean-source
+Host computer access: http://127.0.0.1:8085/
+LAN access:
+  http://172.27.128.1:8085/
+  http://10.99.159.51:8085/
+Connection info page: http://127.0.0.1:8085/connection-info

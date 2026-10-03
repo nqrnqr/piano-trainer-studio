@@ -5,8 +5,12 @@ const root=fs.realpathSync(path.resolve(__dirname,'..'));
 function files(directory){return fs.readdirSync(directory,{withFileTypes:true}).flatMap(e=>{
  if(e.isSymbolicLink())throw Error('Unexpected source link');const file=path.join(directory,e.name);return e.isDirectory()?files(file):file.endsWith('.ts')?[file]:[];});}
 const target=path.resolve(root,'.cache/test-modules');
-const parent=fs.realpathSync(path.dirname(target));if(!target.startsWith(root+path.sep)||parent!==path.join(root,'.cache'))throw Error('Invalid unit output path');
+const cache=path.dirname(target);
+if(fs.existsSync(cache)&&fs.lstatSync(cache).isSymbolicLink())throw Error('Unexpected unit cache link');
+fs.mkdirSync(cache,{recursive:true});
+const parent=fs.realpathSync(cache);if(!target.startsWith(root+path.sep)||parent!==path.join(root,'.cache'))throw Error('Invalid unit output path');
 if(fs.existsSync(target)&&fs.lstatSync(target).isSymbolicLink())throw Error('Unexpected unit output link');
+if(fs.existsSync(target))files(target); // Reject nested links before replacing owned output.
 fs.rmSync(target,{recursive:true,force:true});
 esbuild.buildSync({absWorkingDir:root,entryPoints:files(path.join(root,'src')),outbase:'src',outdir:target,
  format:'cjs',platform:'node',target:'node22',bundle:false,logLevel:'warning'});

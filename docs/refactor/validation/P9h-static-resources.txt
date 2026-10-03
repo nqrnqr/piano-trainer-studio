@@ -1,0 +1,108 @@
+{
+  "launcher": "Original Windows desktop BAT, unchanged",
+  "port": 8084,
+  "servingRoot": ".cache/p9h-clean-source",
+  "productionTestApi": false,
+  "resources": [
+    {
+      "path": "assets/icons/favicon.ico",
+      "status": 200,
+      "type": "image/x-icon"
+    },
+    {
+      "path": "assets/icons/favicon-32x32.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "path": "assets/icons/favicon-16x16.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "path": "assets/icons/apple-touch-icon.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "path": "js/led.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "js/optional/midi-led-test.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "js/generated/app.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "version.json",
+      "status": 200,
+      "type": "application/json; charset=utf-8"
+    },
+    {
+      "path": "js/generated/app.js.map",
+      "status": 200,
+      "type": "application/octet-stream"
+    },
+    {
+      "path": "style.css",
+      "status": 200,
+      "type": "text/css; charset=utf-8"
+    },
+    {
+      "path": "assets/js/Tone.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/js/opensheetmusicdisplay.min.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/Starter_Scores.json",
+      "status": 200,
+      "type": "application/json; charset=utf-8"
+    },
+    {
+      "path": "assets/audio/salamander/A0.mp3",
+      "status": 200,
+      "type": "audio/mpeg"
+    },
+    {
+      "path": "assets/audio/salamander/A0.ogg",
+      "status": 200,
+      "type": "audio/ogg"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.lib.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.lib.data",
+      "status": 200,
+      "type": "application/octet-stream"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.lib.wasm",
+      "status": 200,
+      "type": "application/wasm"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.lib.mem.wasm",
+      "status": 200,
+      "type": "application/wasm"
+    }
+  ]
+}

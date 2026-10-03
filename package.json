@@ -13,6 +13,7 @@
     "build": "node scripts/build-app.cjs",
     "build:check": "node scripts/build-app.cjs --check",
     "watch": "node scripts/build-app.cjs --watch",
+    "build:watch": "node scripts/build-app.cjs --watch",
     "test": "npm run test:unit",
     "test:unit": "node scripts/build-test-modules.cjs && node --test tests/unit/*.test.cjs",
     "check": "npm run typecheck && npm run build:check && npm test",
