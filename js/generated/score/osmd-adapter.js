@@ -249,6 +249,7 @@ var PianoTrainerOsmdAdapter;
             scoreRevision++;
         }
         return { getCombinedTieLength, readPracticeEntries, readPlaybackEvent, noteRef, resolveNote, afterRender, getDefaults, setLayout, getGraphicalNote, getMeasureBox, readPositions, dispose,
+            setZoom: (value) => { ports.getRenderer().zoom = value; },
             // Transitional UI wrapper consumes the captured entries only at this boundary.
             legacyEntriesForPlayback: (event) => playbackEntries.get(event),
             hasCursor: () => !!ports.getRenderer().cursor,
@@ -274,6 +275,7 @@ var PianoTrainerOsmdAdapter;
             // Legacy wrong-note fallback is called with a loaded cursor/sheet.
             // Preserve its missing-measure exception semantics in this boundary.
             getCurrentMeasureIndex: () => ports.getRenderer().cursor.Iterator.CurrentMeasureIndex,
+            getCurrentMeasureIndexIfAvailable: () => ports.getRenderer()?.cursor?.Iterator?.CurrentMeasureIndex,
             getStaffTopY: (measureIndex, staffIndex) => {
                 const measures = ports.getRenderer().GraphicSheet.MeasureList;
                 const measure = measures[measureIndex][staffIndex] || measures[measureIndex][0];

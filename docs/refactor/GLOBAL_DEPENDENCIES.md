@@ -198,3 +198,11 @@ repository、loader、converter 与原 toolbar。compatibility/scores-ui 在原�
 factory 不绑定监听/发起查询；shell init 保留旧 position、refresh 与 resize 注册顺序。
 未消费的 selection/row/action-menu 全局 helpers 不再转发。83 classic slots、591 candidates，
 重复函数定义为零；P9 再收敛 classic compositions 与 bootstrap。
+
+P8d native controls：旧 toolbar-ui.js 与 slot 删除，toolbar 提供原 Window.ToolbarUI/IntroUI
+并增加 init/dispose；仍给 optional LED 转发 closeToolbarPanel，LED 自己查询 overlay DOM。
+core 的 fullscreen/Play/Reset/zoom/resize、tempo/metronome options、audio levels、loop range/hold
+已移到 ui/{display,tempo,audio-level,loop}-controls，DOM IDs/targets/owned listeners 由 controls-dom
+校验。compatibility/native-controls 无资源组装；core 在原绑定位置调用各段 init，剩余 preferences、
+practice routing、keyboard/score seek/settings 外壳仍待迁移。OSMD zoom/optional measure 只经 adapter。
+空 legacy-playback.d.ts 与无消费者的 toolbar/native helpers forwards 删除；90 classic slots、524 global candidates、重复函数零。

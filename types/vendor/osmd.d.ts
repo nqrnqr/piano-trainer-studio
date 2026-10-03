@@ -45,6 +45,7 @@ declare namespace PianoTrainerOsmdVendor {
     interface SourceMeasure {TempoInBPM?: number; ActiveTimeSignature?: {Numerator: number; Denominator: number};}
     interface Sheet {SourceMeasures?: SourceMeasure[];}
     interface Renderer {
+        zoom: number;
         load(rawData: PianoTrainerDomain.ScoreRawData): Promise<unknown>;
         cursor?: Cursor | null;
         Sheet?: Sheet | null;

@@ -6,7 +6,7 @@
 
 
 // trainer-core.js
-// Remaining loader/UI integration and classic composition consumers.
+// Remaining preference/routing/keyboard/score-seek integration and classic consumers.
 // Typed practice/audio/score factories now own input, playback, repeat timing and metronome decisions.
 
 // State and persisted preference helpers load from generated/state TS modules.
@@ -532,16 +532,7 @@ function initSongUI() {
     rebuildMeasureTimingCache();
 
     const totalMeasures = osmd.GraphicSheet.MeasureList.length;
-    document.getElementById('slider-loop-max').max = totalMeasures;
-    document.getElementById('slider-loop-min').max = totalMeasures;
-    document.getElementById('val-loop-min').min = 1;
-    document.getElementById('val-loop-min').max = totalMeasures;
-    document.getElementById('val-loop-max').min = 1;
-    document.getElementById('val-loop-max').max = totalMeasures;
-    document.getElementById('val-loop-max').value = totalMeasures;
-    document.getElementById('val-loop-min').value = 1;
-    AppState.looper.min = 1;
-    AppState.looper.max = totalMeasures;
+    loopControls.resetRangeForScore(totalMeasures);
     
     if (osmd.Sheet.SourceMeasures.length > 0 && osmd.Sheet.SourceMeasures[0].TempoInBPM) {
         AppState.baseBpm = osmd.Sheet.SourceMeasures[0].TempoInBPM;
@@ -1060,10 +1051,10 @@ function initLedSimulatorToggleControl() {
 
 
 // ===== Toolbar shell + floating panel coordination =====
-// Extracted to js/toolbar-ui.js
+// Typed toolbar controller owns shell resources.
 
 // ===== Score library + drawer workflow =====
-// Extracted to js/score-library.js and js/scores-ui.js
+// Typed score repository and drawer controllers own the library workflow.
 
 document.getElementById('check-keyboard').addEventListener('change', (e) => {
     const kbContainer = document.getElementById('virtual-keyboard-container');
@@ -1107,8 +1098,8 @@ document.querySelectorAll('input[name="practice-mode"]').forEach((radio) => {
         clearTransientPlaybackState({ clearVisualState: true });
         applyModeSettings();
         applyToneLatencyProfileForMode();
-        updatePianoVolume(pianoVolSlider ? pianoVolSlider.value : 80);
-        updateMetroVolume(metroVolSlider ? metroVolSlider.value : 50);
+        updatePianoVolume(audioLevelControls.readPianoVolume());
+        updateMetroVolume(audioLevelControls.readMetroVolume());
     });
 });
 
@@ -1172,311 +1163,11 @@ document.getElementById('canvas-wrapper').addEventListener('click', (e) => {
 });
 
 
-const playPauseButton = document.getElementById('btn-play');
-const scoreFullscreenButton = document.getElementById('btn-score-fullscreen');
+displayControls.initPlaybackShell();
+displayControls.initZoom();
 
-function getFullscreenElement() {
-    return document.fullscreenElement || document.webkitFullscreenElement || null;
-}
-
-function getFullscreenTargetElement() {
-    return document.documentElement;
-}
-
-function canUseNativeFullscreen() {
-    const target = getFullscreenTargetElement();
-    return !!(target?.requestFullscreen || target?.webkitRequestFullscreen || document.exitFullscreen || document.webkitExitFullscreen);
-}
-
-function isFullscreenActive() {
-    return !!getFullscreenElement() || !!AppState.pseudoFullscreenActive;
-}
-
-function syncFullscreenUi() {
-    const fullscreenActive = isFullscreenActive();
-    const fullscreenLabel = fullscreenActive ? 'Exit full screen' : 'Enter full screen';
-    document.body.classList.toggle('app-fullscreen-active', fullscreenActive);
-    if (scoreFullscreenButton) {
-        scoreFullscreenButton.classList.toggle('is-active', fullscreenActive);
-        scoreFullscreenButton.textContent = fullscreenActive ? '🗗' : '⛶';
-        scoreFullscreenButton.setAttribute('aria-label', fullscreenLabel);
-        scoreFullscreenButton.setAttribute('aria-pressed', fullscreenActive ? 'true' : 'false');
-        scoreFullscreenButton.title = fullscreenLabel;
-        scoreFullscreenButton.dataset.tooltip = fullscreenLabel;
-    }
-}
-
-async function requestAppFullscreen() {
-    hideToolbarPanels();
-    const target = getFullscreenTargetElement();
-    try {
-        if (target?.requestFullscreen) {
-            await target.requestFullscreen();
-            AppState.pseudoFullscreenActive = false;
-        } else if (target?.webkitRequestFullscreen) {
-            target.webkitRequestFullscreen();
-            AppState.pseudoFullscreenActive = false;
-        } else {
-            AppState.pseudoFullscreenActive = true;
-        }
-    } catch (err) {
-        console.warn('Fullscreen request failed; using in-app fullscreen fallback.', err);
-        AppState.pseudoFullscreenActive = true;
-    }
-    syncFullscreenUi();
-}
-
-async function exitAppFullscreen() {
-    try {
-        if (document.exitFullscreen && document.fullscreenElement) {
-            await document.exitFullscreen();
-        } else if (document.webkitExitFullscreen && document.webkitFullscreenElement) {
-            document.webkitExitFullscreen();
-        }
-    } catch (err) {
-        console.warn('Could not exit native fullscreen cleanly.', err);
-    }
-    AppState.pseudoFullscreenActive = false;
-    syncFullscreenUi();
-}
-
-async function toggleAppFullscreen() {
-    if (isFullscreenActive()) {
-        await exitAppFullscreen();
-        return;
-    }
-    await requestAppFullscreen();
-}
-
-document.addEventListener('fullscreenchange', syncFullscreenUi);
-document.addEventListener('webkitfullscreenchange', syncFullscreenUi);
-if (scoreFullscreenButton) {
-    scoreFullscreenButton.addEventListener('click', () => {
-        toggleAppFullscreen();
-    });
-}
-
-function updatePlayPauseButton() {
-    document.body.classList.toggle('app-playing', !!AppState.isPlaying);
-    if (playPauseButton) {
-        playPauseButton.textContent = AppState.isPlaying ? '⏸ Pause' : '▶ Play';
-    }
-}
-
-function preserveMusicAreaScroll(callback) {
-    const musicArea = document.getElementById('music-area');
-    if (!musicArea || typeof callback !== 'function') {
-        return typeof callback === 'function' ? callback() : undefined;
-    }
-
-    const savedScrollTop = musicArea.scrollTop;
-    const savedScrollLeft = musicArea.scrollLeft;
-    const result = callback();
-    musicArea.scrollTop = savedScrollTop;
-    musicArea.scrollLeft = savedScrollLeft;
-    return result;
-}
-
-
-if (playPauseButton) {
-    playPauseButton.onclick = async () => {
-        if (AppState.isPlaying) pausePlaybackFromToolbar();
-        else await startPlaybackFromToolbar();
-    };
-}
-
-document.getElementById('btn-reset').onclick = resetPlaybackFromToolbar;
-
-let resizeTimer;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-        if (osmd.IsReadyToRender()) {
-            clearFeedbackVisualStatePreserveScoring();
-            renderScoreAndRefreshGeometry();
-        }
-        optionalLedOutput.positionCalibrationPanel();
-    }, 300);
-});
-
-const zoomSlider = document.getElementById('slider-zoom');
-const zoomInput = document.getElementById('val-zoom');
-if (zoomSlider) { zoomSlider.min = '50'; zoomSlider.max = '150'; }
-if (zoomInput) { zoomInput.min = '50'; zoomInput.max = '150'; }
-function normalizeZoomValue(val) {
-    let normalized = parseInt(val, 10);
-    if (isNaN(normalized)) return null;
-    if (normalized < 50) normalized = 50;
-    if (normalized > 150) normalized = 150;
-    return normalized;
-}
-function syncZoomControls(val) {
-    const normalized = normalizeZoomValue(val);
-    if (normalized == null) return;
-    zoomSlider.value = normalized;
-    zoomInput.value = normalized;
-}
-function applyZoom(val, { save = true } = {}) {
-    const normalized = normalizeZoomValue(val);
-    if (normalized == null) return;
-    zoomSlider.value = normalized;
-    zoomInput.value = normalized;
-    AppState.zoom = normalized / 100;
-    if (save) {
-        localStorage.setItem(TRAINER_ZOOM_STORAGE_KEY, String(normalized));
-    }
-    if (osmd.IsReadyToRender()) {
-        osmd.zoom = AppState.zoom;
-        clearFeedbackVisualStatePreserveScoring();
-        renderScoreAndRefreshGeometry();
-    }
-}
-zoomSlider.addEventListener('input', (e) => syncZoomControls(e.target.value));
-zoomSlider.addEventListener('change', (e) => applyZoom(e.target.value));
-zoomInput.addEventListener('input', (e) => syncZoomControls(e.target.value));
-zoomInput.addEventListener('change', (e) => applyZoom(e.target.value));
-
-const speedSlider = document.getElementById('slider-speed');
-const speedInput = document.getElementById('val-speed');
-const bpmInput = document.getElementById('val-bpm');
-
-function syncTempoMetronomeDependentUi() {
-    const metronomeEnabled = !!document.getElementById('check-metronome')?.checked;
-    const hasMidiOut = !!getSelectedMidiOutOutput();
-    const midiOutModeEnabled = !!document.getElementById('check-metronome-midiout')?.checked;
-    const metroVolumeLabel = document.getElementById('tempo-metro-volume-label');
-    const metroControls = [
-        document.getElementById('slider-metro-vol'),
-        document.getElementById('val-metro-vol'),
-        document.getElementById('check-accented-downbeat'),
-        document.getElementById('check-visual-pulse'),
-        document.getElementById('check-metronome-midiout')
-    ];
-    const midiOutHint = document.getElementById('tempo-midiout-metronome-hint');
-
-    if (metroVolumeLabel) {
-        metroVolumeLabel.textContent = midiOutModeEnabled ? 'Level' : 'Volume';
-        metroVolumeLabel.setAttribute('aria-disabled', metronomeEnabled ? 'false' : 'true');
-    }
-
-    for (const control of metroControls) {
-        if (!control) continue;
-        control.disabled = !metronomeEnabled;
-        control.closest('label')?.classList.toggle('is-disabled', !metronomeEnabled);
-    }
-
-    if (midiOutHint) {
-        midiOutHint.textContent = hasMidiOut
-            ? 'Uses GM percussion on the selected MIDI Out device.'
-            : 'Select a MIDI Out device to hear metronome clicks on Channel 10. Some keyboards require a drum (Ch 10) or multi-timbral mode to avoid piano sounds.';
-        midiOutHint.classList.toggle('is-disabled', !metronomeEnabled || !hasMidiOut);
-    }
-}
-
-function syncTempoPreviewFromPercent(value) {
-    const baseBpm = AppState.baseBpm || 120;
-    const previewPercent = Math.max(10, Math.min(200, parseInt(value, 10) || 100));
-    const previewBpm = Math.round(baseBpm * (previewPercent / 100));
-    speedSlider.value = previewPercent;
-    speedInput.value = previewPercent;
-    bpmInput.value = previewBpm;
-}
-
-function updateTempo(source, value) {
-    let newPercent, newBpm;
-    const baseBpm = AppState.baseBpm || 120;
-
-    if (source === 'percent') {
-        newPercent = Math.max(10, Math.min(200, parseInt(value) || 100));
-        newBpm = Math.round(baseBpm * (newPercent / 100));
-    } else if (source === 'bpm') {
-        newBpm = Math.max(1, parseInt(value) || baseBpm);
-        newPercent = Math.round((newBpm / baseBpm) * 100);
-    }
-
-    speedSlider.value = newPercent;
-    speedInput.value = newPercent;
-    bpmInput.value = newBpm;
-    AppState.speedPercent = newPercent / 100;
-    playbackTransport.setBpm(newBpm);
-
-    if (AppState.isPlaying && !AppState.countInActive && AppState.mode === 'wait') {
-        rebuildWaitModeMetronome(osmd?.cursor?.Iterator?.CurrentMeasureIndex ?? trainerMetronome.getWaitMeasureIndex());
-    }
-}
-speedSlider.addEventListener('input', (e) => syncTempoPreviewFromPercent(e.target.value));
-speedSlider.addEventListener('change', (e) => updateTempo('percent', e.target.value));
-speedInput.addEventListener('change', (e) => updateTempo('percent', e.target.value));
-bpmInput.addEventListener('change', (e) => updateTempo('bpm', e.target.value));
-
-const pianoVolSlider = document.getElementById('slider-piano-vol');
-const pianoVolInput = document.getElementById('val-piano-vol');
-const metroVolSlider = document.getElementById('slider-metro-vol');
-const metroVolInput = document.getElementById('val-metro-vol');
-
-function updatePianoVolume(value, { save = true } = {}) {
-    const val = Math.max(0, Math.min(100, parseInt(value, 10) || 0));
-    if (pianoVolSlider) pianoVolSlider.value = val;
-    if (pianoVolInput) pianoVolInput.value = val;
-    if (save) {
-        localStorage.setItem(TRAINER_PIANO_VOL_STORAGE_KEY, String(val));
-    }
-    audioOutput.setPianoVolume(val);
-}
-
-const midiOutVolSlider = document.getElementById('slider-midiout-vol');
-const midiOutVolInput = document.getElementById('val-midiout-vol');
-
-function updateMidiOutVolume(value, { save = true } = {}) {
-    const val = Math.max(0, Math.min(100, parseInt(value, 10) || 0));
-    AppState.midiOutVolume = val;
-    if (midiOutVolSlider) midiOutVolSlider.value = val;
-    if (midiOutVolInput) midiOutVolInput.value = val;
-    if (save) {
-        localStorage.setItem(TRAINER_MIDIOUT_VOL_STORAGE_KEY, String(val));
-    }
-    sendMidiOutExpressionLevel(val);
-}
-
-const midiInBoostSlider = document.getElementById('slider-midiin-boost');
-const midiInBoostInput = document.getElementById('val-midiin-boost');
-
-function syncMidiInBoostUi() {
-    const boostRow = document.getElementById('routing-midiin-boost-row');
-    const showBoost = !!AppState.audioEnabled.instrument;
-    boostRow?.classList.toggle('hidden', !showBoost);
-}
-
-function updateMidiInBoost(value, { save = true } = {}) {
-    const val = Math.max(50, Math.min(200, parseInt(value, 10) || 100));
-    AppState.midiInBoost = val;
-    if (midiInBoostSlider) midiInBoostSlider.value = val;
-    if (midiInBoostInput) midiInBoostInput.value = val;
-    if (save) {
-        localStorage.setItem(TRAINER_MIDIIN_BOOST_STORAGE_KEY, String(val));
-    }
-    syncMidiInBoostUi();
-}
-
-function updateMetroVolume(value, { save = true } = {}) {
-    const val = Math.max(0, Math.min(100, parseInt(value, 10) || 0));
-    if (metroVolSlider) metroVolSlider.value = val;
-    if (metroVolInput) metroVolInput.value = val;
-    if (save) {
-        localStorage.setItem(METRONOME_VOL_STORAGE_KEY, String(val));
-    }
-    if (val === 0) metronomeOutput.setVolumeDecibels(-Infinity);
-    else metronomeOutput.setVolumeDecibels(20 * Math.log10(val / 100));
-}
-
-if (pianoVolSlider) pianoVolSlider.addEventListener('input', (e) => updatePianoVolume(e.target.value));
-if (pianoVolInput) pianoVolInput.addEventListener('change', (e) => updatePianoVolume(e.target.value));
-if (midiOutVolSlider) midiOutVolSlider.addEventListener('input', (e) => updateMidiOutVolume(e.target.value));
-if (midiOutVolInput) midiOutVolInput.addEventListener('change', (e) => updateMidiOutVolume(e.target.value));
-if (midiInBoostSlider) midiInBoostSlider.addEventListener('input', (e) => updateMidiInBoost(e.target.value));
-if (midiInBoostInput) midiInBoostInput.addEventListener('change', (e) => updateMidiInBoost(e.target.value));
-if (metroVolSlider) metroVolSlider.addEventListener('input', (e) => updateMetroVolume(e.target.value));
-if (metroVolInput) metroVolInput.addEventListener('change', (e) => updateMetroVolume(e.target.value));
+tempoControls.initEditing();
+audioLevelControls.init();
 
 const autoScrollCheckbox = document.getElementById('check-autoscroll');
 if (autoScrollCheckbox) {
@@ -1616,221 +1307,11 @@ if (enableMidiOutVirtualKeyboard) {
     });
 }
 
-const loopMinSlider = document.getElementById('slider-loop-min');
-const loopMaxSlider = document.getElementById('slider-loop-max');
-const loopMinInput = document.getElementById('val-loop-min');
-const loopMaxInput = document.getElementById('val-loop-max');
-const loopMinDecreaseBtn = document.getElementById('btn-loop-min-decrease');
-const loopMinIncreaseBtn = document.getElementById('btn-loop-min-increase');
-const loopMaxDecreaseBtn = document.getElementById('btn-loop-max-decrease');
-const loopMaxIncreaseBtn = document.getElementById('btn-loop-max-increase');
-
-function syncLooperDependentUi() {
-    const looperCheckbox = document.getElementById('check-looper');
-    const loopCountInCheckbox = document.getElementById('check-loop-countin');
-    const loopCountInRow = document.getElementById('looper-countin-row');
-    const loopEnabled = !!looperCheckbox?.checked;
-
-    if (loopCountInCheckbox) {
-        loopCountInCheckbox.disabled = !loopEnabled;
-        loopCountInCheckbox.checked = !!AppState.loopCountInEnabled;
-    }
-
-    if (loopCountInRow) {
-        loopCountInRow.classList.toggle('is-disabled', !loopEnabled);
-        loopCountInRow.setAttribute('aria-disabled', String(!loopEnabled));
-    }
-}
-
-document.getElementById('check-looper').addEventListener('change', () => {
-    renderLooper();
-    enforceLooperBounds();
-    syncLooperDependentUi();
-});
-
-const loopCountInCheckbox = document.getElementById('check-loop-countin');
-if (loopCountInCheckbox) {
-    loopCountInCheckbox.addEventListener('change', (e) => {
-        if (e.target.disabled) return;
-        AppState.loopCountInEnabled = e.target.checked;
-        setStoredBool(LOOP_COUNT_IN_STORAGE_KEY, AppState.loopCountInEnabled);
-    });
-}
-
-const accentedDownbeatCheckbox = document.getElementById('check-accented-downbeat');
-if (accentedDownbeatCheckbox) {
-    accentedDownbeatCheckbox.addEventListener('change', (e) => {
-        AppState.accentedDownbeatEnabled = e.target.checked;
-        setStoredBool(ACCENTED_DOWNBEAT_STORAGE_KEY, AppState.accentedDownbeatEnabled);
-    });
-}
-
-const visualPulseCheckbox = document.getElementById('check-visual-pulse');
-if (visualPulseCheckbox) {
-    visualPulseCheckbox.addEventListener('change', (e) => {
-        AppState.visualPulseEnabled = e.target.checked;
-        setStoredBool(VISUAL_PULSE_STORAGE_KEY, AppState.visualPulseEnabled);
-        if (!AppState.visualPulseEnabled) clearTempoVisualPulse();
-    });
-}
-
-const metronomeMidiOutCheckbox = document.getElementById('check-metronome-midiout');
-if (metronomeMidiOutCheckbox) {
-    metronomeMidiOutCheckbox.addEventListener('change', (e) => {
-        AppState.metronomeMidiOutEnabled = e.target.checked;
-        setStoredBool(METRONOME_MIDIOUT_STORAGE_KEY, AppState.metronomeMidiOutEnabled);
-        syncTempoMetronomeDependentUi();
-    });
-}
-
+loopControls.initOptions();
+tempoControls.initMetronomePreferences();
 syncLooperDependentUi();
-
-const metronomeCheckbox = document.getElementById('check-metronome');
-if (metronomeCheckbox) {
-    metronomeCheckbox.addEventListener('change', (e) => {
-        syncTempoMetronomeDependentUi();
-
-        if (!e.target.checked) {
-            clearScheduledMetronomeEvents();
-            stopWaitModeMetronome();
-            clearTempoVisualPulse();
-            return;
-        }
-        if (AppState.isPlaying && !AppState.countInActive) {
-            if (AppState.mode === 'wait') {
-                rebuildWaitModeMetronome(osmd?.cursor?.Iterator?.CurrentMeasureIndex ?? trainerMetronome.getWaitMeasureIndex());
-            }
-        }
-    });
-}
-
-syncTempoMetronomeDependentUi();
-
-function syncLooper(source, changedId) {
-    let minVal = parseInt(loopMinInput.value, 10);
-    let maxVal = parseInt(loopMaxInput.value, 10);
-    const maxAllowed = parseInt(loopMaxSlider.max, 10) || 100;
-
-    if (changedId === 'slider-loop-min') minVal = parseInt(loopMinSlider.value, 10);
-    if (changedId === 'slider-loop-max') maxVal = parseInt(loopMaxSlider.value, 10);
-
-    if (isNaN(minVal) || minVal < 1) minVal = 1;
-    if (isNaN(maxVal) || maxVal < 1) maxVal = 1;
-    if (minVal > maxAllowed) minVal = maxAllowed;
-    if (maxVal > maxAllowed) maxVal = maxAllowed;
-
-    if (minVal > maxVal) {
-        if (changedId === 'slider-loop-min' || changedId === 'val-loop-min') maxVal = minVal;
-        else if (changedId === 'slider-loop-max' || changedId === 'val-loop-max') minVal = maxVal;
-    }
-
-    loopMinSlider.value = minVal;
-    loopMaxSlider.value = maxVal;
-    loopMinInput.value = minVal;
-    loopMaxInput.value = maxVal;
-    AppState.looper.min = minVal;
-    AppState.looper.max = maxVal;
-
-    renderLooper();
-    enforceLooperBounds();
-}
-
-function syncLooperInputIfReady(changedId) {
-    const targetInput = changedId === 'val-loop-min' ? loopMinInput : loopMaxInput;
-    if (!targetInput) return;
-    if (targetInput.value === '') return;
-    syncLooper('input', changedId);
-}
-
-function stepLooperValue(target, delta) {
-    const input = target === 'min' ? loopMinInput : loopMaxInput;
-    if (!input) return;
-    const fallbackValue = target === 'min' ? AppState.looper.min : AppState.looper.max;
-    const currentValue = parseInt(input.value, 10);
-    input.value = (Number.isNaN(currentValue) ? fallbackValue : currentValue) + delta;
-    syncLooper('input', target === 'min' ? 'val-loop-min' : 'val-loop-max');
-}
-
-loopMinSlider.addEventListener('input', (e) => syncLooper('slider', e.target.id));
-loopMaxSlider.addEventListener('input', (e) => syncLooper('slider', e.target.id));
-loopMinInput.addEventListener('input', (e) => syncLooperInputIfReady(e.target.id));
-loopMaxInput.addEventListener('input', (e) => syncLooperInputIfReady(e.target.id));
-loopMinInput.addEventListener('change', (e) => syncLooper('input', e.target.id));
-loopMaxInput.addEventListener('change', (e) => syncLooper('input', e.target.id));
-loopMinInput.addEventListener('blur', (e) => syncLooper('input', e.target.id));
-loopMaxInput.addEventListener('blur', (e) => syncLooper('input', e.target.id));
-loopMinDecreaseBtn?.addEventListener('click', () => stepLooperValue('min', -1));
-loopMinIncreaseBtn?.addEventListener('click', () => stepLooperValue('min', 1));
-loopMaxDecreaseBtn?.addEventListener('click', () => stepLooperValue('max', -1));
-loopMaxIncreaseBtn?.addEventListener('click', () => stepLooperValue('max', 1));
-
-const LOOP_STEPPER_HOLD_DELAY_MS = 320;
-const LOOP_STEPPER_HOLD_REPEAT_MS = 170;
-let activeLooperHold = null;
-
-function clearLooperHold() {
-    if (!activeLooperHold) return;
-    if (activeLooperHold.delayTimer) clearTimeout(activeLooperHold.delayTimer);
-    if (activeLooperHold.repeatTimer) clearInterval(activeLooperHold.repeatTimer);
-    if (activeLooperHold.button && activeLooperHold.button.releasePointerCapture && activeLooperHold.pointerId != null) {
-        try {
-            if (activeLooperHold.button.hasPointerCapture?.(activeLooperHold.pointerId)) {
-                activeLooperHold.button.releasePointerCapture(activeLooperHold.pointerId);
-            }
-        } catch (_) {}
-    }
-    activeLooperHold.button?.classList.remove('is-holding');
-    activeLooperHold = null;
-}
-
-function beginLooperHold(button, target, delta, pointerId) {
-    clearLooperHold();
-    activeLooperHold = { button, pointerId, delayTimer: null, repeatTimer: null };
-    button.classList.add('is-holding');
-
-    if (button.setPointerCapture && pointerId != null) {
-        try { button.setPointerCapture(pointerId); } catch (_) {}
-    }
-
-    activeLooperHold.delayTimer = setTimeout(() => {
-        if (!activeLooperHold || activeLooperHold.button !== button) return;
-        activeLooperHold.repeatTimer = setInterval(() => {
-            stepLooperValue(target, delta);
-        }, LOOP_STEPPER_HOLD_REPEAT_MS);
-    }, LOOP_STEPPER_HOLD_DELAY_MS);
-}
-
-function wireLooperHold(button, target, delta) {
-    if (!button) return;
-    button.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
-    button.addEventListener('dragstart', (e) => {
-        e.preventDefault();
-    });
-    button.addEventListener('pointerdown', (e) => {
-        if (e.button !== undefined && e.button !== 0) return;
-        e.preventDefault();
-        beginLooperHold(button, target, delta, e.pointerId);
-    });
-    button.addEventListener('pointerup', clearLooperHold);
-    button.addEventListener('pointercancel', clearLooperHold);
-    button.addEventListener('lostpointercapture', clearLooperHold);
-    button.addEventListener('pointerleave', (e) => {
-        if (activeLooperHold?.button !== button) return;
-        if (e.buttons === 0) clearLooperHold();
-    });
-}
-
-wireLooperHold(loopMinDecreaseBtn, 'min', -1);
-wireLooperHold(loopMinIncreaseBtn, 'min', 1);
-wireLooperHold(loopMaxDecreaseBtn, 'max', -1);
-wireLooperHold(loopMaxIncreaseBtn, 'max', 1);
-
-document.addEventListener('pointerup', clearLooperHold);
-document.addEventListener('pointercancel', clearLooperHold);
-window.addEventListener('blur', clearLooperHold);
-
+tempoControls.initMetronomeToggle();
+loopControls.initRange();
 
 // ==========================================
 // PLAYBACK ENGINE

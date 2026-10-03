@@ -82,6 +82,8 @@ P1 仅有初始化空 namespace 的局部类型断言，以及 `Number.isFinite`
 
 - `/docs/testing/library-ui-baseline.html`：默认与 `?led=off` 各 44 项，真实 input/change/click、XML/MXL/MIDI 顺序导入、OSMD row load、原生 picker/menu/Escape、rename/move/bulk/cascade、备份及 Save Current。实际 600px/900px iframe 验证导航和 split 阈值；native rAF 验证 resize retarget、dispose 取消，重复 init 保持六个现存静态控件监听和两个 resize 监听。偏好仅在内存，临时 native DB 结束删除。其余受影响矩阵和旧版 384 组 DOM 对照见 validation/P8c-scores-ui-browser.txt。
 
+- `/docs/testing/native-controls-baseline.html`：默认与 `?led=off` 各 39 项；原生 toolbar/More/outside click/intro、实际 OSMD zoom、speed/BPM、audio levels、metronome/loop options、空值/crossed range、native 320ms→170ms hold、fullscreen denial fallback、scroll wrapper、重复 init/dispose 与迟到 callbacks。保持前台直至 DONE；使用 native rAF/timers，资源按最近 UI 创建位置统计，不能把 async caller 的其他模块资源计入工具栏。可见控制器监听数 15/8/8/8/45，另有两个 onclick slots；销毁后所有 owned counts 为零。偏好仅内存，结束删除自己的测试库。实际 trusted click 的 native fullscreen enter/exit 另见 P8d-native-controls-browser.txt。
+
 修改／恢复同一 origin 偏好的测试页需依次运行并关闭，再打开下一页；并发运行 MIDI／audio 等
 fixture 会互相改写启动期间读取的 saved channel/device。显示与 practice 的声音路由关闭不证明实体音频表现。
 

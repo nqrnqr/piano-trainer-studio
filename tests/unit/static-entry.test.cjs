@@ -48,6 +48,16 @@ test('static entry loads exactly one timing implementation before its core consu
     }
     assert.equal(scripts.includes('js/scores-ui.js'),false);
     assert.equal(fs.existsSync(path.join(root,'js/scores-ui.js')),false);
+    for (const name of ['ui/toolbar','compatibility/toolbar','ui/controls-dom','ui/display-controls','ui/tempo-controls',
+        'ui/audio-level-controls','ui/loop-controls','compatibility/native-controls']) {
+        assert.equal(scripts.filter(file=>file===`js/generated/${name}.js`).length,1);
+    }
+    assert.equal(scripts.includes('js/toolbar-ui.js'),false);
+    assert.equal(fs.existsSync(path.join(root,'js/toolbar-ui.js')),false);
+    assert.equal(fs.existsSync(path.join(root,'types/legacy-playback.d.ts')),false);
+    for (const name of ['applyZoom','updateTempo','syncLooper','requestAppFullscreen','showToolbarPanel']) {
+        assert.equal([...runtime.matchAll(new RegExp(`function ${name}\\(`,'g'))].length,1,`${name} has one runtime implementation`);
+    }
 });
 
 test('served source map embeds the unique TS source and maps both timing calculations', () => {

@@ -17,7 +17,8 @@
 - `src/render/score-viewport.ts`, `score-renderer.ts` = layout/scroll ownership and the unchanged render lifecycle
 - `src/render/geometry-engine.ts`, `feedback-overlay.ts`, `loop-overlay.ts` = stabilized notehead anchors and independent SVG layers
 - `src/practice/*.ts` = typed common input, expected notes, pitch matching, early grace, feedback records, scoring and sustain state; factories consume domain data and narrow ports
-- `js/toolbar-ui.js` = toolbar/menu shell
+- `src/ui/toolbar.ts` = native toolbar/menu/first-run shell and owned transitions; old toolbar-ui.js is removed
+- `src/ui/controls-dom.ts`, `display-controls.ts`, `tempo-controls.ts`, `audio-level-controls.ts`, `loop-controls.ts` = typed DOM access, fullscreen/Play/Reset/zoom/resize, speed/metronome, numeric audio levels and loop range/hold resources
 - `src/score/musicxml-io.ts`, `score-loader.ts`, `score-conversion.ts`, `webmscore-adapter.ts`, `transpose-*.ts` = score data, native loading, conversion and transpose boundaries
 - `src/domain/library.ts`, `library-view.ts`, `src/score/library-backup.ts`, `score-library.ts` = v1 library records, filtering, backup and IndexedDB repository
 - `src/ui/library-controls-state.ts`, `library-dialogs.ts`, `library-actions.ts`, `library-list.ts`, `scores-drawer.ts` = selection, native dialogs, library commands, rows and responsive drawer; old scores-ui.js and score-library.js are removed

@@ -56,3 +56,14 @@ IndexedDB `pianoTrainerLibrary` v1、stores/indexes、transaction completion、b
 - row 重建移除自己旧 listener，不取消已开始的普通命令；explicit dispose 才通过 generation 拦截迟到写入/overlay/input finally。pending overlays 在 dispose resolve __cancel__ 并释放 document capture listener，重新 init 不复活旧 callbacks。
 - nullable option/state folder IDs 的非空断言只为 string includes 参数，runtime null 仍不匹配；converter/toolbar 重复 getter 保留原可用性条件和调用位置，未缓存成另一种读取顺序。error.message 保留原属性读取 receiver、truthy fallback 与 native alert coercion，不预先强制 String。
 - 原 index 没有 btn-scores-import-files，静态监听实际为四个按钮加两个 input；动态 Add File 仍打开同一 picker。测试记录实际六个控件和两个 resize listener，没有添加按钮或修改产品布局。
+
+## Native toolbar/display/tempo/audio level/loop UI 基线 4a9fb9e
+
+- toolbar 保留 panel 顺序、按钮映射、下一 rAF 打开、transitionend target 检查及 180+40ms 后备关闭。普通 show/close 不取消旧 frame/timer；已有关闭回调可能作用于后来关闭的同一 panel，这是基线行为，显式 dispose 才取消资源。
+- More/外部点击/库 picker 和 LED calibration exclusions、Scores 点击先 await refresh 再 toggle、intro 的 string true 检查/seen 写入顺序保持。初始 required btn-options 缺失明确报错，optional panels/buttons 可以缺失；原事件 target 在 Element 边界收窄。
+- fullscreen 保留 requestFullscreen 的 await、WebKit 同步调用、异常 warning 与 pseudo fallback、native exit 条件及所有 labels/classes。普通并发请求不增加 epoch；explicit dispose 才拦截 await 后 UI 写入，旧 onclick/frame/transition callbacks 不进入重新 init 后的生命周期。
+- Play/Reset 的 onclick 仍为赋值，销毁只清仍属于自己的 slot，不移除外部替换。preserveScroll 仍同步执行 callback、恢复 offsets、返回其结果；callback 抛错仍不执行恢复。resize 为 300ms debounce，clear feedback preserve scoring→render→LED panel 定位顺序保持。
+- zoom 使用 parseInt(value,10)、50..150；input 只同步，change 才 state/save→OSMD zoom→clear/render。speed preview radix=10，而 committed percent/BPM 仍 parseInt 无 radix；percent 10..200，BPM 仅 min=1 且反算 percent 不再 clamp。DOM range 的 native sanitization 与 state 中数值不同仍保留。
+- volume 0..100、boost 50..200，parseInt/falsy defaults、可选 DOM、storage→audio/MIDI 命令顺序不变；零 metronome level 为 -Infinity。input boost 不进入 MIDI output，display row 只按 instrument routing 决定可见性。
+- loop 空 input 编辑不提交，change/blur clamp；crossed bound 按 changed ID 移动另一边。loader 的 range reset 保留 max/min/value/state 原写入顺序。hold 没有即时 step：320ms 后建立 170ms interval，click 仍单独 step；pointer capture/right-button/leave/buttons=0/document release/blur 行为保持。explicit dispose 清 owned timers/capture/style、invalidate callbacks，不修改普通停止规则。
+- 每个 factory 不绑定资源；core 在原相对位置显式调用各段 init，P9 再统一 bootstrap。required inputs 的类型断言只在已校验 getter 返回，vendor zoom public property 和 optional cursor measure 只经 OSMD adapter；无 any/忽略检查。

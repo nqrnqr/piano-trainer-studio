@@ -113,6 +113,16 @@ capture keydown、resize listeners，并取消自己的 rAF；旧 callbacks 在�
 库存 186 direct AppState writes 不含这些 state alias 写入；repository/current loaded data 的所有权
 仍由相应服务保持，销毁抽屉不会删除用户数据或停止其他模块的播放。
 
+P8d display-controls 写 pseudoFullscreenActive/zoom 和 native labels；tempo-controls 写 speedPercent、
+三个 metronome preferences；audio-level-controls 写 midiOutVolume/midiInBoost，其他 levels 经 audio/MIDI
+数字命令；loop-controls 写 looper.min/max、loopCountInEnabled。UI 只持有 Pick state，保留对象身份。
+loader 调用 resetRangeForScore 按原 DOM/state 顺序设置实际小节范围；toolbar 写 scoreLibraryView 并 await
+refresh 后 toggle。168 direct AppState writes 不包含这些别名写入。
+toolbar 私有 panel/button/intro state 与 frames/transition handlers/220ms timers；display owns 两个 onclick
+slots、fullscreen/zoom listeners 与 300ms resize debounce；loop owns 320ms delay/170ms interval、pointer
+capture 和 listeners。普通操作保留旧 callback 规则，explicit dispose 才清资源/失效 await、旧 onclick/
+hold/animation callbacks；reinit 不重复绑定。dispose 不修改外部替换的 onclick，也不删除用户偏好/库。
+
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。
 首次默认值与 input velocity / live low latency 强制开启规则保留。

@@ -193,7 +193,7 @@
 
 ## P8 其余步骤与 P9
 
-下一入口：处理剩余 toolbar/core controls。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。
+下一入口：处理剩余 preferences/practice/routing/keyboard/core controls。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。
 
 ## P8a：转换与移调检查点
 
@@ -231,3 +231,17 @@
 - 浏览器：758/758；default/no-op 各 library UI 44、library 38、loader 28、playback 127、practice 53、input 40、render 19、display 30。新 UI fixture 使用实际 XML/MXL/MIDI converter、OSMD loader、native DOM events/IndexedDB/rAF；确认取消和实际确认删除均覆盖，测试库关闭后只删自己的数据，偏好仅内存。报告 validation/P8c-scores-ui-browser.txt。静音模拟不能证明实体 MIDI/可听输出；launcher 最终验证仍归 P9。
 - 清单：591 global candidates/83 classic slots、重复函数零；186 direct AppState writes，UI state alias/owned resources 已记录。vendor/helper、用户数据/偏好/schema、资源和启动器不变。所有临时 parity files 删除，native tests 返回的原 success console.error/invalid JSON error 和权限拒绝是已知预期。
 - 回退：revert 本 UI 检查点恢复完整旧 scores-ui 与原 slot，repository/loader/converter 保留，无数据迁移或清库。下一入口为 core 练习/显示/tempo/loop/settings/fullscreen/touch keyboard 控件与 toolbar 外壳，再进入 P9 imports/bundle/bootstrap/test facade。
+
+## P8d：工具栏、显示、速度、音量与循环控件检查点
+
+- 状态：完成（2026-10-03）；P8 剩余 preferences/practice/routing/keyboard/score-seek/settings bindings、P9 尚待完成，完整目标保持活跃。
+- 映射：toolbar-ui.js → ui/toolbar、compatibility/toolbar；core 的 fullscreen/Play/Reset/zoom/resize → ui/display-controls，speed/metronome options → ui/tempo-controls，audio levels/boost → ui/audio-level-controls，loop range/count-in/hold → ui/loop-controls。共享 controls-dom 校验 required/optional 原生类型与 event targets；compatibility/native-controls 在原 core 各绑定位置显式 init，factory 无监听/timer/查询副作用。
+- 原顺序：toolbar 下一 rAF、transitionend target 与 220ms fallback、普通旧动画回调不取消；More/外部点击/intro seen/await Scores refresh 保持。全屏 native await/WebKit 同步/fallback、scroll callback 返回；zoom input preview/change commit、300ms debounce→clear feedback/render/LED 定位；speed radix 差异、BPM 反算 percent 不 clamp/native range sanitization；levels storage→numeric audio/MIDI；loop empty/blur/crossing、320ms→170ms hold 与独立 click 均保持，详细见 P8_DATA_CONTRACT。
+- 生命周期：只 explicit dispose 清自己的监听/两个 onclick slots（外部替换保留）、toolbar frames/transition/timers、display debounce、loop hold timers/capture/style并失效旧 callbacks/await。普通 close、Pause、resize retarget等仍沿旧语义。重复 init/dispose 不产生第二套资源，reinit 不复活旧帧、fullscreen continuation、onclick 或 hold callbacks。
+- 类型与清理：UI 只持有 Pick state、typed commands 和 native DOM，不读 vendor 私有对象；OSMD zoom/optional measure 集中 adapter，增补原 public zoom 声明，无 vendor 升级。无 any/忽略检查。旧 toolbar 文件/slot、空 legacy-playback.d.ts 与无消费者的 helpers forwards 删除；LED 自己读取 overlay，只继续消费 closeToolbarPanel。
+- Node：270/270（新增 12 组动画/async/资源、intro、fullscreen、zoom/debounce、tempo/radix、levels、loop/hold和 DOM target 用例），strict typecheck 与 174 文件干净生成比较通过。唯一 runtime implementation/旧文件缺失的 static entry gate 保留；报告 validation/P8d-native-controls-check.txt。
+- 对照：基线 4a9fb9e，300×40 numeric/fullscreen/loop 与 200×40 toolbar/open/close/intro/frame/timer 命令，共 20,000。每步返回、state、DOM values/classes/attrs、storage、输出顺序及 timers/frames/intervals 一致；临时旧实现只在 .cache/native-controls-parity.cjs，无第二套生产/长期测试实现。
+- 浏览器：882/882；default/no-op 各 native controls 39、library UI 44、playback 127、display 30、render 19、input 40、practice 53、loader 28、audio 23、metronome 28、settings 10。原生控件监听数 toolbar/display/tempo/audio/loop=15/8/8/8/45，另有两个 onclick；dispose 后 own listener/frame/timer/interval 及 slots 清零。实际 pointer/timers、native DOM/OSMD、default/no-op 和 stored preferences 往返通过。
+- 全屏：单独 trusted click 实测 native=true/pseudo=false/active=true；Exit click 后三者均 false，label 正确恢复。临时捕获页已删除并关闭自己的测试库。受影响音频/节拍器页仍保留真实节点/原生 cadence 与三模式同步目标，输出静音，不证明实体 MIDI/可听质量。报告 validation/P8d-native-controls-browser.txt。
+- 验证修正：新 resource fixture 原先把 async caller 中的六个 library-list handlers 计成 toolbar，真实创建 stack 证实来源，改为最近 UI 创建者（跳过 shared binder）；清零要求未降低，两个配置均通过。新测试入口的 syntax/API/key 错误修正，既有 gate 未隐藏。浏览器自动审核曾因账户额度失败，提示时间过去后原工具审核恢复，未绕过审批或换浏览器。
+- 清单：524 global candidates/90 classic slots、重复函数零；168 direct AppState writes，UI aliases/资源所有权已记录。偏好/key/backup/schema、vendor/helper/资源/启动器未改。回退本检查点恢复整个原 toolbar/core controls block 和 slots，无需清库或重置偏好；先完成剩余 P8 控件，再切 P9。
