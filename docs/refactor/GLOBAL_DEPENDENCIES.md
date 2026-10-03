@@ -190,3 +190,11 @@ P8 library：原 score-library.js 及槽位删除；domain/library + score/libra
 compatibility/score-library 暂保留 ScoreLibrary/window.ScoreLibrary、getScoreLibraryFolderLabel，
 仅 scores-ui、score loader 和测试入口消费；没有 DB init 顶层副作用。原未消费的 ID/binary
 全局 helper 移入内部 ports/codec，不再转发。77 classic slots、611 global candidates、重复函数定义为零。
+
+P8c scores UI：原 scores-ui.js 与 slot 删除，library-view 的文件名/过滤规则不读 DOM；
+library-controls-state 只读写 narrow state；dialogs/actions/list/drawer 通过 typed ports 使用
+repository、loader、converter 与原 toolbar。compatibility/scores-ui 在原槽位组装并 init，
+只转发仍消费的 refresh/init 名与完整 Window.ScoresUI 方法，增加显式 init/dispose。
+factory 不绑定监听/发起查询；shell init 保留旧 position、refresh 与 resize 注册顺序。
+未消费的 selection/row/action-menu 全局 helpers 不再转发。83 classic slots、591 candidates，
+重复函数定义为零；P9 再收敛 classic compositions 与 bootstrap。

@@ -5,7 +5,7 @@
 - `/assets/audio` = static audio assets such as Salamander samples
 - `/js` = extracted app modules with focused ownership
 - `/src` = migrated TypeScript source; `/js/generated` = committed classic-script output and embedded source maps
-- `trainer-core.js` = remaining loader, UI bindings and compatibility integration; typed factories own input, render and playback coordination
+- `trainer-core.js` = remaining UI bindings and compatibility integration; typed factories own score data, input, render and playback coordination
 - `/docs` = architecture notes and development notes
 
 ## Current modules
@@ -18,8 +18,9 @@
 - `src/render/geometry-engine.ts`, `feedback-overlay.ts`, `loop-overlay.ts` = stabilized notehead anchors and independent SVG layers
 - `src/practice/*.ts` = typed common input, expected notes, pitch matching, early grace, feedback records, scoring and sustain state; factories consume domain data and narrow ports
 - `js/toolbar-ui.js` = toolbar/menu shell
-- `js/scores-ui.js` = score browser UI shell
-- `js/score-library.js` = score library shell
+- `src/score/musicxml-io.ts`, `score-loader.ts`, `score-conversion.ts`, `webmscore-adapter.ts`, `transpose-*.ts` = score data, native loading, conversion and transpose boundaries
+- `src/domain/library.ts`, `library-view.ts`, `src/score/library-backup.ts`, `score-library.ts` = v1 library records, filtering, backup and IndexedDB repository
+- `src/ui/library-controls-state.ts`, `library-dialogs.ts`, `library-actions.ts`, `library-list.ts`, `scores-drawer.ts` = selection, native dialogs, library commands, rows and responsive drawer; old scores-ui.js and score-library.js are removed
 - `js/led.js` = LED simulator, calibration, and hardware/WLED output
 - `src/midi/*.ts`, `src/ui/midi-controls.ts` = Web MIDI decoding, service, output and device controls; old js/midi.js is removed
 - `src/audio/*.ts`, `src/domain/velocity.ts` = Tone voice/loading/unlock lifecycle, independent audio/MIDI routing and shared velocity normalization

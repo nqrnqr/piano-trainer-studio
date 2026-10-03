@@ -42,6 +42,12 @@ test('static entry loads exactly one timing implementation before its core consu
     }
     assert.equal(scripts.includes('js/score-library.js'),false);
     assert.equal(fs.existsSync(path.join(root,'js/score-library.js')),false);
+    for (const name of ['domain/library-view','ui/library-controls-state','ui/library-dialogs','ui/library-actions',
+        'ui/library-list','ui/scores-drawer','compatibility/scores-ui']) {
+        assert.equal(scripts.filter(file=>file===`js/generated/${name}.js`).length,1);
+    }
+    assert.equal(scripts.includes('js/scores-ui.js'),false);
+    assert.equal(fs.existsSync(path.join(root,'js/scores-ui.js')),false);
 });
 
 test('served source map embeds the unique TS source and maps both timing calculations', () => {

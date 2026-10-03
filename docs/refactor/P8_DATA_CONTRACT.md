@@ -42,3 +42,17 @@ IndexedDB `pianoTrainerLibrary` v1、stores/indexes、transaction completion、b
 - 显式 dispose 才关闭本实例 DB 和 abort 自己尚未完成的 transactions/pending open；不在普通 CRUD、导入、换谱时取消操作。P9 bootstrap 统一拥有此生命周期，用户数据库数据保留。
 - pending CRUD/export/starter 在原 await 后只检查 dispose generation，防止旧命令重开 DB 或发下一次查询/写入；普通操作 generation 不变。仅 dispose 为被 abort 的内部 request promise 加 rejection observer，避免 orphaned rejection，原 transaction/result 的错误和返回仍向调用者传递。
 - Native store/result 类型只在 v1 keyPath + storeNames 的 IndexedDB 边界收窄；folderId 非空断言只供 string IDs 的 includes 参数（runtime null 仍不匹配）。backup 的 unknown 数组入口只执行原 Array.isArray，不新增 version/schema 拒绝；合法 v1 metadata 类型声明的局部断言保留 malformed entries 的原 native coercion/TypeError 和字段读取顺序。
+
+## Scores UI 基线 a067b87
+
+- 保留两个 selection arrays 的去重/falsy 过滤与退出 manage 时清空；system folders 为 __all__/__unfiled__/null，批量操作计数和选择规则不变。
+- >=900px split view；窄屏保留 folders/scores/back。refresh 先更新 save button，再 init/尝试 starter/并行 folders+scores，然后修正选择和 view、重建原 DOM/classes。普通并发 refresh 不新增取消、合并或排序。
+- folder picker/action menu 保留 label/order、Escape、overlay click、capture keydown 和 __cancel__ 返回。显示按原追加顺序；显式 dispose 才取消 owned overlays/listeners 和迟到 UI commit。
+- file import 先 folder picker 再顺序 read/convert/save；成功 reset 两类 manage/select folder/view/refresh/open。取消不读取文件。save current 在 dialog await 后读取当前 score fields，保留原 live-state 行为；不是在 prompt 前冻结 score。
+- row open 先 get full score，再 await load，成功 close drawer；错误仅 log。rename/move/delete 与 bulk 的 confirm/prompt、loaded ID/title、selected folder/view 写入位置、错误提示保持。
+- backup export download 名称 Scores-Library-Backup.json、JSON indent=2、application/json、append/click/remove/revoke 顺序不变；import file.text/JSON.parse/repository/import/refresh，错误 alert 原固定文本。
+- shell 保留 optional DOM、dataset markers、原 position/refresh/resize 注册顺序；显式 init/dispose 去重/移除自己的 listeners/resize rAF。普通关闭抽屉不会 dispose 或取消原数据操作，资源生命周期与交互生命周期分开。
+- 原 loaded title 规则保留：row rename/single move 不刷新 loaded title，bulk move 在其原 await 后重新读库；row/bulk/cascade delete 只清 loaded library ID，显示中的乐谱仍可用。宽屏 bulk move 回 folders view，窄屏回 scores view。
+- row 重建移除自己旧 listener，不取消已开始的普通命令；explicit dispose 才通过 generation 拦截迟到写入/overlay/input finally。pending overlays 在 dispose resolve __cancel__ 并释放 document capture listener，重新 init 不复活旧 callbacks。
+- nullable option/state folder IDs 的非空断言只为 string includes 参数，runtime null 仍不匹配；converter/toolbar 重复 getter 保留原可用性条件和调用位置，未缓存成另一种读取顺序。error.message 保留原属性读取 receiver、truthy fallback 与 native alert coercion，不预先强制 String。
+- 原 index 没有 btn-scores-import-files，静态监听实际为四个按钮加两个 input；动态 Add File 仍打开同一 picker。测试记录实际六个控件和两个 resize listener，没有添加按钮或修改产品布局。

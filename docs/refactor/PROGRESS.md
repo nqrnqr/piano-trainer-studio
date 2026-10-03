@@ -193,7 +193,7 @@
 
 ## P8 其余步骤与 P9
 
-下一入口：处理 scores drawer/folder/import UI 和剩余 core controls。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。
+下一入口：处理剩余 toolbar/core controls。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。
 
 ## P8a：转换与移调检查点
 
@@ -219,3 +219,15 @@
 - 浏览器：552/552；default/no-op 各 library 38、loader 28、playback 127、practice 53、display 30。library 的 native CRUD/move/delete/cascade、v1 schema、MXL backup roundtrip/新 ID/映射、invalid rollback、actual Starter_Scores.json、seed flags/错误、pending dispose、实际旧 drawer/loader markOpened均通过。每次 library fixture 关闭并删除自己的六个临时数据库，偏好全在内存，未改用户库；结果和对照见 validation/P8b-library-browser.txt。
 - 清单：611 global candidates/77 classic slots、重复函数为零；216 直接 AppState writes，repository 无 state 写入。vendor/helper、用户偏好/schema/backup格式、相对资源及启动器不变。实体硬件、可听同步、Mac/Windows launcher 的最终验证仍待 P9。
 - 回退：revert 本 library 检查点恢复完整原文件/槽位，转换/loader 子步骤保留；无需清库、恢复偏好或转换已有数据。下一入口为 scores-ui 的 drawer/folder/list/import/backup UI 分层及生命周期。
+
+## P8c：曲库抽屉与管理控件检查点
+
+- 状态：完成（2026-10-03）；P8 剩余 toolbar/core controls 与 P9 尚待完成，完整目标保持活跃。
+- 映射：scores-ui.js → domain/library-view、ui/library-controls-state/dialogs/actions/list/scores-drawer、compatibility/scores-ui。旧文件与 slot 删除，七个模块在原位置加载；原 Window.ScoresUI 十个方法完整保留，增加显式 init/dispose。无第二套算法或全局 helper forwards。
+- 行为：原 DOM/classes/文字、>=900px split、窄屏 folders/scores/back、selection/manage、loaded badge、native picker/menu/Escape、顺序 mixed import、save current 的 await 后 live state、row/bulk/cascade 及 loaded title/ID 的旧差异保持。备份 filename/MIME/indent/revoke、错误提示与普通 concurrent refresh 顺序保持；不改变 schema、偏好或用户交互。
+- 生命周期：factory 无查询/listener 副作用；原 shell slot init，重复 init 保持六个实际静态控件与两个 resize listener。重建释放旧 row handlers，普通已开始命令仍完成；普通 drawer close 不取消 picker/data。显式 dispose 才释放 own overlays/key capture/rows/static/resize listeners、取消 own frames并失效 pending awaits/input finally；reinit 不复活旧 callbacks。
+- 类型：view 是纯规则，UI 只依赖 narrow state/typed command ports。nullable IDs、converter/toolbar getter、error property coercion 的局部边界见 P8_DATA_CONTRACT；无 any/忽略检查。全套 strict typecheck、158 文件干净生成比较与 258/258 Node（新增 12 UI actions/selection/async/dispose）通过，见 validation/P8c-scores-ui-check.txt。
+- 对照：基线 a067b87，384 组 native DOM/state/command snapshots 覆盖 600/899/900/1200px、两视图、六种 folder selection、四种 manage 与 empty/populated；另比 init error、starter warning、四种 picker 与两种 action-menu DOM/cancel。原结果完全一致，临时旧实现捕获页已删除。命令 .cache/create-library-ui-parity.cjs，仅保留结果。
+- 浏览器：758/758；default/no-op 各 library UI 44、library 38、loader 28、playback 127、practice 53、input 40、render 19、display 30。新 UI fixture 使用实际 XML/MXL/MIDI converter、OSMD loader、native DOM events/IndexedDB/rAF；确认取消和实际确认删除均覆盖，测试库关闭后只删自己的数据，偏好仅内存。报告 validation/P8c-scores-ui-browser.txt。静音模拟不能证明实体 MIDI/可听输出；launcher 最终验证仍归 P9。
+- 清单：591 global candidates/83 classic slots、重复函数零；186 direct AppState writes，UI state alias/owned resources 已记录。vendor/helper、用户数据/偏好/schema、资源和启动器不变。所有临时 parity files 删除，native tests 返回的原 success console.error/invalid JSON error 和权限拒绝是已知预期。
+- 回退：revert 本 UI 检查点恢复完整旧 scores-ui 与原 slot，repository/loader/converter 保留，无数据迁移或清库。下一入口为 core 练习/显示/tempo/loop/settings/fullscreen/touch keyboard 控件与 toolbar 外壳，再进入 P9 imports/bundle/bootstrap/test facade。

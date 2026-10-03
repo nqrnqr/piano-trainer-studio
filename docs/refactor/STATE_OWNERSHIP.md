@@ -103,6 +103,16 @@ request promise 的 rejection observer 只在 disposal 添加，避免 abort 后
 普通 tx.complete/result/error 的时机保留。ScoreLibraryWindow facade 和 drawer 当前仍使用同一实例。
 drawer/selection/currentScoreLibraryId/title 等 UI 写入仍在 scores-ui，下一 P8 检查点迁移。
 
+P8c drawer 的这些写入已迁至 library-controls-state/actions/list/scores-drawer 的 narrow state alias，
+不再直接读取整个 AppState。两个 manage/selection 数组保持原去重与独立清空；row rename
+保留 loaded title 不更新的旧行为，bulk move 在原位置重新读取 loaded title。save current
+在 picker await 后读 live current score。普通 refresh/关闭/换谱不更新 generation 或取消操作。
+显式 UI dispose 才失效 pending dialog/read/refresh/input continuation，移除自己的静态与行监听、
+capture keydown、resize listeners，并取消自己的 rAF；旧 callbacks 在重新 init 后仍无效。
+每次重建列表先释放旧 row listeners，已开始的普通异步命令继续沿原 await 顺序完成。
+库存 186 direct AppState writes 不含这些 state alias 写入；repository/current loaded data 的所有权
+仍由相应服务保持，销毁抽屉不会删除用户数据或停止其他模块的播放。
+
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。
 首次默认值与 input velocity / live low latency 强制开启规则保留。

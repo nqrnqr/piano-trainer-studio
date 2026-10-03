@@ -80,6 +80,8 @@ P1 仅有初始化空 namespace 的局部类型断言，以及 `Number.isFinite`
 - `/docs/testing/transpose-baseline.html`：默认与 `?led=off` 各 52 项，原生 XML DOM 对照 40 个 e91ca87 golden（包括 key/semitone、major/minor、timewise、harmony、无效参数/错误），加 actual mode/slider/signature/Apply/Reset DOM 事件、原始来源、速度、state identity 和重复 init/dispose。golden 来自旧实现 2,000 次随机对照，不在测试或生产加载第二套旧算法。
 - `/docs/testing/library-baseline.html`：默认与 `?led=off` 各 38 项。测试入口将 native IndexedDB 仅重定向至随机独立数据库、偏好保存在内存，结束关闭 connections 并删除自己的六个临时库。验证 v1 stores/indexes、CRUD/move/cascade、transaction complete/abort/rollback、XML/MXL backup bytes/新 ID/映射/default、actual starter asset/flag/失败、dispose/reinit/无 orphaned rejection、旧 drawer 与真实 loader markOpened；不接触用户库或偏好。scores drawer/actions 的完整 TS/UI 迁移仍在后续 P8 检查点。
 
+- `/docs/testing/library-ui-baseline.html`：默认与 `?led=off` 各 44 项，真实 input/change/click、XML/MXL/MIDI 顺序导入、OSMD row load、原生 picker/menu/Escape、rename/move/bulk/cascade、备份及 Save Current。实际 600px/900px iframe 验证导航和 split 阈值；native rAF 验证 resize retarget、dispose 取消，重复 init 保持六个现存静态控件监听和两个 resize 监听。偏好仅在内存，临时 native DB 结束删除。其余受影响矩阵和旧版 384 组 DOM 对照见 validation/P8c-scores-ui-browser.txt。
+
 修改／恢复同一 origin 偏好的测试页需依次运行并关闭，再打开下一页；并发运行 MIDI／audio 等
 fixture 会互相改写启动期间读取的 saved channel/device。显示与 practice 的声音路由关闭不证明实体音频表现。
 

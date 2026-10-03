@@ -19,7 +19,13 @@
     "js/generated/score/library-backup.js",
     "js/generated/score/score-library.js",
     "js/generated/compatibility/score-library.js",
-    "js/scores-ui.js",
+    "js/generated/domain/library-view.js",
+    "js/generated/ui/library-controls-state.js",
+    "js/generated/ui/library-dialogs.js",
+    "js/generated/ui/library-actions.js",
+    "js/generated/ui/library-list.js",
+    "js/generated/ui/scores-drawer.js",
+    "js/generated/compatibility/scores-ui.js",
     "js/generated/ui/permission-help.js",
     "js/generated/ui/connection-status.js",
     "js/generated/ui/update-controls.js",
@@ -171,7 +177,7 @@
         "js/generated/state/player-range.js",
         "js/generated/compatibility/transpose.js",
         "js/toolbar-ui.js",
-        "js/scores-ui.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/ui/connection-status.js",
         "js/generated/ui/update-controls.js",
         "js/led.js",
@@ -877,6 +883,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerLibraryActions",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerLibraryActions",
+          "kind": "var",
+          "file": "js/generated/ui/library-actions.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/library-actions.js",
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerLibraryBackup",
       "definitions": [
         {
@@ -889,6 +910,69 @@
       "referenceFiles": [
         "js/generated/score/library-backup.js",
         "js/generated/score/score-library.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerLibraryControlsState",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerLibraryControlsState",
+          "kind": "var",
+          "file": "js/generated/ui/library-controls-state.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/library-controls-state.js",
+        "js/generated/ui/library-actions.js",
+        "js/generated/ui/library-list.js",
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerLibraryDialogs",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerLibraryDialogs",
+          "kind": "var",
+          "file": "js/generated/ui/library-dialogs.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/library-dialogs.js",
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerLibraryList",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerLibraryList",
+          "kind": "var",
+          "file": "js/generated/ui/library-list.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/library-list.js",
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerLibraryView",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerLibraryView",
+          "kind": "var",
+          "file": "js/generated/domain/library-view.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/domain/library-view.js",
+        "js/generated/ui/library-list.js",
+        "js/generated/ui/scores-drawer.js"
       ]
     },
     {
@@ -1257,6 +1341,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerScoresDrawer",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoresDrawer",
+          "kind": "var",
+          "file": "js/generated/ui/scores-drawer.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/scores-drawer.js",
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerScoring",
       "definitions": [
         {
@@ -1477,7 +1576,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-library.js",
-        "js/scores-ui.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/compatibility/score-data.js"
       ]
     },
@@ -2600,20 +2699,6 @@
       ]
     },
     {
-      "symbol": "buildActionMenu",
-      "definitions": [
-        {
-          "symbol": "buildActionMenu",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 153
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "buildChromaticTestNotes",
       "definitions": [
         {
@@ -2779,20 +2864,6 @@
       ]
     },
     {
-      "symbol": "clearFolderLibrarySelection",
-      "definitions": [
-        {
-          "symbol": "clearFolderLibrarySelection",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 127
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "clearLooperHold",
       "definitions": [
         {
@@ -2853,20 +2924,6 @@
         "js/generated/compatibility/metronome.js",
         "js/generated/practice/playback-coordinator.js",
         "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "clearScoreLibrarySelection",
-      "definitions": [
-        {
-          "symbol": "clearScoreLibrarySelection",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 453
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -2970,21 +3027,6 @@
       ]
     },
     {
-      "symbol": "closeScoresDrawer",
-      "definitions": [
-        {
-          "symbol": "closeScoresDrawer",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 79
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js",
-        "js/generated/compatibility/score-data.js"
-      ]
-    },
-    {
       "symbol": "closeToolbarPanel",
       "definitions": [
         {
@@ -2996,7 +3038,7 @@
       ],
       "referenceFiles": [
         "js/toolbar-ui.js",
-        "js/scores-ui.js",
+        "js/generated/ui/scores-drawer.js",
         "js/led.js"
       ]
     },
@@ -3102,34 +3144,6 @@
       ]
     },
     {
-      "symbol": "createFolderListRow",
-      "definitions": [
-        {
-          "symbol": "createFolderListRow",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 316
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "createFoldersLibraryToolbar",
-      "definitions": [
-        {
-          "symbol": "createFoldersLibraryToolbar",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 211
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "createKeyboard",
       "definitions": [
         {
@@ -3141,48 +3155,6 @@
       ],
       "referenceFiles": [
         "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "createLibraryFolder",
-      "definitions": [
-        {
-          "symbol": "createLibraryFolder",
-          "kind": "async function",
-          "file": "js/scores-ui.js",
-          "line": 1025
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "createScoreRow",
-      "definitions": [
-        {
-          "symbol": "createScoreRow",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 624
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "createScoresLibraryToolbar",
-      "definitions": [
-        {
-          "symbol": "createScoresLibraryToolbar",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 483
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -3308,6 +3280,20 @@
       ],
       "referenceFiles": [
         "js/toolbar-ui.js"
+      ]
+    },
+    {
+      "symbol": "disposeScoresUi",
+      "definitions": [
+        {
+          "symbol": "disposeScoresUi",
+          "kind": "function",
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 21
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/scores-ui.js"
       ]
     },
     {
@@ -3584,20 +3570,6 @@
       ]
     },
     {
-      "symbol": "ensureScoresDrawerOpen",
-      "definitions": [
-        {
-          "symbol": "ensureScoresDrawerOpen",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 97
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "exitAppFullscreen",
       "definitions": [
         {
@@ -3609,20 +3581,6 @@
       ],
       "referenceFiles": [
         "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "exportScoreLibraryBackup",
-      "definitions": [
-        {
-          "symbol": "exportScoreLibraryBackup",
-          "kind": "async function",
-          "file": "js/scores-ui.js",
-          "line": 1041
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -3742,20 +3700,6 @@
       ],
       "referenceFiles": [
         "js/generated/ui/update-controls.js"
-      ]
-    },
-    {
-      "symbol": "formatScorePaneSummary",
-      "definitions": [
-        {
-          "symbol": "formatScorePaneSummary",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 439
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -3992,34 +3936,6 @@
       "referenceFiles": [
         "js/generated/practice/feedback-state.js",
         "js/generated/compatibility/practice.js"
-      ]
-    },
-    {
-      "symbol": "getFilteredLibraryScores",
-      "definitions": [
-        {
-          "symbol": "getFilteredLibraryScores",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 475
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "getFolderLibrarySelectionSet",
-      "definitions": [
-        {
-          "symbol": "getFolderLibrarySelectionSet",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 119
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -4503,7 +4419,9 @@
       "referenceFiles": [
         "js/generated/score/score-library.js",
         "js/generated/compatibility/score-library.js",
-        "js/scores-ui.js",
+        "js/generated/ui/library-actions.js",
+        "js/generated/ui/library-list.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/ui/score-file-reader.js",
         "js/generated/compatibility/score-conversion.js",
         "js/generated/score/musicxml-io.js",
@@ -4524,7 +4442,8 @@
       "referenceFiles": [
         "js/generated/score/score-library.js",
         "js/generated/compatibility/score-library.js",
-        "js/scores-ui.js",
+        "js/generated/ui/library-actions.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/ui/score-file-reader.js",
         "js/generated/compatibility/score-conversion.js",
         "js/generated/score/musicxml-io.js",
@@ -4545,21 +4464,9 @@
       "referenceFiles": [
         "js/generated/score/score-library.js",
         "js/generated/compatibility/score-library.js",
-        "js/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "getScoreLibrarySelectionSet",
-      "definitions": [
-        {
-          "symbol": "getScoreLibrarySelectionSet",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 445
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
+        "js/generated/ui/library-list.js",
+        "js/generated/ui/scores-drawer.js",
+        "js/generated/compatibility/scores-ui.js"
       ]
     },
     {
@@ -4931,20 +4838,6 @@
       ]
     },
     {
-      "symbol": "importFilesToLibrary",
-      "definitions": [
-        {
-          "symbol": "importFilesToLibrary",
-          "kind": "async function",
-          "file": "js/scores-ui.js",
-          "line": 947
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "importLedCalibrationFromPayload",
       "definitions": [
         {
@@ -4956,20 +4849,6 @@
       ],
       "referenceFiles": [
         "js/led.js"
-      ]
-    },
-    {
-      "symbol": "importScoreLibraryBackupFile",
-      "definitions": [
-        {
-          "symbol": "importScoreLibraryBackupFile",
-          "kind": "async function",
-          "file": "js/scores-ui.js",
-          "line": 1062
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -5126,12 +5005,12 @@
         {
           "symbol": "initScoresDrawerShell",
           "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 1079
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 20
         }
       ],
       "referenceFiles": [
-        "js/scores-ui.js"
+        "js/generated/compatibility/scores-ui.js"
       ]
     },
     {
@@ -5207,20 +5086,6 @@
       ],
       "referenceFiles": [
         "js/feedback-debug.js"
-      ]
-    },
-    {
-      "symbol": "isFolderLibraryManageMode",
-      "definitions": [
-        {
-          "symbol": "isFolderLibraryManageMode",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 131
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -5363,34 +5228,6 @@
       ]
     },
     {
-      "symbol": "isScoreLibraryManageMode",
-      "definitions": [
-        {
-          "symbol": "isScoreLibraryManageMode",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 457
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "isSystemFolderOption",
-      "definitions": [
-        {
-          "symbol": "isSystemFolderOption",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 149
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "keyPosition01ToLedIndex",
       "definitions": [
         {
@@ -5463,6 +5300,90 @@
       ]
     },
     {
+      "symbol": "libraryActions",
+      "definitions": [
+        {
+          "symbol": "libraryActions",
+          "kind": "const",
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 10
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "libraryDialogs",
+      "definitions": [
+        {
+          "symbol": "libraryDialogs",
+          "kind": "const",
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 5
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "libraryRows",
+      "definitions": [
+        {
+          "symbol": "libraryRows",
+          "kind": "const",
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 13
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "librarySelection",
+      "definitions": [
+        {
+          "symbol": "librarySelection",
+          "kind": "const",
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 4
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "libraryUiLifetime",
+      "definitions": [
+        {
+          "symbol": "libraryUiLifetime",
+          "kind": "const",
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "libraryUiPorts",
+      "definitions": [
+        {
+          "symbol": "libraryUiPorts",
+          "kind": "const",
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 6
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
       "symbol": "loadLedCalibration",
       "definitions": [
         {
@@ -5488,7 +5409,8 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/transpose.js",
-        "js/scores-ui.js",
+        "js/generated/ui/library-list.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/score/score-conversion.js",
         "js/generated/compatibility/score-conversion.js",
         "js/generated/score/score-loader.js",
@@ -5937,20 +5859,6 @@
       ]
     },
     {
-      "symbol": "normalizeComparableScoreName",
-      "definitions": [
-        {
-          "symbol": "normalizeComparableScoreName",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 419
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "normalizeFollowModeSettings",
       "definitions": [
         {
@@ -6122,23 +6030,9 @@
         }
       ],
       "referenceFiles": [
-        "js/scores-ui.js",
+        "js/generated/ui/scores-drawer.js",
         "js/generated/ui/score-file-controls.js",
         "js/generated/compatibility/score-data.js"
-      ]
-    },
-    {
-      "symbol": "openScoresImportPicker",
-      "definitions": [
-        {
-          "symbol": "openScoresImportPicker",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 90
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -6514,7 +6408,8 @@
       ],
       "referenceFiles": [
         "js/toolbar-ui.js",
-        "js/scores-ui.js"
+        "js/generated/ui/scores-drawer.js",
+        "js/generated/compatibility/scores-ui.js"
       ]
     },
     {
@@ -6671,20 +6566,6 @@
       ]
     },
     {
-      "symbol": "promptForLibraryFolderChoice",
-      "definitions": [
-        {
-          "symbol": "promptForLibraryFolderChoice",
-          "kind": "async function",
-          "file": "js/scores-ui.js",
-          "line": 9
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "ptNeedsImmediateResumeStart",
       "definitions": [
         {
@@ -6709,7 +6590,8 @@
         }
       ],
       "referenceFiles": [
-        "js/scores-ui.js",
+        "js/generated/ui/library-actions.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/ui/score-file-reader.js",
         "js/generated/compatibility/score-data.js"
       ]
@@ -6793,14 +6675,17 @@
       "definitions": [
         {
           "symbol": "refreshScoresDrawer",
-          "kind": "async function",
-          "file": "js/scores-ui.js",
-          "line": 770
+          "kind": "const",
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 19
         }
       ],
       "referenceFiles": [
         "js/toolbar-ui.js",
-        "js/scores-ui.js",
+        "js/generated/ui/library-actions.js",
+        "js/generated/ui/library-list.js",
+        "js/generated/ui/scores-drawer.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/compatibility/score-data.js"
       ]
     },
@@ -7105,20 +6990,6 @@
       ]
     },
     {
-      "symbol": "saveCurrentScoreToLibrary",
-      "definitions": [
-        {
-          "symbol": "saveCurrentScoreToLibrary",
-          "kind": "async function",
-          "file": "js/scores-ui.js",
-          "line": 986
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "saveLedCalibration",
       "definitions": [
         {
@@ -7325,6 +7196,20 @@
       ]
     },
     {
+      "symbol": "scoresDrawer",
+      "definitions": [
+        {
+          "symbol": "scoresDrawer",
+          "kind": "const",
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 17
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
       "symbol": "scoresPanel",
       "definitions": [
         {
@@ -7454,34 +7339,6 @@
       "referenceFiles": [
         "js/feedback-debug.js",
         "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "setFolderLibraryManageMode",
-      "definitions": [
-        {
-          "symbol": "setFolderLibraryManageMode",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 135
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "setFolderLibrarySelection",
-      "definitions": [
-        {
-          "symbol": "setFolderLibrarySelection",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 123
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -7647,34 +7504,6 @@
       ]
     },
     {
-      "symbol": "setScoreLibraryManageMode",
-      "definitions": [
-        {
-          "symbol": "setScoreLibraryManageMode",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 461
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "setScoreLibrarySelection",
-      "definitions": [
-        {
-          "symbol": "setScoreLibrarySelection",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 449
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "setStoredBool",
       "definitions": [
         {
@@ -7771,20 +7600,6 @@
       ]
     },
     {
-      "symbol": "shouldShowScoreFileName",
-      "definitions": [
-        {
-          "symbol": "shouldShowScoreFileName",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 427
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "shouldUseMidiOutMetronome",
       "definitions": [
         {
@@ -7814,20 +7629,6 @@
       ]
     },
     {
-      "symbol": "showFolderRowActionMenu",
-      "definitions": [
-        {
-          "symbol": "showFolderRowActionMenu",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 201
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "showMidiPermissionHelp",
       "definitions": [
         {
@@ -7844,20 +7645,6 @@
       ]
     },
     {
-      "symbol": "showScoreRowActionMenu",
-      "definitions": [
-        {
-          "symbol": "showScoreRowActionMenu",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 612
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "showToolbarPanel",
       "definitions": [
         {
@@ -7869,7 +7656,7 @@
       ],
       "referenceFiles": [
         "js/toolbar-ui.js",
-        "js/scores-ui.js"
+        "js/generated/ui/scores-drawer.js"
       ]
     },
     {
@@ -8304,7 +8091,7 @@
       ],
       "referenceFiles": [
         "js/toolbar-ui.js",
-        "js/scores-ui.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/led.js"
       ]
     },
@@ -8420,34 +8207,6 @@
       ],
       "referenceFiles": [
         "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "toggleFolderLibrarySelection",
-      "definitions": [
-        {
-          "symbol": "toggleFolderLibrarySelection",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 142
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
-      "symbol": "toggleScoreLibrarySelection",
-      "definitions": [
-        {
-          "symbol": "toggleScoreLibrarySelection",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 468
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
       ]
     },
     {
@@ -8745,20 +8504,6 @@
       ]
     },
     {
-      "symbol": "updateScoresActionButtonsState",
-      "definitions": [
-        {
-          "symbol": "updateScoresActionButtonsState",
-          "kind": "function",
-          "file": "js/scores-ui.js",
-          "line": 110
-        }
-      ],
-      "referenceFiles": [
-        "js/scores-ui.js"
-      ]
-    },
-    {
       "symbol": "updateTempo",
       "definitions": [
         {
@@ -8847,7 +8592,7 @@
         }
       ],
       "referenceFiles": [
-        "js/scores-ui.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/compatibility/score-conversion.js",
         "js/generated/compatibility/score-data.js"
       ]
@@ -8930,7 +8675,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-library.js",
-        "js/scores-ui.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/compatibility/score-data.js"
       ]
     },
@@ -8940,12 +8685,12 @@
         {
           "symbol": "window.ScoresUI",
           "kind": "window assignment",
-          "file": "js/scores-ui.js",
-          "line": 1163
+          "file": "js/generated/compatibility/scores-ui.js",
+          "line": 25
         }
       ],
       "referenceFiles": [
-        "js/scores-ui.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/compatibility/score-data.js"
       ]
     },
@@ -8961,7 +8706,7 @@
       ],
       "referenceFiles": [
         "js/toolbar-ui.js",
-        "js/scores-ui.js"
+        "js/generated/compatibility/scores-ui.js"
       ]
     },
     {
@@ -9185,7 +8930,8 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/transpose.js",
-        "js/scores-ui.js",
+        "js/generated/ui/library-list.js",
+        "js/generated/compatibility/scores-ui.js",
         "js/generated/score/score-conversion.js",
         "js/generated/compatibility/score-conversion.js",
         "js/generated/score/score-loader.js",
@@ -9211,7 +8957,7 @@
         }
       ],
       "referenceFiles": [
-        "js/scores-ui.js",
+        "js/generated/ui/scores-drawer.js",
         "js/generated/ui/score-file-controls.js",
         "js/generated/compatibility/score-data.js"
       ]
