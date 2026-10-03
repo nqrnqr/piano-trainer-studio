@@ -16,8 +16,6 @@
 - view slice 的 ArrayBuffer 类型断言只在 binary IO 边界：正常 FileReader/库来自 ArrayBuffer，运行时仍执行原 buffer.slice，不将 SharedArrayBuffer 转换成其他类型。Native load 后 reader.result 的非空断言保留原完成读的条件。
 - transpose 的 originalRawData/name/type 与 skipTransposeReset 参数保持；重复移调继续从原始来源开始，reset 保留 original 元数据。transpose engine 与 converter 在后续子步骤迁移。
 
-## 后续 library / UI 检查点
-
 ## Converter / transpose 迁移基线 e91ca87
 
 - Converter 支持原 11 个 suffix；MXL 只在显式 transpose normalization 使用，不走普通 import 转换。脚本地址保持 assets/vendor/webmscore/webmscore.js，已存在 loader marker 立即 resolve，随后检查 window.WebMscore.ready；失败缓存、ready await 与 FileReader 先后保持。
@@ -31,3 +29,16 @@
 ## 后续 library / UI 检查点
 
 IndexedDB `pianoTrainerLibrary` v1、stores/indexes、transaction completion、backup 格式与 starter imports 沿旧实现；迁移前逐项记录细节。剩余 toolbar/practice/display/tempo/loop/settings 的 DOM/event 边界及全屏/触控资源在各子步骤继续清点。
+
+## Library repository / backup 基线 779bc82
+
+- 数据库 `pianoTrainerLibrary` version 1；folders/scores 均 keyPath=id。升级只在缺 store 时创建；folders by_name，scores by_folderId/by_lastOpenedAt/by_title，均 non-unique。不升级 schema。
+- init 的第一次 open promise 缓存，失败也缓存；缺 indexedDB 在 open 前拒绝。transaction 在 tx.oncomplete 才 resolve executor 的 result（可为 request promise，沿 Promise assimilation），error/abort 保留 native tx.error 和原 fallback。executor 同步抛出先 reject，再尝试 abort。
+- 列表按 String(name/title||'').localeCompare 排序；recent 只取 truthy lastOpenedAt，再降序、slice limit。folder 创建两次独立 Date.now，score 创建一次 now；rename/open/move 维持原读取次数和写入位置。
+- delete empty folder 先 getAllScores；批量去重/过滤 falsy IDs，返回去重请求数，即使实际 ID 不存在。folder cascade 的 getAll onsuccess 与 move 的 get onsuccess 在同一 readwrite transaction 内发后续 put/delete，不借迁移改成事务外 await。
+- backup version=1、exportedAt ISO；先 folders 再 scores。rawData 仅 ArrayBuffer 编成 bytes，其他内容 String(rawData??'')；decode kind=arraybuffer 仅 Array.isArray(bytes) 接受，否则空 buffer，其他 text 强制 String。
+- import 不清库、不复用 IDs、不强制检查 version；folders/scores 非数组按空处理。folderId 只映射本次导入文件夹，否则 null。coercion/default/title/type/timestamp 规则及原读取顺序保持，异常回滚 native transaction；typed unknown boundary 不能增加拒绝合法旧备份的 schema 门槛。
+- starter key `pt_starterLibraryImported_v1`。已 true 立即 false；未 seed 但已有 scores 时写 true 并 false；仅空库 fetch `new URL('assets/Starter_Scores.json', document.baseURI)`、cache=no-store，成功 import 后才写 true。HTTP/JSON/事务失败不写 flag。普通重复调用竞态不新增 dedup。
+- 显式 dispose 才关闭本实例 DB 和 abort 自己尚未完成的 transactions/pending open；不在普通 CRUD、导入、换谱时取消操作。P9 bootstrap 统一拥有此生命周期，用户数据库数据保留。
+- pending CRUD/export/starter 在原 await 后只检查 dispose generation，防止旧命令重开 DB 或发下一次查询/写入；普通操作 generation 不变。仅 dispose 为被 abort 的内部 request promise 加 rejection observer，避免 orphaned rejection，原 transaction/result 的错误和返回仍向调用者传递。
+- Native store/result 类型只在 v1 keyPath + storeNames 的 IndexedDB 边界收窄；folderId 非空断言只供 string IDs 的 includes 参数（runtime null 仍不匹配）。backup 的 unknown 数组入口只执行原 Array.isArray，不新增 version/schema 拒绝；合法 v1 metadata 类型声明的局部断言保留 malformed entries 的原 native coercion/TypeError 和字段读取顺序。

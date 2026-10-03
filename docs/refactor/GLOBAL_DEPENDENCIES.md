@@ -184,3 +184,9 @@ P8 converter/transpose：旧 midi-import.js、transpose-engine.js、transpose-ui
 暂提供原 Window.MidiImport/TransposeEngine/TransposeUI；core loader、scores-ui 和旧弹窗仍消费。
 最小 vendor 声明的 export 为 unknown，只在 adapter 检查/解码。vendor/WASM 不变，
 初始化次序与惰性资源请求保留；74 classic slots、620 global candidates、重复函数定义为零。
+
+P8 library：原 score-library.js 及槽位删除；domain/library + score/library-backup/score-library
+提供唯一 v1 records、backup boundary、native IndexedDB CRUD/transaction/starter 实现。
+compatibility/score-library 暂保留 ScoreLibrary/window.ScoreLibrary、getScoreLibraryFolderLabel，
+仅 scores-ui、score loader 和测试入口消费；没有 DB init 顶层副作用。原未消费的 ID/binary
+全局 helper 移入内部 ports/codec，不再转发。77 classic slots、611 global candidates、重复函数定义为零。

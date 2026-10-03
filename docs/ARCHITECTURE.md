@@ -115,7 +115,11 @@ the input at the original point. Conversion lives in `score/score-conversion.ts`
 and binary decoding in `score/webmscore-adapter.ts`. Native XML transforms live in `score/transpose-engine.ts`;
 original-source commands and DOM listeners live in `score/transpose-controller.ts` and `ui/transpose-controls.ts`.
 Ordinary conversion preserves vendor soft destroy; explicit disposal releases owned score workers.
-Library and remaining UI move in later P8 checkpoints; classic assembly
+Native v1 IndexedDB operations and starter imports live in `score/score-library.ts`; the
+permissive backup codec lives in `score/library-backup.ts`. Commands wait for native transaction
+completion, preserve the existing schema and generate new IDs on backup import. Explicit disposal
+aborts owned transactions, closes the connection and prevents late commands from reopening it.
+The score drawer and remaining UI move in later P8 checkpoints; classic assembly
 and forwards are temporary until the P9 bootstrap and module bundle.
 
 ## Fragile systems

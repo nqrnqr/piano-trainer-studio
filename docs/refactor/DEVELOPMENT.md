@@ -50,6 +50,7 @@ npm run build:check
 - Play/Pause/Reset、checkWaitModeAdvance/playbackLoop 与 Loop 边界已迁至 `src/practice/playback-coordinator.ts`，原 transient/visual cleanup 在 playback-state。Tone.Transport 通过 audio/tone-transport 唯一端口调用；Loop/metro DOM 读取在 ui/playback-controls，旧 UI binding 暂留 core。compatibility/playback 仅无资源组装/转发。`practice/mode-policy.ts` 只返回模式决策，不拥有时钟/资源/状态写入；coordinator 在原读取位置解析模式，仍保持唯一循环。
 - P8 loader 第一步：XML/MXL ZIP 与 payload 在 `score/musicxml-io.ts`，loaded reset/render/cursor/state/library notification 顺序在 `score/score-loader.ts`，native FileReader 与 input listener 在 `ui/score-file-{reader,controls}.ts`。`compatibility/score-data.ts` 无资源组装，core 在旧槽位 init；reader dispose 只 abort owned pending reads，UI dispose 只移除自己的 listener。library/其余 UI 仍待后续子步骤，契约见 P8_DATA_CONTRACT.md。
 - P8 converter/transpose：`score/webmscore-adapter.ts` 持有惰性 script/ready 与 unknown export 边界；`score/score-conversion.ts` 保留格式/export/错误和普通 soft destroy，显式 dispose 才终止持有的 score worker。XML DOM 算法在 transpose-engine，原始来源/state 命令在 transpose-controller，DOM 在 ui/transpose-controls。两个 compatibility 文件提供原 Window API，控件仍在原槽位 init；P9 再统一 bootstrap。vendor/WASM 文件与相对地址不变。
+- P8 library：`domain/library.ts` 定义 v1 records，`score/score-library.ts` 持有原 IndexedDB transaction/CRUD/starter 流程，`score/library-backup.ts` 处理原 permissive unknown 数组与字节格式。compatibility/score-library 在原槽位无资源组装，原 js/score-library.js 删除；ScoreLibrary 与 folder label 暂供旧 scores-ui/loader 消费。显式 dispose abort/close/gate async command，普通调用不取消或去重。没有 schema、starter flag 或备份版本变更。
 - `npm run build` 先在 `.cache` 新目录编译，成功才替换 compiler 专属的 `js/generated`；失败保留现有输出。
 - 不手改生成文件。构建清理只作用于校验过的生成／临时目录，拒绝向工作区外解析的路径和符号链接。
 - 输出与 TS 源使用 LF，保证 Windows / Unix 重建时 source map 字节稳定。
@@ -77,6 +78,7 @@ P1 仅有初始化空 namespace 的局部类型断言，以及 `Number.isFinite`
 
 - `/docs/testing/loader-baseline.html`：默认与 `?led=off` 各 28 项，原生 FileReader/file input change、压缩 MXL、实际 OSMD/SVG、transpose apply/reset、无效 XML rejection、MIDI → MusicXML 的真实 local webmscore/WASM。WASM worker 的 timing 不在 frame performance 列表，单独 HEAD 检查相对资源返回 200，并验证实际转换结果。测试入口记录 native Worker 创建/终止，相对转换前基线验证普通 soft destroy、显式 dispose、再转换及再释放，已有 worker 保留。测试不写用户库、不持久化设置；library repository/backup 的完整验收属于后续 P8 检查点。
 - `/docs/testing/transpose-baseline.html`：默认与 `?led=off` 各 52 项，原生 XML DOM 对照 40 个 e91ca87 golden（包括 key/semitone、major/minor、timewise、harmony、无效参数/错误），加 actual mode/slider/signature/Apply/Reset DOM 事件、原始来源、速度、state identity 和重复 init/dispose。golden 来自旧实现 2,000 次随机对照，不在测试或生产加载第二套旧算法。
+- `/docs/testing/library-baseline.html`：默认与 `?led=off` 各 38 项。测试入口将 native IndexedDB 仅重定向至随机独立数据库、偏好保存在内存，结束关闭 connections 并删除自己的六个临时库。验证 v1 stores/indexes、CRUD/move/cascade、transaction complete/abort/rollback、XML/MXL backup bytes/新 ID/映射/default、actual starter asset/flag/失败、dispose/reinit/无 orphaned rejection、旧 drawer 与真实 loader markOpened；不接触用户库或偏好。scores drawer/actions 的完整 TS/UI 迁移仍在后续 P8 检查点。
 
 修改／恢复同一 origin 偏好的测试页需依次运行并关闭，再打开下一页；并发运行 MIDI／audio 等
 fixture 会互相改写启动期间读取的 saved channel/device。显示与 practice 的声音路由关闭不证明实体音频表现。

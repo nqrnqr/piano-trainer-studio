@@ -193,7 +193,7 @@
 
 ## P8 其余步骤与 P9
 
-下一入口：处理 library repository/backup、scores drawer/folder/import UI 和剩余 core controls。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。
+下一入口：处理 scores drawer/folder/import UI 和剩余 core controls。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。
 
 ## P8a：转换与移调检查点
 
@@ -206,3 +206,16 @@
 - 浏览器：default/no-op 各 loader 28、transpose 52、playback 127、input 40、practice 53、display 30、render 19，traversal 30/33，共 761 项。actual MIDI/WASM conversion 与 native Worker accounting 证明普通 soft、显式 dispose/reconvert/release，并保留转换前已有 worker；实际 slider/mode/signature/Apply/Reset、source/speed/state identity、重复 init/dispose 均通过。记录见 validation/P8a-transform-browser.txt；硬件与可听同步仍未验证。
 - 清单：620 global candidates/74 classic slots、重复函数定义为零；216 直接 AppState 写入，transpose alias/资源所有权已记录。vendor/helper、用户 schema、偏好格式、资源地址和启动器未改。
 - 回退：revert 本检查点恢复原 converter/transpose 文件与槽位，上一 score IO/loader 保留；无需清空数据库或偏好，不同时加载旧/新实现。后续从 library repository/backup 开始。
+
+## P8b：曲库 repository 与备份检查点
+
+- 状态：数据 repository/backup 子步骤完成（2026-10-03）；P8 仍进行中，scores-ui 与剩余 core UI 控制器尚待迁移，P9/完整目标保持活跃。
+- 映射：score-library.js → `domain/library.ts`、`score/library-backup.ts`、`score/score-library.ts`、`compatibility/score-library.ts`。旧文件与 slot 删除，只有生成实现；未消费的全局 ID/binary helpers 不再转发，旧 scores-ui/loader 消费同一个 ScoreLibrary 与 folder label。
+- 数据边界：保留 pianoTrainerLibrary v1、两个 id stores/四个 nonunique indexes、首次 open/失败缓存、tx.complete 后 executor result 的 Promise assimilation、native error/abort 与同步 throw→abort。CRUD 的 dedup/count、callbacks 内 put/delete、排序/recent、timestamp 读取次数均保持。backup 原 Array.isArray/default/coercion、ArrayBuffer-only 编码、新 ID/本次 folder map、未知 version 和 malformed entry rollback 保持，不新增 schema 门槛。局部 IndexedDB/unknown 类型边界见 P8_DATA_CONTRACT，无 any/忽略检查。
+- starter：原 flag/key、document.baseURI 相对 URL/cache=no-store、已有内容跳 seed、成功事务后写 true 与失败不写 flag保持。普通并发不新建 dedup，用户数据/资源不变。
+- 生命周期：显式 dispose 关闭 owned DB/abort transactions、reject pending open、close late connection；await 后 generation 阻止旧 CRUD/export/starter 续发/重开 DB。仅 dispose 为 abort 的 internal read promise 加 rejection observer，native pending read 实测无 orphaned rejection。重复 dispose 无第二次资源释放，reinit 保留数据库内容；普通 CRUD/import/换谱不取消操作。
+- Node：246/246（新增 15 项 schema/complete/error/CRUD/byte/backup/starter/dispose/pending command 用例），strict typecheck 与 144 文件干净生成比较通过，完整输出见 validation/P8b-library-check.txt。
+- 对照：基线 779bc82，10 流×60 次真实 IndexedDB 命令；每步返回/错误、完整 folder/score record states、字节和精确时间戳一致。独立旧/新数据库使用同种 native engine，结束删除21个测试库；临时 baseline capture 页已删除，不长期保留双实现。
+- 浏览器：552/552；default/no-op 各 library 38、loader 28、playback 127、practice 53、display 30。library 的 native CRUD/move/delete/cascade、v1 schema、MXL backup roundtrip/新 ID/映射、invalid rollback、actual Starter_Scores.json、seed flags/错误、pending dispose、实际旧 drawer/loader markOpened均通过。每次 library fixture 关闭并删除自己的六个临时数据库，偏好全在内存，未改用户库；结果和对照见 validation/P8b-library-browser.txt。
+- 清单：611 global candidates/77 classic slots、重复函数为零；216 直接 AppState writes，repository 无 state 写入。vendor/helper、用户偏好/schema/backup格式、相对资源及启动器不变。实体硬件、可听同步、Mac/Windows launcher 的最终验证仍待 P9。
+- 回退：revert 本 library 检查点恢复完整原文件/槽位，转换/loader 子步骤保留；无需清库、恢复偏好或转换已有数据。下一入口为 scores-ui 的 drawer/folder/list/import/backup UI 分层及生命周期。

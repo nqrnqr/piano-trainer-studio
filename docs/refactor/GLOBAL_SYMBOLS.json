@@ -15,7 +15,10 @@
     "js/generated/ui/transpose-controls.js",
     "js/generated/compatibility/transpose.js",
     "js/toolbar-ui.js",
-    "js/score-library.js",
+    "js/generated/domain/library.js",
+    "js/generated/score/library-backup.js",
+    "js/generated/score/score-library.js",
+    "js/generated/compatibility/score-library.js",
     "js/scores-ui.js",
     "js/generated/ui/permission-help.js",
     "js/generated/ui/connection-status.js",
@@ -874,6 +877,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerLibraryBackup",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerLibraryBackup",
+          "kind": "var",
+          "file": "js/generated/score/library-backup.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/score/library-backup.js",
+        "js/generated/score/score-library.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerLoopOverlay",
       "definitions": [
         {
@@ -1162,6 +1180,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerScoreLibrary",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoreLibrary",
+          "kind": "var",
+          "file": "js/generated/score/score-library.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/score/score-library.js",
+        "js/generated/compatibility/score-library.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerScoreLoader",
       "definitions": [
         {
@@ -1378,62 +1411,6 @@
       ]
     },
     {
-      "symbol": "SCORE_LIBRARY_DB_NAME",
-      "definitions": [
-        {
-          "symbol": "SCORE_LIBRARY_DB_NAME",
-          "kind": "const",
-          "file": "js/score-library.js",
-          "line": 9
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
-      ]
-    },
-    {
-      "symbol": "SCORE_LIBRARY_DB_VERSION",
-      "definitions": [
-        {
-          "symbol": "SCORE_LIBRARY_DB_VERSION",
-          "kind": "const",
-          "file": "js/score-library.js",
-          "line": 10
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
-      ]
-    },
-    {
-      "symbol": "SCORE_LIBRARY_FOLDER_STORE",
-      "definitions": [
-        {
-          "symbol": "SCORE_LIBRARY_FOLDER_STORE",
-          "kind": "const",
-          "file": "js/score-library.js",
-          "line": 11
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
-      ]
-    },
-    {
-      "symbol": "SCORE_LIBRARY_SCORE_STORE",
-      "definitions": [
-        {
-          "symbol": "SCORE_LIBRARY_SCORE_STORE",
-          "kind": "const",
-          "file": "js/score-library.js",
-          "line": 12
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
-      ]
-    },
-    {
       "symbol": "SETTINGS_DEBUG_STORAGE_KEY",
       "definitions": [
         {
@@ -1466,34 +1443,6 @@
       ]
     },
     {
-      "symbol": "STARTER_LIBRARY_ASSET_PATH",
-      "definitions": [
-        {
-          "symbol": "STARTER_LIBRARY_ASSET_PATH",
-          "kind": "const",
-          "file": "js/score-library.js",
-          "line": 13
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
-      ]
-    },
-    {
-      "symbol": "STARTER_LIBRARY_IMPORT_STORAGE_KEY",
-      "definitions": [
-        {
-          "symbol": "STARTER_LIBRARY_IMPORT_STORAGE_KEY",
-          "kind": "const",
-          "file": "js/score-library.js",
-          "line": 14
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
-      ]
-    },
-    {
       "symbol": "ScoreDisplay",
       "definitions": [
         {
@@ -1522,12 +1471,12 @@
         {
           "symbol": "ScoreLibrary",
           "kind": "const",
-          "file": "js/score-library.js",
-          "line": 45
+          "file": "js/generated/compatibility/score-library.js",
+          "line": 3
         }
       ],
       "referenceFiles": [
-        "js/score-library.js",
+        "js/generated/compatibility/score-library.js",
         "js/scores-ui.js",
         "js/generated/compatibility/score-data.js"
       ]
@@ -2336,20 +2285,6 @@
       ]
     },
     {
-      "symbol": "arrayBufferToByteArray",
-      "definitions": [
-        {
-          "symbol": "arrayBufferToByteArray",
-          "kind": "function",
-          "file": "js/score-library.js",
-          "line": 24
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
-      ]
-    },
-    {
       "symbol": "audioOutput",
       "definitions": [
         {
@@ -2754,20 +2689,6 @@
       ],
       "referenceFiles": [
         "js/generated/ui/update-controls.js"
-      ]
-    },
-    {
-      "symbol": "byteArrayToArrayBuffer",
-      "definitions": [
-        {
-          "symbol": "byteArrayToArrayBuffer",
-          "kind": "function",
-          "file": "js/score-library.js",
-          "line": 28
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
       ]
     },
     {
@@ -3358,20 +3279,6 @@
         "js/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js"
-      ]
-    },
-    {
-      "symbol": "deserializeScoreRawData",
-      "definitions": [
-        {
-          "symbol": "deserializeScoreRawData",
-          "kind": "function",
-          "file": "js/score-library.js",
-          "line": 39
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
       ]
     },
     {
@@ -4594,7 +4501,8 @@
         }
       ],
       "referenceFiles": [
-        "js/score-library.js",
+        "js/generated/score/score-library.js",
+        "js/generated/compatibility/score-library.js",
         "js/scores-ui.js",
         "js/generated/ui/score-file-reader.js",
         "js/generated/compatibility/score-conversion.js",
@@ -4614,7 +4522,8 @@
         }
       ],
       "referenceFiles": [
-        "js/score-library.js",
+        "js/generated/score/score-library.js",
+        "js/generated/compatibility/score-library.js",
         "js/scores-ui.js",
         "js/generated/ui/score-file-reader.js",
         "js/generated/compatibility/score-conversion.js",
@@ -4628,13 +4537,14 @@
       "definitions": [
         {
           "symbol": "getScoreLibraryFolderLabel",
-          "kind": "function",
-          "file": "js/score-library.js",
-          "line": 364
+          "kind": "const",
+          "file": "js/generated/compatibility/score-library.js",
+          "line": 12
         }
       ],
       "referenceFiles": [
-        "js/score-library.js",
+        "js/generated/score/score-library.js",
+        "js/generated/compatibility/score-library.js",
         "js/scores-ui.js"
       ]
     },
@@ -5776,20 +5686,6 @@
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/midi-baseline.integration.js",
         "docs/testing/input-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "makeLibraryId",
-      "definitions": [
-        {
-          "symbol": "makeLibraryId",
-          "kind": "function",
-          "file": "js/score-library.js",
-          "line": 19
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
       ]
     },
     {
@@ -7532,20 +7428,6 @@
       ]
     },
     {
-      "symbol": "serializeScoreRawData",
-      "definitions": [
-        {
-          "symbol": "serializeScoreRawData",
-          "kind": "function",
-          "file": "js/score-library.js",
-          "line": 32
-        }
-      ],
-      "referenceFiles": [
-        "js/score-library.js"
-      ]
-    },
-    {
       "symbol": "setAssetVersionOverride",
       "definitions": [
         {
@@ -9042,12 +8924,12 @@
         {
           "symbol": "window.ScoreLibrary",
           "kind": "window assignment",
-          "file": "js/score-library.js",
-          "line": 369
+          "file": "js/generated/compatibility/score-library.js",
+          "line": 13
         }
       ],
       "referenceFiles": [
-        "js/score-library.js",
+        "js/generated/compatibility/score-library.js",
         "js/scores-ui.js",
         "js/generated/compatibility/score-data.js"
       ]

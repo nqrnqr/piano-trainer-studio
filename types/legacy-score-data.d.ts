@@ -3,7 +3,7 @@ declare function initSongUI(): void;
 declare function refreshScoresDrawer(): Promise<void>;
 interface Window {
     MidiImport?: PianoTrainerScoreConversion.Service;
-    ScoreLibrary?: {markScoreOpened(id: string): Promise<unknown>};
+    ScoreLibrary?: PianoTrainerScoreLibrary.Service;
     TransposeEngine?: typeof PianoTrainerTransposeEngine;
     TransposeUI?: PianoTrainerTransposeController.Service & {syncUiFromState(): void; getPanel(): HTMLElement | null};
     ScoresUI?: {closeScoresDrawer(): void};

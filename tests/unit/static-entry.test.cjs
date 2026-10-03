@@ -37,6 +37,11 @@ test('static entry loads exactly one timing implementation before its core consu
     for (const file of ['js/midi-import.js','js/transpose/transpose-engine.js','js/transpose/transpose-ui.js']) {
         assert.equal(scripts.includes(file),false);assert.equal(fs.existsSync(path.join(root,file)),false);
     }
+    for (const name of ['domain/library','score/library-backup','score/score-library','compatibility/score-library']) {
+        assert.equal(scripts.filter(file=>file===`js/generated/${name}.js`).length,1);
+    }
+    assert.equal(scripts.includes('js/score-library.js'),false);
+    assert.equal(fs.existsSync(path.join(root,'js/score-library.js')),false);
 });
 
 test('served source map embeds the unique TS source and maps both timing calculations', () => {

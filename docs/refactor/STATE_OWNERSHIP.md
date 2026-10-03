@@ -96,6 +96,13 @@ transpose-controller 的窄 state alias 拥有 transpose availability/defaults/a
 显式 dispose 失效 pending apply/reset 的后续 UI commit，普通加载/Pause/Reset 不更新 generation。
 完整应用的 loader notification dispose gate 仍由 P9 bootstrap 生命周期统一处理。
 
+P8 library repository/backup 不写 AppState。dbPromise 仅缓存 v1 native open，仍保留旧 public
+属性供过渡消费者；实际 connection、transactions、pending open 和 dispose generation 在实例私有。
+CRUD/export/starter 的 await 后 generation 只因显式 dispose 改变，阻止旧命令续发查询/写入或重开库。
+request promise 的 rejection observer 只在 disposal 添加，避免 abort 后 orphaned rejection；
+普通 tx.complete/result/error 的时机保留。ScoreLibraryWindow facade 和 drawer 当前仍使用同一实例。
+drawer/selection/currentScoreLibraryId/title 等 UI 写入仍在 scores-ui，下一 P8 检查点迁移。
+
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。
 首次默认值与 input velocity / live low latency 强制开启规则保留。
