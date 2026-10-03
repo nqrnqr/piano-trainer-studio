@@ -4601,6 +4601,7 @@
           return 4;
         },
         getMeasureCount: () => ports.getRenderer().GraphicSheet?.MeasureList.length ?? null,
+        getSystemCount: () => ports.getRenderer().GraphicSheet?.MusicPages?.reduce((count, page) => count + page.MusicSystems.length, 0) ?? 0,
         // Legacy wrong-note fallback is called with a loaded cursor/sheet.
         // Preserve its missing-measure exception semantics in this boundary.
         getCurrentMeasureIndex: () => ports.getRenderer().cursor.Iterator.CurrentMeasureIndex,
@@ -12016,19 +12017,242 @@
     };
   }
 
+  // src/testing/practice-checks.ts
+  function createPracticeChecks(getServices) {
+    const inputs = [];
+    const markerIds = /* @__PURE__ */ new WeakMap();
+    let nextMarkerId = 0, outputFrames = 0;
+    function markerId(marker) {
+      if (!markerIds.has(marker)) markerIds.set(marker, ++nextMarkerId);
+      return markerIds.get(marker);
+    }
+    function observe() {
+      const services = getServices(), handle = services.practiceInput.handle;
+      services.practiceInput.handle = (input) => {
+        inputs.push({ ...input });
+        return handle(input);
+      };
+      const engine = services.legacyLed.LedEngine, render = engine.renderOutputs;
+      engine.renderOutputs = function() {
+        outputFrames++;
+        return render.call(this);
+      };
+    }
+    function stop() {
+      const services = getServices();
+      services.trainerPlayback.pausePlaybackFromToolbar();
+      for (const midi of [...services.AppState.pressedKeys])
+        services.practiceInput.handle({ kind: "note-off", note: midi, source: "ui", velocity: 100, channel: null, receivedAtMs: performance.now() });
+    }
+    function prepare(mode = "wait", practice = { left: true, right: true }, busy = false) {
+      stop();
+      const services = getServices(), state = services.AppState;
+      services.playbackState.clearVisuals();
+      state.mode = mode;
+      state.practice = { ...practice };
+      state.score.correct = state.score.wrong = 0;
+      state.isPlaying = true;
+      state.isAudioBusy = busy;
+    }
+    function buildCurrentExpectations() {
+      const services = getServices(), adapter = services.osmdAdapter;
+      const event = adapter.readPlaybackEvent(adapter.resolveStaffIdFromEntry);
+      services.practiceExpectedNotes.build(event.entries, adapter.getCurrentMeasureIndex(), adapter.getCurrentTimestamp());
+    }
+    function selectEvent(measureIndex, timestamp, build = true) {
+      const services = getServices(), adapter = services.osmdAdapter;
+      adapter.reset();
+      let steps = 0;
+      while (!adapter.isEndReached() && steps++ < 1e3) {
+        if (adapter.getCurrentMeasureIndex() === measureIndex && Math.abs(adapter.getCurrentTimestamp() - timestamp) < 1e-6) {
+          adapter.updateCursor();
+          services.AppState.currentExpectedContext = {
+            measureIndex,
+            timestamp,
+            signature: adapter.readPlaybackEvent(adapter.resolveStaffIdFromEntry).signature
+          };
+          if (build) buildCurrentExpectations();
+          return;
+        }
+        adapter.advance();
+      }
+      throw Error(`Missing fixture event ${measureIndex}|${timestamp}`);
+    }
+    const snapshot = () => {
+      const state = getServices().AppState;
+      return {
+        mode: state.mode,
+        playing: state.isPlaying,
+        countIn: state.countInActive,
+        score: { ...state.score },
+        pressed: [...state.pressedKeys],
+        context: state.currentExpectedContext ? { ...state.currentExpectedContext } : null,
+        expected: state.expectedNotes.map((n) => ({
+          midi: n.midi,
+          hit: n.hit,
+          staffId: n.staffId,
+          noteId: n.noteRef.id,
+          revision: n.noteRef.scoreRevision,
+          mIdx: n.mIdx,
+          anchor: n.anchor ? { ...n.anchor } : null
+        })),
+        wrongContext: state.realtimeWrongPressInCurrentContext,
+        visualNotes: state.visualNotesToStart.map((n) => ({ ...n })),
+        outOfRange: state.outOfRangeCurrentNotes.map((n) => ({ ...n })),
+        reservations: [...state.earlyGraceReservations.values()].map((n) => ({ ...n })),
+        activeIncorrect: [...state.activeHeldIncorrectFeedback].map(([midi, marker]) => ({ midi, id: markerId(marker) })),
+        releasedIncorrect: state.releasedIncorrectFeedback.map(markerId)
+      };
+    };
+    observe();
+    return {
+      snapshot,
+      observe,
+      commands: Object.freeze({
+        muteOutputs: () => {
+          const services = getServices(), state = services.AppState;
+          services.toolbarUi.hideToolbarPanels();
+          document.getElementById("help-modal")?.classList.add("hidden");
+          state.ledOutputMode = "none";
+          for (const key of Object.keys(state.audioEnabled)) state.audioEnabled[key] = false;
+          for (const key of Object.keys(state.midiOutEnabled)) state.midiOutEnabled[key] = false;
+          for (const id of ["check-metronome", "check-looper", "check-autoscroll"]) {
+            const element = document.getElementById(id);
+            if (element instanceof HTMLInputElement) element.checked = false;
+          }
+        },
+        muteInputActivation: () => {
+          getServices().audioOutput.ensureLiveAudioReady = async () => {
+          };
+        },
+        prepare,
+        stop,
+        selectEvent,
+        buildCurrentExpectations,
+        prepareMode: (mode) => {
+          stop();
+          const services = getServices();
+          services.playbackState.clearVisuals();
+          services.AppState.mode = mode;
+          services.handRouting.syncActiveHandStateFromMode();
+        },
+        startCurrentPlayback: () => {
+          const services = getServices();
+          services.AppState.isPlaying = true;
+          services.AppState.anchorTime = Tone.now();
+          services.trainerPlayback.playbackLoop();
+        },
+        assignPianoHands: () => {
+          getServices().AppState.hands = { right: 1, left: 2 };
+        },
+        setPlayerKeyCount: (count) => getServices().playerRangeControls.setPlayerPianoType(count, { save: false }),
+        isMidiInRange: (midi) => getServices().playerRange.isMidiInPlayerRange(midi),
+        processMisses: () => getServices().practiceScoring.processMissedNotes(),
+        startSustains: () => getServices().practiceSustains.startVisualSustains(),
+        findSatisfied: (midi) => {
+          const match = getServices().practiceMatching.findSatisfiedOrSustainedMatchForMidi(midi);
+          return match ? { ...match } : null;
+        },
+        readInputs: () => inputs.map((input) => ({ ...input })),
+        rebuildTimeline: () => {
+          const services = getServices();
+          services.AppState.ledPreviewTimelineDirty = true;
+          return services.sharedScoreTraversal.ensurePreviewTimelineBuilt().map((event) => ({ ...event, notes: event.notes.map((n) => ({ ...n })) }));
+        },
+        resetTraversal: () => getServices().osmdAdapter.reset(),
+        advanceTraversal: () => getServices().osmdAdapter.advance(),
+        readTraversal: () => {
+          const adapter = getServices().osmdAdapter;
+          return { end: adapter.isEndReached(), measure: adapter.getCurrentMeasureIndex(), timestamp: adapter.getCurrentTimestamp() };
+        },
+        traversalBeats: (currentMeasureIdx, currentTimestamp, nextMeasureIdx, nextTimestamp) => PianoTrainerTiming.getTraversalBeatsToWait({
+          currentMeasureIdx,
+          currentTimestamp,
+          nextMeasureIdx,
+          nextTimestamp,
+          fallbackLength: 0.25,
+          getMeasureTimingInfo: getServices().scoreMeasureTiming.getInfo
+        }),
+        readLed: () => ({
+          enabled: getServices().optionalLedOutput.enabled,
+          outputFrames,
+          resources: getServices().legacyLedResources.snapshot(),
+          version: getServices().appMetadata.version
+        }),
+        showMidiHelp: () => createPermissionHelp(document).showMidiPermissionHelp(getMidiPermissionHelpText()),
+        clearMidiHelp: () => createPermissionHelp(document).clearMidiPermissionHelp()
+      })
+    };
+  }
+
+  // src/testing/render-checks.ts
+  function createRenderChecks(getServices) {
+    const captures = /* @__PURE__ */ new Map();
+    let nextCapture = 0;
+    const commands = Object.freeze({
+      seekMeasure: (index, follow = true) => {
+        const services = getServices(), adapter = services.osmdAdapter;
+        adapter.reset();
+        let steps = 0;
+        while (!adapter.isEndReached() && adapter.getCurrentMeasureIndex() < index && steps++ < 1e5) adapter.advance();
+        if (steps >= 1e5) throw Error("Fixture traversal did not terminate");
+        adapter.showCursor();
+        adapter.updateCursor();
+        if (follow) services.ScoreDisplay.autoScroll();
+      },
+      updateCursor: () => getServices().osmdAdapter.updateCursor(),
+      follow: (immediate = false) => getServices().ScoreDisplay.follow({ immediate }),
+      render: () => getServices().scoreRenderer.renderScoreAndRefreshGeometry(),
+      zoom: (value) => getServices().displayControls.applyZoom(value, { save: false }),
+      disposeViewport: () => getServices().ScoreDisplay.dispose(),
+      initViewport: () => getServices().ScoreDisplay.init(),
+      setWrongContext: (value) => {
+        getServices().AppState.realtimeWrongPressInCurrentContext = value;
+      },
+      seedScore: (correct, wrong, hitFirst = true) => {
+        const state = getServices().AppState;
+        state.score.correct = correct;
+        state.score.wrong = wrong;
+        if (hitFirst && state.expectedNotes[0]) state.expectedNotes[0].hit = true;
+      },
+      renderLoop: (min, max) => {
+        const services = getServices();
+        if (min !== void 0) services.AppState.looper.min = min;
+        if (max !== void 0) services.AppState.looper.max = max;
+        services.loopOverlay.render();
+      },
+      captureIdentity: () => {
+        const services = getServices(), notes = services.AppState.expectedNotes.slice();
+        const cursor = services.osmdAdapter.getTraversalCursor();
+        if (!cursor) throw Error("No loaded traversal cursor");
+        const token = ++nextCapture;
+        captures.set(token, { notes, refs: notes.map((note) => note.noteRef), live: cursor.Iterator });
+        return token;
+      },
+      readIdentity: (token) => {
+        const captured = captures.get(token);
+        if (!captured) throw Error("Unknown render observation");
+        const services = getServices(), adapter = services.osmdAdapter;
+        return {
+          iteratorSame: adapter.getTraversalCursor()?.Iterator === captured.live,
+          expectationsSame: captured.notes.every((note, index) => services.AppState.expectedNotes[index] === note),
+          refsSame: captured.notes.every((note, index) => note.noteRef === captured.refs[index]),
+          sourcesMatch: captured.notes.every((note) => (adapter.resolveNote(note.noteRef)?.halfTone ?? NaN) + 12 === note.midi),
+          refsFrozen: captured.notes.every((note) => Object.isFrozen(note.noteRef) && !("logicalNote" in note)),
+          oldRefValid: captured.refs[0] ? adapter.resolveNote(captured.refs[0]) !== null : false,
+          revisionChanged: services.AppState.expectedNotes[0]?.noteRef.scoreRevision !== captured.refs[0]?.scoreRevision
+        };
+      }
+    });
+    return { commands, clear: () => captures.clear() };
+  }
+
   // src/testing/facade.ts
   function createTestFacade() {
     let services = createServices();
     services.init();
-    const snapshot = () => ({
-      mode: services.AppState.mode,
-      playing: services.AppState.isPlaying,
-      countIn: services.AppState.countInActive,
-      score: { ...services.AppState.score },
-      pressed: [...services.AppState.pressedKeys],
-      expected: services.AppState.expectedNotes.map((n) => ({ midi: n.midi, hit: n.hit })),
-      context: services.AppState.currentExpectedContext ? { ...services.AppState.currentExpectedContext } : null
-    });
+    const checks = createPracticeChecks(() => services);
+    const renderChecks = createRenderChecks(() => services);
     return Object.freeze({
       loadScore: (raw, options = {}) => services.scoreLoader.loadScoreIntoApp(raw, options),
       dispatchInput: (note, down) => services.practiceInput.handle({
@@ -12039,11 +12263,20 @@
         channel: null,
         receivedAtMs: performance.now()
       }),
-      readPracticeSnapshot: snapshot,
+      readPracticeSnapshot: checks.snapshot,
+      practice: checks.commands,
+      render: renderChecks.commands,
+      dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",
         ...services.osmdAdapter.readPositions(),
-        measureCount: services.osmdAdapter.getMeasureCount()
+        measureCount: services.osmdAdapter.getMeasureCount(),
+        systems: services.osmdAdapter.getSystemCount(),
+        cursorLeft: services.osmdAdapter.getCursorElement()?.style.left,
+        cursorBounds: (() => {
+          const rect = services.osmdAdapter.getCursorElement()?.getBoundingClientRect();
+          return rect ? { left: rect.left, width: rect.width } : null;
+        })()
       }),
       setLayout: (layout) => services.ScoreDisplay.setMode(layout, { save: false }),
       beginScenario: (mode) => {
@@ -12065,11 +12298,16 @@
       },
       pause: () => services.trainerPlayback.pausePlaybackFromToolbar(),
       init: () => services.init(),
-      dispose: () => services.dispose(),
+      dispose: () => {
+        services.dispose();
+        renderChecks.clear();
+      },
       recreate: () => {
         services.dispose();
+        renderChecks.clear();
         services = createServices();
         services.init();
+        checks.observe();
       }
     });
   }

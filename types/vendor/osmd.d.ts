@@ -38,7 +38,7 @@ namespace PianoTrainerOsmdVendor {
         PositionAndShape: MeasureShape;
         ParentStaffLine?: {ParentMusicSystem: MusicSystem};
     }
-    interface GraphicSheet { MeasureList: GraphicalMeasure[][]; }
+    interface GraphicSheet { MeasureList: GraphicalMeasure[][]; MusicPages?: {MusicSystems: unknown[]}[]; }
     interface Cursor extends PianoTrainerScoreTraversal.Cursor {
         show(): void;
         // Actual OSMD getter and its backing field. Neither is a domain position.

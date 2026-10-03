@@ -1,21 +1,27 @@
 import {createServices} from '../app/services';
 import type {PianoTrainerDomain} from '../domain/model';
+import {createPracticeChecks} from './practice-checks';
+import {createRenderChecks} from './render-checks';
 
 // Separate test entry: commands and copied observations, with no state/vendor object.
 export function createTestFacade() {
     let services = createServices();
     services.init();
-    const snapshot = () => ({mode:services.AppState.mode,playing:services.AppState.isPlaying,
-        countIn:services.AppState.countInActive,score:{...services.AppState.score},
-        pressed:[...services.AppState.pressedKeys],expected:services.AppState.expectedNotes.map(n=>({midi:n.midi,hit:n.hit})),
-        context:services.AppState.currentExpectedContext ? {...services.AppState.currentExpectedContext} : null});
+    const checks = createPracticeChecks(() => services);
+    const renderChecks = createRenderChecks(() => services);
     return Object.freeze({
         loadScore: (raw:PianoTrainerDomain.ScoreRawData,options:PianoTrainerDomain.ScoreLoadOptions={})=>services.scoreLoader.loadScoreIntoApp(raw,options),
         dispatchInput: (note:number,down:boolean)=>services.practiceInput.handle({kind:down?'note-on':'note-off',note,velocity:100,
             source:'ui',channel:null,receivedAtMs:performance.now()}),
-        readPracticeSnapshot:snapshot,
+        readPracticeSnapshot:checks.snapshot,
+        practice:checks.commands,
+        render:renderChecks.commands,
+        dispatchNote:(input:PianoTrainerDomain.TrainerNoteInput)=>services.practiceInput.handle({...input}),
         readViewportSnapshot:()=>({layout:services.ScoreDisplay.isHorizontal()?'horizontal':'traditional',
-            ...services.osmdAdapter.readPositions(),measureCount:services.osmdAdapter.getMeasureCount()}),
+            ...services.osmdAdapter.readPositions(),measureCount:services.osmdAdapter.getMeasureCount(),
+            systems:services.osmdAdapter.getSystemCount(),cursorLeft:services.osmdAdapter.getCursorElement()?.style.left,
+            cursorBounds:(() => {const rect = services.osmdAdapter.getCursorElement()?.getBoundingClientRect();
+                return rect ? {left:rect.left,width:rect.width} : null;})()}),
         setLayout:(layout:PianoTrainerDomain.ScoreLayout)=>services.ScoreDisplay.setMode(layout,{save:false}),
         beginScenario:(mode:PianoTrainerDomain.PracticeMode)=>{
             services.trainerPlayback.pausePlaybackFromToolbar(); services.playbackState.clearVisuals();
@@ -29,7 +35,7 @@ export function createTestFacade() {
             services.trainerPlayback.playbackLoop();
         },
         pause:()=>services.trainerPlayback.pausePlaybackFromToolbar(),
-        init:()=>services.init(),dispose:()=>services.dispose(),
-        recreate:()=>{services.dispose();services=createServices();services.init();}
+        init:()=>services.init(),dispose:()=>{services.dispose();renderChecks.clear();},
+        recreate:()=>{services.dispose();renderChecks.clear();services=createServices();services.init();checks.observe();}
     });
 }

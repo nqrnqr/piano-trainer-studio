@@ -7,28 +7,10 @@
 <button id="run" disabled>Run checks</button>
 <pre id="results">Ready</pre>
 <iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script>
 <script>
-const frame = document.querySelector('iframe');
-const noLed = new URLSearchParams(location.search).get('led') === 'off';
-const savedLedPreferences = new Map(['pt_ledOutputMode','pt_wledIp','pt_wledTransport'].map(key=>[key,localStorage.getItem(key)]));
-window.restoreTraversalTestPreferences = () => {
-    for (const [key,value] of savedLedPreferences) {
-        if (value === null) localStorage.removeItem(key); else localStorage.setItem(key,value);
-    }
-};
-if (noLed) {
-    // Local-only test address; no-op must never contact this or the helper.
-    localStorage.setItem('pt_ledOutputMode','wled');
-    localStorage.setItem('pt_wledIp','127.0.0.1:9');
-    localStorage.setItem('pt_wledTransport','ddp');
-}
-window.addEventListener('pagehide',window.restoreTraversalTestPreferences,{once:true});
-frame.onload = () => { document.getElementById('run').disabled = false; };
-document.getElementById('run').onclick = () => {
-    document.getElementById('run').disabled = true;
-    const script = document.createElement('script');
-    script.src = '/docs/testing/traversal-baseline.integration.js';
-    frame.contentDocument.body.append(script);
-};
-frame.src = '../../index.html' + (noLed ? '?led=off' : '');
+const frame=document.querySelector('iframe');
+frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/traversal-baseline.integration.js';frame.contentDocument.body.append(script);};
+mountModuleTestFrame(frame,{preferences:new URLSearchParams(location.search).get('led')==='off'?{pt_ledOutputMode:'wled',pt_wledIp:'127.0.0.1:9',pt_wledTransport:'ddp'}:{}});
 </script>

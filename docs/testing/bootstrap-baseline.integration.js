@@ -25,6 +25,7 @@
   if(disposed.timers)results.textContent+='TIMERS '+JSON.stringify(resources.describeTimers())+'\n';
   check(Object.values(disposed).every(value=>value===0),'full application disposal releases all observed native resources');
   app.recreate();await app.loadScore(xml,{fileName:'fresh.musicxml'});app.beginScenario('wait');check(app.readPracticeSnapshot().expected.length>0,'fresh application initializes and loads after full disposal');
-  app.pause();results.textContent+='DONE\n';
- }catch(error){results.textContent+='ERROR '+error.stack+'\n';}finally{app?.dispose();try{await window.__PT_LIBRARY_FIXTURE__?.cleanup();}catch(error){results.textContent+='CLEANUP ERROR '+error.message+'\n';}}
+  app.pause();
+ }catch(error){results.textContent+='ERROR '+error.stack+'\n';}finally{app?.dispose();try{await window.__PT_LIBRARY_FIXTURE__?.cleanup();}catch(error){results.textContent+='ERROR CLEANUP '+error.message+'\n';}}
+ if(!/(?:^|\n)(?:FAIL|ERROR)/.test(results.textContent))results.textContent+='DONE\n';
 })();

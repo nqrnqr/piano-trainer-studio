@@ -28,37 +28,27 @@
         await wait(20);
         paint(90);
     };
+    const api=window.PianoTrainerTest,snapshot=()=>api.readPracticeSnapshot();
     const viewport = document.getElementById('music-area');
-    const current = () => `${osmd.cursor.Iterator.CurrentMeasureIndex}:${osmd.cursor.Iterator.currentTimeStamp.RealValue}`;
+    const current = () => {const p=api.practice.readTraversal();return `${p.measure}:${p.timestamp}`;};
     const cursorX = () => {
-        const rect = osmd.cursor.cursorElement.getBoundingClientRect();
+        const rect = api.readViewportSnapshot().cursorBounds;
         return rect.left + rect.width / 2 - viewport.getBoundingClientRect().left;
     };
     const contentX = () => cursorX() + viewport.scrollLeft;
-    const seek = index => {
-        osmd.cursor.reset();
-        while (!osmd.cursor.Iterator.EndReached && osmd.cursor.Iterator.CurrentMeasureIndex < index) osmd.cursor.Iterator.moveToNext();
-        osmd.cursor.show();
-        osmd.cursor.update();
-        handleAutoScroll();
-    };
+    const seek = index => api.render.seekMeasure(index);
     const oldLayout = document.getElementById('select-score-layout').value;
     try {
-        hideToolbarPanels();
-        document.querySelector('#help-modal')?.classList.add('hidden');
-        AppState.ledOutputMode = 'none';
-        for (const key of Object.keys(AppState.audioEnabled)) AppState.audioEnabled[key] = false;
-        for (const key of Object.keys(AppState.midiOutEnabled)) AppState.midiOutEnabled[key] = false;
-        document.getElementById('check-metronome').checked = false;
+        api.practice.muteOutputs();
         document.getElementById('check-autoscroll').checked = true;
         const xml = await (await fetch('/docs/testing/continuous-score.musicxml')).text();
-        await loadScoreIntoApp(xml, { fileName: 'Continuous Score Test.musicxml' });
-        ScoreDisplay.setMode('traditional', {save:false});
-        const systems = () => osmd.GraphicSheet.MusicPages.reduce((n,p) => n + p.MusicSystems.length, 0);
+        await api.loadScore(xml, { fileName: 'Continuous Score Test.musicxml' });
+        api.setLayout('traditional', {save:false});
+        const systems = () => api.readViewportSnapshot().systems;
         check(systems() > 1, 'Traditional layout has multiple systems');
         seek(15);
         const before = current();
-        ScoreDisplay.setMode('horizontal', {save:false});
+        api.setLayout('horizontal', {save:false});
         check(systems() === 1, '48 measures and both piano staves stay in one system (including XML line break)');
         check(current() === before, 'Layout switch preserves playback iterator');
         check(Math.abs(cursorX() - viewport.clientWidth * .33) < 3, 'Cursor anchored at 33% of viewport');
@@ -84,47 +74,42 @@
         await wait(180);
         check(viewport.scrollLeft === disabledLeft, 'Auto Scroll off leaves the viewport alone');
         document.getElementById('check-autoscroll').checked = true;
-        handleAutoScroll();
+        api.render.follow();
         await settle();
-        const iteratorBeforeLookahead = osmd.cursor.Iterator;
+        const iteratorBeforeLookahead = api.render.captureIdentity();
         const paintedX = contentX();
-        osmd.cursor.Iterator.moveToNext();
+        api.practice.advanceTraversal();
         const aheadPosition = current();
-        renderScoreAndRefreshGeometry();
-        check(osmd.cursor.Iterator === iteratorBeforeLookahead && current() === aheadPosition, 'Relayout leaves the ahead-of-display iterator intact');
+        api.render.render();
+        check(api.render.readIdentity(iteratorBeforeLookahead).iteratorSame && current() === aheadPosition, 'Relayout leaves the ahead-of-display iterator intact');
         check(Math.abs(contentX() - paintedX) < 3, 'Relayout preserves the painted cursor while waiting');
         const zoomPosition = current();
-        applyZoom(125, {save:false});
+        api.render.zoom(125);
         check(current() === zoomPosition && systems() === 1, 'Zoom keeps traversal and single-system layout');
-        applyZoom(100, {save:false});
+        api.render.zoom(100);
 
         for (const mode of ['wait', 'follow', 'realtime']) {
-            pausePlaybackFromToolbar();
-            clearVisuals();
-            AppState.mode = mode;
-            syncActiveHandStateFromMode();
+            api.practice.prepareMode(mode);
             seek(12);
-            ScoreDisplay.follow({immediate:true});
-            AppState.isPlaying = true;
-            AppState.anchorTime = Tone.now();
-            playbackLoop();
+            api.render.follow(true);
+            api.practice.startCurrentPlayback();
             if (mode !== 'realtime') {
                 const waitingX = contentX();
                 const waitingPosition = current();
-                const expected = AppState.expectedNotes.map(n => n.midi);
+                const expected = snapshot().expected.map(n => n.midi);
                 check(expected.length > 0, `${mode}: waits for expected notes`);
                 await wait(150);
                 check(Math.abs(contentX() - waitingX) < 3, `${mode}: cursor does not run ahead while waiting`);
-                const scoreBefore = JSON.stringify(AppState.score);
-                AppState.realtimeWrongPressInCurrentContext = true;
-                ScoreDisplay.setMode('traditional', {save:false});
-                const traditionalAnchor = AppState.expectedNotes[0].anchor;
-                ScoreDisplay.setMode('horizontal', {save:false});
+                const scoreBefore = JSON.stringify(snapshot().score);
+                api.render.setWrongContext(true);
+                api.setLayout('traditional', {save:false});
+                const traditionalAnchor = snapshot().expected[0].anchor;
+                api.setLayout('horizontal', {save:false});
                 check(current() === waitingPosition && Math.abs(contentX() - waitingX) < 3, `${mode}: switch layouts while waiting preserves current note`);
-                check(JSON.stringify(AppState.score) === scoreBefore && AppState.realtimeWrongPressInCurrentContext, `${mode}: switching preserves score and wrong-note state`);
-                check(AppState.expectedNotes[0].anchor.x !== traditionalAnchor.x, `${mode}: expected-note feedback anchors refresh for horizontal layout`);
-                for (const midi of expected) triggerVirtualKey(midi, true, 'ui');
-                for (const midi of expected) triggerVirtualKey(midi, false, 'ui');
+                check(JSON.stringify(snapshot().score) === scoreBefore && snapshot().wrongContext, `${mode}: switching preserves score and wrong-note state`);
+                check(snapshot().expected[0].anchor.x !== traditionalAnchor.x, `${mode}: expected-note feedback anchors refresh for horizontal layout`);
+                for (const midi of expected) api.dispatchInput(midi, true, 'ui');
+                for (const midi of expected) api.dispatchInput(midi, false, 'ui');
                 await wait(700);
                 check(contentX() > waitingX, `${mode}: correct notes advance the visible cursor`);
             } else {
@@ -132,16 +117,16 @@
                 await wait(800);
                 check(contentX() > playingX, 'realtime: scheduled playback advances horizontal cursor');
             }
-            pausePlaybackFromToolbar();
+            api.pause();
         }
         seek(15);
         await settle();
         document.getElementById('btn-reset').click();
         await settle();
-        check(osmd.cursor.Iterator.CurrentMeasureIndex === 0 && cursorX() >= 0 && cursorX() < viewport.clientWidth, `Reset returns to the first measure with cursor visible (measure=${osmd.cursor.Iterator.CurrentMeasureIndex}, x=${cursorX()}, width=${viewport.clientWidth})`);
-        ScoreDisplay.setMode('traditional', {save:false});
+        check(api.practice.readTraversal().measure === 0 && cursorX() >= 0 && cursorX() < viewport.clientWidth, `Reset returns to the first measure with cursor visible (measure=${api.practice.readTraversal().measure}, x=${cursorX()}, width=${viewport.clientWidth})`);
+        api.setLayout('traditional', {save:false});
         check(systems() > 1 && viewport.scrollLeft === 0 && !document.getElementById('canvas-wrapper').style.width, 'Traditional layout and normal container width restored');
-        ScoreDisplay.setMode('horizontal', {save:false});
+        api.setLayout('horizontal', {save:false});
         const frame = parent.document.querySelector('iframe');
         frame.style.width = '390px';
         await wait(650);
@@ -159,18 +144,19 @@
             copy.setAttribute('number', i);
             part.append(copy);
         }
-        ScoreDisplay.setMode('horizontal', {save:false});
-        await loadScoreIntoApp(new XMLSerializer().serializeToString(doc), {fileName:'Long test.musicxml'});
+        api.setLayout('horizontal', {save:false});
+        await api.loadScore(new XMLSerializer().serializeToString(doc), {fileName:'Long test.musicxml'});
         check(systems() === 1 && document.querySelector('#osmd-container svg').getBoundingClientRect().width > 32767, '240-measure SVG exceeds 32767px without wrapping or clipping');
-        results.textContent += '\nAll checks passed.\n';
+
     } catch (error) {
         results.textContent += `ERROR: ${error.stack}\n`;
     } finally {
-        pausePlaybackFromToolbar();
-        ScoreDisplay.setMode(oldLayout, {save:false});
+        api.pause();
+        api.dispose();
         window.requestAnimationFrame = nativeRaf;
         window.cancelAnimationFrame = nativeCancel;
-        for (const callback of frames.values()) nativeRaf(callback);
+        frames.clear(); await window.__PT_LIBRARY_FIXTURE__.cleanup();
         parent.document.getElementById('run').disabled = false;
     }
+    if (!/(?:^|\n)(?:FAIL|ERROR)/.test(results.textContent)) results.textContent += '\nAll checks passed.\n';
 })();

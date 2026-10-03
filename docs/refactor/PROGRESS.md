@@ -334,3 +334,14 @@
 - 验证边界：这 74 项不替代原全量行为矩阵。既有浏览器页面与原断言保留，但仍使用已删除全局，下一步逐页迁移窄 facade 后全量执行。最终 noUncheckedIndexedAccess/exactOptionalPropertyTypes 与 launcher 尚未验证；实体 MIDI/WLED、可听同步及 Mac 不能由当前环境模拟结果证明。
 - 清单：三个静态应用槽位、四个运行时候选、94 ES 模块、重复函数零；52 direct state writes，别名资源见 STATE_OWNERSHIP。历史经典开发文档独立保留，当前 DEVELOPMENT/ARCHITECTURE 已更新。
 - 回退：revert 本检查点恢复 `7fe81d0` 的经典入口与工具链；不清库或改用户数据。下一步完成原浏览器 facade 迁移、全量回归和最终门槛。仅本地 Git 提交，不推送。
+
+## P9f：练习、输入、共享遍历与谱面浏览器 facade
+
+- 状态：五个原套件迁移检查点完成（2026-10-04）；P9 全量目标保持活跃，剩余调度/音频/MIDI/数据/UI suites 与最终严格/启动门槛未完成。
+- 映射：practice/input/traversal/render/score-display 原 Window/词法 globals → `testing/practice-checks.ts`、`render-checks.ts` 明确场景命令与复制观察。实际服务/算法只在生产模块中；测试 facade 没有 AppState/vendor 对象，原生键盘事件、OSMD 实际反复与几何 golden 均保持。
+- 身份验证：跨 staff note IDs、feedback marker 转移 token、iterator/expectation/ref identity、immutable refs/source resolution 在私有捕获中观察，不返回引用。snapshot 复制期望、锚点、预留/延音/越界数据；facade dispose/recreate 清空捕获。adapter 增加只读 system count，vendor 仅补最小 MusicPages 数量边界。
+- Fixture：共用 `module-test-frame.js` 加载原 HTML/vendors 与测试 bundle，注入 LED 选项、内存偏好/随机 IndexedDB；无用户数据迁移/清除。通过终态延后到 dispose 与 DB cleanup 完成。原 display 确定性 rAF 与 render 前台原生 rAF 分别保留，最终取消自己 frames。
+- 浏览器：12 页 421/421，default/no-op 各 practice53/input40/render19/display30/bootstrap37，traversal30/33。涵盖三模式×两布局、错误/部分/完整和弦、misses、tie/隐藏/cue、early carry、25键域、真反复/结尾、逐音符 SVG golden、identity/重排、48/240小节与390px滚动；自建标签均关闭。`validation/P9f-practice-render-facade-browser.txt`。
+- 验证：生产/测试类型检查、四文件 clean bundle comparison 与 335/335 Node 通过；`validation/P9f-practice-render-facade-check.txt`。原断言数量一致；no-op 无 health/reconnect 检查改观察资源所有者 timers/intervals 均零，比单独两个私有 timer 字段覆盖更完整。
+- 未验证：其余原浏览器套件仍引用已删全局；当前 421 项不代表全量完成。noUncheckedIndexedAccess/exactOptionalPropertyTypes 预检已定位诊断，下一检查点处理；launcher/clean install/static gates 待完成，实体硬件/可听/Mac 依旧未验证。
+- 回退：revert 本测试迁移检查点恢复 P9e facade/测试文件；无需清库或改设置。下一步迁移剩余 suites 并完成严格配置。只有本地提交。

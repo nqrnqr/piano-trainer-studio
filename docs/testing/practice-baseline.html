@@ -8,14 +8,10 @@
 <button id="run" disabled>Run checks</button>
 <pre id="results">Ready</pre>
 <iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script>
 <script>
-document.getElementById('environment').textContent = navigator.userAgent;
-document.querySelector('iframe').onload = () => { document.getElementById('run').disabled = false; };
-document.getElementById('run').onclick = () => {
-    document.getElementById('run').disabled = true;
-    const script = document.createElement('script');
-    script.src = '/docs/testing/practice-baseline.integration.js';
-    document.querySelector('iframe').contentDocument.body.append(script);
-};
-document.querySelector('iframe').src = '../../index.html' + (new URLSearchParams(location.search).get('led') === 'off' ? '?led=off' : '');
+const frame=document.querySelector('iframe');
+frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/practice-baseline.integration.js';frame.contentDocument.body.append(script);};
+mountModuleTestFrame(frame);
 </script>

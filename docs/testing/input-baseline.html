@@ -6,12 +6,10 @@
 <p>Actual OSMD notes and virtual key DOM events use the shared typed input controller. Synthetic input, muted output, no hardware required.</p>
 <button id="run" disabled>Run checks</button><pre id="results">Loading</pre>
 <iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script>
 <script>
-const frame=document.querySelector('iframe'),params=new URLSearchParams(location.search);
+const frame=document.querySelector('iframe');
 frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
-document.getElementById('run').onclick=()=>{
- document.getElementById('run').disabled=true;
- const script=document.createElement('script');script.src='/docs/testing/input-baseline.integration.js';frame.contentDocument.body.append(script);
-};
-frame.src='../../index.html'+(params.get('led')==='off'?'?led=off':'');
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/input-baseline.integration.js';frame.contentDocument.body.append(script);};
+mountModuleTestFrame(frame);
 </script>

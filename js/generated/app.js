@@ -4601,6 +4601,7 @@
           return 4;
         },
         getMeasureCount: () => ports.getRenderer().GraphicSheet?.MeasureList.length ?? null,
+        getSystemCount: () => ports.getRenderer().GraphicSheet?.MusicPages?.reduce((count, page) => count + page.MusicSystems.length, 0) ?? 0,
         // Legacy wrong-note fallback is called with a loaded cursor/sheet.
         // Preserve its missing-measure exception semantics in this boundary.
         getCurrentMeasureIndex: () => ports.getRenderer().cursor.Iterator.CurrentMeasureIndex,

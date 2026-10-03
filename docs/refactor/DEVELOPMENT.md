@@ -93,8 +93,15 @@ LED 默认启用；`?led=off` 或业务入口前的 `window.__PT_BOOT_OPTIONS__=
 readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命令。
 不返回整个 AppState 或 OSMD；生产构建与测试构建入口分开。
 
-既有 display/practice/playback/input/MIDI/audio/数据/UI 浏览器页面和原断言保留，
-它们仍引用已经移除的经典全局接口，**尚未完成窄 facade 迁移，也尚未完成模块入口的全量浏览器回归**。
+`practice-baseline`、`input-baseline`、`traversal-baseline`、`render-baseline` 和
+`score-display` 已迁移到窄 facade；default/no-op 连同 bootstrap 共 12 页 421 项通过。
+原 53/40/30或33/19/30 项行为断言保留，几何与反复基线未替换。
+`module-test-frame.js` 加载原生产 HTML/vendors 与独立测试 bundle，使用内存偏好和随机库。
+测试完成先 dispose/清理库，再发布通过终态。身份捕获保留在测试实例内，返回 token/布尔观察；
+销毁清空捕获引用。练习快照只复制所需字段、note ID、marker ID 与数值锚点。
+
+其余 playback/MIDI/audio/metronome/数据/UI 浏览器页面和原断言保留，
+仍引用已经移除的经典全局接口，**尚未完成剩余窄 facade 迁移及模块入口的全量浏览器回归**。
 新的 37 项启动检查不能代替这些行为矩阵；后续必须逐页迁移并保留原验证范围。
 原生权限、实体 MIDI/WLED、可听同步、Mac 启动器不由静音模拟证明。
 最终 noUncheckedIndexedAccess/exactOptionalPropertyTypes、干净安装/重建与原启动器门槛仍归 P9。
