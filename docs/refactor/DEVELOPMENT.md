@@ -104,6 +104,15 @@ fixture 会互相改写启动期间读取的 saved channel/device。显示与 pr
 - P8f 30 页/1,138 项浏览器、297 项 Node、11,000 次命令和12个 staff alias/coercion 对照通过。
   core 现在只保留原启动顺序；源码模块、single bundle、统一 bootstrap 和有限 test facade 归 P9。
 
+- `/docs/testing/settings-debug-baseline.html`：默认与 `?led=off` 各20项。native debug checkbox/4000ms
+  interval计数、真实OSMD note snapshots/SVG/history/reload、dispose/reinit/外部layer保留、native
+  FileReader pending→abort/callback removal/captured onload失效、fresh read都覆盖。偏好在内存，
+  DB随机且结束删除。实际成功设置import/reload仍由settings-baseline原11项每配置验证。
+- P9a factories：`ui/settings-controls`与`ui/feedback-debug`没有creation副作用；compatibility在原
+  script位置init。前者dispose只取消own readers/links/URLs；后者只取消own checkbox/heartbeat/groups。
+  普通UI行为不扩大取消范围，vendor snapshots不进入练习规则。307项Node、216文件build、14页568
+  项浏览器与3,000 ordinary commands/64 snapshots旧版对照见validation/P9a-ui-lifetime-*.txt。
+
 `timing.js` 的 sourceMappingURL 指向同目录 map，含完整 TS 源；无需开放 `/src`。
 自动测试确认两项算法的生成行映射到 TS 对应行，HTTP 确认 map 可访问。
 手工调试：F12 → Sources → `src/domain/timing.ts`，在等待计算处下断点后 Play；本轮未进行 F12 交互断点验证。

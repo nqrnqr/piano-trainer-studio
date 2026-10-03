@@ -154,3 +154,11 @@ virtual-keyboard-controls 私有持有 active MIDI/token、所有 connected/deta
 12 activation + 88×10 key listeners，score-seek-controls 自己持有一个 canvas click。普通 rebuild
 保持 pending old-key attack 和 detached handlers；explicit dispose 才释放全部自己的资源、失效
 pending audio unlock。不会释放 MIDI 等外部 pressed notes，不借普通 Pause/keyup 改变延迟回调。
+
+P9a 当前直接 AppState 写入77（原90）。debug history/flags/sequence 写入在 feedback-debug 的 narrow
+state port；vendor note snapshots 独立在 osmd-debug-observation，没有生产判定/anchor算法迁到debug。
+debug 服务拥有一个checkbox listener/marker、一个4000ms heartbeat和自己创建的SVG groups，显式
+dispose只移除own resources并失效captured callbacks；不会删除外部同名group/marker/其他interval。
+settingsFiles私有持有pending FileReader以及未完成下载的links/URLs；ordinary read error/abort保持
+原silent语义，导入完成仍原parse→import→alert→reload。显式dispose才abort own pending readers、
+清callbacks、失效捕获的old onload；普通按钮dispose/操作不会取消读文件。已完成read不再owned。

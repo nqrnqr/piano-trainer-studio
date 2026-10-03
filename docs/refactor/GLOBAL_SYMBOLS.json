@@ -12,6 +12,7 @@
     "js/generated/state/player-range.js",
     "js/generated/state/settings-backup.js",
     "js/generated/ui/settings-controls.js",
+    "js/generated/compatibility/settings-files.js",
     "js/generated/score/transpose-engine.js",
     "js/generated/score/transpose-controller.js",
     "js/generated/ui/transpose-controls.js",
@@ -50,7 +51,10 @@
     "js/generated/render/feedback-overlay.js",
     "js/generated/render/loop-overlay.js",
     "js/generated/compatibility/geometry.js",
-    "js/feedback-debug.js",
+    "js/generated/ui/controls-dom.js",
+    "js/generated/score/osmd-debug-observation.js",
+    "js/generated/ui/feedback-debug.js",
+    "js/generated/compatibility/feedback-debug.js",
     "js/generated/domain/timing.js",
     "js/generated/score/osmd-adapter.js",
     "js/generated/render/score-viewport.js",
@@ -86,7 +90,6 @@
     "js/generated/score/score-loader.js",
     "js/generated/ui/score-file-controls.js",
     "js/generated/compatibility/score-data.js",
-    "js/generated/ui/controls-dom.js",
     "js/generated/ui/display-controls.js",
     "js/generated/ui/tempo-controls.js",
     "js/generated/ui/audio-level-controls.js",
@@ -212,7 +215,7 @@
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
         "js/generated/compatibility/geometry.js",
-        "js/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/audio.js",
@@ -321,7 +324,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/geometry.js",
-        "js/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
@@ -781,6 +784,7 @@
       ],
       "referenceFiles": [
         "js/generated/ui/controls-dom.js",
+        "js/generated/ui/feedback-debug.js",
         "js/generated/ui/display-controls.js",
         "js/generated/ui/tempo-controls.js",
         "js/generated/ui/audio-level-controls.js",
@@ -837,6 +841,21 @@
       "referenceFiles": [
         "js/generated/practice/expected-notes.js",
         "js/generated/compatibility/practice.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerFeedbackDebug",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerFeedbackDebug",
+          "kind": "var",
+          "file": "js/generated/ui/feedback-debug.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js"
       ]
     },
     {
@@ -1282,6 +1301,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerOsmdDebugObservation",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerOsmdDebugObservation",
+          "kind": "var",
+          "file": "js/generated/score/osmd-debug-observation.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/score/osmd-debug-observation.js",
+        "js/generated/compatibility/feedback-debug.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerPlaybackClock",
       "definitions": [
         {
@@ -1601,6 +1635,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerSettingsFiles",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerSettingsFiles",
+          "kind": "var",
+          "file": "js/generated/ui/settings-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/settings-controls.js",
+        "js/generated/compatibility/settings-files.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerSustainState",
       "definitions": [
         {
@@ -1811,7 +1860,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/ui/preference-controls.js"
       ]
     },
@@ -2747,7 +2796,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/settings-backup.js",
-        "js/generated/ui/settings-controls.js",
+        "js/generated/compatibility/settings-files.js",
         "docs/testing/settings-baseline.integration.js"
       ]
     },
@@ -3079,14 +3128,15 @@
       "definitions": [
         {
           "symbol": "debugLogAnchorResolution",
-          "kind": "function",
-          "file": "js/feedback-debug.js",
-          "line": 272
+          "kind": "const",
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 14
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/geometry.js",
-        "js/feedback-debug.js",
+        "js/generated/ui/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js"
       ]
@@ -3096,13 +3146,14 @@
       "definitions": [
         {
           "symbol": "debugLogEvent",
-          "kind": "function",
-          "file": "js/feedback-debug.js",
-          "line": 260
+          "kind": "const",
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 11
         }
       ],
       "referenceFiles": [
-        "js/feedback-debug.js",
+        "js/generated/ui/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js"
       ]
@@ -3142,14 +3193,15 @@
       "definitions": [
         {
           "symbol": "describeGraphicalNoteForDebug",
-          "kind": "function",
-          "file": "js/feedback-debug.js",
-          "line": 268
+          "kind": "const",
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 13
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/geometry.js",
-        "js/feedback-debug.js",
+        "js/generated/score/osmd-debug-observation.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js"
       ]
     },
@@ -3158,14 +3210,15 @@
       "definitions": [
         {
           "symbol": "describeLogicalNoteForDebug",
-          "kind": "function",
-          "file": "js/feedback-debug.js",
-          "line": 264
+          "kind": "const",
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 12
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/geometry.js",
-        "js/feedback-debug.js",
+        "js/generated/score/osmd-debug-observation.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js"
       ]
@@ -3251,13 +3304,14 @@
       "definitions": [
         {
           "symbol": "downloadSettingsBackup",
-          "kind": "function",
-          "file": "js/generated/ui/settings-controls.js",
-          "line": 3
+          "kind": "const",
+          "file": "js/generated/compatibility/settings-files.js",
+          "line": 9
         }
       ],
       "referenceFiles": [
         "js/generated/ui/settings-controls.js",
+        "js/generated/compatibility/settings-files.js",
         "js/generated/ui/settings-actions.js",
         "js/generated/compatibility/preference-controls.js"
       ]
@@ -3363,6 +3417,20 @@
       "referenceFiles": [
         "js/generated/ui/display-controls.js",
         "js/generated/compatibility/native-controls.js"
+      ]
+    },
+    {
+      "symbol": "feedbackDebug",
+      "definitions": [
+        {
+          "symbol": "feedbackDebug",
+          "kind": "const",
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/feedback-debug.js"
       ]
     },
     {
@@ -4278,7 +4346,7 @@
       "referenceFiles": [
         "js/generated/state/preferences.js",
         "js/led.js",
-        "js/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js"
       ]
@@ -4453,13 +4521,14 @@
       "definitions": [
         {
           "symbol": "handleSettingsBackupImportFile",
-          "kind": "function",
-          "file": "js/generated/ui/settings-controls.js",
-          "line": 22
+          "kind": "const",
+          "file": "js/generated/compatibility/settings-files.js",
+          "line": 10
         }
       ],
       "referenceFiles": [
         "js/generated/ui/settings-controls.js",
+        "js/generated/compatibility/settings-files.js",
         "js/generated/ui/settings-actions.js",
         "js/generated/compatibility/preference-controls.js",
         "docs/testing/settings-baseline.integration.js"
@@ -4532,7 +4601,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/settings-backup.js",
-        "js/generated/ui/settings-controls.js",
+        "js/generated/compatibility/settings-files.js",
         "docs/testing/settings-baseline.integration.js"
       ]
     },
@@ -4709,13 +4778,14 @@
       "definitions": [
         {
           "symbol": "isDebugEnabled",
-          "kind": "function",
-          "file": "js/feedback-debug.js",
-          "line": 276
+          "kind": "const",
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 15
         }
       ],
       "referenceFiles": [
-        "js/feedback-debug.js"
+        "js/generated/ui/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js"
       ]
     },
     {
@@ -5420,6 +5490,7 @@
       "referenceFiles": [
         "index.html",
         "js/generated/compatibility/geometry.js",
+        "js/generated/score/osmd-debug-observation.js",
         "js/generated/score/osmd-adapter.js",
         "js/generated/compatibility/score-rendering.js",
         "js/trainer-core.js",
@@ -6564,13 +6635,14 @@
       "definitions": [
         {
           "symbol": "setDebugEnabled",
-          "kind": "function",
-          "file": "js/feedback-debug.js",
-          "line": 284
+          "kind": "const",
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 17
         }
       ],
       "referenceFiles": [
-        "js/feedback-debug.js",
+        "js/generated/ui/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js"
       ]
@@ -6738,7 +6810,7 @@
         "js/generated/state/preferences.js",
         "js/led.js",
         "js/generated/ui/midi-controls.js",
-        "js/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/native-controls.js",
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js"
@@ -6800,6 +6872,20 @@
       "referenceFiles": [
         "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "settingsFiles",
+      "definitions": [
+        {
+          "symbol": "settingsFiles",
+          "kind": "const",
+          "file": "js/generated/compatibility/settings-files.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/settings-files.js"
       ]
     },
     {
@@ -7016,13 +7102,14 @@
       "definitions": [
         {
           "symbol": "syncDebugCheckbox",
-          "kind": "function",
-          "file": "js/feedback-debug.js",
-          "line": 280
+          "kind": "const",
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 16
         }
       ],
       "referenceFiles": [
-        "js/feedback-debug.js"
+        "js/generated/ui/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js"
       ]
     },
     {
@@ -7703,13 +7790,13 @@
         {
           "symbol": "window.FeedbackDebug",
           "kind": "window assignment",
-          "file": "js/feedback-debug.js",
-          "line": 9
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 10
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/geometry.js",
-        "js/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js"
       ]
@@ -7931,20 +8018,6 @@
       ]
     },
     {
-      "symbol": "window.__ptDebugHeartbeat",
-      "definitions": [
-        {
-          "symbol": "window.__ptDebugHeartbeat",
-          "kind": "window assignment",
-          "file": "js/feedback-debug.js",
-          "line": 244
-        }
-      ],
-      "referenceFiles": [
-        "js/feedback-debug.js"
-      ]
-    },
-    {
       "symbol": "window.clearMidiPermissionHelp",
       "definitions": [
         {
@@ -7966,12 +8039,13 @@
         {
           "symbol": "window.clearStickyDebug",
           "kind": "window assignment",
-          "file": "js/feedback-debug.js",
-          "line": 319
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 20
         }
       ],
       "referenceFiles": [
-        "js/feedback-debug.js",
+        "js/generated/ui/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js",
         "js/generated/compatibility/practice.js"
       ]
     },
@@ -7991,31 +8065,18 @@
       ]
     },
     {
-      "symbol": "window.debugStickyAnchors",
-      "definitions": [
-        {
-          "symbol": "window.debugStickyAnchors",
-          "kind": "window assignment",
-          "file": "js/feedback-debug.js",
-          "line": 195
-        }
-      ],
-      "referenceFiles": [
-        "js/feedback-debug.js"
-      ]
-    },
-    {
       "symbol": "window.forcePianoTrainerDebugStatus",
       "definitions": [
         {
           "symbol": "window.forcePianoTrainerDebugStatus",
           "kind": "window assignment",
-          "file": "js/feedback-debug.js",
-          "line": 286
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 18
         }
       ],
       "referenceFiles": [
-        "js/feedback-debug.js"
+        "js/generated/ui/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js"
       ]
     },
     {
@@ -8120,12 +8181,13 @@
         {
           "symbol": "window.setDebugStickyFrames",
           "kind": "window assignment",
-          "file": "js/feedback-debug.js",
-          "line": 305
+          "file": "js/generated/compatibility/feedback-debug.js",
+          "line": 19
         }
       ],
       "referenceFiles": [
-        "js/feedback-debug.js"
+        "js/generated/ui/feedback-debug.js",
+        "js/generated/compatibility/feedback-debug.js"
       ]
     },
     {

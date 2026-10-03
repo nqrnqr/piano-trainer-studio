@@ -1,0 +1,8 @@
+P9a UI lifetime preparation parity, 2026-10-03
+Baseline 1ee9834; command node .cache/settings-debug-parity.cjs.
+PASS 2500 ordinary debug/native checkbox/heartbeat/history/SVG commands match 1ee9834
+PASS 500 ordinary settings export/import/error/dialog commands match 1ee9834
+PASS 64 vendor diagnostic snapshots match 1ee9834
+State, normalized SVG attributes/text, native checkbox/interval counts, returns and exact ordered effects/logs match at every step.
+Explicit disposal/reinit/captured callbacks and resource ownership validated separately in Node and native browser tests.
+Old implementation exists only as transient Git extraction in ignored .cache. No vendor, schema or settings changes.

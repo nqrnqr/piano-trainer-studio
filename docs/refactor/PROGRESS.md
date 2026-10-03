@@ -275,3 +275,15 @@
 - 测试修正：刚 load 的 pending right 同音按原顺序覆盖 sustained left；新fixture原假设独立，现增加覆盖断言，再清pending验证独立sustain/future/held。生产算法无改动，原断言保留。静音/模拟测试不证明实体MIDI/可听质量与同步；启动器/静态最终门槛留P9。
 - 清单：511 global candidates/107 classic slots、重复函数零；90 direct AppState writes，新增private resources/narrow state aliases已记录。vendor/helper、schema/backup/settings keys、资源与启动器不变。
 - 回退：revert本检查点恢复完整core keyboard/seek/UI blocks/slots与旧staff map，之前P8子步骤保留；不清库/改偏好。下一入口：迁移debug/settings file commands剩余生命周期，参数化legacy LED，然后真实imports/单bundle/bootstrap/窄test facade与最终验收。
+
+## P9a：设置文件与调试 UI 生命周期准备
+
+- 状态：准备子步骤完成（2026-10-03）；P9整体仍进行中，源码imports/single bundle/bootstrap/optional LED参数化/test facade/严格配置/最终验收尚未完成，完整目标活跃。
+- 映射：最后核心feedback-debug.js→ui/feedback-debug、score/osmd-debug-observation、compatibility/feedback-debug；旧file/slot删除。原P2 settings-controls的global commands→PianoTrainerSettingsFiles cold factory、compatibility/settings-files在原位置init。controls-dom slot前移且唯一，空legacy-traversal及迁移后ambient declarations删除。
+- 行为：settings payload/JSON/date filename/MIME/DOM click-remove/revoke、read parse/import/原警告与alert/reload、ordinary silent read error/abort保持。debug flags、两次startup读pref、seq/history/filter/trim、SVG ring/label/attributes、event/anchor/toggle/heartbeat logs与原一致；vendor观察与UI分开，不迁入生产matching/geometry算法。
+- 生命周期：settings explicit dispose abort own pending readers/remove callbacks/gate captured old onload，已完成reader/外部reader保留；只dispose清ordinary失败download残留的own links/URLs。debug持有一个native checkbox/marker、4000ms interval、own SVG groups；重复init无第二套、dispose释放onlyown且generation防旧callback复活，external同名group/marker/interval保留。原无消费者Window.__ptDebugHeartbeat删除，private clock仍原cadence。
+- 验证：307/307 Node（新增10组commands/async/dispose/DOM/history/vendor用例）；strict typecheck与216文件clean build一致。static gate检查旧debug file不存在/new slots唯一。报告validation/P9a-ui-lifetime-check.txt。
+- 对照：基线1ee9834，2,500 debug/native checkbox/heartbeat/history/SVG commands+500 settings export/import/error/dialog commands，所有return/state/SVG attrs/text/native bindings/log/effects逐步一致；64 vendor snapshots完全一致。仅ignored .cache/settings-debug-parity.cjs从Git抽旧实现，结果P9a-ui-lifetime-parity.txt。
+- 浏览器：14页568/568，default/no-op各settings-debug20、render19、preferences39、settings11、input40、playback127、loader28。新页真实FileReader abort→DONE/callback null、captured old read无import/alert/reload、fresh read、native SVG/history/reload/own resources/external layer保留；原settings成功FileReader/reload往返未替换。所有自建标签关闭，memory偏好/random DB结束仅删除自己数据。报告P9a-ui-lifetime-browser.txt；实体硬件/可听质量/launcher最终门槛仍未验证。
+- 清单：514 global candidates/110 classic slots、重复函数零；77 direct AppState writes。附带清除P8f browser report末尾多余空行。vendor/helper、settings/schema/backup/user data/resource/launcher不变。
+- 回退：revert本准备检查点恢复完整debug/原settings global commands与slots；之前P8保持，无数据迁移。下一入口：player-range/connection/update/header显式factories、parameterized optional legacy LED，模块imports/bootstrap/bundle与窄测试入口。

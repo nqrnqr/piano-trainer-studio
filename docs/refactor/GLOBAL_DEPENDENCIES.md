@@ -223,3 +223,11 @@ compatibility/keyboard-and-score-controls 仅组装与转发，保留 LED 消费
 staff format/bind/traversal cursor forwards 删除；actual cursor provider 直接由 adapter 提供。
 当前 107 classic slots、511 global candidates、重复函数定义零。P9 再统一 imports/bootstrap、
 optional LED 参数化初始化及窄测试 facade，不把 classic composition 当作最终模块化。
+
+P9a：最后的核心 feedback-debug.js 与slot删除，ui/feedback-debug只依赖narrow state/DOM/clock/log
+ports；score/osmd-debug-observation负责原note/graphical snapshot。settings-controls成为cold factory，
+settings file与debug的compatibility在旧slot显式init/转发，P9 bootstrap再统一拥有。controls-dom
+加载移到debug前，仍只加载一次。未再暴露__ptDebugHeartbeat，原无消费者的Window定时器字段
+成为debug私有资源；其他manual debug forwards暂留待最终entry收敛。空legacy-traversal声明删除。
+当前110 classic slots、514 global candidates、重复函数零；typed core完整，classic compositions
+和player-range/update/connection/header startup副作用仍需在P9显式组装。

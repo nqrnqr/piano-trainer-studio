@@ -66,6 +66,12 @@ test('static entry loads exactly one timing implementation before its core consu
     for (const name of ['applyZoom','updateTempo','syncLooper','requestAppFullscreen','showToolbarPanel']) {
         assert.equal([...runtime.matchAll(new RegExp(`function ${name}\\(`,'g'))].length,1,`${name} has one runtime implementation`);
     }
+    for (const name of ['ui/settings-controls','compatibility/settings-files','score/osmd-debug-observation','ui/feedback-debug','compatibility/feedback-debug']) {
+        assert.equal(scripts.filter(file=>file===`js/generated/${name}.js`).length,1);
+    }
+    assert.equal(scripts.includes('js/feedback-debug.js'),false);
+    assert.equal(fs.existsSync(path.join(root,'js/feedback-debug.js')),false);
+    assert.equal(fs.existsSync(path.join(root,'types/legacy-traversal.d.ts')),false);
 });
 
 test('served source map embeds the unique TS source and maps both timing calculations', () => {

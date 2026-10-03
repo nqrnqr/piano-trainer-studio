@@ -10,7 +10,7 @@
 
 ## Current modules
 - `src/state/app-state.ts`, `preference-keys.ts`, `preferences.ts`, `settings-backup.ts` = typed shared state, canonical settings keys, persistence and backup format; generated classic scripts retain the original lexical bindings
-- `src/ui/settings-controls.ts` = settings download, FileReader import, alert and reload boundary
+- `src/ui/settings-controls.ts` = settings download, FileReader import, alert and reload boundary with owned-reader/link/URL disposal
 - `src/domain/playable-range.ts` / `src/state/player-range.ts` = hardware-independent keyboard range math and shared range cache used by input grading and previews
 - `src/domain/timing.ts` → `js/generated/domain/timing.js` = shared timing math for traversal waits, measure remainder checks, and playback scheduling inputs
 - `src/score/osmd-adapter.ts` = OSMD graph access, revision-scoped NoteRef registry, private iterator snapshot and painted cursor restoration
@@ -28,7 +28,7 @@
 - `src/practice/playback-coordinator.ts`, `playback-state.ts` = single Play/Pause/Reset/Loop coordinator and original transient/visual cleanup; old feedback-engine.js is removed
 - `src/audio/metronome.ts`, `metronome-output.ts`, `playback-clock.ts`, `tone-transport.ts` = count-in/beat decisions, actual Tone node, native clock resource ownership and unchanged Transport commands
 - `src/score/measure-timing.ts`, `src/ui/tempo-pulse.ts`, `playback-controls.ts` = actual traversal cache, DOM pulse and playback control reads
-- `js/feedback-debug.js` = developer-only feedback diagnostics and sticky debug labels
+- `src/ui/feedback-debug.ts` = developer-only sticky debug labels, checkbox and heartbeat; `src/score/osmd-debug-observation.ts` provides vendor snapshots
 - `src/domain/keyboard-state.ts`, `src/app/keyboard-controller.ts`, `src/render/virtual-keyboard.ts` = key-state priority, sustain/preview/output coordination and native key presentation
 - `src/ui/virtual-keyboard-controls.ts`, `score-seek-controls.ts`, `score-status.ts` = owned pointer/mouse/touch/activation events, native score clicks and score percentage
 - `src/app/score-seek-controller.ts`, `score-ui-controller.ts` = real-iterator seeking and loaded-score metadata/UI commands; staff identity stays inside the OSMD adapter
@@ -154,7 +154,7 @@ until the P9 bootstrap and module bundle.
 - Larger structure notes belong in `/docs`, not in `index.html`
 
 ## Debug rule
-- `js/feedback-debug.js` is developer-only diagnostic tooling
+- `src/ui/feedback-debug.ts` is developer-only diagnostic tooling
 - It must not own production feedback matching or anchor-placement rules
 
 ## Rename note

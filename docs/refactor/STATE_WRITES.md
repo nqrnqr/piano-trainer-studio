@@ -6,6 +6,7 @@
 
 | 位置 | 目标 | 操作 |
 | --- | --- | --- |
+| src/compatibility/feedback-debug.ts:26 | AppState[flag] | = |
 | src/state/player-range.ts:4 | AppState.playerRange | = |
 | src/state/preferences.ts:111 | AppState.midiInChannel | = |
 | src/state/preferences.ts:112 | AppState.midiOutChannel | = |
@@ -82,17 +83,3 @@
 | js/led.js:1496 | AppState.wledHelperStatus | = |
 | js/led.js:1843 | AppState.hardwareLEDState | clear |
 | js/optional/midi-led-test.js:85 | AppState.hardwareLEDState | clear |
-| js/feedback-debug.js:95 | AppState.debugFrameSeq | increment/decrement |
-| js/feedback-debug.js:102 | AppState.debugAnchorHistory | push |
-| js/feedback-debug.js:112 | AppState.debugAnchorHistory | splice |
-| js/feedback-debug.js:192 | AppState.debugPersistentAnchors | = |
-| js/feedback-debug.js:193 | AppState.debugEventFlow | = |
-| js/feedback-debug.js:194 | AppState.debugMatchLogs | = |
-| js/feedback-debug.js:195 | AppState.debugAnchorResolution | = |
-| js/feedback-debug.js:201 | AppState.debugAnchorHistory | = |
-| js/feedback-debug.js:309 | AppState.debugStickyFrameLimit | = |
-| js/feedback-debug.js:311 | AppState.debugAnchorHistory | splice |
-| js/feedback-debug.js:322 | AppState.debugAnchorHistory | = |
-| js/feedback-debug.js:343 | AppState.debugEventFlow | = |
-| js/feedback-debug.js:348 | AppState.debugMatchLogs | = |
-| js/feedback-debug.js:353 | AppState.debugAnchorResolution | = |
