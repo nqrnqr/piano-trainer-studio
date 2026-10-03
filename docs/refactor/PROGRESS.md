@@ -411,3 +411,13 @@
 - 浏览器：loader/transpose/bootstrap/playback/render两种配置共10页528/528；已迁移累计24页980项。validation/P9l-loader-transpose-facade-browser.txt；终态在完整dispose/worker与自己的DB cleanup之后发布，所有自建标签关闭。
 - 验证：两套最终严格检查、四文件clean comparison、336/336 Node，validation/P9l-loader-transpose-facade-check.txt。只有test bundle与测试源码/页面变更，vendor/生产逻辑/资源/用户DB/prefs/schema/backup/启动器不变。
 - 回退：revert本检查点恢复P9k测试入口/页面，无需清数据；继续曲库事务/备份/UI与资源归属迁移。当前980项不替代全量；实体硬件/可听/Mac/LAN客户端限制保持，只有本地提交。
+
+## P9m：原生曲库事务、schema 与备份 facade
+
+- 状态：原 library suite 迁移检查点完成（2026-10-04）；P9 library-ui/其他UI suites 及最终全量仍未完成，完整目标活跃。
+- 映射：Window repository factory/ScoreLibrary/内部 AppState与DB直接访问 → testing/library-checks.ts 的明确 CRUD/backup/starter/transaction 场景命令。主仓库和独立scope仓库均为实际生产create；仅复制返回记录与native schema，WeakMap connection token观察identity，不向Window返回DB/store/request或整个service/state。
+- 类型：score-library getIndexedDB端口缩为实际仅使用的open，不改变runtime或DB schema；独立入口声明隔离fixture的最小scoped/storage端口。test factory所有仓库均由facade dispose统一close，cleanup只删fixture自己随机库。原fetch调用包装保留，避免原生函数this调用限制。
+- 原断言：每配置38项完整保留，native v1 stores/index/keyPath/nonunique、CRUD trim/sort/defaults/null vs undefined/binary clone、batch requested count/cascade/markOpened、v1备份fresh IDs/folder mapping/every byte、unknown version coercion、malformed backup native rollback、starter真实相对asset/occupied/error/flag、dispose/reinit与pending read无orphaned rejection、实际drawer与loaderawait markOpened。
+- 浏览器：library/loader/transpose/bootstrap两种配置共8页310/310，累计26页1056项；validation/P9m-library-facade-browser.txt。全部自建标签关闭，终态在所有owner关闭与自己DB cleanup之后发布。
+- 验证：生产/测试最终strict、四文件clean comparison、336/336 Node；validation/P9m-library-facade-check.txt。生产JS保持，仅最小类型端口导致source map更新；vendor/asset/schema/backup格式/用户数据/设置/启动器不改。
+- 回退：revert本检查点恢复P9l接口/测试入口，无需清库。下一步UI资源归属用actual bundle source map适配原生fixture，保留listener/timer/frame计数和原assertions；当前1056项不替代全量。实体硬件/可听/Mac/LAN客户端限制保持，只有本地提交。

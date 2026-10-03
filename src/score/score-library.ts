@@ -19,7 +19,7 @@ export namespace PianoTrainerScoreLibrary {
     type StoreName = keyof StoreMap;
     export interface Ports {
         hasIndexedDB(): boolean;
-        getIndexedDB(): IDBFactory;
+        getIndexedDB(): Pick<IDBFactory,'open'>;
         makeId(): string;
         now(): number;
         isoNow(): string;

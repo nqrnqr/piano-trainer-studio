@@ -1,0 +1,347 @@
+P9m native library transactions/backup + affected data/bootstrap regression
+
+PAGE library-baseline.html?led=off
+PASS native v1 database is isolated from user data
+PASS native stores retain id key paths
+PASS native indexes retain original names
+PASS native indexes remain nonunique
+PASS test-only starter flag prevents automatic initial user-library writes
+PASS create trims folder names and lists sort by name
+PASS native folder rename persists
+PASS empty folder creation rejects before writing
+PASS save applies original inferred metadata
+PASS native structured clone preserves compressed MXL binary
+PASS score list sorts by title
+PASS missing ID lookup retains null versus undefined results
+PASS native score rename persists
+PASS mark opened feeds recent list
+PASS nonempty folder deletion rejects without removing contents
+PASS batch move returns requested unique count including missing ID
+PASS batch request callback writes inside native transaction
+PASS empty native folder deletion succeeds
+PASS backup v1 metadata and complete lists remain compatible
+PASS backup encodes binary bytes and preserves XML text
+PASS backup import creates fresh IDs without clearing original library
+PASS restore maps only imported folder IDs
+PASS native backup roundtrip preserves every compressed byte
+PASS unknown-version backup retains original defaults and byte coercion
+PASS invalid backup aborts the native transaction and rolls back earlier queued writes
+PASS folder cascade deletes contents in one native transaction and returns unique requested count
+PASS batch delete preserves requested count and removes stored scores
+PASS actual relative starter asset imports all scores
+PASS starter flag persists only after completion and prevents repeat import
+PASS existing scores skip seed and mark imported
+PASS failed starter response preserves original error and leaves flag unset
+PASS explicit disposal and reinit retain stored scores
+PASS native transaction abort rejects the command
+PASS explicit native disposal aborts a pending read without orphaned request rejection
+PASS native disposal permits one fresh database connection
+PASS actual drawer consumer reads the typed repository
+PASS actual score loader awaits repository markOpened and refresh
+PASS native library integrates with default/no-op LED
+CLEANUP 6 disposable databases
+DONE
+
+PAGE library-baseline.html
+PASS native v1 database is isolated from user data
+PASS native stores retain id key paths
+PASS native indexes retain original names
+PASS native indexes remain nonunique
+PASS test-only starter flag prevents automatic initial user-library writes
+PASS create trims folder names and lists sort by name
+PASS native folder rename persists
+PASS empty folder creation rejects before writing
+PASS save applies original inferred metadata
+PASS native structured clone preserves compressed MXL binary
+PASS score list sorts by title
+PASS missing ID lookup retains null versus undefined results
+PASS native score rename persists
+PASS mark opened feeds recent list
+PASS nonempty folder deletion rejects without removing contents
+PASS batch move returns requested unique count including missing ID
+PASS batch request callback writes inside native transaction
+PASS empty native folder deletion succeeds
+PASS backup v1 metadata and complete lists remain compatible
+PASS backup encodes binary bytes and preserves XML text
+PASS backup import creates fresh IDs without clearing original library
+PASS restore maps only imported folder IDs
+PASS native backup roundtrip preserves every compressed byte
+PASS unknown-version backup retains original defaults and byte coercion
+PASS invalid backup aborts the native transaction and rolls back earlier queued writes
+PASS folder cascade deletes contents in one native transaction and returns unique requested count
+PASS batch delete preserves requested count and removes stored scores
+PASS actual relative starter asset imports all scores
+PASS starter flag persists only after completion and prevents repeat import
+PASS existing scores skip seed and mark imported
+PASS failed starter response preserves original error and leaves flag unset
+PASS explicit disposal and reinit retain stored scores
+PASS native transaction abort rejects the command
+PASS explicit native disposal aborts a pending read without orphaned request rejection
+PASS native disposal permits one fresh database connection
+PASS actual drawer consumer reads the typed repository
+PASS actual score loader awaits repository markOpened and refresh
+PASS native library integrates with default/no-op LED
+CLEANUP 6 disposable databases
+DONE
+
+PAGE loader-baseline.html?led=off
+PASS native FileReader preserves MusicXML text
+PASS direct XML selection installs original metadata
+PASS XML load paints the actual first OSMD event
+PASS XML render creates actual SVG
+PASS XML keeps original transpose source
+PASS native file input change loads and clears its selected value
+PASS native FileReader keeps MXL binary
+PASS MXL render keeps original compressed bytes
+PASS deflated MXL extracts container-selected XML only for transpose
+PASS valid MXL extraction does not initialize the converter
+PASS original MXL renders the same first event
+PASS actual transpose controller reloads a two-semitone score
+PASS transpose preserves its original MXL source metadata
+PASS transpose reload preserves existing speed
+PASS transpose reset restores the original pitches
+PASS transpose reset preserves original source and speed
+PASS invalid XML alerts once and rejects the load promise
+PASS failed import preserves old metadata after stopping playback
+WORKERS BEFORE MIDI {"created":1,"terminated":0,"live":1,"urls":["blob:http://127.0.0.1:8081/8d850f3c-fca0-45db-b5bb-3308b4107efb"]}
+PASS actual MIDI converter dispatch loads exported MusicXML
+PASS converter metadata retains original base title
+PASS converted score renders and enables transpose
+PASS local WASM relative path responds after actual successful conversion
+RESOURCES {"wasm":{"url":"http://127.0.0.1:8081/assets/vendor/webmscore/webmscore.lib.wasm","status":200},"frame":[{"name":"http://127.0.0.1:8081/docs/testing/webmscore-worker-fixture.js","duration":3.3000001907348633},{"name":"http://127.0.0.1:8081/assets/vendor/webmscore/webmscore.js","duration":2.200000047683716}]}
+WORKERS BEFORE DISPOSE {"created":2,"terminated":0,"live":2,"urls":["blob:http://127.0.0.1:8081/8d850f3c-fca0-45db-b5bb-3308b4107efb","blob:http://127.0.0.1:8081/cc03cefe-a843-4d74-9348-ba12e3ebd97f"]}
+PASS ordinary conversion preserves the original soft destroy worker lifetime
+PASS explicit converter disposal terminates the owned worker once and preserves existing workers
+PASS converter can start a fresh worker after explicit disposal
+PASS reinitialized converter releases its fresh worker
+WORKERS {"created":3,"terminated":2,"live":1,"urls":["blob:http://127.0.0.1:8081/8d850f3c-fca0-45db-b5bb-3308b4107efb","blob:http://127.0.0.1:8081/cc03cefe-a843-4d74-9348-ba12e3ebd97f","blob:http://127.0.0.1:8081/36a9342c-7ed3-4a11-a0b0-9bb657794e3c"]}
+PASS file controls dispose and reinitialize their actual input
+PASS loader completes with default/no-op LED composition
+DONE
+
+PAGE loader-baseline.html
+PASS native FileReader preserves MusicXML text
+PASS direct XML selection installs original metadata
+PASS XML load paints the actual first OSMD event
+PASS XML render creates actual SVG
+PASS XML keeps original transpose source
+PASS native file input change loads and clears its selected value
+PASS native FileReader keeps MXL binary
+PASS MXL render keeps original compressed bytes
+PASS deflated MXL extracts container-selected XML only for transpose
+PASS valid MXL extraction does not initialize the converter
+PASS original MXL renders the same first event
+PASS actual transpose controller reloads a two-semitone score
+PASS transpose preserves its original MXL source metadata
+PASS transpose reload preserves existing speed
+PASS transpose reset restores the original pitches
+PASS transpose reset preserves original source and speed
+PASS invalid XML alerts once and rejects the load promise
+PASS failed import preserves old metadata after stopping playback
+WORKERS BEFORE MIDI {"created":1,"terminated":0,"live":1,"urls":["blob:http://127.0.0.1:8081/08eddc06-00fb-4c1f-879a-c5e690967ad7"]}
+PASS actual MIDI converter dispatch loads exported MusicXML
+PASS converter metadata retains original base title
+PASS converted score renders and enables transpose
+PASS local WASM relative path responds after actual successful conversion
+RESOURCES {"wasm":{"url":"http://127.0.0.1:8081/assets/vendor/webmscore/webmscore.lib.wasm","status":200},"frame":[{"name":"http://127.0.0.1:8081/docs/testing/webmscore-worker-fixture.js","duration":3},{"name":"http://127.0.0.1:8081/assets/vendor/webmscore/webmscore.js","duration":2.200000047683716}]}
+WORKERS BEFORE DISPOSE {"created":2,"terminated":0,"live":2,"urls":["blob:http://127.0.0.1:8081/08eddc06-00fb-4c1f-879a-c5e690967ad7","blob:http://127.0.0.1:8081/18827484-07fd-448e-ae02-c8b005686477"]}
+PASS ordinary conversion preserves the original soft destroy worker lifetime
+PASS explicit converter disposal terminates the owned worker once and preserves existing workers
+PASS converter can start a fresh worker after explicit disposal
+PASS reinitialized converter releases its fresh worker
+WORKERS {"created":3,"terminated":2,"live":1,"urls":["blob:http://127.0.0.1:8081/08eddc06-00fb-4c1f-879a-c5e690967ad7","blob:http://127.0.0.1:8081/18827484-07fd-448e-ae02-c8b005686477","blob:http://127.0.0.1:8081/884a99c4-1159-4855-9f4d-031cf1386096"]}
+PASS file controls dispose and reinitialize their actual input
+PASS loader completes with default/no-op LED composition
+DONE
+
+PAGE transpose-baseline.html?led=off
+PASS native XML case 0 matches e91ca87
+PASS native XML case 1 matches e91ca87
+PASS native XML case 2 matches e91ca87
+PASS native XML case 3 matches e91ca87
+PASS native XML case 4 matches e91ca87
+PASS native XML case 5 matches e91ca87
+PASS native XML case 6 matches e91ca87
+PASS native XML case 7 matches e91ca87
+PASS native XML case 8 matches e91ca87
+PASS native XML case 9 matches e91ca87
+PASS native XML case 10 matches e91ca87
+PASS native XML case 11 matches e91ca87
+PASS native XML case 12 matches e91ca87
+PASS native XML case 13 matches e91ca87
+PASS native XML case 14 matches e91ca87
+PASS native XML case 15 matches e91ca87
+PASS native XML case 16 matches e91ca87
+PASS native XML case 17 matches e91ca87
+PASS native XML case 18 matches e91ca87
+PASS native XML case 19 matches e91ca87
+PASS native XML case 20 matches e91ca87
+PASS native XML case 21 matches e91ca87
+PASS native XML case 22 matches e91ca87
+PASS native XML case 23 matches e91ca87
+PASS native XML case 24 matches e91ca87
+PASS native XML case 25 matches e91ca87
+PASS native XML case 26 matches e91ca87
+PASS native XML case 27 matches e91ca87
+PASS native XML case 28 matches e91ca87
+PASS native XML case 29 matches e91ca87
+PASS native XML case 30 matches e91ca87
+PASS native XML case 31 matches e91ca87
+PASS native XML case 32 matches e91ca87
+PASS native XML case 33 matches e91ca87
+PASS native XML case 34 matches e91ca87
+PASS native XML case 35 matches e91ca87
+PASS native XML case 36 matches e91ca87
+PASS native XML case 37 matches e91ca87
+PASS native XML case 38 matches e91ca87
+PASS native XML case 39 matches e91ca87
+PASS initial controls report unavailable without a score
+PASS load enables controls with original preset list
+PASS native key Apply rejects the original matching signature
+PASS native mode and slider events update typed state
+PASS repeated init gives one load and the original positive status
+PASS button Apply preserves original metadata and speed
+PASS repeated Apply starts from original and keeps unchecked key signature
+PASS native Reset restores original pitch, preset and status
+PASS Reset preserves state identity, source and speed
+PASS explicit disposal removes actual UI listeners
+PASS controls reinitialize after explicit disposal
+PASS transpose runs with default/no-op LED composition
+DONE
+
+PAGE transpose-baseline.html
+PASS native XML case 0 matches e91ca87
+PASS native XML case 1 matches e91ca87
+PASS native XML case 2 matches e91ca87
+PASS native XML case 3 matches e91ca87
+PASS native XML case 4 matches e91ca87
+PASS native XML case 5 matches e91ca87
+PASS native XML case 6 matches e91ca87
+PASS native XML case 7 matches e91ca87
+PASS native XML case 8 matches e91ca87
+PASS native XML case 9 matches e91ca87
+PASS native XML case 10 matches e91ca87
+PASS native XML case 11 matches e91ca87
+PASS native XML case 12 matches e91ca87
+PASS native XML case 13 matches e91ca87
+PASS native XML case 14 matches e91ca87
+PASS native XML case 15 matches e91ca87
+PASS native XML case 16 matches e91ca87
+PASS native XML case 17 matches e91ca87
+PASS native XML case 18 matches e91ca87
+PASS native XML case 19 matches e91ca87
+PASS native XML case 20 matches e91ca87
+PASS native XML case 21 matches e91ca87
+PASS native XML case 22 matches e91ca87
+PASS native XML case 23 matches e91ca87
+PASS native XML case 24 matches e91ca87
+PASS native XML case 25 matches e91ca87
+PASS native XML case 26 matches e91ca87
+PASS native XML case 27 matches e91ca87
+PASS native XML case 28 matches e91ca87
+PASS native XML case 29 matches e91ca87
+PASS native XML case 30 matches e91ca87
+PASS native XML case 31 matches e91ca87
+PASS native XML case 32 matches e91ca87
+PASS native XML case 33 matches e91ca87
+PASS native XML case 34 matches e91ca87
+PASS native XML case 35 matches e91ca87
+PASS native XML case 36 matches e91ca87
+PASS native XML case 37 matches e91ca87
+PASS native XML case 38 matches e91ca87
+PASS native XML case 39 matches e91ca87
+PASS initial controls report unavailable without a score
+PASS load enables controls with original preset list
+PASS native key Apply rejects the original matching signature
+PASS native mode and slider events update typed state
+PASS repeated init gives one load and the original positive status
+PASS button Apply preserves original metadata and speed
+PASS repeated Apply starts from original and keeps unchecked key signature
+PASS native Reset restores original pitch, preset and status
+PASS Reset preserves state identity, source and speed
+PASS explicit disposal removes actual UI listeners
+PASS controls reinitialize after explicit disposal
+PASS transpose runs with default/no-op LED composition
+DONE
+
+PAGE bootstrap-baseline.html?led=off
+PASS test facade exposes commands and observations
+PASS bundle keeps application state, score and business services private
+PASS wait/traditional: real score enters playback with expected notes
+PASS wait/traditional: viewport observes the requested layout and real score
+PASS wait/traditional: returned observations cannot mutate internal practice state
+PASS wait/traditional: input command releases the note
+PASS wait/traditional: pause stops playback
+PASS follow/traditional: real score enters playback with expected notes
+PASS follow/traditional: viewport observes the requested layout and real score
+PASS follow/traditional: returned observations cannot mutate internal practice state
+PASS follow/traditional: input command releases the note
+PASS follow/traditional: pause stops playback
+PASS realtime/traditional: real score enters playback with expected notes
+PASS realtime/traditional: viewport observes the requested layout and real score
+PASS realtime/traditional: returned observations cannot mutate internal practice state
+PASS realtime/traditional: input command releases the note
+PASS realtime/traditional: pause stops playback
+PASS wait/horizontal: real score enters playback with expected notes
+PASS wait/horizontal: viewport observes the requested layout and real score
+PASS wait/horizontal: returned observations cannot mutate internal practice state
+PASS wait/horizontal: input command releases the note
+PASS wait/horizontal: pause stops playback
+PASS follow/horizontal: real score enters playback with expected notes
+PASS follow/horizontal: viewport observes the requested layout and real score
+PASS follow/horizontal: returned observations cannot mutate internal practice state
+PASS follow/horizontal: input command releases the note
+PASS follow/horizontal: pause stops playback
+PASS realtime/horizontal: real score enters playback with expected notes
+PASS realtime/horizontal: viewport observes the requested layout and real score
+PASS realtime/horizontal: returned observations cannot mutate internal practice state
+PASS realtime/horizontal: input command releases the note
+PASS realtime/horizontal: pause stops playback
+PASS duplicate init keeps one keyboard
+PASS duplicate init does not allocate another listener, timer, interval or frame
+PASS duplicate dispose and later init cannot revive the old application
+RESOURCES {"listeners":0,"timers":0,"intervals":0,"frames":0}
+PASS full application disposal releases all observed native resources
+PASS fresh application initializes and loads after full disposal
+DONE
+
+PAGE bootstrap-baseline.html
+PASS test facade exposes commands and observations
+PASS bundle keeps application state, score and business services private
+PASS wait/traditional: real score enters playback with expected notes
+PASS wait/traditional: viewport observes the requested layout and real score
+PASS wait/traditional: returned observations cannot mutate internal practice state
+PASS wait/traditional: input command releases the note
+PASS wait/traditional: pause stops playback
+PASS follow/traditional: real score enters playback with expected notes
+PASS follow/traditional: viewport observes the requested layout and real score
+PASS follow/traditional: returned observations cannot mutate internal practice state
+PASS follow/traditional: input command releases the note
+PASS follow/traditional: pause stops playback
+PASS realtime/traditional: real score enters playback with expected notes
+PASS realtime/traditional: viewport observes the requested layout and real score
+PASS realtime/traditional: returned observations cannot mutate internal practice state
+PASS realtime/traditional: input command releases the note
+PASS realtime/traditional: pause stops playback
+PASS wait/horizontal: real score enters playback with expected notes
+PASS wait/horizontal: viewport observes the requested layout and real score
+PASS wait/horizontal: returned observations cannot mutate internal practice state
+PASS wait/horizontal: input command releases the note
+PASS wait/horizontal: pause stops playback
+PASS follow/horizontal: real score enters playback with expected notes
+PASS follow/horizontal: viewport observes the requested layout and real score
+PASS follow/horizontal: returned observations cannot mutate internal practice state
+PASS follow/horizontal: input command releases the note
+PASS follow/horizontal: pause stops playback
+PASS realtime/horizontal: real score enters playback with expected notes
+PASS realtime/horizontal: viewport observes the requested layout and real score
+PASS realtime/horizontal: returned observations cannot mutate internal practice state
+PASS realtime/horizontal: input command releases the note
+PASS realtime/horizontal: pause stops playback
+PASS duplicate init keeps one keyboard
+PASS duplicate init does not allocate another listener, timer, interval or frame
+PASS duplicate dispose and later init cannot revive the old application
+RESOURCES {"listeners":0,"timers":0,"intervals":0,"frames":0}
+PASS full application disposal releases all observed native resources
+PASS fresh application initializes and loads after full disposal
+DONE

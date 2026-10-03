@@ -1,18 +1,17 @@
 (async()=>{
  const results=parent.document.getElementById('results');results.textContent='';
  const check=(ok,label)=>{results.textContent+=`${ok?'PASS':'FAIL'} ${label}\n`;if(!ok)throw Error(label);};
- const fixture=window.__PT_LIBRARY_FIXTURE__,owned=[];
- const create=(scope,extra={})=>{const storage=fixture.storage(),service=PianoTrainerScoreLibrary.create({hasIndexedDB:()=>true,getIndexedDB:()=>fixture.scoped(scope),makeId:()=>crypto.randomUUID(),now:()=>Date.now(),isoNow:()=>new Date().toISOString(),storage,
-  starterUrl:new URL('assets/Starter_Scores.json',document.baseURI).toString(),fetch:(...args)=>fetch(...args),format:{getScoreDisplayTitle,getScoreFileTypeFromName},...extra});owned.push(service);return {service,storage};};
+ const api=window.PianoTrainerTest,library=api.library,ScoreLibrary=library.main,fixture=window.__PT_LIBRARY_FIXTURE__;
+ const create=library.create;
  const errorOf=async command=>{try{await command();return null;}catch(error){return error;}};
  try{
-  pausePlaybackFromToolbar();await refreshScoresDrawer();
+  api.pause();await library.refresh();
   const db=await ScoreLibrary.init();
   check(db.version===1&&db.name.startsWith('__pt_library_test_'),'native v1 database is isolated from user data');
-  const tx=db.transaction(['folders','scores'],'readonly');
-  check(tx.objectStore('folders').keyPath==='id'&&tx.objectStore('scores').keyPath==='id','native stores retain id key paths');
-  check([...tx.objectStore('folders').indexNames].join(',')==='by_name'&&[...tx.objectStore('scores').indexNames].join(',')==='by_folderId,by_lastOpenedAt,by_title','native indexes retain original names');
-  check([...tx.objectStore('scores').indexNames].every(name=>!tx.objectStore('scores').index(name).unique),'native indexes remain nonunique');
+  const stores=db.stores;
+  check(stores.folders.keyPath==='id'&&stores.scores.keyPath==='id','native stores retain id key paths');
+  check(stores.folders.indexes.map(index=>index.name).join(',')==='by_name'&&stores.scores.indexes.map(index=>index.name).join(',')==='by_folderId,by_lastOpenedAt,by_title','native indexes retain original names');
+  check(stores.scores.indexes.every(index=>!index.unique),'native indexes remain nonunique');
   check((await ScoreLibrary.getAllScores()).length===0,'test-only starter flag prevents automatic initial user-library writes');
   const folder=await ScoreLibrary.createFolder(' Z '),second=await ScoreLibrary.createFolder('A');
   check(folder.name==='Z'&&(await ScoreLibrary.getAllFolders())[0].name==='A','create trims folder names and lists sort by name');
@@ -48,25 +47,25 @@
   check(seeded===true&&(await starter.service.getAllScores()).length===starterPayload.scores.length,'actual relative starter asset imports all scores');
   check(starter.storage.getItem('pt_starterLibraryImported_v1')==='true'&&await starter.service.importStarterLibraryOnce()===false,'starter flag persists only after completion and prevents repeat import');
   const occupied=create('occupied');await occupied.service.saveScore({fileName:'Existing.xml',rawData:xml});check(await occupied.service.importStarterLibraryOnce()===false&&occupied.storage.getItem('pt_starterLibraryImported_v1')==='true','existing scores skip seed and mark imported');
-  const failed=create('failed',{fetch:async()=>({ok:false,status:404})});
+  const failed=create('failed',{starterStatus:404});
   check((await errorOf(()=>failed.service.importStarterLibraryOnce()))?.message==='Could not load starter library (404).'&&failed.storage.getItem('pt_starterLibraryImported_v1')===null,'failed starter response preserves original error and leaves flag unset');
-  restore.dispose();restore.dispose();const reopened=await restore.init();check(reopened!==db&&(await restore.getAllScores()).length===3,'explicit disposal and reinit retain stored scores');
-  let abortTx;const aborted=ScoreLibrary.transaction(['scores'],'readwrite',(_,transaction)=>{abortTx=transaction;transaction.abort();return 'never';});
+  restore.dispose();restore.dispose();const reopened=await restore.init();check(reopened.connectionId!==db.connectionId&&(await restore.getAllScores()).length===3,'explicit disposal and reinit retain stored scores');
+  const aborted=ScoreLibrary.abortTransaction();
   check((await errorOf(()=>aborted))?.message==='Library transaction was aborted.','native transaction abort rejects the command');
   const disposeRequests=create('disposeRequests').service,unhandled=[];
   const collectUnhandled=event=>unhandled.push(event.reason);window.addEventListener('unhandledrejection',collectUnhandled);
   const previousConnection=await disposeRequests.init();
-  const pendingRead=disposeRequests.transaction(['scores'],'readonly',stores=>{const pending=disposeRequests.requestToPromise(stores.scores.getAll());disposeRequests.dispose();return pending;});
+  const pendingRead=disposeRequests.disposeDuringRead();
   const readFailure=await errorOf(()=>pendingRead);await new Promise(resolve=>setTimeout(resolve,20));window.removeEventListener('unhandledrejection',collectUnhandled);
   check(!!readFailure&&unhandled.length===0,'explicit native disposal aborts a pending read without orphaned request rejection');
-  check(await disposeRequests.init()!==previousConnection,'native disposal permits one fresh database connection');
+  check((await disposeRequests.init()).connectionId!==previousConnection.connectionId,'native disposal permits one fresh database connection');
   const uiScore=await ScoreLibrary.saveScore({title:'Visible native score',fileName:'Visible.musicxml',rawData:xml});
-  AppState.scoreLibraryView='scores';AppState.scoreLibrarySelectedFolderId='__all__';await refreshScoresDrawer();
+  library.selectAllScores();await library.refresh();
   check(document.getElementById('scores-library-list').textContent.includes(uiScore.title),'actual drawer consumer reads the typed repository');
-  await loadScoreIntoApp(uiScore.rawData,{fileName:uiScore.fileName,fileType:uiScore.fileType,title:uiScore.title,libraryScoreId:uiScore.id});
-  check(AppState.currentScoreLibraryId===uiScore.id&&(await ScoreLibrary.getScoreById(uiScore.id)).lastOpenedAt>0,'actual score loader awaits repository markOpened and refresh');
-  check(optionalLedOutput.enabled===(new URLSearchParams(parent.location.search).get('led')!=='off'),'native library integrates with default/no-op LED');
+  await api.loadScore(uiScore.rawData,{fileName:uiScore.fileName,fileType:uiScore.fileType,title:uiScore.title,libraryScoreId:uiScore.id});
+  check(api.score.readSnapshot().libraryId===uiScore.id&&(await ScoreLibrary.getScoreById(uiScore.id)).lastOpenedAt>0,'actual score loader awaits repository markOpened and refresh');
+  check(api.practice.readLed().enabled===(new URLSearchParams(parent.location.search).get('led')!=='off'),'native library integrates with default/no-op LED');
  }catch(error){results.textContent+='ERROR '+error.stack+'\n';}
- finally{pausePlaybackFromToolbar();ScoreLibrary.dispose();owned.forEach(service=>service.dispose());try{results.textContent+='CLEANUP '+await fixture.cleanup()+' disposable databases\n';}catch(error){results.textContent+='CLEANUP ERROR '+error.stack+'\n';}}
+ finally{api.pause();api.dispose();try{results.textContent+='CLEANUP '+await fixture.cleanup()+' disposable databases\n';}catch(error){results.textContent+='CLEANUP ERROR '+error.stack+'\n';}}
  if(!results.textContent.includes('ERROR')&&!results.textContent.includes('FAIL'))results.textContent+='DONE\n';
 })();

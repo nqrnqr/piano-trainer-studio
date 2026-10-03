@@ -12563,8 +12563,92 @@
     }) };
   }
 
+  // src/testing/library-checks.ts
+  function createLibraryChecks(getServices, fixture) {
+    const owned = /* @__PURE__ */ new Set(), connections = /* @__PURE__ */ new WeakMap();
+    let nextConnection = 0;
+    const copy = async (value) => structuredClone(await value);
+    function repository(getRepository) {
+      return Object.freeze({
+        init: async () => {
+          const db = await getRepository().init();
+          if (!connections.has(db)) connections.set(db, ++nextConnection);
+          const tx = db.transaction(["folders", "scores"], "readonly");
+          return {
+            connectionId: connections.get(db),
+            version: db.version,
+            name: db.name,
+            stores: Object.fromEntries(["folders", "scores"].map((name) => {
+              const store = tx.objectStore(name);
+              return [name, { keyPath: store.keyPath, indexes: [...store.indexNames].map((name2) => ({ name: name2, unique: store.index(name2).unique })) }];
+            }))
+          };
+        },
+        getAllFolders: () => copy(getRepository().getAllFolders()),
+        getAllScores: () => copy(getRepository().getAllScores()),
+        getRecentScores: () => copy(getRepository().getRecentScores()),
+        createFolder: (name) => copy(getRepository().createFolder(name)),
+        renameFolder: (id, name) => getRepository().renameFolder(id, name),
+        deleteFolder: (id) => getRepository().deleteFolder(id),
+        saveScore: (score) => copy(getRepository().saveScore(score)),
+        getScoreById: (id) => copy(getRepository().getScoreById(id)),
+        renameScore: (id, name) => getRepository().renameScore(id, name),
+        markScoreOpened: (id) => copy(getRepository().markScoreOpened(id)),
+        moveScoresToFolder: (ids, folder) => getRepository().moveScoresToFolder(ids, folder),
+        deleteFoldersAndScores: (ids) => getRepository().deleteFoldersAndScores(ids),
+        deleteScores: (ids) => getRepository().deleteScores(ids),
+        exportBackup: () => copy(getRepository().exportBackup()),
+        importBackup: (payload) => getRepository().importBackup(payload),
+        importStarterLibraryOnce: () => getRepository().importStarterLibraryOnce(),
+        dispose: () => getRepository().dispose(),
+        abortTransaction: () => getRepository().transaction(["scores"], "readwrite", (_, tx) => {
+          tx.abort();
+          return "never";
+        }),
+        disposeDuringRead: () => {
+          const service = getRepository();
+          return service.transaction(["scores"], "readonly", (stores) => {
+            const pending = service.requestToPromise(stores.scores.getAll());
+            service.dispose();
+            return pending;
+          });
+        }
+      });
+    }
+    const commands = Object.freeze({
+      main: repository(() => getServices().ScoreLibrary),
+      create: (scope, options = {}) => {
+        if (!fixture) throw Error("Missing isolated library fixture");
+        const starterStatus = options.starterStatus;
+        const storage = fixture.storage(), service = PianoTrainerScoreLibrary.create({
+          hasIndexedDB: () => true,
+          getIndexedDB: () => fixture.scoped(scope),
+          makeId: () => crypto.randomUUID(),
+          now: () => Date.now(),
+          isoNow: () => (/* @__PURE__ */ new Date()).toISOString(),
+          storage,
+          starterUrl: new URL("assets/Starter_Scores.json", document.baseURI).toString(),
+          fetch: starterStatus === void 0 ? (...args) => fetch(...args) : async () => new Response(null, { status: starterStatus }),
+          format: getServices().scoreFormat
+        });
+        owned.add(service);
+        return { service: repository(() => service), storage };
+      },
+      refresh: () => getServices().scoresDrawer.refreshScoresDrawer(),
+      selectAllScores: () => {
+        const state = getServices().AppState;
+        state.scoreLibraryView = "scores";
+        state.scoreLibrarySelectedFolderId = "__all__";
+      }
+    });
+    return { commands, clear: () => {
+      for (const service of owned) service.dispose();
+      owned.clear();
+    } };
+  }
+
   // src/testing/facade.ts
-  function createTestFacade(options = {}, injectedPorts = {}) {
+  function createTestFacade(options = {}, injectedPorts = {}, libraryFixture) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
     const servicePorts = { ...injectedPorts, ...playbackChecks?.ports };
     let services = createServices(servicePorts);
@@ -12573,6 +12657,7 @@
     const checks = createPracticeChecks(() => services);
     const renderChecks = createRenderChecks(() => services);
     const scoreChecks = createScoreChecks(() => services);
+    const libraryChecks = createLibraryChecks(() => services, libraryFixture);
     return Object.freeze({
       loadScore: (raw, options2 = {}) => services.scoreLoader.loadScoreIntoApp(raw, options2),
       dispatchInput: (note, down) => services.practiceInput.handle({
@@ -12591,6 +12676,7 @@
       audio: createAudioChecks(() => services),
       metronome: createMetronomeChecks(() => services),
       score: scoreChecks.commands,
+      library: libraryChecks.commands,
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",
@@ -12627,12 +12713,14 @@
         services.dispose();
         renderChecks.clear();
         scoreChecks.clear();
+        libraryChecks.clear();
         playbackChecks?.dispose();
       },
       recreate: () => {
         services.dispose();
         renderChecks.clear();
         scoreChecks.clear();
+        libraryChecks.clear();
         playbackChecks?.dispose();
         services = createServices(servicePorts);
         playbackChecks?.attach(() => services);
@@ -12646,6 +12734,6 @@
   window.PianoTrainerTest = createTestFacade(window.__PT_TEST_OPTIONS__, {
     ...window.AudioFixture ? { audioTone: window.AudioFixture.tone } : {},
     ...window.MetronomeFixture ? { metronomeTone: window.MetronomeFixture.tone } : {}
-  });
+  }, window.__PT_LIBRARY_FIXTURE__);
 })();
 //# sourceMappingURL=test-app.js.map
