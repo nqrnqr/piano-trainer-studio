@@ -12,6 +12,8 @@
 - `src/state/app-state.ts`, `preference-keys.ts`, `preferences.ts`, `settings-backup.ts` = typed shared state, canonical settings keys, persistence and backup format; generated classic scripts retain the original lexical bindings
 - `src/ui/settings-controls.ts` = settings download, FileReader import, alert and reload boundary with owned-reader/link/URL disposal
 - `src/domain/playable-range.ts` / `src/state/player-range.ts` = hardware-independent keyboard range math and shared range cache used by input grading and previews
+- `src/ui/player-range-controls.ts`, `connection-status.ts` = native range selection/filtering commands and read-only MIDI/LED status presentation
+- `src/domain/version.ts`, `src/app/update-controller.ts`, `src/ui/update-controls.ts` = loose version comparison, update request/navigation ownership and native button display; explicit disposal aborts owned pending checks
 - `src/domain/timing.ts` → `js/generated/domain/timing.js` = shared timing math for traversal waits, measure remainder checks, and playback scheduling inputs
 - `src/score/osmd-adapter.ts` = OSMD graph access, revision-scoped NoteRef registry, private iterator snapshot and painted cursor restoration
 - `src/render/score-viewport.ts`, `score-renderer.ts` = layout/scroll ownership and the unchanged render lifecycle

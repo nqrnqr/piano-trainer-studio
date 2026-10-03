@@ -4,6 +4,7 @@
     "js/generated/domain/playable-range.js",
     "js/generated/domain/velocity.js",
     "js/generated/domain/score.js",
+    "js/generated/ui/controls-dom.js",
     "js/generated/state/preference-keys.js",
     "js/generated/state/app-state.js",
     "js/generated/domain/hand-routing.js",
@@ -32,11 +33,15 @@
     "js/generated/compatibility/scores-ui.js",
     "js/generated/ui/permission-help.js",
     "js/generated/ui/connection-status.js",
+    "js/generated/domain/version.js",
+    "js/generated/app/update-controller.js",
     "js/generated/ui/update-controls.js",
+    "js/generated/compatibility/device-controls.js",
     "js/led.js",
     "js/generated/optional/led/legacy-led-adapter.js",
     "js/generated/compatibility/optional-led.js",
     "js/generated/ui/player-range-controls.js",
+    "js/generated/compatibility/player-range-controls.js",
     "js/generated/midi/midi-input.js",
     "js/generated/midi/midi-service.js",
     "js/generated/midi/midi-output.js",
@@ -51,7 +56,6 @@
     "js/generated/render/feedback-overlay.js",
     "js/generated/render/loop-overlay.js",
     "js/generated/compatibility/geometry.js",
-    "js/generated/ui/controls-dom.js",
     "js/generated/score/osmd-debug-observation.js",
     "js/generated/ui/feedback-debug.js",
     "js/generated/compatibility/feedback-debug.js",
@@ -170,7 +174,7 @@
       "referenceFiles": [
         "js/generated/state/app-state.js",
         "js/generated/state/settings-backup.js",
-        "js/generated/ui/update-controls.js",
+        "js/generated/compatibility/device-controls.js",
         "docs/testing/traversal-baseline.integration.js"
       ]
     },
@@ -186,7 +190,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/generated/ui/update-controls.js"
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {
@@ -207,11 +211,10 @@
         "js/generated/compatibility/transpose.js",
         "js/generated/compatibility/toolbar.js",
         "js/generated/compatibility/scores-ui.js",
-        "js/generated/ui/connection-status.js",
-        "js/generated/ui/update-controls.js",
+        "js/generated/compatibility/device-controls.js",
         "js/led.js",
         "js/generated/compatibility/optional-led.js",
-        "js/generated/ui/player-range-controls.js",
+        "js/generated/compatibility/player-range-controls.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
         "js/generated/compatibility/geometry.js",
@@ -707,7 +710,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/generated/ui/player-range-controls.js",
+        "js/generated/compatibility/player-range-controls.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/input-baseline.integration.js"
       ]
@@ -773,6 +776,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerConnectionStatus",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerConnectionStatus",
+          "kind": "var",
+          "file": "js/generated/ui/connection-status.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/connection-status.js",
+        "js/generated/compatibility/device-controls.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerControlDom",
       "definitions": [
         {
@@ -784,6 +802,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/controls-dom.js",
+        "js/generated/ui/update-controls.js",
+        "js/generated/ui/player-range-controls.js",
         "js/generated/ui/feedback-debug.js",
         "js/generated/ui/display-controls.js",
         "js/generated/ui/tempo-controls.js",
@@ -1377,6 +1397,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerPlayerRangeControls",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerPlayerRangeControls",
+          "kind": "var",
+          "file": "js/generated/ui/player-range-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/player-range-controls.js",
+        "js/generated/compatibility/player-range-controls.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerPracticeControls",
       "definitions": [
         {
@@ -1770,6 +1805,36 @@
       ]
     },
     {
+      "symbol": "PianoTrainerUpdateController",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerUpdateController",
+          "kind": "var",
+          "file": "js/generated/app/update-controller.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/app/update-controller.js",
+        "js/generated/compatibility/device-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerUpdateControls",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerUpdateControls",
+          "kind": "var",
+          "file": "js/generated/ui/update-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/update-controls.js",
+        "js/generated/compatibility/device-controls.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerVelocity",
       "definitions": [
         {
@@ -1784,6 +1849,22 @@
         "js/generated/compatibility/midi.js",
         "js/generated/audio/tone-adapter.js",
         "js/generated/audio/audio-routing.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerVersion",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerVersion",
+          "kind": "var",
+          "file": "js/generated/domain/version.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/domain/version.js",
+        "js/generated/app/update-controller.js",
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {
@@ -2373,7 +2454,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/app-state.js",
-        "js/generated/ui/update-controls.js"
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {
@@ -2389,7 +2470,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/app-state.js",
-        "js/generated/ui/update-controls.js"
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {
@@ -2404,7 +2485,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/app-state.js",
-        "js/generated/ui/update-controls.js"
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {
@@ -2801,31 +2882,19 @@
       ]
     },
     {
-      "symbol": "buildUpdateStatusText",
-      "definitions": [
-        {
-          "symbol": "buildUpdateStatusText",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 32
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
-      ]
-    },
-    {
       "symbol": "checkForUpdates",
       "definitions": [
         {
           "symbol": "checkForUpdates",
-          "kind": "async function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 121
+          "kind": "const",
+          "file": "js/generated/compatibility/device-controls.js",
+          "line": 18
         }
       ],
       "referenceFiles": [
-        "js/generated/ui/update-controls.js"
+        "js/generated/app/update-controller.js",
+        "js/generated/ui/update-controls.js",
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {
@@ -2842,20 +2911,6 @@
         "js/generated/compatibility/practice.js",
         "js/generated/practice/playback-coordinator.js",
         "js/generated/compatibility/playback.js"
-      ]
-    },
-    {
-      "symbol": "clearAssetVersionOverrideIfCurrent",
-      "definitions": [
-        {
-          "symbol": "clearAssetVersionOverrideIfCurrent",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 65
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -3054,14 +3109,16 @@
       "definitions": [
         {
           "symbol": "compareSemverLoose",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 7
+          "kind": "const",
+          "file": "js/generated/compatibility/device-controls.js",
+          "line": 19
         }
       ],
       "referenceFiles": [
         "index.html",
-        "js/generated/ui/update-controls.js"
+        "js/generated/domain/version.js",
+        "js/generated/app/update-controller.js",
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {
@@ -3076,6 +3133,20 @@
       ],
       "referenceFiles": [
         "js/led.js"
+      ]
+    },
+    {
+      "symbol": "connectionStatus",
+      "definitions": [
+        {
+          "symbol": "connectionStatus",
+          "kind": "const",
+          "file": "js/generated/compatibility/device-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {
@@ -3171,7 +3242,7 @@
       "referenceFiles": [
         "js/generated/domain/playable-range.js",
         "js/generated/state/player-range.js",
-        "js/generated/ui/player-range-controls.js"
+        "js/generated/compatibility/player-range-controls.js"
       ]
     },
     {
@@ -3525,20 +3596,6 @@
       ]
     },
     {
-      "symbol": "forceReloadToVersion",
-      "definitions": [
-        {
-          "symbol": "forceReloadToVersion",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 83
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
-      ]
-    },
-    {
       "symbol": "geometryEngine",
       "definitions": [
         {
@@ -3550,20 +3607,6 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/geometry.js"
-      ]
-    },
-    {
-      "symbol": "getAppVersionDisplayText",
-      "definitions": [
-        {
-          "symbol": "getAppVersionDisplayText",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 29
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -3792,7 +3835,7 @@
         }
       ],
       "referenceFiles": [
-        "js/generated/ui/connection-status.js",
+        "js/generated/compatibility/device-controls.js",
         "js/generated/compatibility/midi.js"
       ]
     },
@@ -3892,20 +3935,6 @@
       "referenceFiles": [
         "js/generated/audio/metronome.js",
         "js/generated/compatibility/metronome.js"
-      ]
-    },
-    {
-      "symbol": "getMidiConnectionSelect",
-      "definitions": [
-        {
-          "symbol": "getMidiConnectionSelect",
-          "kind": "function",
-          "file": "js/generated/ui/connection-status.js",
-          "line": 79
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/connection-status.js"
       ]
     },
     {
@@ -4013,20 +4042,6 @@
       ]
     },
     {
-      "symbol": "getPlayerPianoTypeSelect",
-      "definitions": [
-        {
-          "symbol": "getPlayerPianoTypeSelect",
-          "kind": "function",
-          "file": "js/generated/ui/player-range-controls.js",
-          "line": 57
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/player-range-controls.js"
-      ]
-    },
-    {
       "symbol": "getPlayerPlayableRange",
       "definitions": [
         {
@@ -4039,7 +4054,7 @@
       "referenceFiles": [
         "js/generated/state/player-range.js",
         "js/led.js",
-        "js/generated/ui/player-range-controls.js",
+        "js/generated/compatibility/player-range-controls.js",
         "js/optional/midi-led-test.js"
       ]
     },
@@ -4072,20 +4087,6 @@
       "referenceFiles": [
         "js/generated/practice/early-grace.js",
         "js/generated/compatibility/practice.js"
-      ]
-    },
-    {
-      "symbol": "getRequestedAssetVersion",
-      "definitions": [
-        {
-          "symbol": "getRequestedAssetVersion",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 48
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
       ]
     },
     {
@@ -4199,20 +4200,6 @@
       ]
     },
     {
-      "symbol": "getSelectedLedMidiOutputState",
-      "definitions": [
-        {
-          "symbol": "getSelectedLedMidiOutputState",
-          "kind": "function",
-          "file": "js/generated/ui/connection-status.js",
-          "line": 47
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/connection-status.js"
-      ]
-    },
-    {
       "symbol": "getSelectedMidiInChannel",
       "definitions": [
         {
@@ -4225,20 +4212,6 @@
       "referenceFiles": [
         "js/generated/ui/midi-controls.js",
         "js/generated/compatibility/midi.js"
-      ]
-    },
-    {
-      "symbol": "getSelectedMidiInputState",
-      "definitions": [
-        {
-          "symbol": "getSelectedMidiInputState",
-          "kind": "function",
-          "file": "js/generated/ui/connection-status.js",
-          "line": 31
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/connection-status.js"
       ]
     },
     {
@@ -4287,20 +4260,6 @@
         "js/generated/compatibility/native-controls.js",
         "js/generated/ui/practice-controls.js",
         "js/generated/compatibility/preference-controls.js"
-      ]
-    },
-    {
-      "symbol": "getSelectedMidiOutputState",
-      "definitions": [
-        {
-          "symbol": "getSelectedMidiOutputState",
-          "kind": "function",
-          "file": "js/generated/ui/connection-status.js",
-          "line": 39
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/connection-status.js"
       ]
     },
     {
@@ -4379,35 +4338,7 @@
       ],
       "referenceFiles": [
         "js/generated/ui/permission-help.js",
-        "js/generated/ui/update-controls.js"
-      ]
-    },
-    {
-      "symbol": "getUpdateActionUrl",
-      "definitions": [
-        {
-          "symbol": "getUpdateActionUrl",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 43
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
-      ]
-    },
-    {
-      "symbol": "getUpdateCheckButton",
-      "definitions": [
-        {
-          "symbol": "getUpdateCheckButton",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 3
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {
@@ -4685,13 +4616,14 @@
       "definitions": [
         {
           "symbol": "initPlayerPianoTypeControl",
-          "kind": "function",
-          "file": "js/generated/ui/player-range-controls.js",
-          "line": 43
+          "kind": "const",
+          "file": "js/generated/compatibility/player-range-controls.js",
+          "line": 7
         }
       ],
       "referenceFiles": [
         "js/generated/ui/player-range-controls.js",
+        "js/generated/compatibility/player-range-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -4731,13 +4663,14 @@
       "definitions": [
         {
           "symbol": "initUpdateControls",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 181
+          "kind": "const",
+          "file": "js/generated/compatibility/device-controls.js",
+          "line": 17
         }
       ],
       "referenceFiles": [
         "js/generated/ui/update-controls.js",
+        "js/generated/compatibility/device-controls.js",
         "js/led.js",
         "js/trainer-core.js"
       ]
@@ -4821,20 +4754,6 @@
       ]
     },
     {
-      "symbol": "isLocalAppRuntime",
-      "definitions": [
-        {
-          "symbol": "isLocalAppRuntime",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 39
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
-      ]
-    },
-    {
       "symbol": "isMidiInPlayableRange",
       "definitions": [
         {
@@ -4861,7 +4780,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/player-range.js",
-        "js/generated/ui/player-range-controls.js",
+        "js/generated/compatibility/player-range-controls.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/keyboard-and-score-controls.js",
@@ -5371,7 +5290,7 @@
       ],
       "referenceFiles": [
         "js/generated/domain/playable-range.js",
-        "js/generated/ui/player-range-controls.js"
+        "js/generated/compatibility/player-range-controls.js"
       ]
     },
     {
@@ -5446,7 +5365,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/optional-led.js",
-        "js/generated/ui/player-range-controls.js",
+        "js/generated/compatibility/player-range-controls.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
         "js/generated/compatibility/playback.js",
@@ -5658,6 +5577,20 @@
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/native-controls.js",
         "js/generated/compatibility/keyboard-and-score-controls.js"
+      ]
+    },
+    {
+      "symbol": "playerRangeControls",
+      "definitions": [
+        {
+          "symbol": "playerRangeControls",
+          "kind": "const",
+          "file": "js/generated/compatibility/player-range-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/player-range-controls.js"
       ]
     },
     {
@@ -5949,28 +5882,15 @@
       "definitions": [
         {
           "symbol": "refreshConnectionStatuses",
-          "kind": "function",
-          "file": "js/generated/ui/connection-status.js",
-          "line": 75
+          "kind": "const",
+          "file": "js/generated/compatibility/device-controls.js",
+          "line": 7
         }
       ],
       "referenceFiles": [
         "js/generated/ui/connection-status.js",
+        "js/generated/compatibility/device-controls.js",
         "js/generated/compatibility/midi.js"
-      ]
-    },
-    {
-      "symbol": "refreshPlayerRangeDependentState",
-      "definitions": [
-        {
-          "symbol": "refreshPlayerRangeDependentState",
-          "kind": "function",
-          "file": "js/generated/ui/player-range-controls.js",
-          "line": 14
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/player-range-controls.js"
       ]
     },
     {
@@ -6116,7 +6036,7 @@
       "referenceFiles": [
         "js/led.js",
         "js/generated/compatibility/optional-led.js",
-        "js/generated/ui/player-range-controls.js",
+        "js/generated/compatibility/player-range-controls.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
         "js/generated/compatibility/practice.js",
@@ -6617,20 +6537,6 @@
       ]
     },
     {
-      "symbol": "setAssetVersionOverride",
-      "definitions": [
-        {
-          "symbol": "setAssetVersionOverride",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 57
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
-      ]
-    },
-    {
       "symbol": "setDebugEnabled",
       "definitions": [
         {
@@ -6783,13 +6689,14 @@
       "definitions": [
         {
           "symbol": "setPlayerPianoType",
-          "kind": "function",
-          "file": "js/generated/ui/player-range-controls.js",
-          "line": 28
+          "kind": "const",
+          "file": "js/generated/compatibility/player-range-controls.js",
+          "line": 8
         }
       ],
       "referenceFiles": [
         "js/generated/ui/player-range-controls.js",
+        "js/generated/compatibility/player-range-controls.js",
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js",
         "docs/testing/traversal-baseline.integration.js",
@@ -7264,22 +7171,9 @@
       ],
       "referenceFiles": [
         "js/generated/ui/connection-status.js",
+        "js/generated/compatibility/device-controls.js",
         "js/generated/ui/midi-controls.js",
         "js/generated/compatibility/midi.js"
-      ]
-    },
-    {
-      "symbol": "syncPlayerPianoTypeControl",
-      "definitions": [
-        {
-          "symbol": "syncPlayerPianoTypeControl",
-          "kind": "function",
-          "file": "js/generated/ui/player-range-controls.js",
-          "line": 3
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/player-range-controls.js"
       ]
     },
     {
@@ -7335,20 +7229,6 @@
       ]
     },
     {
-      "symbol": "syncUpdateControls",
-      "definitions": [
-        {
-          "symbol": "syncUpdateControls",
-          "kind": "function",
-          "file": "js/generated/ui/update-controls.js",
-          "line": 100
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/update-controls.js"
-      ]
-    },
-    {
       "symbol": "syncWledStatus",
       "definitions": [
         {
@@ -7360,6 +7240,7 @@
       ],
       "referenceFiles": [
         "js/generated/ui/connection-status.js",
+        "js/generated/compatibility/device-controls.js",
         "js/led.js"
       ]
     },
@@ -7569,34 +7450,49 @@
       ]
     },
     {
-      "symbol": "updateConnectionStatusIndicator",
-      "definitions": [
-        {
-          "symbol": "updateConnectionStatusIndicator",
-          "kind": "function",
-          "file": "js/generated/ui/connection-status.js",
-          "line": 3
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/ui/connection-status.js"
-      ]
-    },
-    {
       "symbol": "updateConnectionStatuses",
       "definitions": [
         {
           "symbol": "updateConnectionStatuses",
-          "kind": "function",
-          "file": "js/generated/ui/connection-status.js",
-          "line": 55
+          "kind": "const",
+          "file": "js/generated/compatibility/device-controls.js",
+          "line": 6
         }
       ],
       "referenceFiles": [
         "js/generated/ui/connection-status.js",
+        "js/generated/compatibility/device-controls.js",
         "js/led.js",
         "js/generated/compatibility/midi.js",
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "updateController",
+      "definitions": [
+        {
+          "symbol": "updateController",
+          "kind": "const",
+          "file": "js/generated/compatibility/device-controls.js",
+          "line": 8
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/device-controls.js"
+      ]
+    },
+    {
+      "symbol": "updateControls",
+      "definitions": [
+        {
+          "symbol": "updateControls",
+          "kind": "const",
+          "file": "js/generated/compatibility/device-controls.js",
+          "line": 14
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/device-controls.js"
       ]
     },
     {

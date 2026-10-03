@@ -162,3 +162,12 @@ dispose只移除own resources并失效captured callbacks；不会删除外部同
 settingsFiles私有持有pending FileReader以及未完成下载的links/URLs；ordinary read error/abort保持
 原silent语义，导入完成仍原parse→import→alert→reload。显式dispose才abort own pending readers、
 清callbacks、失效捕获的old onload；普通按钮dispose/操作不会取消读文件。已完成read不再owned。
+
+P9b direct AppState writes53（原77）。player-range-controls用narrow state保持原数组prune/inverse
+out-of-range过滤、heldCorrect Map身份、preview dirty/clear/index reset，refresh/invalidate/output→
+keyboard顺序不变；select自己listener/marker/generation，explicit dispose不修改range或清外部notes。
+connection-status只观察typed port state与LED mode/IP/status；不拥有timer/监听。
+update-controller用narrow state、clock/storage/location/fetch ports持有pending AbortControllers，
+只explicit dispose abort own pending requests、失效fetch/JSON await/catch/finally后的state/UI/navigation。
+ordinary并发仍按完成次序commit，普通LED init重复检查不cancel旧请求。update UI单独拥有一个
+button listener/marker；bootstrap须dispose UI及controller，不能把UI cleanup当作request取消。

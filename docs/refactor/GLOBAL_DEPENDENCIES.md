@@ -231,3 +231,11 @@ settings file与debug的compatibility在旧slot显式init/转发，P9 bootstrap�
 成为debug私有资源；其他manual debug forwards暂留待最终entry收敛。空legacy-traversal声明删除。
 当前110 classic slots、514 global candidates、重复函数零；typed core完整，classic compositions
 和player-range/update/connection/header startup副作用仍需在P9显式组装。
+
+P9b：player-range-controls与connection-status成为typed factories；update-controls仅native UI，
+app/update-controller持有原update checks/navigation，domain/version保持loose comparator。
+compatibility/device-controls、player-range-controls只组装/转发actual MIDI/LED/preferences/core消费者；
+没有顶层request/listener。controls-dom slot前移，仍唯一。LED的两处ordinary initUpdateControls
+调用继续read settings/clear status/check updates，不能把它们改成整个init早退；仅button binding去重。
+unconsumed status/range/update helpers不再global转发，compareSemverLoose暂供旧测试；剩余header
+version bootstrap允许独立version信息，最终模块entry仍待切换。114 slots、505 candidates、重复函数零。

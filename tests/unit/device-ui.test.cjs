@@ -15,14 +15,14 @@ function harness() {
     const elements=new Map([['btn-check-updates',button],['app-version-display',{textContent:''}],['update-status',{textContent:''}],
         ['midi-in',new Select('input')],['midi-out',new Select('output')],['midi-lights',new Select('none')],
         ['midi-in-connection-status',indicator()],['midi-out-connection-status',indicator()],['led-connection-status',indicator()]]);
-    Object.assign(h.context,{HTMLButtonElement:Button,HTMLSelectElement:Select,URL,URLSearchParams,
+    Object.assign(h.context,{HTMLButtonElement:Button,HTMLSelectElement:Select,URL,URLSearchParams,AbortController,
         document:{getElementById:id=>elements.get(id)},syncMidiOutChannelVisibility(){},syncWledStatus(){},
         getLegacyMidiPort:(direction,id)=>id==='input'?{state:'connected'}:id==='output'?{state:'disconnected'}:undefined});
     const replaced=[];
     h.context.window.location={hostname:'127.0.0.1',protocol:'http:',href:'http://127.0.0.1:8081/index.html?led=off#score',
         replace:url=>replaced.push(url),reload:()=>replaced.push('reload')};
     h.context.window.history={replaceState(){}};
-    for(const file of ['permission-help','connection-status','update-controls']) runScript(h.context,`js/generated/ui/${file}.js`);
+    for(const file of ['ui/controls-dom','ui/permission-help','ui/connection-status','domain/version','app/update-controller','ui/update-controls','compatibility/device-controls']) runScript(h.context,`js/generated/${file}.js`);
     h.state.updateManifestUrl='/manifest.json';
     return {...h,elements,button,replaced};
 }

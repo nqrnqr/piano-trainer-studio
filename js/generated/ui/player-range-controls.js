@@ -1,61 +1,79 @@
 "use strict";
-// Shared playable-range controls. Hardware refresh goes through the optional port.
-function syncPlayerPianoTypeControl() {
-    const select = getPlayerPianoTypeSelect();
-    if (select) {
-        select.value = String(AppState.playerPianoType);
-    }
-    const label = document.getElementById('player-piano-range-label');
-    if (label) {
-        const range = getPlayerPlayableRange();
-        label.textContent = `Playable Range: MIDI ${range.minMidi}–${range.maxMidi}`;
-    }
-}
-function refreshPlayerRangeDependentState() {
-    AppState.expectedNotes = AppState.expectedNotes.filter(note => isMidiInPlayerRange(note.midi));
-    AppState.visualNotesToStart = AppState.visualNotesToStart.filter(note => isMidiInPlayerRange(note.midi));
-    AppState.sustainedVisuals = AppState.sustainedVisuals.filter(note => isMidiInPlayerRange(note.midi));
-    AppState.outOfRangeCurrentNotes = AppState.outOfRangeCurrentNotes.filter(note => !isMidiInPlayerRange(note.midi));
-    AppState.heldCorrectNotes.forEach((staffId, midi) => {
-        if (!isMidiInPlayerRange(midi)) {
-            AppState.heldCorrectNotes.delete(midi);
+// Playable-range settings coordinate typed state/commands and own the native select.
+var PianoTrainerPlayerRangeControls;
+(function (PianoTrainerPlayerRangeControls) {
+    function create(ports) {
+        const state = ports.state, dom = PianoTrainerControlDom.create(ports.document);
+        let generation = 0, ownedSelect = null;
+        function syncPlayerPianoTypeControl() {
+            const select = getPlayerPianoTypeSelect();
+            if (select) {
+                select.value = String(state.playerPianoType);
+            }
+            const label = ports.document.getElementById('player-piano-range-label');
+            if (label) {
+                const range = ports.getRange();
+                label.textContent = `Playable Range: MIDI ${range.minMidi}–${range.maxMidi}`;
+            }
         }
-    });
-    optionalLedOutput.refreshMapping();
-    optionalLedOutput.invalidate();
-    optionalLedOutput.renderOutputs();
-}
-function setPlayerPianoType(value, { save = true, rerender = true } = {}) {
-    AppState.playerPianoType = normalizePlayerPianoType(value);
-    AppState.playerRange = derivePlayerRangeFromKeyboardSize(AppState.playerPianoType);
-    if (save) {
-        localStorage.setItem(PLAYER_PIANO_STORAGE_KEY, String(AppState.playerPianoType));
+        function refreshPlayerRangeDependentState() {
+            state.expectedNotes = state.expectedNotes.filter(note => ports.inRange(note.midi));
+            state.visualNotesToStart = state.visualNotesToStart.filter(note => ports.inRange(note.midi));
+            state.sustainedVisuals = state.sustainedVisuals.filter(note => ports.inRange(note.midi));
+            state.outOfRangeCurrentNotes = state.outOfRangeCurrentNotes.filter(note => !ports.inRange(note.midi));
+            state.heldCorrectNotes.forEach((staffId, midi) => {
+                if (!ports.inRange(midi)) {
+                    state.heldCorrectNotes.delete(midi);
+                }
+            });
+            ports.led.refreshMapping();
+            ports.led.invalidate();
+            ports.led.renderOutputs();
+        }
+        function setPlayerPianoType(value, { save = true, rerender = true } = {}) {
+            state.playerPianoType = ports.normalize(value);
+            state.playerRange = ports.derive(state.playerPianoType);
+            if (save) {
+                ports.save(String(state.playerPianoType));
+            }
+            syncPlayerPianoTypeControl();
+            refreshPlayerRangeDependentState();
+            state.ledPreviewTimelineDirty = true;
+            state.lastLedPreviewEvents = [];
+            state.ledPreviewTraversalIndex = -1;
+            if (rerender) {
+                ports.renderKeyboard();
+            }
+        }
+        function initPlayerPianoTypeControl() {
+            const saved = ports.readSaved();
+            setPlayerPianoType(saved ?? 88, { save: false, rerender: false });
+            const select = getPlayerPianoTypeSelect();
+            if (select && !select.dataset.boundPlayerRange) {
+                select.dataset.boundPlayerRange = 'true';
+                select.value = String(state.playerPianoType);
+                const token = generation;
+                ownedSelect = select;
+                dom.on(select, 'change', e => {
+                    if (token === generation && e.target instanceof HTMLSelectElement)
+                        setPlayerPianoType(e.target.value);
+                });
+            }
+            syncPlayerPianoTypeControl();
+        }
+        function getPlayerPianoTypeSelect() {
+            const select = ports.document.getElementById('select-player-piano-type');
+            return select instanceof HTMLSelectElement ? select : null;
+        }
+        function dispose() {
+            generation++;
+            dom.dispose();
+            if (ownedSelect?.dataset.boundPlayerRange === 'true')
+                delete ownedSelect.dataset.boundPlayerRange;
+            ownedSelect = null;
+        }
+        return { init: initPlayerPianoTypeControl, dispose, setPlayerPianoType, syncPlayerPianoTypeControl, refreshPlayerRangeDependentState };
     }
-    syncPlayerPianoTypeControl();
-    refreshPlayerRangeDependentState();
-    AppState.ledPreviewTimelineDirty = true;
-    AppState.lastLedPreviewEvents = [];
-    AppState.ledPreviewTraversalIndex = -1;
-    if (rerender) {
-        renderVirtualKeyboard();
-    }
-}
-function initPlayerPianoTypeControl() {
-    const saved = localStorage.getItem(PLAYER_PIANO_STORAGE_KEY);
-    setPlayerPianoType(saved ?? 88, { save: false, rerender: false });
-    const select = getPlayerPianoTypeSelect();
-    if (select && !select.dataset.boundPlayerRange) {
-        select.dataset.boundPlayerRange = 'true';
-        select.value = String(AppState.playerPianoType);
-        select.addEventListener('change', (e) => {
-            if (e.target instanceof HTMLSelectElement)
-                setPlayerPianoType(e.target.value);
-        });
-    }
-    syncPlayerPianoTypeControl();
-}
-function getPlayerPianoTypeSelect() {
-    const select = document.getElementById('select-player-piano-type');
-    return select instanceof HTMLSelectElement ? select : null;
-}
+    PianoTrainerPlayerRangeControls.create = create;
+})(PianoTrainerPlayerRangeControls || (PianoTrainerPlayerRangeControls = {}));
 //# sourceMappingURL=player-range-controls.js.map

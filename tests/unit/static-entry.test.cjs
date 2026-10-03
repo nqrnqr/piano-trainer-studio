@@ -72,6 +72,9 @@ test('static entry loads exactly one timing implementation before its core consu
     assert.equal(scripts.includes('js/feedback-debug.js'),false);
     assert.equal(fs.existsSync(path.join(root,'js/feedback-debug.js')),false);
     assert.equal(fs.existsSync(path.join(root,'types/legacy-traversal.d.ts')),false);
+    for (const name of ['domain/version','app/update-controller','compatibility/device-controls','compatibility/player-range-controls']) {
+        assert.equal(scripts.filter(file=>file===`js/generated/${name}.js`).length,1);
+    }
 });
 
 test('served source map embeds the unique TS source and maps both timing calculations', () => {

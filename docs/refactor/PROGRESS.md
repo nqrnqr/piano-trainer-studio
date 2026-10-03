@@ -287,3 +287,17 @@
 - 浏览器：14页568/568，default/no-op各settings-debug20、render19、preferences39、settings11、input40、playback127、loader28。新页真实FileReader abort→DONE/callback null、captured old read无import/alert/reload、fresh read、native SVG/history/reload/own resources/external layer保留；原settings成功FileReader/reload往返未替换。所有自建标签关闭，memory偏好/random DB结束仅删除自己数据。报告P9a-ui-lifetime-browser.txt；实体硬件/可听质量/launcher最终门槛仍未验证。
 - 清单：514 global candidates/110 classic slots、重复函数零；77 direct AppState writes。附带清除P8f browser report末尾多余空行。vendor/helper、settings/schema/backup/user data/resource/launcher不变。
 - 回退：revert本准备检查点恢复完整debug/原settings global commands与slots；之前P8保持，无数据迁移。下一入口：player-range/connection/update/header显式factories、parameterized optional legacy LED，模块imports/bootstrap/bundle与窄测试入口。
+
+## P9b：键域、连接状态与更新控件生命周期准备
+
+- 状态：准备子步骤完成（2026-10-03）；P9整体仍进行中，parameterized optional LED/真实imports/bootstrap/bundle/test facade/最终严格与运行验收尚未完成，完整目标活跃。
+- 映射：player-range-controls变typed UI factory；connection-status变无资源readonly factory；update-controls→domain/version +app/update-controller +native UI，两个compatibility只组装actual consumers，controls-dom唯一slot前移。旧helper globals不再转发，remaining核心业务均TS；header version bootstrap与legacy LED仍需最终entry契约。
+- 行为：range normalize/filter/held Map identity/output order/preview reset/save-rerender选项、status label/coercion/native selected port、loose semver/manifest unknown/string fallback/error/status、URL appv/t/hash/override cleanup/local download vs remote reload原样保持。
+- 关键startup：LED setLedOutputMode/setWledIp再次调用initUpdateControls，原本每次读saved config/clear status/check updates。仍保持所有普通checks及并发completion order，不能整个init早退；仅native button listener/marker去重。player init也仍原read/prune/sync顺序。
+- 生命周期：range owns一个select listener/marker；update UI owns一个button listener/marker；generation防captured old listeners复活。update controllerowns pending AbortControllers，explicit dispose只abort own requests，fetch/JSON await与catch/finally后的旧commit/UI/reload均失效；已完成/外部controller保留。UI dispose不自动cancel普通request，最终bootstrap分别dispose两个owners。
+- 验证：315/315 Node（新增8组prune/DOM/port/read/并发/dispose/JSON/URL/button用例）；strict typecheck与224文件clean build一致，static slot唯一gate保留，P3原device-ui assertions只改typed factory harness无降低。报告P9b-device-controls-check.txt。
+- 对照：基线d1480fb，1,000 range/state/DOM/storage/optional-output +400 connection status/labels/visibility +600 update JSON/error/local/remote/URL/storage/UI commands，每步return/state/full DOM/storage/write effect order/request URL/cache一致。仅ignored .cache/device-controls-parity.cjs Git临时抽取旧函数，结果P9b-device-controls-parity.txt。
+- 浏览器：16页632/632，default/no-op各new device19、preference39、MIDI20/21、input40、playback127、settings11、loader28，traversal30/33。实际native select/keyboard/Map/states、version.json/native fetch/signal.abort、old finally不写UI、freshchecks/resources归零、WLED connection labels均通过。新页memory prefs/random DB结束只删自己库，同origin旧页串行关闭，全部自建标签关闭。报告P9b-device-controls-browser.txt；静音/模拟不能证明实体MIDI/可听同步，launcher最终门槛待P9。
+- 测试修正：VM async跨realm的response/JSON microtasks须等到controlled phase确实开始；用setImmediate确认JSON正在await、第二请求完整完成后才完成第一请求，保留普通completion order断言。parity新增storage writes统一计数，排除只由new harness添加的save-range diagnostic marker；实际storage操作顺序仍逐项比较，生产行为无改动。
+- 清单：505 candidates/114 classic slots、重复函数零；53 direct AppState writes。vendor/helper、prefs/schema/backup/data、资源/启动器未改。
+- 回退：revert本检查点恢复三个原global modules与slots；之前P8/P9a保留，无数据迁移。下一入口：明确并参数化legacy LED/MIDI LED factory contract，再统一源码imports/bundle/bootstrap与窄test facade。

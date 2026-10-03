@@ -113,6 +113,13 @@ fixture 会互相改写启动期间读取的 saved channel/device。显示与 pr
   普通UI行为不扩大取消范围，vendor snapshots不进入练习规则。307项Node、216文件build、14页568
   项浏览器与3,000 ordinary commands/64 snapshots旧版对照见validation/P9a-ui-lifetime-*.txt。
 
+- `/docs/testing/device-controls-baseline.html`：默认/no-op各19项，native select→range/keyboard/
+  Map身份/preview、connection labels、actual version.json fetch与native AbortSignal/dispose、旧
+  finally不更新button、fresh自动/手动检查、own listeners归零。偏好在内存，随机DB结束仅删除自己。
+- P9b 315项Node/224文件build、16页632项browser、2,000旧版commands对照见validation/
+  P9b-device-controls-*.txt。LED普通mode/IP设置会再次init update UI，保留每次state刷新和check，
+  只对native button binding去重；explicit dispose才abort requests。完整bootstrap/module仍待后续。
+
 `timing.js` 的 sourceMappingURL 指向同目录 map，含完整 TS 源；无需开放 `/src`。
 自动测试确认两项算法的生成行映射到 TS 对应行，HTTP 确认 map 可访问。
 手工调试：F12 → Sources → `src/domain/timing.ts`，在等待计算处下断点后 Play；本轮未进行 F12 交互断点验证。

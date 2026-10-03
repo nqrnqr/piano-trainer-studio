@@ -1,0 +1,8 @@
+P9b device controls preparation parity, 2026-10-03
+Baseline d1480fb; node .cache/device-controls-parity.cjs.
+PASS 1000 playable-range/state/DOM/storage/optional-output commands match d1480fb
+PASS 400 connection status/label/visibility commands match d1480fb
+PASS 600 update JSON/error/local/remote/URL/storage/UI commands match d1480fb
+Each step compares normalized state/Map/Set, all DOM fields/classes/markers/listeners, storage, request URL/cache and ordered effects including actual storage writes/removals.
+Extra save-range diagnostic trace from the new harness omitted on both sides; actual storage writes still compared. Abort signal creation is the explicit resource-owner addition, with disposal behavior validated separately.
+Transient old implementation exists only in ignored .cache. No second production algorithm.
