@@ -441,3 +441,13 @@
 - 浏览器：preferences/native-controls/MIDI/input/bootstrap两配置共10页351/351，累计30页1212项；validation/P9o-preference-controls-facade-browser.txt。内存偏好/随机DB不影响用户数据，通过终态在完整dispose与cleanup之后，所有自建标签关闭。
 - 验证：两套final strict、四文件clean comparison、338/338 Node，validation/P9o-preference-controls-facade-check.txt。生产bundle不改；vendor/schema/backup格式/用户设置/资源/启动器不变。
 - 回退：revert本检查点恢复P9n测试入口/页面与fixture，无数据迁移。继续剩余原套件；当前1212项不替代全集，实体硬件/可听/Mac/LAN客户端限制保持。只有本地Git提交，无push。
+
+## P9p：原生虚拟键盘、音频解锁与 score seek facade
+
+- 状态：原 keyboard-controls suite 迁移检查点完成（2026-10-04）；P9 device/debug/settings/library-ui/legacy-led与最终全集仍未完成，完整目标活跃。
+- 映射：旧 virtualKeyboard/seek/keyboard presentation/score status globals与AppState/OSMD → testing/keyboard-checks.ts 的明确场景命令。readiness只在实际 audioOutput端口控制，私有pending/captured callbacks返回token，clear恢复original ready并清引用；生产instance和事件路径保持。
+- 行为：原每配置36项保留，包括pointer兼容mouse/identifier mismatch/up/cancel/touchleave/empty changedTouch/mouseleave/blur downmarker，ordinary release-before-unlock及旧detached key rebuild后延迟attack保持；explicit dispose/reinit旧unlock attack失效。没有借迁移修复原普通迟到attack语义。
+- 资源与图形：source map观察实际native880 key+12activation/one seek、重建owned1772/connected892、dispose全归零/freshcounts。原nativecanvas点击真实repeat traversal、loop/panel/playing gates、roundedscore、双乐器globalstaff与defaultselectoptions、sustained/pending/future/early-carry/correct/calibration键色均保持；只复制geometry box/staff IDs/pressed values，vendor不返回。
+- 浏览器：keyboard/input/practice/render/bootstrap两配置共10页370/370，累计32页1284项，validation/P9p-keyboard-facade-browser.txt。真实原生events、OSMD与fixture内存偏好/随机DB，终态在全部dispose和cleanup之后，所有自建标签关闭。
+- 验证：生产与独立test入口final strict、四文件clean comparison、338/338 Node，validation/P9p-keyboard-facade-check.txt。production bundle/vendor/prefs/schema/backup/resources/launcher不改。
+- 回退：revert本检查点恢复P9o测试入口/页面与fixture，不清库或改用户设置；继续剩余原套件与最终全集。当前1284项不替代全量，实体硬件/可听/Mac/LAN客户端限制保持。只有本地Git提交，无push。

@@ -1,0 +1,417 @@
+P9p native keyboard/unlock/seek + affected practice/input/render/bootstrap regression
+
+PAGE keyboard-controls-baseline.html?led=off
+INITIAL {"virtual-keyboard-controls":{"owned":892,"connected":892},"score-seek-controls":{"owned":1,"connected":1}}
+PASS repeated init retains one keyboard/seek listener set
+PASS native keyboard owns 880 key/12 activation listeners and seek owns one
+PASS actual keyboard retains 88 keys and the original white/black pattern
+PASS native pointer down and compatibility mouse share one down state
+PASS mismatched global pointer release retains active input
+PASS matching native pointer up releases and clears its key marker
+PASS touch pointer leave retains input until a release event
+PASS native pointer cancel releases touch-pointer input
+PASS native touch identifier mismatch preserves the original active touch
+PASS native touch end releases its matching key
+PASS empty changed-touch fallback cancels the active touch
+PASS native mouse leave releases keyboard input
+PASS blur releases the note while retaining the original per-key down marker
+PASS release before ordinary audio unlock retains the baseline delayed attack
+PASS ordinary keyboard rebuild preserves pending old-key attack
+PASS ordinary rebuild retains detached owned handlers until explicit disposal
+PASS explicit disposal invalidates pending unlock attack after reinit
+PASS fresh keyboard init accepts input
+PASS explicit dispose releases its active input, all key DOM and detached listeners
+PASS detached disposed key cannot send new input
+PASS native score click reaches the requested measure through real repeat traversal
+PASS native score click outside the active loop retains its cursor
+PASS open native toolbar panel blocks score seeking
+PASS playing score blocks native seek
+PASS paused seek resets and paints the first real event
+PASS score status keeps the original rounded percentage
+PASS actual two-instrument notes retain distinct global staff identities
+PASS score UI rebuild retains default assignments/options and score reset
+PASS pending same-pitch staff overrides sustained staff in original presentation order
+PASS native key presentation keeps sustained expected and future colors
+PASS held early carry keeps expected key color
+PASS correct highlight follows the actual left staff
+PASS native calibration clears recognized key state classes
+PASS explicit dispose releases all keyboard/seek resources
+PASS fresh init restores the same keyboard/seek resource counts
+PASS keyboard/shared preview/seek work with default and no-op LED
+RESOURCES {"virtual-keyboard-controls":{"owned":0,"connected":0},"score-seek-controls":{"owned":0,"connected":0}}
+CLEANUP 1 disposable databases
+DONE
+
+PAGE keyboard-controls-baseline.html
+INITIAL {"virtual-keyboard-controls":{"owned":892,"connected":892},"score-seek-controls":{"owned":1,"connected":1}}
+PASS repeated init retains one keyboard/seek listener set
+PASS native keyboard owns 880 key/12 activation listeners and seek owns one
+PASS actual keyboard retains 88 keys and the original white/black pattern
+PASS native pointer down and compatibility mouse share one down state
+PASS mismatched global pointer release retains active input
+PASS matching native pointer up releases and clears its key marker
+PASS touch pointer leave retains input until a release event
+PASS native pointer cancel releases touch-pointer input
+PASS native touch identifier mismatch preserves the original active touch
+PASS native touch end releases its matching key
+PASS empty changed-touch fallback cancels the active touch
+PASS native mouse leave releases keyboard input
+PASS blur releases the note while retaining the original per-key down marker
+PASS release before ordinary audio unlock retains the baseline delayed attack
+PASS ordinary keyboard rebuild preserves pending old-key attack
+PASS ordinary rebuild retains detached owned handlers until explicit disposal
+PASS explicit disposal invalidates pending unlock attack after reinit
+PASS fresh keyboard init accepts input
+PASS explicit dispose releases its active input, all key DOM and detached listeners
+PASS detached disposed key cannot send new input
+PASS native score click reaches the requested measure through real repeat traversal
+PASS native score click outside the active loop retains its cursor
+PASS open native toolbar panel blocks score seeking
+PASS playing score blocks native seek
+PASS paused seek resets and paints the first real event
+PASS score status keeps the original rounded percentage
+PASS actual two-instrument notes retain distinct global staff identities
+PASS score UI rebuild retains default assignments/options and score reset
+PASS pending same-pitch staff overrides sustained staff in original presentation order
+PASS native key presentation keeps sustained expected and future colors
+PASS held early carry keeps expected key color
+PASS correct highlight follows the actual left staff
+PASS native calibration clears recognized key state classes
+PASS explicit dispose releases all keyboard/seek resources
+PASS fresh init restores the same keyboard/seek resource counts
+PASS keyboard/shared preview/seek work with default and no-op LED
+RESOURCES {"virtual-keyboard-controls":{"owned":0,"connected":0},"score-seek-controls":{"owned":0,"connected":0}}
+CLEANUP 1 disposable databases
+DONE
+
+PAGE input-baseline.html?led=off
+PASS traditional: same pitch across actual piano staves retains two source identities
+PASS traditional: DOM mouse press grades only one chord candidate
+PASS traditional: duplicate DOM down is suppressed by the existing virtual key guard
+PASS traditional: DOM mouse release clears physical input
+PASS traditional: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS traditional: already-hit re-press remains ungraded
+PASS traditional: final chord note completes all expectations
+PASS traditional: DOM and MIDI enter one controller with their original source metadata
+PASS traditional: wrong release transfers the same feedback marker to history
+PASS traditional: virtual pointer cancel releases through the shared controller
+PASS traditional: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS traditional: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS traditional: accompaniment pitch input retains original wrong-note semantics
+PASS traditional: hidden source note creates no expectation
+PASS traditional: cue source note creates no expectation
+PASS traditional: duplicate same-staff pitch merges into one expectation
+PASS traditional: actual tied source combines the original sustain duration
+PASS traditional: tie continuation skips attack matching while active sustain accepts repeats
+PASS traditional: tie sustain re-press does not change scoring
+PASS traditional: small keyboard reports out-of-range notes without expectations
+PASS horizontal: same pitch across actual piano staves retains two source identities
+PASS horizontal: DOM mouse press grades only one chord candidate
+PASS horizontal: duplicate DOM down is suppressed by the existing virtual key guard
+PASS horizontal: DOM mouse release clears physical input
+PASS horizontal: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS horizontal: already-hit re-press remains ungraded
+PASS horizontal: final chord note completes all expectations
+PASS horizontal: DOM and MIDI enter one controller with their original source metadata
+PASS horizontal: wrong release transfers the same feedback marker to history
+PASS horizontal: virtual pointer cancel releases through the shared controller
+PASS horizontal: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS horizontal: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS horizontal: accompaniment pitch input retains original wrong-note semantics
+PASS horizontal: hidden source note creates no expectation
+PASS horizontal: cue source note creates no expectation
+PASS horizontal: duplicate same-staff pitch merges into one expectation
+PASS horizontal: actual tied source combines the original sustain duration
+PASS horizontal: tie continuation skips attack matching while active sustain accepts repeats
+PASS horizontal: tie sustain re-press does not change scoring
+PASS horizontal: small keyboard reports out-of-range notes without expectations
+
+All checks passed.
+
+PAGE input-baseline.html
+PASS traditional: same pitch across actual piano staves retains two source identities
+PASS traditional: DOM mouse press grades only one chord candidate
+PASS traditional: duplicate DOM down is suppressed by the existing virtual key guard
+PASS traditional: DOM mouse release clears physical input
+PASS traditional: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS traditional: already-hit re-press remains ungraded
+PASS traditional: final chord note completes all expectations
+PASS traditional: DOM and MIDI enter one controller with their original source metadata
+PASS traditional: wrong release transfers the same feedback marker to history
+PASS traditional: virtual pointer cancel releases through the shared controller
+PASS traditional: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS traditional: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS traditional: accompaniment pitch input retains original wrong-note semantics
+PASS traditional: hidden source note creates no expectation
+PASS traditional: cue source note creates no expectation
+PASS traditional: duplicate same-staff pitch merges into one expectation
+PASS traditional: actual tied source combines the original sustain duration
+PASS traditional: tie continuation skips attack matching while active sustain accepts repeats
+PASS traditional: tie sustain re-press does not change scoring
+PASS traditional: small keyboard reports out-of-range notes without expectations
+PASS horizontal: same pitch across actual piano staves retains two source identities
+PASS horizontal: DOM mouse press grades only one chord candidate
+PASS horizontal: duplicate DOM down is suppressed by the existing virtual key guard
+PASS horizontal: DOM mouse release clears physical input
+PASS horizontal: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS horizontal: already-hit re-press remains ungraded
+PASS horizontal: final chord note completes all expectations
+PASS horizontal: DOM and MIDI enter one controller with their original source metadata
+PASS horizontal: wrong release transfers the same feedback marker to history
+PASS horizontal: virtual pointer cancel releases through the shared controller
+PASS horizontal: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS horizontal: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS horizontal: accompaniment pitch input retains original wrong-note semantics
+PASS horizontal: hidden source note creates no expectation
+PASS horizontal: cue source note creates no expectation
+PASS horizontal: duplicate same-staff pitch merges into one expectation
+PASS horizontal: actual tied source combines the original sustain duration
+PASS horizontal: tie continuation skips attack matching while active sustain accepts repeats
+PASS horizontal: tie sustain re-press does not change scoring
+PASS horizontal: small keyboard reports out-of-range notes without expectations
+
+All checks passed.
+
+PAGE practice-baseline.html?led=off
+PASS wait/traditional: piano chord builds both staff expectations
+PASS wait/traditional: live iterator prefetches while displayed event stays current
+PASS wait/traditional: wrong input counts once and holds display
+PASS wait/traditional: partial chord holds display
+PASS wait/traditional: already-hit repeat is suppressed from duplicate grading
+PASS wait/traditional: completing chord grades both notes
+PASS wait/traditional: completing chord advances displayed event
+PASS wait/traditional: release clears held input
+PASS wait/traditional: pause suppresses pending advancement
+PASS follow/traditional: piano chord builds both staff expectations
+PASS follow/traditional: live iterator prefetches while displayed event stays current
+PASS follow/traditional: wrong input counts once and holds display
+PASS follow/traditional: partial chord holds display
+PASS follow/traditional: already-hit repeat is suppressed from duplicate grading
+PASS follow/traditional: completing chord grades both notes
+PASS follow/traditional: completing chord advances displayed event
+PASS follow/traditional: release clears held input
+PASS follow/traditional: pause suppresses pending advancement
+PASS realtime/traditional: piano chord builds both staff expectations
+PASS realtime/traditional: live iterator prefetches while displayed event stays current
+PASS realtime/traditional: tempo advances without input
+PASS realtime/traditional: missed chord grades both notes
+PASS realtime/traditional: pause suppresses pending advancement
+PASS wait/horizontal: piano chord builds both staff expectations
+PASS wait/horizontal: live iterator prefetches while displayed event stays current
+PASS wait/horizontal: wrong input counts once and holds display
+PASS wait/horizontal: partial chord holds display
+PASS wait/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS wait/horizontal: completing chord grades both notes
+PASS wait/horizontal: completing chord advances displayed event
+PASS wait/horizontal: release clears held input
+PASS wait/horizontal: pause suppresses pending advancement
+PASS follow/horizontal: piano chord builds both staff expectations
+PASS follow/horizontal: live iterator prefetches while displayed event stays current
+PASS follow/horizontal: wrong input counts once and holds display
+PASS follow/horizontal: partial chord holds display
+PASS follow/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS follow/horizontal: completing chord grades both notes
+PASS follow/horizontal: completing chord advances displayed event
+PASS follow/horizontal: release clears held input
+PASS follow/horizontal: pause suppresses pending advancement
+PASS realtime/horizontal: piano chord builds both staff expectations
+PASS realtime/horizontal: live iterator prefetches while displayed event stays current
+PASS realtime/horizontal: tempo advances without input
+PASS realtime/horizontal: missed chord grades both notes
+PASS realtime/horizontal: pause suppresses pending advancement
+PASS simple-repeat: structural jump 2 → 1 waits one remaining quarter beat
+PASS simple-repeat: actual repeat-sign traversal is 1 → 2 → 1 → 2 → 3
+PASS simple-repeat: repeat and ending skip are exercised
+SNAPSHOT simple-repeat [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1}]
+PASS first-second-ending: structural jump 3 → 1 waits one remaining quarter beat
+PASS first-second-ending: structural jump 2 → 4 waits one remaining quarter beat
+PASS first-second-ending: actual repeat-sign traversal is 1 → 2 → 3 → 1 → 2 → 4 → 5
+PASS first-second-ending: repeat and ending skip are exercised
+SNAPSHOT first-second-ending [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1},{"measure":2,"timestampWhole":2.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":3,"nextTimestampWhole":3,"beats":1},{"measure":3,"timestampWhole":3,"nextMeasure":3,"nextTimestampWhole":3.25,"beats":1},{"measure":3,"timestampWhole":3.25,"nextMeasure":3,"nextTimestampWhole":3.5,"beats":1},{"measure":3,"timestampWhole":3.5,"nextMeasure":3,"nextTimestampWhole":3.75,"beats":1},{"measure":3,"timestampWhole":3.75,"nextMeasure":4,"nextTimestampWhole":4,"beats":1},{"measure":4,"timestampWhole":4,"nextMeasure":4,"nextTimestampWhole":4.25,"beats":1},{"measure":4,"timestampWhole":4.25,"nextMeasure":4,"nextTimestampWhole":4.5,"beats":1},{"measure":4,"timestampWhole":4.5,"nextMeasure":4,"nextTimestampWhole":4.75,"beats":1}]
+
+All checks passed.
+
+PAGE practice-baseline.html
+PASS wait/traditional: piano chord builds both staff expectations
+PASS wait/traditional: live iterator prefetches while displayed event stays current
+PASS wait/traditional: wrong input counts once and holds display
+PASS wait/traditional: partial chord holds display
+PASS wait/traditional: already-hit repeat is suppressed from duplicate grading
+PASS wait/traditional: completing chord grades both notes
+PASS wait/traditional: completing chord advances displayed event
+PASS wait/traditional: release clears held input
+PASS wait/traditional: pause suppresses pending advancement
+PASS follow/traditional: piano chord builds both staff expectations
+PASS follow/traditional: live iterator prefetches while displayed event stays current
+PASS follow/traditional: wrong input counts once and holds display
+PASS follow/traditional: partial chord holds display
+PASS follow/traditional: already-hit repeat is suppressed from duplicate grading
+PASS follow/traditional: completing chord grades both notes
+PASS follow/traditional: completing chord advances displayed event
+PASS follow/traditional: release clears held input
+PASS follow/traditional: pause suppresses pending advancement
+PASS realtime/traditional: piano chord builds both staff expectations
+PASS realtime/traditional: live iterator prefetches while displayed event stays current
+PASS realtime/traditional: tempo advances without input
+PASS realtime/traditional: missed chord grades both notes
+PASS realtime/traditional: pause suppresses pending advancement
+PASS wait/horizontal: piano chord builds both staff expectations
+PASS wait/horizontal: live iterator prefetches while displayed event stays current
+PASS wait/horizontal: wrong input counts once and holds display
+PASS wait/horizontal: partial chord holds display
+PASS wait/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS wait/horizontal: completing chord grades both notes
+PASS wait/horizontal: completing chord advances displayed event
+PASS wait/horizontal: release clears held input
+PASS wait/horizontal: pause suppresses pending advancement
+PASS follow/horizontal: piano chord builds both staff expectations
+PASS follow/horizontal: live iterator prefetches while displayed event stays current
+PASS follow/horizontal: wrong input counts once and holds display
+PASS follow/horizontal: partial chord holds display
+PASS follow/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS follow/horizontal: completing chord grades both notes
+PASS follow/horizontal: completing chord advances displayed event
+PASS follow/horizontal: release clears held input
+PASS follow/horizontal: pause suppresses pending advancement
+PASS realtime/horizontal: piano chord builds both staff expectations
+PASS realtime/horizontal: live iterator prefetches while displayed event stays current
+PASS realtime/horizontal: tempo advances without input
+PASS realtime/horizontal: missed chord grades both notes
+PASS realtime/horizontal: pause suppresses pending advancement
+PASS simple-repeat: structural jump 2 → 1 waits one remaining quarter beat
+PASS simple-repeat: actual repeat-sign traversal is 1 → 2 → 1 → 2 → 3
+PASS simple-repeat: repeat and ending skip are exercised
+SNAPSHOT simple-repeat [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1}]
+PASS first-second-ending: structural jump 3 → 1 waits one remaining quarter beat
+PASS first-second-ending: structural jump 2 → 4 waits one remaining quarter beat
+PASS first-second-ending: actual repeat-sign traversal is 1 → 2 → 3 → 1 → 2 → 4 → 5
+PASS first-second-ending: repeat and ending skip are exercised
+SNAPSHOT first-second-ending [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1},{"measure":2,"timestampWhole":2.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":3,"nextTimestampWhole":3,"beats":1},{"measure":3,"timestampWhole":3,"nextMeasure":3,"nextTimestampWhole":3.25,"beats":1},{"measure":3,"timestampWhole":3.25,"nextMeasure":3,"nextTimestampWhole":3.5,"beats":1},{"measure":3,"timestampWhole":3.5,"nextMeasure":3,"nextTimestampWhole":3.75,"beats":1},{"measure":3,"timestampWhole":3.75,"nextMeasure":4,"nextTimestampWhole":4,"beats":1},{"measure":4,"timestampWhole":4,"nextMeasure":4,"nextTimestampWhole":4.25,"beats":1},{"measure":4,"timestampWhole":4.25,"nextMeasure":4,"nextTimestampWhole":4.5,"beats":1},{"measure":4,"timestampWhole":4.5,"nextMeasure":4,"nextTimestampWhole":4.75,"beats":1}]
+
+All checks passed.
+
+PAGE render-baseline.html?led=off
+PASS traditional: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS horizontal: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS traditional: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS horizontal: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS hidden B4 and cue C5 do not become practice expectations
+PASS same-pitch cross-staff expectations own distinct revision-scoped exact sources
+PASS expected state keeps immutable NoteRef without vendor source objects
+PASS layout switch preserves the original realtime wrong flag
+PASS Wait relayout/zoom retains live iterator, expectation/ref identities, hit state and score
+PASS zoom keeps the original visual cleanup rule for realtime wrong flag
+PASS adapter distinguishes the painted event from actual prefetch
+PASS Loop overlay draws two shades and two inclusive boundaries
+PASS disabled Loop clears only its overlay
+PASS loading a new sheet invalidates all old note references
+PASS new expectations bind to the new sheet revision
+PASS foreground native rAF moves the horizontal viewport
+PASS native rAF settles around the original 33% cursor target
+PASS viewport dispose cancels native frame ownership
+PASS viewport reinit reads the same persisted layout
+DONE
+
+PAGE render-baseline.html
+PASS traditional: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS horizontal: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS traditional: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS horizontal: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS hidden B4 and cue C5 do not become practice expectations
+PASS same-pitch cross-staff expectations own distinct revision-scoped exact sources
+PASS expected state keeps immutable NoteRef without vendor source objects
+PASS layout switch preserves the original realtime wrong flag
+PASS Wait relayout/zoom retains live iterator, expectation/ref identities, hit state and score
+PASS zoom keeps the original visual cleanup rule for realtime wrong flag
+PASS adapter distinguishes the painted event from actual prefetch
+PASS Loop overlay draws two shades and two inclusive boundaries
+PASS disabled Loop clears only its overlay
+PASS loading a new sheet invalidates all old note references
+PASS new expectations bind to the new sheet revision
+PASS foreground native rAF moves the horizontal viewport
+PASS native rAF settles around the original 33% cursor target
+PASS viewport dispose cancels native frame ownership
+PASS viewport reinit reads the same persisted layout
+DONE
+
+PAGE bootstrap-baseline.html?led=off
+PASS test facade exposes commands and observations
+PASS bundle keeps application state, score and business services private
+PASS wait/traditional: real score enters playback with expected notes
+PASS wait/traditional: viewport observes the requested layout and real score
+PASS wait/traditional: returned observations cannot mutate internal practice state
+PASS wait/traditional: input command releases the note
+PASS wait/traditional: pause stops playback
+PASS follow/traditional: real score enters playback with expected notes
+PASS follow/traditional: viewport observes the requested layout and real score
+PASS follow/traditional: returned observations cannot mutate internal practice state
+PASS follow/traditional: input command releases the note
+PASS follow/traditional: pause stops playback
+PASS realtime/traditional: real score enters playback with expected notes
+PASS realtime/traditional: viewport observes the requested layout and real score
+PASS realtime/traditional: returned observations cannot mutate internal practice state
+PASS realtime/traditional: input command releases the note
+PASS realtime/traditional: pause stops playback
+PASS wait/horizontal: real score enters playback with expected notes
+PASS wait/horizontal: viewport observes the requested layout and real score
+PASS wait/horizontal: returned observations cannot mutate internal practice state
+PASS wait/horizontal: input command releases the note
+PASS wait/horizontal: pause stops playback
+PASS follow/horizontal: real score enters playback with expected notes
+PASS follow/horizontal: viewport observes the requested layout and real score
+PASS follow/horizontal: returned observations cannot mutate internal practice state
+PASS follow/horizontal: input command releases the note
+PASS follow/horizontal: pause stops playback
+PASS realtime/horizontal: real score enters playback with expected notes
+PASS realtime/horizontal: viewport observes the requested layout and real score
+PASS realtime/horizontal: returned observations cannot mutate internal practice state
+PASS realtime/horizontal: input command releases the note
+PASS realtime/horizontal: pause stops playback
+PASS duplicate init keeps one keyboard
+PASS duplicate init does not allocate another listener, timer, interval or frame
+PASS duplicate dispose and later init cannot revive the old application
+RESOURCES {"listeners":0,"timers":0,"intervals":0,"frames":0}
+PASS full application disposal releases all observed native resources
+PASS fresh application initializes and loads after full disposal
+DONE
+
+PAGE bootstrap-baseline.html
+PASS test facade exposes commands and observations
+PASS bundle keeps application state, score and business services private
+PASS wait/traditional: real score enters playback with expected notes
+PASS wait/traditional: viewport observes the requested layout and real score
+PASS wait/traditional: returned observations cannot mutate internal practice state
+PASS wait/traditional: input command releases the note
+PASS wait/traditional: pause stops playback
+PASS follow/traditional: real score enters playback with expected notes
+PASS follow/traditional: viewport observes the requested layout and real score
+PASS follow/traditional: returned observations cannot mutate internal practice state
+PASS follow/traditional: input command releases the note
+PASS follow/traditional: pause stops playback
+PASS realtime/traditional: real score enters playback with expected notes
+PASS realtime/traditional: viewport observes the requested layout and real score
+PASS realtime/traditional: returned observations cannot mutate internal practice state
+PASS realtime/traditional: input command releases the note
+PASS realtime/traditional: pause stops playback
+PASS wait/horizontal: real score enters playback with expected notes
+PASS wait/horizontal: viewport observes the requested layout and real score
+PASS wait/horizontal: returned observations cannot mutate internal practice state
+PASS wait/horizontal: input command releases the note
+PASS wait/horizontal: pause stops playback
+PASS follow/horizontal: real score enters playback with expected notes
+PASS follow/horizontal: viewport observes the requested layout and real score
+PASS follow/horizontal: returned observations cannot mutate internal practice state
+PASS follow/horizontal: input command releases the note
+PASS follow/horizontal: pause stops playback
+PASS realtime/horizontal: real score enters playback with expected notes
+PASS realtime/horizontal: viewport observes the requested layout and real score
+PASS realtime/horizontal: returned observations cannot mutate internal practice state
+PASS realtime/horizontal: input command releases the note
+PASS realtime/horizontal: pause stops playback
+PASS duplicate init keeps one keyboard
+PASS duplicate init does not allocate another listener, timer, interval or frame
+PASS duplicate dispose and later init cannot revive the old application
+RESOURCES {"listeners":0,"timers":0,"intervals":0,"frames":0}
+PASS full application disposal releases all observed native resources
+PASS fresh application initializes and loads after full disposal
+DONE

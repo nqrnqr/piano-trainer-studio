@@ -12791,6 +12791,114 @@
     }) };
   }
 
+  // src/testing/keyboard-checks.ts
+  function createKeyboardChecks(getServices) {
+    let output = null, originalReady = null;
+    const finishes = [], captured = /* @__PURE__ */ new Map();
+    let nextCapture = 0;
+    function restoreReady() {
+      if (output && originalReady) output.ensureLiveAudioReady = originalReady;
+      output = null;
+      originalReady = null;
+      finishes.length = 0;
+      captured.clear();
+    }
+    const commands = Object.freeze({
+      init: () => {
+        const s = getServices();
+        s.virtualKeyboardControls.init();
+        s.scoreSeekControls.init();
+      },
+      dispose: () => {
+        const s = getServices();
+        s.virtualKeyboardControls.dispose();
+        s.scoreSeekControls.dispose();
+      },
+      initKeyboard: () => getServices().virtualKeyboardControls.init(),
+      disposeKeyboard: () => getServices().virtualKeyboardControls.dispose(),
+      rebuild: () => getServices().virtualKeyboardControls.createKeyboard(),
+      releasePointer: () => getServices().virtualKeyboardControls.releaseActiveVirtualPointer(),
+      release: () => {
+        const s = getServices();
+        s.virtualKeyboardControls.releaseActiveVirtualPointer();
+        for (const midi of [...s.AppState.pressedKeys]) s.practiceInput.handle({ kind: "note-off", note: midi, velocity: 100, source: "ui", channel: null, receivedAtMs: performance.now() });
+      },
+      setUnlock: (mode) => {
+        if (!originalReady) {
+          output = getServices().audioOutput;
+          originalReady = output.ensureLiveAudioReady;
+        }
+        output.ensureLiveAudioReady = mode === "muted" ? async () => {
+        } : () => new Promise((resolve) => {
+          finishes.push(resolve);
+        });
+      },
+      finishUnlocks: () => {
+        for (const finish of finishes.splice(0)) finish();
+      },
+      captureUnlocks: () => {
+        const token = ++nextCapture;
+        captured.set(token, finishes.splice(0));
+        return token;
+      },
+      finishCapturedUnlocks: (token) => {
+        const callbacks = captured.get(token);
+        if (!callbacks) throw Error("Missing captured unlocks");
+        captured.delete(token);
+        for (const finish of callbacks) finish();
+      },
+      restoreReady,
+      measureBox: (measure) => {
+        const box = getServices().geometryEngine.getMeasureBox(measure, 0);
+        return box ? { ...box } : null;
+      },
+      selectWait: () => {
+        const s = getServices();
+        s.AppState.mode = "wait";
+        s.handRouting.syncActiveHandStateFromMode();
+      },
+      setLoopBounds: (min, max) => {
+        const state = getServices().AppState;
+        state.looper.min = min;
+        state.looper.max = max;
+      },
+      setPlaying: (playing) => {
+        getServices().AppState.isPlaying = playing;
+      },
+      setScore: (correct, wrong) => {
+        const s = getServices();
+        s.AppState.score.correct = correct;
+        s.AppState.score.wrong = wrong;
+        s.scoreStatus.update();
+      },
+      seedPresentation: () => {
+        const state = getServices().AppState;
+        state.sustainedVisuals = [{ midi: 60, staffId: 2, mIdx: 0, endTimestamp: null }];
+        state.lastLedPreviewEvents = [{ measureIndex: 0, timestamp: 0, notes: [{ midi: 62, staffId: 1, state: "future1-r" }] }];
+        state.futurePreviewEnabled = true;
+      },
+      clearPendingVisuals: () => {
+        getServices().AppState.visualNotesToStart = [];
+      },
+      setEarlyCarry: (midi, early) => {
+        const state = getServices().AppState;
+        state.pressedKeys.add(midi);
+        if (early) state.preExpectedHeldNotes.add(midi);
+        else {
+          state.preExpectedHeldNotes.delete(midi);
+          state.correctHighlightEnabled = true;
+        }
+      },
+      setCalibration: (enabled, midi = 60) => {
+        const state = getServices().AppState;
+        state.ledCalibrationMode = enabled;
+        state.ledCalibrationSelectedMidi = midi;
+      },
+      render: () => getServices().keyboardController.render()
+    });
+    return { commands, clear: restoreReady };
+  }
+
   // src/testing/facade.ts
   function createTestFacade(options = {}, injectedPorts = {}, libraryFixture) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
@@ -12804,6 +12912,7 @@
     const libraryChecks = createLibraryChecks(() => services, libraryFixture);
     const controlsChecks = createControlsChecks(() => services);
     const preferenceChecks = createPreferenceChecks(() => services);
+    const keyboardChecks = createKeyboardChecks(() => services);
     return Object.freeze({
       loadScore: (raw, options2 = {}) => services.scoreLoader.loadScoreIntoApp(raw, options2),
       dispatchInput: (note, down) => services.practiceInput.handle({
@@ -12825,6 +12934,7 @@
       library: libraryChecks.commands,
       controls: controlsChecks.commands,
       preferences: preferenceChecks.commands,
+      keyboard: keyboardChecks.commands,
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",
@@ -12864,6 +12974,7 @@
         libraryChecks.clear();
         controlsChecks.clear();
         preferenceChecks.clear();
+        keyboardChecks.clear();
         playbackChecks?.dispose();
       },
       recreate: () => {
@@ -12873,6 +12984,7 @@
         libraryChecks.clear();
         controlsChecks.clear();
         preferenceChecks.clear();
+        keyboardChecks.clear();
         playbackChecks?.dispose();
         services = createServices(servicePorts);
         playbackChecks?.attach(() => services);

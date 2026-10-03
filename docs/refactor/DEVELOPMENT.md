@@ -104,9 +104,9 @@ readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命�
 `practice-baseline`、`input-baseline`、`traversal-baseline`、`render-baseline`、
 `score-display`、`playback-baseline`、`midi-baseline`、`audio-baseline` 和 `metronome-baseline`
 以及 `loader-baseline`、`transpose-baseline`、`library-baseline`、`native-controls-baseline`
-以及 `preference-controls-baseline` 已迁移到窄 facade；
-default/no-op 连同 bootstrap 共 30 页 1212 项通过。
-原 53/40/30或33/19/30/127/20或21/23/28/28/52/38/39/39 项行为断言保留，playback 每配置新增
+以及 `preference-controls-baseline`、`keyboard-controls-baseline` 已迁移到窄 facade；
+default/no-op 连同 bootstrap 共 32 页 1284 项通过。
+原 53/40/30或33/19/30/127/20或21/23/28/28/52/38/39/39/36 项行为断言保留，playback 每配置新增
 一项受控时钟销毁检查；几何与反复基线未替换。
 `module-test-frame.js` 加载原生产 HTML/vendors 与独立测试 bundle，使用内存偏好和随机库。
 测试完成先 dispose/清理库，再发布通过终态。身份捕获保留在测试实例内，返回 token/布尔观察；
@@ -145,6 +145,11 @@ scroll/fullscreen/intro、zoom/tempo/level/loop/pointer-hold 与异步 toolbar g
 偏好控件通过 `testing/preference-checks.ts` 的复制字段与私有 Realtime/pressed/reservations
 身份观察执行实际 UI/default commands。source map fixture 保留 practice/staff/settings 的
 原 listener 计数；异常偏好、默认恢复、FileReader 无效输入和完整 dispose 均保留原检查。
+
+键盘测试通过 `testing/keyboard-checks.ts` 控制私有 readiness callbacks，保留实际 keyboard/seek
+与输入服务。普通 release/rebuild 后旧 unlock attack、explicit dispose 后旧 attack 失效分别验证；
+callback 捕获只返回 token，清理恢复实际 ready port。原 880 key/12 activation listeners、重建后
+1772 个 owned handlers、实际 mouse/pointer/touch、OSMD seek、双乐器 staff 与键色均保持原断言。
 
 其余曲库抽屉/UI 浏览器页面和原断言保留，
 仍引用已经移除的经典全局接口，**尚未完成剩余窄 facade 迁移及模块入口的全量浏览器回归**。
