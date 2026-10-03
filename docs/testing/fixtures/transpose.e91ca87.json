@@ -1,0 +1,1326 @@
+{
+  "baseline": "e91ca87",
+  "seed": "0x8b642",
+  "cases": [
+    {
+      "id": "case 0",
+      "raw": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>-2</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": -12,
+        "targetKey": "sig-6",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>-2</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+          "semitoneDelta": -12,
+          "sourceKey": {
+            "found": false,
+            "label": "Unknown",
+            "mode": "major",
+            "tonic": null,
+            "fifths": null,
+            "bias": "sharp"
+          },
+          "targetKeyLabel": "Unknown",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 1",
+      "raw": null,
+      "options": {
+        "mode": "key",
+        "semitones": 1,
+        "targetKey": "sig-7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "error": {
+          "name": "Error",
+          "message": "This score is not available as raw MusicXML text, so transpose is disabled for it right now."
+        }
+      }
+    },
+    {
+      "id": "case 2",
+      "raw": "<score-partwise><broken>",
+      "options": {
+        "mode": "key",
+        "semitones": 1,
+        "targetKey": "bad",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "error": {
+          "name": "Error",
+          "message": "Could not parse MusicXML for transposition."
+        }
+      }
+    },
+    {
+      "id": "case 3",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>7</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>0</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": -1,
+        "targetKey": "sig--7",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>7</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>E</root-step></root><bass><bass-step>A</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>A</step><alter>1</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>G</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -2,
+          "sourceKey": {
+            "found": true,
+            "label": "C# major / A# minor",
+            "mode": "major",
+            "tonic": 1,
+            "fifths": 7,
+            "presetValue": "sig-7",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-7",
+              "label": "C# major / A# minor",
+              "tonic": 1,
+              "fifths": 7,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "Cb major / Ab minor",
+          "targetPreset": {
+            "value": "sig--7",
+            "label": "Cb major / Ab minor",
+            "tonic": 11,
+            "fifths": -7,
+            "bias": "flat"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 4",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>1</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": -13,
+        "targetKey": "sig-6",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>6</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step></root><bass><bass-step>C</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>G</step><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>4</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave><alter>1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 1,
+          "sourceKey": {
+            "found": true,
+            "label": "F major / D minor",
+            "mode": "major",
+            "tonic": 5,
+            "fifths": -1,
+            "presetValue": "sig--1",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--1",
+              "label": "F major / D minor",
+              "tonic": 5,
+              "fifths": -1,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "F# major / D# minor",
+          "targetPreset": {
+            "value": "sig-6",
+            "label": "F# major / D# minor",
+            "tonic": 6,
+            "fifths": 6,
+            "bias": "sharp"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 5",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>bad</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>0</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": 2,
+        "targetKey": "sig--7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-1</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>A</root-step><root-alter>-1</root-alter></root><bass><bass-step>D</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-1</fifths></key></attributes><note><pitch><step>B</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 2,
+          "sourceKey": {
+            "found": false,
+            "label": "Unknown",
+            "mode": "minor",
+            "tonic": null,
+            "fifths": null,
+            "presetValue": null,
+            "bias": "sharp",
+            "inferredPreset": null
+          },
+          "targetKeyLabel": "F major / D minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 6",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>-2</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": -25,
+        "targetKey": "sig-7",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>F</root-step></root><bass><bass-step>B</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>A</step><octave>-3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>2</octave><alter>-1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -25,
+          "sourceKey": {
+            "found": true,
+            "label": "D major / B minor",
+            "mode": "major",
+            "tonic": 2,
+            "fifths": 2,
+            "presetValue": "sig-2",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-2",
+              "label": "D major / B minor",
+              "tonic": 2,
+              "fifths": 2,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "D major / B minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 7",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>2</alter><octave>7</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": "bad",
+        "targetKey": "bad",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "error": {
+          "name": "Error",
+          "message": "Choose a target key before applying transpose."
+        }
+      }
+    },
+    {
+      "id": "case 8",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>6</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>-1</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": -1,
+        "targetKey": "sig-6",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-1</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>F</root-step></root><bass><bass-step>B</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>E</step><alter>-1</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>2</fifths></key></attributes><note><pitch><step>G</step><octave>4</octave><alter>1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -1,
+          "sourceKey": {
+            "found": true,
+            "label": "F# major / D# minor",
+            "mode": "minor",
+            "tonic": 6,
+            "fifths": 6,
+            "presetValue": "sig-6",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-6",
+              "label": "F# major / D# minor",
+              "tonic": 6,
+              "fifths": 6,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "F major / D minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 9",
+      "raw": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><key><fifths>-6</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>2</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+      "options": {
+        "mode": "key",
+        "semitones": 2,
+        "targetKey": "sig--7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><key><fifths>-6</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>2</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+          "semitoneDelta": 5,
+          "sourceKey": {
+            "found": true,
+            "label": "Gb major / Eb minor",
+            "mode": "major",
+            "tonic": 6,
+            "fifths": -6,
+            "presetValue": "sig--6",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--6",
+              "label": "Gb major / Eb minor",
+              "tonic": 6,
+              "fifths": -6,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "Cb major / Ab minor",
+          "targetPreset": {
+            "value": "sig--7",
+            "label": "Cb major / Ab minor",
+            "tonic": 11,
+            "fifths": -7,
+            "bias": "flat"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 10",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>0</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>2</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": 2,
+        "targetKey": null,
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>1</root-alter></root><bass><bass-step>D</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>1</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-1</fifths></key></attributes><note><pitch><step>B</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 2,
+          "sourceKey": {
+            "found": true,
+            "label": "C major / A minor",
+            "mode": "major",
+            "tonic": 0,
+            "fifths": 0,
+            "presetValue": "sig-0",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-0",
+              "label": "C major / A minor",
+              "tonic": 0,
+              "fifths": 0,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "D major / B minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 11",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>bad</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>-2</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": 0,
+        "targetKey": "sig--3",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>bad</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>-2</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 0,
+          "sourceKey": {
+            "found": false,
+            "label": "Unknown",
+            "mode": "minor",
+            "tonic": null,
+            "fifths": null,
+            "presetValue": null,
+            "bias": "sharp",
+            "inferredPreset": null
+          },
+          "targetKeyLabel": "Unknown",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 12",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-7</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>2</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": 0,
+        "targetKey": "sig--3",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-7</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>B</root-step><root-alter>-1</root-alter></root><bass><bass-step>E</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>D</step><octave>5</octave><alter>-1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 4,
+          "sourceKey": {
+            "found": true,
+            "label": "Cb major / Ab minor",
+            "mode": "major",
+            "tonic": 11,
+            "fifths": -7,
+            "presetValue": "sig--7",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--7",
+              "label": "Cb major / Ab minor",
+              "tonic": 11,
+              "fifths": -7,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "Eb major / C minor",
+          "targetPreset": {
+            "value": "sig--3",
+            "label": "Eb major / C minor",
+            "tonic": 3,
+            "fifths": -3,
+            "bias": "flat"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 13",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>bad</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>-1</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": -6,
+        "targetKey": "sig--3",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>6</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>C</root-step></root><bass><bass-step>F</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>E</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>3</fifths></key></attributes><note><pitch><step>D</step><octave>4</octave><alter>1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -6,
+          "sourceKey": {
+            "found": false,
+            "label": "Unknown",
+            "mode": "major",
+            "tonic": null,
+            "fifths": null,
+            "presetValue": null,
+            "bias": "sharp",
+            "inferredPreset": null
+          },
+          "targetKeyLabel": "F# major / D# minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 14",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>-2</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": 12,
+        "targetKey": "sig-7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>E</root-step></root><bass><bass-step>A</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>1</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>7</fifths></key></attributes><note><pitch><step>G</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -2,
+          "sourceKey": {
+            "found": true,
+            "label": "Eb major / C minor",
+            "mode": "major",
+            "tonic": 3,
+            "fifths": -3,
+            "presetValue": "sig--3",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--3",
+              "label": "Eb major / C minor",
+              "tonic": 3,
+              "fifths": -3,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "C# major / A# minor",
+          "targetPreset": {
+            "value": "sig-7",
+            "label": "C# major / A# minor",
+            "tonic": 1,
+            "fifths": 7,
+            "bias": "sharp"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 15",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>7</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>2</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": 0,
+        "targetKey": "sig-0",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>7</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>F</root-step></root><bass><bass-step>B</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave><alter>-1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -1,
+          "sourceKey": {
+            "found": true,
+            "label": "C# major / A# minor",
+            "mode": "minor",
+            "tonic": 1,
+            "fifths": 7,
+            "presetValue": "sig-7",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-7",
+              "label": "C# major / A# minor",
+              "tonic": 1,
+              "fifths": 7,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "C major / A minor",
+          "targetPreset": {
+            "value": "sig-0",
+            "label": "C major / A minor",
+            "tonic": 0,
+            "fifths": 0,
+            "bias": "sharp"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 16",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>5</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>2</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": 12,
+        "targetKey": null,
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "error": {
+          "name": "Error",
+          "message": "Choose a target key before applying transpose."
+        }
+      }
+    },
+    {
+      "id": "case 17",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>7</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>-2</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": "bad",
+        "targetKey": "sig-0",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>7</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>-2</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 0,
+          "sourceKey": {
+            "found": true,
+            "label": "C# major / A# minor",
+            "mode": "minor",
+            "tonic": 1,
+            "fifths": 7,
+            "presetValue": "sig-7",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-7",
+              "label": "C# major / A# minor",
+              "tonic": 1,
+              "fifths": 7,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "C# major / A# minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 18",
+      "raw": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><key><fifths>1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>0</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+      "options": {
+        "mode": "key",
+        "semitones": 37,
+        "targetKey": "sig-0",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><key><fifths>1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>0</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+          "semitoneDelta": 5,
+          "sourceKey": {
+            "found": true,
+            "label": "G major / E minor",
+            "mode": "major",
+            "tonic": 7,
+            "fifths": 1,
+            "presetValue": "sig-1",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-1",
+              "label": "G major / E minor",
+              "tonic": 7,
+              "fifths": 1,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "C major / A minor",
+          "targetPreset": {
+            "value": "sig-0",
+            "label": "C major / A minor",
+            "tonic": 0,
+            "fifths": 0,
+            "bias": "sharp"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 19",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>-2</alter><octave>7</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": 37,
+        "targetKey": "sig-6",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-3</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step></root><bass><bass-step>D</bass-step><bass-alter>-1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><octave>10</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>4</fifths></key></attributes><note><pitch><step>A</step><octave>7</octave><alter>1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 37,
+          "sourceKey": {
+            "found": true,
+            "label": "D major / B minor",
+            "mode": "minor",
+            "tonic": 2,
+            "fifths": 2,
+            "presetValue": "sig-2",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-2",
+              "label": "D major / B minor",
+              "tonic": 2,
+              "fifths": 2,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "Eb major / C minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 20",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-6</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>1</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": -1,
+        "targetKey": "sig-6",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>F</root-step></root><bass><bass-step>B</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><octave>-2</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>2</fifths></key></attributes><note><pitch><step>G</step><octave>4</octave><alter>1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -1,
+          "sourceKey": {
+            "found": true,
+            "label": "Gb major / Eb minor",
+            "mode": "major",
+            "tonic": 6,
+            "fifths": -6,
+            "presetValue": "sig--6",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--6",
+              "label": "Gb major / Eb minor",
+              "tonic": 6,
+              "fifths": -6,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "F major / D minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 21",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>2</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": 0,
+        "targetKey": "sig--7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>C</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>-1</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 0,
+          "sourceKey": {
+            "found": true,
+            "label": "Eb major / C minor",
+            "mode": "major",
+            "tonic": 3,
+            "fifths": -3,
+            "presetValue": "sig--3",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--3",
+              "label": "Eb major / C minor",
+              "tonic": 3,
+              "fifths": -3,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "Eb major / C minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 22",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>1</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": -1,
+        "targetKey": null,
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "error": {
+          "name": "Error",
+          "message": "Choose a target key before applying transpose."
+        }
+      }
+    },
+    {
+      "id": "case 23",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>-1</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": -12,
+        "targetKey": null,
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>F</root-step><root-alter>1</root-alter></root><bass><bass-step>C</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>1</alter><octave>2</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>3</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -12,
+          "sourceKey": {
+            "found": true,
+            "label": "D major / B minor",
+            "mode": "minor",
+            "tonic": 2,
+            "fifths": 2,
+            "presetValue": "sig-2",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-2",
+              "label": "D major / B minor",
+              "tonic": 2,
+              "fifths": 2,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "D major / B minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 24",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>-1</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": -12,
+        "targetKey": "bad",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>C</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>-1</alter><octave>2</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>3</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -12,
+          "sourceKey": {
+            "found": true,
+            "label": "F major / D minor",
+            "mode": "major",
+            "tonic": 5,
+            "fifths": -1,
+            "presetValue": "sig--1",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--1",
+              "label": "F major / D minor",
+              "tonic": 5,
+              "fifths": -1,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "F major / D minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 25",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-3</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>-2</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "legacy-invalid",
+        "semitones": 1,
+        "targetKey": "sig-1",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>4</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step></root><bass><bass-step>C</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>4</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave><alter>1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 1,
+          "sourceKey": {
+            "found": true,
+            "label": "Eb major / C minor",
+            "mode": "minor",
+            "tonic": 3,
+            "fifths": -3,
+            "presetValue": "sig--3",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--3",
+              "label": "Eb major / C minor",
+              "tonic": 3,
+              "fifths": -3,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "E major / C# minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 26",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-7</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>1</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": -12,
+        "targetKey": "sig--7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-7</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>1</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 0,
+          "sourceKey": {
+            "found": true,
+            "label": "Cb major / Ab minor",
+            "mode": "major",
+            "tonic": 11,
+            "fifths": -7,
+            "presetValue": "sig--7",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--7",
+              "label": "Cb major / Ab minor",
+              "tonic": 11,
+              "fifths": -7,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "Cb major / Ab minor",
+          "targetPreset": {
+            "value": "sig--7",
+            "label": "Cb major / Ab minor",
+            "tonic": 11,
+            "fifths": -7,
+            "bias": "flat"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 27",
+      "raw": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><key><fifths>-1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>0</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+      "options": {
+        "mode": "key",
+        "semitones": -25,
+        "targetKey": "sig--3",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><key><fifths>-1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>0</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+          "semitoneDelta": -2,
+          "sourceKey": {
+            "found": true,
+            "label": "F major / D minor",
+            "mode": "major",
+            "tonic": 5,
+            "fifths": -1,
+            "presetValue": "sig--1",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--1",
+              "label": "F major / D minor",
+              "tonic": 5,
+              "fifths": -1,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "Eb major / C minor",
+          "targetPreset": {
+            "value": "sig--3",
+            "label": "Eb major / C minor",
+            "tonic": 3,
+            "fifths": -3,
+            "bias": "flat"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 28",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>0</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": -6,
+        "targetKey": "sig-6",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>A</root-step></root><bass><bass-step>D</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>1</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>C</step><octave>5</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 3,
+          "sourceKey": {
+            "found": true,
+            "label": "Eb major / C minor",
+            "mode": "major",
+            "tonic": 3,
+            "fifths": -3,
+            "presetValue": "sig--3",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--3",
+              "label": "Eb major / C minor",
+              "tonic": 3,
+              "fifths": -3,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "F# major / D# minor",
+          "targetPreset": {
+            "value": "sig-6",
+            "label": "F# major / D# minor",
+            "tonic": 6,
+            "fifths": 6,
+            "bias": "sharp"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 29",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>6</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>-2</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": "3.5",
+        "targetKey": "sig-1",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>3</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>A</root-step></root><bass><bass-step>D</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>1</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-6</fifths></key></attributes><note><pitch><step>C</step><octave>5</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 3,
+          "sourceKey": {
+            "found": true,
+            "label": "F# major / D# minor",
+            "mode": "major",
+            "tonic": 6,
+            "fifths": 6,
+            "presetValue": "sig-6",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-6",
+              "label": "F# major / D# minor",
+              "tonic": 6,
+              "fifths": 6,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "A major / F# minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 30",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-1</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>0</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "legacy-invalid",
+        "semitones": "3.5",
+        "targetKey": "bad",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-4</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>A</root-step></root><bass><bass-step>E</bass-step><bass-alter>-1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-6</fifths></key></attributes><note><pitch><step>C</step><octave>5</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 3,
+          "sourceKey": {
+            "found": true,
+            "label": "F major / D minor",
+            "mode": "minor",
+            "tonic": 5,
+            "fifths": -1,
+            "presetValue": "sig--1",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--1",
+              "label": "F major / D minor",
+              "tonic": 5,
+              "fifths": -1,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "Ab major / F minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 31",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>0</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": -1,
+        "targetKey": "sig-7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>7</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>F</root-step></root><bass><bass-step>B</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><octave>2</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>2</fifths></key></attributes><note><pitch><step>G</step><octave>4</octave><alter>1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -1,
+          "sourceKey": {
+            "found": true,
+            "label": "D major / B minor",
+            "mode": "major",
+            "tonic": 2,
+            "fifths": 2,
+            "presetValue": "sig-2",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-2",
+              "label": "D major / B minor",
+              "tonic": 2,
+              "fifths": 2,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "C# major / A# minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 32",
+      "raw": null,
+      "options": {
+        "mode": "semitone",
+        "semitones": 37,
+        "targetKey": "sig--3",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "error": {
+          "name": "Error",
+          "message": "This score is not available as raw MusicXML text, so transpose is disabled for it right now."
+        }
+      }
+    },
+    {
+      "id": "case 33",
+      "raw": "<score-partwise><broken>",
+      "options": {
+        "mode": "key",
+        "semitones": 0,
+        "targetKey": "sig-6",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "error": {
+          "name": "Error",
+          "message": "Could not parse MusicXML for transposition."
+        }
+      }
+    },
+    {
+      "id": "case 34",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-6</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>B</step><alter>-2</alter><octave>0</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": 12,
+        "targetKey": "bad",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>-6</fifths><mode>minor</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>C</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>A</step><octave>1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>5</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 12,
+          "sourceKey": {
+            "found": true,
+            "label": "Gb major / Eb minor",
+            "mode": "minor",
+            "tonic": 6,
+            "fifths": -6,
+            "presetValue": "sig--6",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--6",
+              "label": "Gb major / Eb minor",
+              "tonic": 6,
+              "fifths": -6,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "Gb major / Eb minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 35",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>1</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": "bad",
+        "targetKey": "sig-7",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>E</root-step></root><bass><bass-step>A</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>1</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>G</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -2,
+          "sourceKey": {
+            "found": true,
+            "label": "Eb major / C minor",
+            "mode": "major",
+            "tonic": 3,
+            "fifths": -3,
+            "presetValue": "sig--3",
+            "bias": "flat",
+            "inferredPreset": {
+              "value": "sig--3",
+              "label": "Eb major / C minor",
+              "tonic": 3,
+              "fifths": -3,
+              "bias": "flat"
+            }
+          },
+          "targetKeyLabel": "C# major / A# minor",
+          "targetPreset": {
+            "value": "sig-7",
+            "label": "C# major / A# minor",
+            "tonic": 1,
+            "fifths": 7,
+            "bias": "sharp"
+          }
+        }
+      }
+    },
+    {
+      "id": "case 36",
+      "raw": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><key><fifths>1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>0</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+      "options": {
+        "mode": "semitone",
+        "semitones": -12,
+        "targetKey": "sig-7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-timewise><measure number=\"1\"><part id=\"P1\"><attributes><key><fifths>1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>0</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></part></measure></score-timewise>",
+          "semitoneDelta": -12,
+          "sourceKey": {
+            "found": true,
+            "label": "G major / E minor",
+            "mode": "major",
+            "tonic": 7,
+            "fifths": 1,
+            "presetValue": "sig-1",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-1",
+              "label": "G major / E minor",
+              "tonic": 7,
+              "fifths": 1,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "G major / E minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 37",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>1</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>-1</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "legacy-invalid",
+        "semitones": 6,
+        "targetKey": "sig--7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": true
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>7</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>C</root-step></root><bass><bass-step>F</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>A</step><alter>1</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>3</fifths></key></attributes><note><pitch><step>D</step><octave>5</octave><alter>1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 6,
+          "sourceKey": {
+            "found": true,
+            "label": "G major / E minor",
+            "mode": "major",
+            "tonic": 7,
+            "fifths": 1,
+            "presetValue": "sig-1",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-1",
+              "label": "G major / E minor",
+              "tonic": 7,
+              "fifths": 1,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "C# major / A# minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 38",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>0</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>2</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "legacy-invalid",
+        "semitones": -6,
+        "targetKey": "sig-7",
+        "updateKeySignature": true,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>6</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>C</root-step></root><bass><bass-step>F</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>C</step><alter>1</alter><octave>3</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>3</fifths></key></attributes><note><pitch><step>D</step><octave>4</octave><alter>1</alter></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": -6,
+          "sourceKey": {
+            "found": true,
+            "label": "C major / A minor",
+            "mode": "major",
+            "tonic": 0,
+            "fifths": 0,
+            "presetValue": "sig-0",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-0",
+              "label": "C major / A minor",
+              "tonic": 0,
+              "fifths": 0,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "F# major / D# minor",
+          "targetPreset": null
+        }
+      }
+    },
+    {
+      "id": "case 39",
+      "raw": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>G</root-step><root-alter>-1</root-alter></root><bass><bass-step>B</bass-step><bass-alter>1</bass-alter></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>D</step><alter>-1</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>A</step><octave>4</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+      "options": {
+        "mode": "key",
+        "semitones": 6,
+        "targetKey": "sig-1",
+        "updateKeySignature": false,
+        "forceKeySignatureUpdate": false
+      },
+      "expected": {
+        "result": {
+          "xmlString": "<?xml version=\"1.0\"?><score-partwise><part id=\"P1\"><measure number=\"1\"><attributes><key><fifths>2</fifths><mode>major</mode></key><divisions>4</divisions><time><beats>3</beats><beat-type>8</beat-type></time></attributes><harmony><root><root-step>B</root-step></root><bass><bass-step>F</bass-step></bass><kind>major</kind></harmony><note print-object=\"no\"><grace/><pitch><step>F</step><alter>1</alter><octave>-1</octave></pitch><duration>2</duration><type>eighth</type><tie type=\"start\"/><beam number=\"1\">begin</beam><notations><slur type=\"start\"/></notations></note><note><rest/><duration>2</duration></note><note><unpitched><display-step>C</display-step><display-octave>4</display-octave></unpitched><duration>2</duration></note><barline><repeat direction=\"backward\"/></barline></measure><measure number=\"2\"><attributes><key><fifths>-3</fifths></key></attributes><note><pitch><step>D</step><octave>5</octave></pitch><duration>4</duration></note></measure></part></score-partwise>",
+          "semitoneDelta": 5,
+          "sourceKey": {
+            "found": true,
+            "label": "D major / B minor",
+            "mode": "major",
+            "tonic": 2,
+            "fifths": 2,
+            "presetValue": "sig-2",
+            "bias": "sharp",
+            "inferredPreset": {
+              "value": "sig-2",
+              "label": "D major / B minor",
+              "tonic": 2,
+              "fifths": 2,
+              "bias": "sharp"
+            }
+          },
+          "targetKeyLabel": "G major / E minor",
+          "targetPreset": {
+            "value": "sig-1",
+            "label": "G major / E minor",
+            "tonic": 7,
+            "fifths": 1,
+            "bias": "sharp"
+          }
+        }
+      }
+    }
+  ]
+}

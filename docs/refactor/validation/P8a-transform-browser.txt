@@ -1,0 +1,845 @@
+P8a converter/transpose browser checks — 2026-10-03
+Baseline e91ca87; actual browser/local server :8081.
+Total 761 passed checks.
+
+Test execution note: the first no-op traversal attempt overlapped the default traversal preference restoration and failed its existing WLED preference assertion. Both fixtures restore preferences on completion/pagehide; closing them and rerunning no-op serially passed all 33 unchanged assertions. No production change or reduced assertion. Other fixtures do not persist these preferences.
+Expected invalid XML console error/alert and original success console.error log retained. Existing injected MutationObserver non-Node error and browser MIDI permission warning match baseline. Physical devices/audible synchronization not verified.
+
+=== loader default ===
+PASS native FileReader preserves MusicXML text
+PASS direct XML selection installs original metadata
+PASS XML load paints the actual first OSMD event
+PASS XML render creates actual SVG
+PASS XML keeps original transpose source
+PASS native file input change loads and clears its selected value
+PASS native FileReader keeps MXL binary
+PASS MXL render keeps original compressed bytes
+PASS deflated MXL extracts container-selected XML only for transpose
+PASS valid MXL extraction does not initialize the converter
+PASS original MXL renders the same first event
+PASS actual transpose controller reloads a two-semitone score
+PASS transpose preserves its original MXL source metadata
+PASS transpose reload preserves existing speed
+PASS transpose reset restores the original pitches
+PASS transpose reset preserves original source and speed
+PASS invalid XML alerts once and rejects the load promise
+PASS failed import preserves old metadata after stopping playback
+WORKERS BEFORE MIDI {"created":1,"terminated":0,"live":1,"urls":["blob:http://127.0.0.1:8081/f74ddd5a-a33b-4065-8707-85ceb5010cee"]}
+PASS actual MIDI converter dispatch loads exported MusicXML
+PASS converter metadata retains original base title
+PASS converted score renders and enables transpose
+PASS local WASM relative path responds after actual successful conversion
+RESOURCES {"wasm":{"url":"http://127.0.0.1:8081/assets/vendor/webmscore/webmscore.lib.wasm","status":200},"frame":[{"name":"http://127.0.0.1:8081/docs/testing/webmscore-worker-fixture.js","duration":2.5999999046325684},{"name":"http://127.0.0.1:8081/js/generated/score/webmscore-adapter.js?v=1.2.4","duration":1.6999998092651367},{"name":"http://127.0.0.1:8081/assets/vendor/webmscore/webmscore.js","duration":3.799999952316284}]}
+WORKERS BEFORE DISPOSE {"created":2,"terminated":0,"live":2,"urls":["blob:http://127.0.0.1:8081/f74ddd5a-a33b-4065-8707-85ceb5010cee","blob:http://127.0.0.1:8081/fdb77168-f2e7-4e5c-8a6a-9bbb30de899e"]}
+PASS ordinary conversion preserves the original soft destroy worker lifetime
+PASS explicit converter disposal terminates the owned worker once and preserves existing workers
+PASS converter can start a fresh worker after explicit disposal
+PASS reinitialized converter releases its fresh worker
+WORKERS {"created":3,"terminated":2,"live":1,"urls":["blob:http://127.0.0.1:8081/f74ddd5a-a33b-4065-8707-85ceb5010cee","blob:http://127.0.0.1:8081/fdb77168-f2e7-4e5c-8a6a-9bbb30de899e","blob:http://127.0.0.1:8081/a631d6d6-15b6-43a4-92a5-ac5ce7df96d5"]}
+PASS file controls dispose and reinitialize their actual input
+PASS loader completes with default/no-op LED composition
+DONE
+
+=== transpose default ===
+PASS native XML case 0 matches e91ca87
+PASS native XML case 1 matches e91ca87
+PASS native XML case 2 matches e91ca87
+PASS native XML case 3 matches e91ca87
+PASS native XML case 4 matches e91ca87
+PASS native XML case 5 matches e91ca87
+PASS native XML case 6 matches e91ca87
+PASS native XML case 7 matches e91ca87
+PASS native XML case 8 matches e91ca87
+PASS native XML case 9 matches e91ca87
+PASS native XML case 10 matches e91ca87
+PASS native XML case 11 matches e91ca87
+PASS native XML case 12 matches e91ca87
+PASS native XML case 13 matches e91ca87
+PASS native XML case 14 matches e91ca87
+PASS native XML case 15 matches e91ca87
+PASS native XML case 16 matches e91ca87
+PASS native XML case 17 matches e91ca87
+PASS native XML case 18 matches e91ca87
+PASS native XML case 19 matches e91ca87
+PASS native XML case 20 matches e91ca87
+PASS native XML case 21 matches e91ca87
+PASS native XML case 22 matches e91ca87
+PASS native XML case 23 matches e91ca87
+PASS native XML case 24 matches e91ca87
+PASS native XML case 25 matches e91ca87
+PASS native XML case 26 matches e91ca87
+PASS native XML case 27 matches e91ca87
+PASS native XML case 28 matches e91ca87
+PASS native XML case 29 matches e91ca87
+PASS native XML case 30 matches e91ca87
+PASS native XML case 31 matches e91ca87
+PASS native XML case 32 matches e91ca87
+PASS native XML case 33 matches e91ca87
+PASS native XML case 34 matches e91ca87
+PASS native XML case 35 matches e91ca87
+PASS native XML case 36 matches e91ca87
+PASS native XML case 37 matches e91ca87
+PASS native XML case 38 matches e91ca87
+PASS native XML case 39 matches e91ca87
+PASS initial controls report unavailable without a score
+PASS load enables controls with original preset list
+PASS native key Apply rejects the original matching signature
+PASS native mode and slider events update typed state
+PASS repeated init gives one load and the original positive status
+PASS button Apply preserves original metadata and speed
+PASS repeated Apply starts from original and keeps unchecked key signature
+PASS native Reset restores original pitch, preset and status
+PASS Reset preserves state identity, source and speed
+PASS explicit disposal removes actual UI listeners
+PASS controls reinitialize after explicit disposal
+PASS transpose runs with default/no-op LED composition
+DONE
+
+=== loader no-op ===
+PASS native FileReader preserves MusicXML text
+PASS direct XML selection installs original metadata
+PASS XML load paints the actual first OSMD event
+PASS XML render creates actual SVG
+PASS XML keeps original transpose source
+PASS native file input change loads and clears its selected value
+PASS native FileReader keeps MXL binary
+PASS MXL render keeps original compressed bytes
+PASS deflated MXL extracts container-selected XML only for transpose
+PASS valid MXL extraction does not initialize the converter
+PASS original MXL renders the same first event
+PASS actual transpose controller reloads a two-semitone score
+PASS transpose preserves its original MXL source metadata
+PASS transpose reload preserves existing speed
+PASS transpose reset restores the original pitches
+PASS transpose reset preserves original source and speed
+PASS invalid XML alerts once and rejects the load promise
+PASS failed import preserves old metadata after stopping playback
+WORKERS BEFORE MIDI {"created":1,"terminated":0,"live":1,"urls":["blob:http://127.0.0.1:8081/cab159ea-292a-4d08-87f3-57df4c7bc520"]}
+PASS actual MIDI converter dispatch loads exported MusicXML
+PASS converter metadata retains original base title
+PASS converted score renders and enables transpose
+PASS local WASM relative path responds after actual successful conversion
+RESOURCES {"wasm":{"url":"http://127.0.0.1:8081/assets/vendor/webmscore/webmscore.lib.wasm","status":200},"frame":[{"name":"http://127.0.0.1:8081/docs/testing/webmscore-worker-fixture.js","duration":3.3999998569488525},{"name":"http://127.0.0.1:8081/js/generated/score/webmscore-adapter.js?v=1.2.4","duration":1.8999998569488525},{"name":"http://127.0.0.1:8081/assets/vendor/webmscore/webmscore.js","duration":16.5}]}
+WORKERS BEFORE DISPOSE {"created":2,"terminated":0,"live":2,"urls":["blob:http://127.0.0.1:8081/cab159ea-292a-4d08-87f3-57df4c7bc520","blob:http://127.0.0.1:8081/ea0b53ea-f614-4b2f-bd6e-840de20e1bf2"]}
+PASS ordinary conversion preserves the original soft destroy worker lifetime
+PASS explicit converter disposal terminates the owned worker once and preserves existing workers
+PASS converter can start a fresh worker after explicit disposal
+PASS reinitialized converter releases its fresh worker
+WORKERS {"created":3,"terminated":2,"live":1,"urls":["blob:http://127.0.0.1:8081/cab159ea-292a-4d08-87f3-57df4c7bc520","blob:http://127.0.0.1:8081/ea0b53ea-f614-4b2f-bd6e-840de20e1bf2","blob:http://127.0.0.1:8081/ecf39d8b-cd9a-4c33-ab59-6d0980e7f78a"]}
+PASS file controls dispose and reinitialize their actual input
+PASS loader completes with default/no-op LED composition
+DONE
+
+=== transpose no-op ===
+PASS native XML case 0 matches e91ca87
+PASS native XML case 1 matches e91ca87
+PASS native XML case 2 matches e91ca87
+PASS native XML case 3 matches e91ca87
+PASS native XML case 4 matches e91ca87
+PASS native XML case 5 matches e91ca87
+PASS native XML case 6 matches e91ca87
+PASS native XML case 7 matches e91ca87
+PASS native XML case 8 matches e91ca87
+PASS native XML case 9 matches e91ca87
+PASS native XML case 10 matches e91ca87
+PASS native XML case 11 matches e91ca87
+PASS native XML case 12 matches e91ca87
+PASS native XML case 13 matches e91ca87
+PASS native XML case 14 matches e91ca87
+PASS native XML case 15 matches e91ca87
+PASS native XML case 16 matches e91ca87
+PASS native XML case 17 matches e91ca87
+PASS native XML case 18 matches e91ca87
+PASS native XML case 19 matches e91ca87
+PASS native XML case 20 matches e91ca87
+PASS native XML case 21 matches e91ca87
+PASS native XML case 22 matches e91ca87
+PASS native XML case 23 matches e91ca87
+PASS native XML case 24 matches e91ca87
+PASS native XML case 25 matches e91ca87
+PASS native XML case 26 matches e91ca87
+PASS native XML case 27 matches e91ca87
+PASS native XML case 28 matches e91ca87
+PASS native XML case 29 matches e91ca87
+PASS native XML case 30 matches e91ca87
+PASS native XML case 31 matches e91ca87
+PASS native XML case 32 matches e91ca87
+PASS native XML case 33 matches e91ca87
+PASS native XML case 34 matches e91ca87
+PASS native XML case 35 matches e91ca87
+PASS native XML case 36 matches e91ca87
+PASS native XML case 37 matches e91ca87
+PASS native XML case 38 matches e91ca87
+PASS native XML case 39 matches e91ca87
+PASS initial controls report unavailable without a score
+PASS load enables controls with original preset list
+PASS native key Apply rejects the original matching signature
+PASS native mode and slider events update typed state
+PASS repeated init gives one load and the original positive status
+PASS button Apply preserves original metadata and speed
+PASS repeated Apply starts from original and keeps unchecked key signature
+PASS native Reset restores original pitch, preset and status
+PASS Reset preserves state identity, source and speed
+PASS explicit disposal removes actual UI listeners
+PASS controls reinitialize after explicit disposal
+PASS transpose runs with default/no-op LED composition
+DONE
+
+=== playback-baseline ===
+PASS wait/traditional: toolbar Play enters count-in once
+PASS wait/traditional: timeline build preserves pre-play viewport
+PASS wait/traditional: count-in handoff paints current event and prefetches next
+PASS wait/traditional: started event builds both staff expectations
+PASS wait/traditional: wrong input grades without advancing immediately
+PASS wait/traditional: original first event delay advances actual cursor
+PASS wait/traditional: correct or missed chord grading keeps original counts
+PASS wait/traditional: speed change affects subsequent beat window with original mode rounding
+PASS wait/traditional: toolbar Pause gates the existing pending callback
+PASS wait/traditional: resume starts from original prefetched iterator position
+PASS wait/traditional: rapid Play/Pause keeps stopped count-in handoff gated
+PASS wait/traditional: toolbar Reset restores first cursor and clears score
+PASS wait/traditional: Loop boundary grades then seeks and restarts with reset score
+PASS wait/traditional: Loop count-in postpones restart handoff
+PASS wait/traditional: Loop count-in resumes one coordinator at the loop start
+PASS wait/traditional: Reset respects the UI Loop minimum
+PASS wait/traditional: coordinator follows actual repeat and first/second endings
+PASS wait/traditional: song end pauses and retains final iterator
+PASS wait/traditional: repeat traversal visits the original number of timed events
+SNAPSHOT wait/traditional [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS wait/traditional: switching song while playing stops and installs the new score
+PASS wait/traditional: old pending callback remains gated after song switch
+PASS follow/traditional: toolbar Play enters count-in once
+PASS follow/traditional: timeline build preserves pre-play viewport
+PASS follow/traditional: count-in handoff paints current event and prefetches next
+PASS follow/traditional: started event builds both staff expectations
+PASS follow/traditional: wrong input grades without advancing immediately
+PASS follow/traditional: original first event delay advances actual cursor
+PASS follow/traditional: correct or missed chord grading keeps original counts
+PASS follow/traditional: speed change affects subsequent beat window with original mode rounding
+PASS follow/traditional: toolbar Pause gates the existing pending callback
+PASS follow/traditional: resume starts from original prefetched iterator position
+PASS follow/traditional: rapid Play/Pause keeps stopped count-in handoff gated
+PASS follow/traditional: toolbar Reset restores first cursor and clears score
+PASS follow/traditional: Loop boundary grades then seeks and restarts with reset score
+PASS follow/traditional: Loop count-in postpones restart handoff
+PASS follow/traditional: Loop count-in resumes one coordinator at the loop start
+PASS follow/traditional: Reset respects the UI Loop minimum
+PASS follow/traditional: coordinator follows actual repeat and first/second endings
+PASS follow/traditional: song end pauses and retains final iterator
+PASS follow/traditional: repeat traversal visits the original number of timed events
+SNAPSHOT follow/traditional [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS follow/traditional: switching song while playing stops and installs the new score
+PASS follow/traditional: old pending callback remains gated after song switch
+PASS realtime/traditional: toolbar Play enters count-in once
+PASS realtime/traditional: timeline build preserves pre-play viewport
+PASS realtime/traditional: count-in handoff paints current event and prefetches next
+PASS realtime/traditional: started event builds both staff expectations
+PASS realtime/traditional: wrong input grades without advancing immediately
+PASS realtime/traditional: original first event delay advances actual cursor
+PASS realtime/traditional: correct or missed chord grading keeps original counts
+PASS realtime/traditional: speed change affects subsequent beat window with original mode rounding
+PASS realtime/traditional: toolbar Pause gates the existing pending callback
+PASS realtime/traditional: resume starts from original prefetched iterator position
+PASS realtime/traditional: rapid Play/Pause keeps stopped count-in handoff gated
+PASS realtime/traditional: toolbar Reset restores first cursor and clears score
+PASS realtime/traditional: Loop boundary grades then seeks and restarts with reset score
+PASS realtime/traditional: Loop count-in postpones restart handoff
+PASS realtime/traditional: Loop count-in resumes one coordinator at the loop start
+PASS realtime/traditional: Reset respects the UI Loop minimum
+PASS realtime/traditional: coordinator follows actual repeat and first/second endings
+PASS realtime/traditional: song end pauses and retains final iterator
+PASS realtime/traditional: repeat traversal visits the original number of timed events
+SNAPSHOT realtime/traditional [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS realtime/traditional: switching song while playing stops and installs the new score
+PASS realtime/traditional: old pending callback remains gated after song switch
+PASS wait/horizontal: toolbar Play enters count-in once
+PASS wait/horizontal: timeline build preserves pre-play viewport
+PASS wait/horizontal: count-in handoff paints current event and prefetches next
+PASS wait/horizontal: started event builds both staff expectations
+PASS wait/horizontal: wrong input grades without advancing immediately
+PASS wait/horizontal: original first event delay advances actual cursor
+PASS wait/horizontal: correct or missed chord grading keeps original counts
+PASS wait/horizontal: speed change affects subsequent beat window with original mode rounding
+PASS wait/horizontal: toolbar Pause gates the existing pending callback
+PASS wait/horizontal: resume starts from original prefetched iterator position
+PASS wait/horizontal: rapid Play/Pause keeps stopped count-in handoff gated
+PASS wait/horizontal: toolbar Reset restores first cursor and clears score
+PASS wait/horizontal: Loop boundary grades then seeks and restarts with reset score
+PASS wait/horizontal: Loop count-in postpones restart handoff
+PASS wait/horizontal: Loop count-in resumes one coordinator at the loop start
+PASS wait/horizontal: Reset respects the UI Loop minimum
+PASS wait/horizontal: coordinator follows actual repeat and first/second endings
+PASS wait/horizontal: song end pauses and retains final iterator
+PASS wait/horizontal: repeat traversal visits the original number of timed events
+SNAPSHOT wait/horizontal [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS wait/horizontal: switching song while playing stops and installs the new score
+PASS wait/horizontal: old pending callback remains gated after song switch
+PASS follow/horizontal: toolbar Play enters count-in once
+PASS follow/horizontal: timeline build preserves pre-play viewport
+PASS follow/horizontal: count-in handoff paints current event and prefetches next
+PASS follow/horizontal: started event builds both staff expectations
+PASS follow/horizontal: wrong input grades without advancing immediately
+PASS follow/horizontal: original first event delay advances actual cursor
+PASS follow/horizontal: correct or missed chord grading keeps original counts
+PASS follow/horizontal: speed change affects subsequent beat window with original mode rounding
+PASS follow/horizontal: toolbar Pause gates the existing pending callback
+PASS follow/horizontal: resume starts from original prefetched iterator position
+PASS follow/horizontal: rapid Play/Pause keeps stopped count-in handoff gated
+PASS follow/horizontal: toolbar Reset restores first cursor and clears score
+PASS follow/horizontal: Loop boundary grades then seeks and restarts with reset score
+PASS follow/horizontal: Loop count-in postpones restart handoff
+PASS follow/horizontal: Loop count-in resumes one coordinator at the loop start
+PASS follow/horizontal: Reset respects the UI Loop minimum
+PASS follow/horizontal: coordinator follows actual repeat and first/second endings
+PASS follow/horizontal: song end pauses and retains final iterator
+PASS follow/horizontal: repeat traversal visits the original number of timed events
+SNAPSHOT follow/horizontal [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS follow/horizontal: switching song while playing stops and installs the new score
+PASS follow/horizontal: old pending callback remains gated after song switch
+PASS realtime/horizontal: toolbar Play enters count-in once
+PASS realtime/horizontal: timeline build preserves pre-play viewport
+PASS realtime/horizontal: count-in handoff paints current event and prefetches next
+PASS realtime/horizontal: started event builds both staff expectations
+PASS realtime/horizontal: wrong input grades without advancing immediately
+PASS realtime/horizontal: original first event delay advances actual cursor
+PASS realtime/horizontal: correct or missed chord grading keeps original counts
+PASS realtime/horizontal: speed change affects subsequent beat window with original mode rounding
+PASS realtime/horizontal: toolbar Pause gates the existing pending callback
+PASS realtime/horizontal: resume starts from original prefetched iterator position
+PASS realtime/horizontal: rapid Play/Pause keeps stopped count-in handoff gated
+PASS realtime/horizontal: toolbar Reset restores first cursor and clears score
+PASS realtime/horizontal: Loop boundary grades then seeks and restarts with reset score
+PASS realtime/horizontal: Loop count-in postpones restart handoff
+PASS realtime/horizontal: Loop count-in resumes one coordinator at the loop start
+PASS realtime/horizontal: Reset respects the UI Loop minimum
+PASS realtime/horizontal: coordinator follows actual repeat and first/second endings
+PASS realtime/horizontal: song end pauses and retains final iterator
+PASS realtime/horizontal: repeat traversal visits the original number of timed events
+SNAPSHOT realtime/horizontal [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS realtime/horizontal: switching song while playing stops and installs the new score
+PASS realtime/horizontal: old pending callback remains gated after song switch
+PASS playback matrix completes with the selected default/no-op LED port
+DONE
+
+=== playback-baseline?led=off ===
+PASS wait/traditional: toolbar Play enters count-in once
+PASS wait/traditional: timeline build preserves pre-play viewport
+PASS wait/traditional: count-in handoff paints current event and prefetches next
+PASS wait/traditional: started event builds both staff expectations
+PASS wait/traditional: wrong input grades without advancing immediately
+PASS wait/traditional: original first event delay advances actual cursor
+PASS wait/traditional: correct or missed chord grading keeps original counts
+PASS wait/traditional: speed change affects subsequent beat window with original mode rounding
+PASS wait/traditional: toolbar Pause gates the existing pending callback
+PASS wait/traditional: resume starts from original prefetched iterator position
+PASS wait/traditional: rapid Play/Pause keeps stopped count-in handoff gated
+PASS wait/traditional: toolbar Reset restores first cursor and clears score
+PASS wait/traditional: Loop boundary grades then seeks and restarts with reset score
+PASS wait/traditional: Loop count-in postpones restart handoff
+PASS wait/traditional: Loop count-in resumes one coordinator at the loop start
+PASS wait/traditional: Reset respects the UI Loop minimum
+PASS wait/traditional: coordinator follows actual repeat and first/second endings
+PASS wait/traditional: song end pauses and retains final iterator
+PASS wait/traditional: repeat traversal visits the original number of timed events
+SNAPSHOT wait/traditional [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS wait/traditional: switching song while playing stops and installs the new score
+PASS wait/traditional: old pending callback remains gated after song switch
+PASS follow/traditional: toolbar Play enters count-in once
+PASS follow/traditional: timeline build preserves pre-play viewport
+PASS follow/traditional: count-in handoff paints current event and prefetches next
+PASS follow/traditional: started event builds both staff expectations
+PASS follow/traditional: wrong input grades without advancing immediately
+PASS follow/traditional: original first event delay advances actual cursor
+PASS follow/traditional: correct or missed chord grading keeps original counts
+PASS follow/traditional: speed change affects subsequent beat window with original mode rounding
+PASS follow/traditional: toolbar Pause gates the existing pending callback
+PASS follow/traditional: resume starts from original prefetched iterator position
+PASS follow/traditional: rapid Play/Pause keeps stopped count-in handoff gated
+PASS follow/traditional: toolbar Reset restores first cursor and clears score
+PASS follow/traditional: Loop boundary grades then seeks and restarts with reset score
+PASS follow/traditional: Loop count-in postpones restart handoff
+PASS follow/traditional: Loop count-in resumes one coordinator at the loop start
+PASS follow/traditional: Reset respects the UI Loop minimum
+PASS follow/traditional: coordinator follows actual repeat and first/second endings
+PASS follow/traditional: song end pauses and retains final iterator
+PASS follow/traditional: repeat traversal visits the original number of timed events
+SNAPSHOT follow/traditional [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS follow/traditional: switching song while playing stops and installs the new score
+PASS follow/traditional: old pending callback remains gated after song switch
+PASS realtime/traditional: toolbar Play enters count-in once
+PASS realtime/traditional: timeline build preserves pre-play viewport
+PASS realtime/traditional: count-in handoff paints current event and prefetches next
+PASS realtime/traditional: started event builds both staff expectations
+PASS realtime/traditional: wrong input grades without advancing immediately
+PASS realtime/traditional: original first event delay advances actual cursor
+PASS realtime/traditional: correct or missed chord grading keeps original counts
+PASS realtime/traditional: speed change affects subsequent beat window with original mode rounding
+PASS realtime/traditional: toolbar Pause gates the existing pending callback
+PASS realtime/traditional: resume starts from original prefetched iterator position
+PASS realtime/traditional: rapid Play/Pause keeps stopped count-in handoff gated
+PASS realtime/traditional: toolbar Reset restores first cursor and clears score
+PASS realtime/traditional: Loop boundary grades then seeks and restarts with reset score
+PASS realtime/traditional: Loop count-in postpones restart handoff
+PASS realtime/traditional: Loop count-in resumes one coordinator at the loop start
+PASS realtime/traditional: Reset respects the UI Loop minimum
+PASS realtime/traditional: coordinator follows actual repeat and first/second endings
+PASS realtime/traditional: song end pauses and retains final iterator
+PASS realtime/traditional: repeat traversal visits the original number of timed events
+SNAPSHOT realtime/traditional [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS realtime/traditional: switching song while playing stops and installs the new score
+PASS realtime/traditional: old pending callback remains gated after song switch
+PASS wait/horizontal: toolbar Play enters count-in once
+PASS wait/horizontal: timeline build preserves pre-play viewport
+PASS wait/horizontal: count-in handoff paints current event and prefetches next
+PASS wait/horizontal: started event builds both staff expectations
+PASS wait/horizontal: wrong input grades without advancing immediately
+PASS wait/horizontal: original first event delay advances actual cursor
+PASS wait/horizontal: correct or missed chord grading keeps original counts
+PASS wait/horizontal: speed change affects subsequent beat window with original mode rounding
+PASS wait/horizontal: toolbar Pause gates the existing pending callback
+PASS wait/horizontal: resume starts from original prefetched iterator position
+PASS wait/horizontal: rapid Play/Pause keeps stopped count-in handoff gated
+PASS wait/horizontal: toolbar Reset restores first cursor and clears score
+PASS wait/horizontal: Loop boundary grades then seeks and restarts with reset score
+PASS wait/horizontal: Loop count-in postpones restart handoff
+PASS wait/horizontal: Loop count-in resumes one coordinator at the loop start
+PASS wait/horizontal: Reset respects the UI Loop minimum
+PASS wait/horizontal: coordinator follows actual repeat and first/second endings
+PASS wait/horizontal: song end pauses and retains final iterator
+PASS wait/horizontal: repeat traversal visits the original number of timed events
+SNAPSHOT wait/horizontal [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS wait/horizontal: switching song while playing stops and installs the new score
+PASS wait/horizontal: old pending callback remains gated after song switch
+PASS follow/horizontal: toolbar Play enters count-in once
+PASS follow/horizontal: timeline build preserves pre-play viewport
+PASS follow/horizontal: count-in handoff paints current event and prefetches next
+PASS follow/horizontal: started event builds both staff expectations
+PASS follow/horizontal: wrong input grades without advancing immediately
+PASS follow/horizontal: original first event delay advances actual cursor
+PASS follow/horizontal: correct or missed chord grading keeps original counts
+PASS follow/horizontal: speed change affects subsequent beat window with original mode rounding
+PASS follow/horizontal: toolbar Pause gates the existing pending callback
+PASS follow/horizontal: resume starts from original prefetched iterator position
+PASS follow/horizontal: rapid Play/Pause keeps stopped count-in handoff gated
+PASS follow/horizontal: toolbar Reset restores first cursor and clears score
+PASS follow/horizontal: Loop boundary grades then seeks and restarts with reset score
+PASS follow/horizontal: Loop count-in postpones restart handoff
+PASS follow/horizontal: Loop count-in resumes one coordinator at the loop start
+PASS follow/horizontal: Reset respects the UI Loop minimum
+PASS follow/horizontal: coordinator follows actual repeat and first/second endings
+PASS follow/horizontal: song end pauses and retains final iterator
+PASS follow/horizontal: repeat traversal visits the original number of timed events
+SNAPSHOT follow/horizontal [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS follow/horizontal: switching song while playing stops and installs the new score
+PASS follow/horizontal: old pending callback remains gated after song switch
+PASS realtime/horizontal: toolbar Play enters count-in once
+PASS realtime/horizontal: timeline build preserves pre-play viewport
+PASS realtime/horizontal: count-in handoff paints current event and prefetches next
+PASS realtime/horizontal: started event builds both staff expectations
+PASS realtime/horizontal: wrong input grades without advancing immediately
+PASS realtime/horizontal: original first event delay advances actual cursor
+PASS realtime/horizontal: correct or missed chord grading keeps original counts
+PASS realtime/horizontal: speed change affects subsequent beat window with original mode rounding
+PASS realtime/horizontal: toolbar Pause gates the existing pending callback
+PASS realtime/horizontal: resume starts from original prefetched iterator position
+PASS realtime/horizontal: rapid Play/Pause keeps stopped count-in handoff gated
+PASS realtime/horizontal: toolbar Reset restores first cursor and clears score
+PASS realtime/horizontal: Loop boundary grades then seeks and restarts with reset score
+PASS realtime/horizontal: Loop count-in postpones restart handoff
+PASS realtime/horizontal: Loop count-in resumes one coordinator at the loop start
+PASS realtime/horizontal: Reset respects the UI Loop minimum
+PASS realtime/horizontal: coordinator follows actual repeat and first/second endings
+PASS realtime/horizontal: song end pauses and retains final iterator
+PASS realtime/horizontal: repeat traversal visits the original number of timed events
+SNAPSHOT realtime/horizontal [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS realtime/horizontal: switching song while playing stops and installs the new score
+PASS realtime/horizontal: old pending callback remains gated after song switch
+PASS playback matrix completes with the selected default/no-op LED port
+DONE
+
+=== input-baseline ===
+PASS traditional: same pitch across actual piano staves retains two source identities
+PASS traditional: DOM mouse press grades only one chord candidate
+PASS traditional: duplicate DOM down is suppressed by the existing virtual key guard
+PASS traditional: DOM mouse release clears physical input
+PASS traditional: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS traditional: already-hit re-press remains ungraded
+PASS traditional: final chord note completes all expectations
+PASS traditional: DOM and MIDI enter one controller with their original source metadata
+PASS traditional: wrong release transfers the same feedback marker to history
+PASS traditional: virtual pointer cancel releases through the shared controller
+PASS traditional: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS traditional: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS traditional: accompaniment pitch input retains original wrong-note semantics
+PASS traditional: hidden source note creates no expectation
+PASS traditional: cue source note creates no expectation
+PASS traditional: duplicate same-staff pitch merges into one expectation
+PASS traditional: actual tied source combines the original sustain duration
+PASS traditional: tie continuation skips attack matching while active sustain accepts repeats
+PASS traditional: tie sustain re-press does not change scoring
+PASS traditional: small keyboard reports out-of-range notes without expectations
+PASS horizontal: same pitch across actual piano staves retains two source identities
+PASS horizontal: DOM mouse press grades only one chord candidate
+PASS horizontal: duplicate DOM down is suppressed by the existing virtual key guard
+PASS horizontal: DOM mouse release clears physical input
+PASS horizontal: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS horizontal: already-hit re-press remains ungraded
+PASS horizontal: final chord note completes all expectations
+PASS horizontal: DOM and MIDI enter one controller with their original source metadata
+PASS horizontal: wrong release transfers the same feedback marker to history
+PASS horizontal: virtual pointer cancel releases through the shared controller
+PASS horizontal: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS horizontal: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS horizontal: accompaniment pitch input retains original wrong-note semantics
+PASS horizontal: hidden source note creates no expectation
+PASS horizontal: cue source note creates no expectation
+PASS horizontal: duplicate same-staff pitch merges into one expectation
+PASS horizontal: actual tied source combines the original sustain duration
+PASS horizontal: tie continuation skips attack matching while active sustain accepts repeats
+PASS horizontal: tie sustain re-press does not change scoring
+PASS horizontal: small keyboard reports out-of-range notes without expectations
+DONE
+
+=== input-baseline?led=off ===
+PASS traditional: same pitch across actual piano staves retains two source identities
+PASS traditional: DOM mouse press grades only one chord candidate
+PASS traditional: duplicate DOM down is suppressed by the existing virtual key guard
+PASS traditional: DOM mouse release clears physical input
+PASS traditional: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS traditional: already-hit re-press remains ungraded
+PASS traditional: final chord note completes all expectations
+PASS traditional: DOM and MIDI enter one controller with their original source metadata
+PASS traditional: wrong release transfers the same feedback marker to history
+PASS traditional: virtual pointer cancel releases through the shared controller
+PASS traditional: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS traditional: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS traditional: accompaniment pitch input retains original wrong-note semantics
+PASS traditional: hidden source note creates no expectation
+PASS traditional: cue source note creates no expectation
+PASS traditional: duplicate same-staff pitch merges into one expectation
+PASS traditional: actual tied source combines the original sustain duration
+PASS traditional: tie continuation skips attack matching while active sustain accepts repeats
+PASS traditional: tie sustain re-press does not change scoring
+PASS traditional: small keyboard reports out-of-range notes without expectations
+PASS horizontal: same pitch across actual piano staves retains two source identities
+PASS horizontal: DOM mouse press grades only one chord candidate
+PASS horizontal: duplicate DOM down is suppressed by the existing virtual key guard
+PASS horizontal: DOM mouse release clears physical input
+PASS horizontal: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS horizontal: already-hit re-press remains ungraded
+PASS horizontal: final chord note completes all expectations
+PASS horizontal: DOM and MIDI enter one controller with their original source metadata
+PASS horizontal: wrong release transfers the same feedback marker to history
+PASS horizontal: virtual pointer cancel releases through the shared controller
+PASS horizontal: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS horizontal: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS horizontal: accompaniment pitch input retains original wrong-note semantics
+PASS horizontal: hidden source note creates no expectation
+PASS horizontal: cue source note creates no expectation
+PASS horizontal: duplicate same-staff pitch merges into one expectation
+PASS horizontal: actual tied source combines the original sustain duration
+PASS horizontal: tie continuation skips attack matching while active sustain accepts repeats
+PASS horizontal: tie sustain re-press does not change scoring
+PASS horizontal: small keyboard reports out-of-range notes without expectations
+DONE
+
+=== render default ===
+PASS traditional: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS horizontal: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS traditional: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS horizontal: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS hidden B4 and cue C5 do not become practice expectations
+PASS same-pitch cross-staff expectations own distinct revision-scoped exact sources
+PASS expected state keeps immutable NoteRef without vendor source objects
+PASS layout switch preserves the original realtime wrong flag
+PASS Wait relayout/zoom retains live iterator, expectation/ref identities, hit state and score
+PASS zoom keeps the original visual cleanup rule for realtime wrong flag
+PASS adapter distinguishes the painted event from actual prefetch
+PASS Loop overlay draws two shades and two inclusive boundaries
+PASS disabled Loop clears only its overlay
+PASS loading a new sheet invalidates all old note references
+PASS new expectations bind to the new sheet revision
+PASS foreground native rAF moves the horizontal viewport
+PASS native rAF settles around the original 33% cursor target
+PASS viewport dispose cancels native frame ownership
+PASS viewport reinit reads the same persisted layout
+DONE
+
+=== practice-baseline ===
+PASS wait/traditional: piano chord builds both staff expectations
+PASS wait/traditional: live iterator prefetches while displayed event stays current
+PASS wait/traditional: wrong input counts once and holds display
+PASS wait/traditional: partial chord holds display
+PASS wait/traditional: already-hit repeat is suppressed from duplicate grading
+PASS wait/traditional: completing chord grades both notes
+PASS wait/traditional: completing chord advances displayed event
+PASS wait/traditional: release clears held input
+PASS wait/traditional: pause suppresses pending advancement
+PASS follow/traditional: piano chord builds both staff expectations
+PASS follow/traditional: live iterator prefetches while displayed event stays current
+PASS follow/traditional: wrong input counts once and holds display
+PASS follow/traditional: partial chord holds display
+PASS follow/traditional: already-hit repeat is suppressed from duplicate grading
+PASS follow/traditional: completing chord grades both notes
+PASS follow/traditional: completing chord advances displayed event
+PASS follow/traditional: release clears held input
+PASS follow/traditional: pause suppresses pending advancement
+PASS realtime/traditional: piano chord builds both staff expectations
+PASS realtime/traditional: live iterator prefetches while displayed event stays current
+PASS realtime/traditional: tempo advances without input
+PASS realtime/traditional: missed chord grades both notes
+PASS realtime/traditional: pause suppresses pending advancement
+PASS wait/horizontal: piano chord builds both staff expectations
+PASS wait/horizontal: live iterator prefetches while displayed event stays current
+PASS wait/horizontal: wrong input counts once and holds display
+PASS wait/horizontal: partial chord holds display
+PASS wait/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS wait/horizontal: completing chord grades both notes
+PASS wait/horizontal: completing chord advances displayed event
+PASS wait/horizontal: release clears held input
+PASS wait/horizontal: pause suppresses pending advancement
+PASS follow/horizontal: piano chord builds both staff expectations
+PASS follow/horizontal: live iterator prefetches while displayed event stays current
+PASS follow/horizontal: wrong input counts once and holds display
+PASS follow/horizontal: partial chord holds display
+PASS follow/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS follow/horizontal: completing chord grades both notes
+PASS follow/horizontal: completing chord advances displayed event
+PASS follow/horizontal: release clears held input
+PASS follow/horizontal: pause suppresses pending advancement
+PASS realtime/horizontal: piano chord builds both staff expectations
+PASS realtime/horizontal: live iterator prefetches while displayed event stays current
+PASS realtime/horizontal: tempo advances without input
+PASS realtime/horizontal: missed chord grades both notes
+PASS realtime/horizontal: pause suppresses pending advancement
+PASS simple-repeat: structural jump 2 → 1 waits one remaining quarter beat
+PASS simple-repeat: actual repeat-sign traversal is 1 → 2 → 1 → 2 → 3
+PASS simple-repeat: repeat and ending skip are exercised
+SNAPSHOT simple-repeat [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1}]
+PASS first-second-ending: structural jump 3 → 1 waits one remaining quarter beat
+PASS first-second-ending: structural jump 2 → 4 waits one remaining quarter beat
+PASS first-second-ending: actual repeat-sign traversal is 1 → 2 → 3 → 1 → 2 → 4 → 5
+PASS first-second-ending: repeat and ending skip are exercised
+SNAPSHOT first-second-ending [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1},{"measure":2,"timestampWhole":2.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":3,"nextTimestampWhole":3,"beats":1},{"measure":3,"timestampWhole":3,"nextMeasure":3,"nextTimestampWhole":3.25,"beats":1},{"measure":3,"timestampWhole":3.25,"nextMeasure":3,"nextTimestampWhole":3.5,"beats":1},{"measure":3,"timestampWhole":3.5,"nextMeasure":3,"nextTimestampWhole":3.75,"beats":1},{"measure":3,"timestampWhole":3.75,"nextMeasure":4,"nextTimestampWhole":4,"beats":1},{"measure":4,"timestampWhole":4,"nextMeasure":4,"nextTimestampWhole":4.25,"beats":1},{"measure":4,"timestampWhole":4.25,"nextMeasure":4,"nextTimestampWhole":4.5,"beats":1},{"measure":4,"timestampWhole":4.5,"nextMeasure":4,"nextTimestampWhole":4.75,"beats":1}]
+
+All checks passed.
+
+=== practice-baseline?led=off ===
+PASS wait/traditional: piano chord builds both staff expectations
+PASS wait/traditional: live iterator prefetches while displayed event stays current
+PASS wait/traditional: wrong input counts once and holds display
+PASS wait/traditional: partial chord holds display
+PASS wait/traditional: already-hit repeat is suppressed from duplicate grading
+PASS wait/traditional: completing chord grades both notes
+PASS wait/traditional: completing chord advances displayed event
+PASS wait/traditional: release clears held input
+PASS wait/traditional: pause suppresses pending advancement
+PASS follow/traditional: piano chord builds both staff expectations
+PASS follow/traditional: live iterator prefetches while displayed event stays current
+PASS follow/traditional: wrong input counts once and holds display
+PASS follow/traditional: partial chord holds display
+PASS follow/traditional: already-hit repeat is suppressed from duplicate grading
+PASS follow/traditional: completing chord grades both notes
+PASS follow/traditional: completing chord advances displayed event
+PASS follow/traditional: release clears held input
+PASS follow/traditional: pause suppresses pending advancement
+PASS realtime/traditional: piano chord builds both staff expectations
+PASS realtime/traditional: live iterator prefetches while displayed event stays current
+PASS realtime/traditional: tempo advances without input
+PASS realtime/traditional: missed chord grades both notes
+PASS realtime/traditional: pause suppresses pending advancement
+PASS wait/horizontal: piano chord builds both staff expectations
+PASS wait/horizontal: live iterator prefetches while displayed event stays current
+PASS wait/horizontal: wrong input counts once and holds display
+PASS wait/horizontal: partial chord holds display
+PASS wait/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS wait/horizontal: completing chord grades both notes
+PASS wait/horizontal: completing chord advances displayed event
+PASS wait/horizontal: release clears held input
+PASS wait/horizontal: pause suppresses pending advancement
+PASS follow/horizontal: piano chord builds both staff expectations
+PASS follow/horizontal: live iterator prefetches while displayed event stays current
+PASS follow/horizontal: wrong input counts once and holds display
+PASS follow/horizontal: partial chord holds display
+PASS follow/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS follow/horizontal: completing chord grades both notes
+PASS follow/horizontal: completing chord advances displayed event
+PASS follow/horizontal: release clears held input
+PASS follow/horizontal: pause suppresses pending advancement
+PASS realtime/horizontal: piano chord builds both staff expectations
+PASS realtime/horizontal: live iterator prefetches while displayed event stays current
+PASS realtime/horizontal: tempo advances without input
+PASS realtime/horizontal: missed chord grades both notes
+PASS realtime/horizontal: pause suppresses pending advancement
+PASS simple-repeat: structural jump 2 → 1 waits one remaining quarter beat
+PASS simple-repeat: actual repeat-sign traversal is 1 → 2 → 1 → 2 → 3
+PASS simple-repeat: repeat and ending skip are exercised
+SNAPSHOT simple-repeat [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1}]
+PASS first-second-ending: structural jump 3 → 1 waits one remaining quarter beat
+PASS first-second-ending: structural jump 2 → 4 waits one remaining quarter beat
+PASS first-second-ending: actual repeat-sign traversal is 1 → 2 → 3 → 1 → 2 → 4 → 5
+PASS first-second-ending: repeat and ending skip are exercised
+SNAPSHOT first-second-ending [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1},{"measure":2,"timestampWhole":2.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":3,"nextTimestampWhole":3,"beats":1},{"measure":3,"timestampWhole":3,"nextMeasure":3,"nextTimestampWhole":3.25,"beats":1},{"measure":3,"timestampWhole":3.25,"nextMeasure":3,"nextTimestampWhole":3.5,"beats":1},{"measure":3,"timestampWhole":3.5,"nextMeasure":3,"nextTimestampWhole":3.75,"beats":1},{"measure":3,"timestampWhole":3.75,"nextMeasure":4,"nextTimestampWhole":4,"beats":1},{"measure":4,"timestampWhole":4,"nextMeasure":4,"nextTimestampWhole":4.25,"beats":1},{"measure":4,"timestampWhole":4.25,"nextMeasure":4,"nextTimestampWhole":4.5,"beats":1},{"measure":4,"timestampWhole":4.5,"nextMeasure":4,"nextTimestampWhole":4.75,"beats":1}]
+
+All checks passed.
+
+=== score-display ===
+PASS Traditional layout has multiple systems
+PASS 48 measures and both piano staves stay in one system (including XML line break)
+PASS Layout switch preserves playback iterator
+PASS Cursor anchored at 33% of viewport
+PASS New position schedules animation without a sudden jump
+PASS Scroll advances across multiple frames
+PASS Scroll converges on stable cursor region
+PASS Backward repeat/seek converges without stale forward scroll
+PASS Trailing space retains cursor region at the last measure
+PASS Auto Scroll off leaves the viewport alone
+PASS Relayout leaves the ahead-of-display iterator intact
+PASS Relayout preserves the painted cursor while waiting
+PASS Zoom keeps traversal and single-system layout
+PASS wait: waits for expected notes
+PASS wait: cursor does not run ahead while waiting
+PASS wait: switch layouts while waiting preserves current note
+PASS wait: switching preserves score and wrong-note state
+PASS wait: expected-note feedback anchors refresh for horizontal layout
+PASS wait: correct notes advance the visible cursor
+PASS follow: waits for expected notes
+PASS follow: cursor does not run ahead while waiting
+PASS follow: switch layouts while waiting preserves current note
+PASS follow: switching preserves score and wrong-note state
+PASS follow: expected-note feedback anchors refresh for horizontal layout
+PASS follow: correct notes advance the visible cursor
+PASS realtime: scheduled playback advances horizontal cursor
+PASS Reset returns to the first measure with cursor visible (measure=0, x=211.03750610351562, width=1226)
+PASS Traditional layout and normal container width restored
+PASS 390px mobile viewport retains single system and cursor anchor
+PASS 240-measure SVG exceeds 32767px without wrapping or clipping
+
+All checks passed.
+
+=== score-display?led=off ===
+PASS Traditional layout has multiple systems
+PASS 48 measures and both piano staves stay in one system (including XML line break)
+PASS Layout switch preserves playback iterator
+PASS Cursor anchored at 33% of viewport
+PASS New position schedules animation without a sudden jump
+PASS Scroll advances across multiple frames
+PASS Scroll converges on stable cursor region
+PASS Backward repeat/seek converges without stale forward scroll
+PASS Trailing space retains cursor region at the last measure
+PASS Auto Scroll off leaves the viewport alone
+PASS Relayout leaves the ahead-of-display iterator intact
+PASS Relayout preserves the painted cursor while waiting
+PASS Zoom keeps traversal and single-system layout
+PASS wait: waits for expected notes
+PASS wait: cursor does not run ahead while waiting
+PASS wait: switch layouts while waiting preserves current note
+PASS wait: switching preserves score and wrong-note state
+PASS wait: expected-note feedback anchors refresh for horizontal layout
+PASS wait: correct notes advance the visible cursor
+PASS follow: waits for expected notes
+PASS follow: cursor does not run ahead while waiting
+PASS follow: switch layouts while waiting preserves current note
+PASS follow: switching preserves score and wrong-note state
+PASS follow: expected-note feedback anchors refresh for horizontal layout
+PASS follow: correct notes advance the visible cursor
+PASS realtime: scheduled playback advances horizontal cursor
+PASS Reset returns to the first measure with cursor visible (measure=0, x=211.03750610351562, width=1226)
+PASS Traditional layout and normal container width restored
+PASS 390px mobile viewport retains single system and cursor anchor
+PASS 240-measure SVG exceeds 32767px without wrapping or clipping
+
+All checks passed.
+
+=== traversal-baseline ===
+PASS adapter selection: legacy
+PASS MIDI permission help remains available
+PASS update UI initializes independently
+PASS LED settings visibility follows explicit adapter configuration
+PASS wait/traditional: shared timeline builds and restores the current playback position
+PASS wait/traditional: early input reservation matches legacy mode semantics
+PASS wait/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: shared timeline builds and restores the current playback position
+PASS follow/traditional: early input reservation matches legacy mode semantics
+PASS follow/traditional: early tap survives release across accompaniment events
+PASS follow/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: reserved released tap grades at the target
+PASS realtime/traditional: shared timeline builds and restores the current playback position
+PASS realtime/traditional: early input reservation matches legacy mode semantics
+PASS realtime/traditional: target event uses the same practiced-hand note source
+PASS realtime/traditional: reserved held key grades at the target
+PASS wait/horizontal: shared timeline builds and restores the current playback position
+PASS wait/horizontal: early input reservation matches legacy mode semantics
+PASS wait/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: shared timeline builds and restores the current playback position
+PASS follow/horizontal: early input reservation matches legacy mode semantics
+PASS follow/horizontal: early tap survives release across accompaniment events
+PASS follow/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: reserved released tap grades at the target
+PASS realtime/horizontal: shared timeline builds and restores the current playback position
+PASS realtime/horizontal: early input reservation matches legacy mode semantics
+PASS realtime/horizontal: target event uses the same practiced-hand note source
+PASS realtime/horizontal: reserved held key grades at the target
+PASS range and keyboard filtering still work with the selected adapter
+PASS legacy LED output loop remains active
+
+All checks passed.
+
+=== render no-op ===
+PASS traditional: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS horizontal: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS traditional: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS horizontal: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS hidden B4 and cue C5 do not become practice expectations
+PASS same-pitch cross-staff expectations own distinct revision-scoped exact sources
+PASS expected state keeps immutable NoteRef without vendor source objects
+PASS layout switch preserves the original realtime wrong flag
+PASS Wait relayout/zoom retains live iterator, expectation/ref identities, hit state and score
+PASS zoom keeps the original visual cleanup rule for realtime wrong flag
+PASS adapter distinguishes the painted event from actual prefetch
+PASS Loop overlay draws two shades and two inclusive boundaries
+PASS disabled Loop clears only its overlay
+PASS loading a new sheet invalidates all old note references
+PASS new expectations bind to the new sheet revision
+PASS foreground native rAF moves the horizontal viewport
+PASS native rAF settles around the original 33% cursor target
+PASS viewport dispose cancels native frame ownership
+PASS viewport reinit reads the same persisted layout
+DONE
+
+=== traversal-baseline?led=off ===
+PASS adapter selection: no-op
+PASS MIDI permission help remains available
+PASS update UI initializes independently
+PASS LED settings visibility follows explicit adapter configuration
+PASS wait/traditional: shared timeline builds and restores the current playback position
+PASS wait/traditional: early input reservation matches legacy mode semantics
+PASS wait/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: shared timeline builds and restores the current playback position
+PASS follow/traditional: early input reservation matches legacy mode semantics
+PASS follow/traditional: early tap survives release across accompaniment events
+PASS follow/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: reserved released tap grades at the target
+PASS realtime/traditional: shared timeline builds and restores the current playback position
+PASS realtime/traditional: early input reservation matches legacy mode semantics
+PASS realtime/traditional: target event uses the same practiced-hand note source
+PASS realtime/traditional: reserved held key grades at the target
+PASS wait/horizontal: shared timeline builds and restores the current playback position
+PASS wait/horizontal: early input reservation matches legacy mode semantics
+PASS wait/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: shared timeline builds and restores the current playback position
+PASS follow/horizontal: early input reservation matches legacy mode semantics
+PASS follow/horizontal: early tap survives release across accompaniment events
+PASS follow/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: reserved released tap grades at the target
+PASS realtime/horizontal: shared timeline builds and restores the current playback position
+PASS realtime/horizontal: early input reservation matches legacy mode semantics
+PASS realtime/horizontal: target event uses the same practiced-hand note source
+PASS realtime/horizontal: reserved held key grades at the target
+PASS range and keyboard filtering still work with the selected adapter
+PASS no-op runs no LED output frames
+PASS no-op preserves existing WLED mode, address and transport preferences
+PASS no-op owns no hardware discovery or reconnect timer
+PASS no-op startup and practice perform no WLED/helper discovery requests
+
+All checks passed.

@@ -10,8 +10,10 @@
     "js/generated/state/player-range.js",
     "js/generated/state/settings-backup.js",
     "js/generated/ui/settings-controls.js",
-    "js/transpose/transpose-engine.js",
-    "js/transpose/transpose-ui.js",
+    "js/generated/score/transpose-engine.js",
+    "js/generated/score/transpose-controller.js",
+    "js/generated/ui/transpose-controls.js",
+    "js/generated/compatibility/transpose.js",
     "js/toolbar-ui.js",
     "js/score-library.js",
     "js/scores-ui.js",
@@ -28,7 +30,10 @@
     "js/generated/ui/midi-controls.js",
     "js/generated/compatibility/midi.js",
     "js/optional/midi-led-test.js",
-    "js/midi-import.js",
+    "js/generated/ui/score-file-reader.js",
+    "js/generated/score/webmscore-adapter.js",
+    "js/generated/score/score-conversion.js",
+    "js/generated/compatibility/score-conversion.js",
     "js/generated/render/geometry-engine.js",
     "js/generated/render/feedback-overlay.js",
     "js/generated/render/loop-overlay.js",
@@ -67,7 +72,6 @@
     "js/generated/compatibility/playback.js",
     "js/generated/score/musicxml-io.js",
     "js/generated/score/score-loader.js",
-    "js/generated/ui/score-file-reader.js",
     "js/generated/ui/score-file-controls.js",
     "js/generated/compatibility/score-data.js",
     "js/trainer-core.js"
@@ -162,7 +166,7 @@
         "js/generated/state/app-state.js",
         "js/generated/state/preferences.js",
         "js/generated/state/player-range.js",
-        "js/transpose/transpose-ui.js",
+        "js/generated/compatibility/transpose.js",
         "js/toolbar-ui.js",
         "js/scores-ui.js",
         "js/generated/ui/connection-status.js",
@@ -1112,6 +1116,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerScoreConversion",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoreConversion",
+          "kind": "var",
+          "file": "js/generated/score/score-conversion.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/score/score-conversion.js",
+        "js/generated/compatibility/score-conversion.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerScoreFileControls",
       "definitions": [
         {
@@ -1138,6 +1157,7 @@
       ],
       "referenceFiles": [
         "js/generated/ui/score-file-reader.js",
+        "js/generated/compatibility/score-conversion.js",
         "js/generated/compatibility/score-data.js"
       ]
     },
@@ -1264,6 +1284,51 @@
       ]
     },
     {
+      "symbol": "PianoTrainerTransposeController",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerTransposeController",
+          "kind": "var",
+          "file": "js/generated/score/transpose-controller.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/score/transpose-controller.js",
+        "js/generated/compatibility/transpose.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerTransposeControls",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerTransposeControls",
+          "kind": "var",
+          "file": "js/generated/ui/transpose-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/transpose-controls.js",
+        "js/generated/compatibility/transpose.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerTransposeEngine",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerTransposeEngine",
+          "kind": "var",
+          "file": "js/generated/score/transpose-engine.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/score/transpose-engine.js",
+        "js/generated/compatibility/transpose.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerVelocity",
       "definitions": [
         {
@@ -1278,6 +1343,22 @@
         "js/generated/compatibility/midi.js",
         "js/generated/audio/tone-adapter.js",
         "js/generated/audio/audio-routing.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerWebmscoreAdapter",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerWebmscoreAdapter",
+          "kind": "var",
+          "file": "js/generated/score/webmscore-adapter.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/score/webmscore-adapter.js",
+        "js/generated/score/score-conversion.js",
+        "js/generated/compatibility/score-conversion.js"
       ]
     },
     {
@@ -3086,6 +3167,20 @@
       ]
     },
     {
+      "symbol": "conversionFileReader",
+      "definitions": [
+        {
+          "symbol": "conversionFileReader",
+          "kind": "const",
+          "file": "js/generated/compatibility/score-conversion.js",
+          "line": 4
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/score-conversion.js"
+      ]
+    },
+    {
       "symbol": "createFolderListRow",
       "definitions": [
         {
@@ -4501,9 +4596,10 @@
       "referenceFiles": [
         "js/score-library.js",
         "js/scores-ui.js",
+        "js/generated/ui/score-file-reader.js",
+        "js/generated/compatibility/score-conversion.js",
         "js/generated/score/musicxml-io.js",
         "js/generated/score/score-loader.js",
-        "js/generated/ui/score-file-reader.js",
         "js/generated/compatibility/score-data.js"
       ]
     },
@@ -4520,9 +4616,10 @@
       "referenceFiles": [
         "js/score-library.js",
         "js/scores-ui.js",
+        "js/generated/ui/score-file-reader.js",
+        "js/generated/compatibility/score-conversion.js",
         "js/generated/score/musicxml-io.js",
         "js/generated/score/score-loader.js",
-        "js/generated/ui/score-file-reader.js",
         "js/generated/compatibility/score-data.js"
       ]
     },
@@ -5480,9 +5577,10 @@
         }
       ],
       "referenceFiles": [
-        "js/transpose/transpose-ui.js",
+        "js/generated/compatibility/transpose.js",
         "js/scores-ui.js",
-        "js/midi-import.js",
+        "js/generated/score/score-conversion.js",
+        "js/generated/compatibility/score-conversion.js",
         "js/generated/score/score-loader.js",
         "js/generated/compatibility/score-data.js",
         "docs/testing/score-display.integration.js",
@@ -7202,6 +7300,20 @@
       ]
     },
     {
+      "symbol": "scoreConversion",
+      "definitions": [
+        {
+          "symbol": "scoreConversion",
+          "kind": "const",
+          "file": "js/generated/compatibility/score-conversion.js",
+          "line": 6
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/score-conversion.js"
+      ]
+    },
+    {
       "symbol": "scoreFileControls",
       "definitions": [
         {
@@ -8505,6 +8617,34 @@
       ]
     },
     {
+      "symbol": "transposeCommands",
+      "definitions": [
+        {
+          "symbol": "transposeCommands",
+          "kind": "const",
+          "file": "js/generated/compatibility/transpose.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/transpose.js"
+      ]
+    },
+    {
+      "symbol": "transposeControls",
+      "definitions": [
+        {
+          "symbol": "transposeControls",
+          "kind": "const",
+          "file": "js/generated/compatibility/transpose.js",
+          "line": 12
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/transpose.js"
+      ]
+    },
+    {
       "symbol": "transposePopup",
       "definitions": [
         {
@@ -8769,6 +8909,20 @@
       ]
     },
     {
+      "symbol": "webmscoreAdapter",
+      "definitions": [
+        {
+          "symbol": "webmscoreAdapter",
+          "kind": "const",
+          "file": "js/generated/compatibility/score-conversion.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/score-conversion.js"
+      ]
+    },
+    {
       "symbol": "window.FeedbackDebug",
       "definitions": [
         {
@@ -8806,13 +8960,13 @@
         {
           "symbol": "window.MidiImport",
           "kind": "window assignment",
-          "file": "js/midi-import.js",
-          "line": 206
+          "file": "js/generated/compatibility/score-conversion.js",
+          "line": 8
         }
       ],
       "referenceFiles": [
         "js/scores-ui.js",
-        "js/midi-import.js",
+        "js/generated/compatibility/score-conversion.js",
         "js/generated/compatibility/score-data.js"
       ]
     },
@@ -8934,13 +9088,12 @@
         {
           "symbol": "window.TransposeEngine",
           "kind": "window assignment",
-          "file": "js/transpose/transpose-engine.js",
-          "line": 362
+          "file": "js/generated/compatibility/transpose.js",
+          "line": 13
         }
       ],
       "referenceFiles": [
-        "js/transpose/transpose-engine.js",
-        "js/transpose/transpose-ui.js"
+        "js/generated/compatibility/transpose.js"
       ]
     },
     {
@@ -8949,12 +9102,12 @@
         {
           "symbol": "window.TransposeUI",
           "kind": "window assignment",
-          "file": "js/transpose/transpose-ui.js",
-          "line": 250
+          "file": "js/generated/compatibility/transpose.js",
+          "line": 14
         }
       ],
       "referenceFiles": [
-        "js/transpose/transpose-ui.js",
+        "js/generated/compatibility/transpose.js",
         "js/generated/compatibility/score-data.js"
       ]
     },
@@ -9149,9 +9302,10 @@
         }
       ],
       "referenceFiles": [
-        "js/transpose/transpose-ui.js",
+        "js/generated/compatibility/transpose.js",
         "js/scores-ui.js",
-        "js/midi-import.js",
+        "js/generated/score/score-conversion.js",
+        "js/generated/compatibility/score-conversion.js",
         "js/generated/score/score-loader.js",
         "js/generated/compatibility/score-data.js",
         "docs/testing/score-display.integration.js",

@@ -39,7 +39,6 @@
 | src/ui/update-controls.ts:175 | AppState.updateStatus | = |
 | src/ui/update-controls.ts:184 | AppState.updateManifestUrl | = |
 | src/ui/update-controls.ts:185 | AppState.updateStatus | = |
-| js/transpose/transpose-ui.js:34 | AppState.transpose | = |
 | js/toolbar-ui.js:110 | AppState.scoreLibraryView | = |
 | js/scores-ui.js:124 | AppState.scoreLibrarySelectedFolderIds | = |
 | js/scores-ui.js:128 | AppState.scoreLibrarySelectedFolderIds | = |

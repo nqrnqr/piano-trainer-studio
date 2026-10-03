@@ -43,6 +43,8 @@
   check(!!failure&&alerts.length===1,'invalid XML alerts once and rejects the load promise');
   check(AppState.currentScoreData===oldData&&!AppState.isPlaying,'failed import preserves old metadata after stopping playback');
   const midiBytes=await(await fetch('/docs/testing/fixtures/loader-convert.mid')).arrayBuffer();
+  const workerBaseline=window.__PT_CONVERTER_WORKERS__.snapshot();
+  results.textContent+='WORKERS BEFORE MIDI '+JSON.stringify(workerBaseline)+'\n';
   await handleDirectScoreFileSelection(new File([midiBytes],'Convert.mid'));
   check(typeof AppState.currentScoreData==='string'&&AppState.currentScoreFileType==='musicxml','actual MIDI converter dispatch loads exported MusicXML');
   check(AppState.currentScoreFileName==='Convert.musicxml'&&AppState.currentScoreTitle==='Convert','converter metadata retains original base title');
@@ -52,6 +54,16 @@
   const wasm=await fetch('assets/vendor/webmscore/webmscore.lib.wasm',{method:'HEAD'});
   check(wasm.ok&&wasm.url.endsWith('/assets/vendor/webmscore/webmscore.lib.wasm'),'local WASM relative path responds after actual successful conversion');
   results.textContent+='RESOURCES '+JSON.stringify({wasm:{url:wasm.url,status:wasm.status},frame:resources.map(entry=>({name:entry.name,duration:entry.duration}))})+'\n';
+  const workers=window.__PT_CONVERTER_WORKERS__;
+  results.textContent+='WORKERS BEFORE DISPOSE '+JSON.stringify(workers.snapshot())+'\n';
+  check(workers.snapshot().created===workerBaseline.created+1&&workers.snapshot().live===workerBaseline.live+1,'ordinary conversion preserves the original soft destroy worker lifetime');
+  window.MidiImport.dispose();window.MidiImport.dispose();
+  check(workers.snapshot().live===workerBaseline.live&&workers.snapshot().terminated===workerBaseline.terminated+1,'explicit converter disposal terminates the owned worker once and preserves existing workers');
+  await handleDirectScoreFileSelection(new File([midiBytes],'Reload.mid'));
+  check(workers.snapshot().created===workerBaseline.created+2&&AppState.currentScoreFileName==='Reload.musicxml','converter can start a fresh worker after explicit disposal');
+  window.MidiImport.dispose();
+  check(workers.snapshot().live===workerBaseline.live&&workers.snapshot().terminated===workerBaseline.terminated+2,'reinitialized converter releases its fresh worker');
+  results.textContent+='WORKERS '+JSON.stringify(workers.snapshot())+'\n';
   scoreFileControls.init();scoreFileControls.init();scoreFileControls.dispose();scoreFileControls.dispose();scoreFileControls.init();
   check(document.getElementById('file-input') instanceof HTMLInputElement,'file controls dispose and reinitialize their actual input');
   check(optionalLedOutput.enabled===(new URLSearchParams(parent.location.search).get('led')!=='off'),'loader completes with default/no-op LED composition');

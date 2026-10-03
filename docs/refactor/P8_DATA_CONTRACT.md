@@ -18,4 +18,16 @@
 
 ## 后续 library / UI 检查点
 
-IndexedDB `pianoTrainerLibrary` v1、stores/indexes、transaction completion、backup 格式与 starter imports 沿旧实现；迁移前逐项记录细节。剩余 toolbar/practice/display/tempo/loop/transpose/settings 的 DOM/event 边界及全屏/触控资源在各子步骤继续清点。
+## Converter / transpose 迁移基线 e91ca87
+
+- Converter 支持原 11 个 suffix；MXL 只在显式 transpose normalization 使用，不走普通 import 转换。脚本地址保持 assets/vendor/webmscore/webmscore.js，已存在 loader marker 立即 resolve，随后检查 window.WebMscore.ready；失败缓存、ready await 与 FileReader 先后保持。
+- export 优先级 saveXml → saveMusicXml → saveMxml → saveMusicXML；保留 string/ArrayBuffer/view/buffer-like 的 UTF-8 解码与 byteLength=0 时的原 fallback。导入 catch 替换为原通用错误并 log，normalization 原错透传；两者 finally 都尝试 score.destroy 且忽略 destroy 错误。
+- 移调使用原 sharp/flat、major/minor、signature preset 表及 mod/parseInt。key mode 取最短有向间隔，+6 不改成 -6。相同 signature 或 semitone=0 非 force 时保留原 XML 字节。key 检测沿原 major tonic lookup，即使 mode 是 minor；不借迁移修正旧规则。
+- DOM XML 转换按 part/measure/child 原顺序，只改 key/pitch/harmony；alter=0 时删除子节点，不修改 note 的 timing、tie、slur、beam、accidental 等其他字段。每个 part 的 currentBias 独立，updateKeySignature=false 保留 fifths 并用当前调号 bias。
+- transpose state Object.assign 默认值保持同一对象。availability 可从 currentScoreData fallback，但 apply 仍传 currentScoreOriginalData；不能悄悄统一旧不对称。apply/reset await load 后才写 active/label/status；错误只 log/status，不重新抛出。模式/数值在 await 后继续按旧读取位置观察。
+- UI init 在原 transpose slot，控件绑定和最初 populate/sync 顺序保留。显式 dispose 可取消本模块的 pending UI commit/资源；普通加载、Pause、Reset 不新增 epoch。库/备份和其余 UI 仍单独记录。
+- 普通 finally 保留 vendor destroy() 的 soft 行为；显式 dispose 对已返回且持有的 score 调 destroy(false) 一次，native Worker 实测以转换前已有 worker 为基线，不终止其他模块的 worker。迟到 score 返回会 hard destroy；迟到 export 不进入 load。vendor 内部 load 失败前尚未返回 handle 的 worker 无公开释放接口，本次不改 vendor 私有实现。
+
+## 后续 library / UI 检查点
+
+IndexedDB `pianoTrainerLibrary` v1、stores/indexes、transaction completion、backup 格式与 starter imports 沿旧实现；迁移前逐项记录细节。剩余 toolbar/practice/display/tempo/loop/settings 的 DOM/event 边界及全屏/触控资源在各子步骤继续清点。

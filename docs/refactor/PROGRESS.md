@@ -193,4 +193,16 @@
 
 ## P8 其余步骤与 P9
 
-下一入口：迁移现有 converter 与 transpose engine，再处理 library repository/backup、UI controllers。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。
+下一入口：处理 library repository/backup、scores drawer/folder/import UI 和剩余 core controls。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。
+
+## P8a：转换与移调检查点
+
+- 状态：第二子步骤完成（2026-10-03）；P8 仍进行中，library/backup 与其余 UI 尚待迁移，完整目标保持活跃。
+- 映射：midi-import.js → `score/score-conversion.ts` / `webmscore-adapter.ts`；transpose-engine.js → `score/transpose-engine.ts`；transpose-ui.js → `score/transpose-controller.ts` / `ui/transpose-controls.ts`。旧三个文件与槽位删除，只有生成实现生效。FileReader 共用 private pending registry，converter compatibility 惰性组装，transpose compatibility 在原位置 init。
+- 类型与行为：vendor export 为 unknown，仅 adapter 解码/检查；保留 11 个 suffix、四种 export 优先级、字节视图/UTF-8、错误 log/wrap/透传、finally soft destroy 和 Promise 时机。移调 preset/bias/parseInt、key 最短间隔、minor 的旧 tonic lookup、timewise 的旧结构规则、original-source 与 load 后 live mode 读取均保持；不修正历史算法或重设计 UI。边界断言见 P8_DATA_CONTRACT，无 any 或忽略检查。
+- 生命周期：普通转换仍 soft destroy，已返回 score handle 私有持有，显式 dispose 才 hard destroy 一次；迟到 score 释放、迟到 export/result 不加载。script marker 的缓存/失败/ready 顺序保持，显式 dispose 释放自己的 script/reader；captured old callbacks 不影响新生命周期。UI init 去重、dispose 移除六类 listener，pending apply/reset 不提交迟到 UI。vendor 在 load 失败、尚未返回 handle 时的内部 worker 无公开释放接口，未改 vendor；P9 再协调完整 loader/bootstrap notification。
+- Node：231/231（新增 15 converter、10 transpose/controller/UI 用例）；strict typecheck 与 136 文件干净产物比较通过，见 validation/P8a-transform-check.txt。
+- 对照：基线 e91ca87，2,000 原生 XML DOM transforms 的全部输出字符串、key metadata、errors 一致；600 conversion/normalization commands 的 metadata、errors、read/load/export/destroy 顺序一致。保存 40 个 golden 用于可复现浏览器检查，不保留第二套旧算法。临时命令 `.cache/compare-score-conversion.cjs`，原生对照捕获页已删除。
+- 浏览器：default/no-op 各 loader 28、transpose 52、playback 127、input 40、practice 53、display 30、render 19，traversal 30/33，共 761 项。actual MIDI/WASM conversion 与 native Worker accounting 证明普通 soft、显式 dispose/reconvert/release，并保留转换前已有 worker；实际 slider/mode/signature/Apply/Reset、source/speed/state identity、重复 init/dispose 均通过。记录见 validation/P8a-transform-browser.txt；硬件与可听同步仍未验证。
+- 清单：620 global candidates/74 classic slots、重复函数定义为零；216 直接 AppState 写入，transpose alias/资源所有权已记录。vendor/helper、用户 schema、偏好格式、资源地址和启动器未改。
+- 回退：revert 本检查点恢复原 converter/transpose 文件与槽位，上一 score IO/loader 保留；无需清空数据库或偏好，不同时加载旧/新实现。后续从 library repository/backup 开始。

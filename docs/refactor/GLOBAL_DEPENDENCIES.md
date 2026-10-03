@@ -175,4 +175,12 @@ P8 loader 第一步：core 的 score IO/load/file-input block 迁出，旧实现
 副作用顺序，`ui/score-file-*` 持有 native file 与 DOM listener。`compatibility/score-data`
 提供 ScoresUI/ScoreLibrary/Transpose/MidiImport 仍需的旧名，显式 window forwards 仅 picker/load。
 所有 factory 创建时不读文件/加载乐谱/创建 listener；原 init 槽位只初始化 input。
-converter/transpose/library/其余 UI 仍是后续 P8 迁移范围；不把该检查点视为全 P8 完成。
+library/其余 UI 仍是后续 P8 迁移范围；不把该检查点视为全 P8 完成。
+
+P8 converter/transpose：旧 midi-import.js、transpose-engine.js、transpose-ui.js 及槽位已删除。
+`score/score-conversion.ts` 通过 webmscore-adapter/typed reader 实现原格式与 export 命令，
+`score/transpose-engine.ts` 是 XML DOM 算法唯一实现，transpose-controller 拥有 original-source 命令，
+`ui/transpose-controls.ts` 拥有 DOM 值读取和 listener。compatibility/score-conversion、transpose
+暂提供原 Window.MidiImport/TransposeEngine/TransposeUI；core loader、scores-ui 和旧弹窗仍消费。
+最小 vendor 声明的 export 为 unknown，只在 adapter 检查/解码。vendor/WASM 不变，
+初始化次序与惰性资源请求保留；74 classic slots、620 global candidates、重复函数定义为零。

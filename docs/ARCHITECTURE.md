@@ -111,7 +111,11 @@ clock resources, but handoff remains a coordinator command. No independent curso
 scheduler has been added. XML/MXL IO and score loading now live in `src/score/musicxml-io.ts`
 and `score-loader.ts`; OSMD receives original MXL bytes, while extracted XML belongs to transpose.
 Native file reads and the required input binding live in `src/ui/score-file-*.ts`; core initializes
-the input at the original point. Conversion, transpose, library and remaining UI move in later P8 checkpoints; classic assembly
+the input at the original point. Conversion lives in `score/score-conversion.ts`, with lazy vendor readiness
+and binary decoding in `score/webmscore-adapter.ts`. Native XML transforms live in `score/transpose-engine.ts`;
+original-source commands and DOM listeners live in `score/transpose-controller.ts` and `ui/transpose-controls.ts`.
+Ordinary conversion preserves vendor soft destroy; explicit disposal releases owned score workers.
+Library and remaining UI move in later P8 checkpoints; classic assembly
 and forwards are temporary until the P9 bootstrap and module bundle.
 
 ## Fragile systems

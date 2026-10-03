@@ -2,13 +2,10 @@
 declare function initSongUI(): void;
 declare function refreshScoresDrawer(): Promise<void>;
 interface Window {
-    MidiImport?: {
-        isConverterImportFileName(name: string): boolean;
-        convertFileToScore(file: File): Promise<PianoTrainerDomain.ScoreFile>;
-        normalizeScoreToMusicXml(rawData: PianoTrainerDomain.ScoreRawData, options: PianoTrainerDomain.ScoreLoadOptions): Promise<string>;
-    };
+    MidiImport?: PianoTrainerScoreConversion.Service;
     ScoreLibrary?: {markScoreOpened(id: string): Promise<unknown>};
-    TransposeUI?: {handleScoreLoaded(): void; refreshAvailabilityFromCurrentScore(): void; syncUiFromState(): void};
+    TransposeEngine?: typeof PianoTrainerTransposeEngine;
+    TransposeUI?: PianoTrainerTransposeController.Service & {syncUiFromState(): void; getPanel(): HTMLElement | null};
     ScoresUI?: {closeScoresDrawer(): void};
     loadScoreIntoApp?: (rawData: PianoTrainerDomain.ScoreRawData, options?: PianoTrainerDomain.ScoreLoadOptions) => Promise<void>;
     openScoreFilePicker?: () => void;

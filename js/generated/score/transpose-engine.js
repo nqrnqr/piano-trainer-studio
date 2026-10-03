@@ -1,8 +1,7 @@
-// transpose-engine.js
-// Score transposition helpers for pre-render MusicXML transforms.
-// This module rewrites MusicXML pitch/key data before OSMD loads the score.
-// It intentionally does not touch timing, layout, ties, slurs, or beams.
-(function() {
+"use strict";
+// Original pre-render MusicXML pitch/key transform; timing and engraving fields stay untouched.
+var PianoTrainerTransposeEngine;
+(function (PianoTrainerTransposeEngine) {
     const NOTE_NAMES_SHARP = [
         { step: 'C', alter: 0 },
         { step: 'C', alter: 1 },
@@ -17,7 +16,6 @@
         { step: 'A', alter: 1 },
         { step: 'B', alter: 0 }
     ];
-
     const NOTE_NAMES_FLAT = [
         { step: 'C', alter: 0 },
         { step: 'D', alter: -1 },
@@ -32,7 +30,6 @@
         { step: 'B', alter: -1 },
         { step: 'B', alter: 0 }
     ];
-
     const STEP_TO_SEMITONE = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
     const MAJOR_KEY_BY_FIFTHS = {
         '-7': { tonic: 11, label: 'Cb major', bias: 'flat' },
@@ -68,7 +65,6 @@
         '6': { tonic: 3, label: 'D# minor', bias: 'sharp' },
         '7': { tonic: 10, label: 'A# minor', bias: 'sharp' }
     };
-
     const SIGNATURE_PRESETS = [
         { value: 'sig--7', label: 'Cb major / Ab minor', tonic: 11, fifths: -7, bias: 'flat' },
         { value: 'sig--6', label: 'Gb major / Eb minor', tonic: 6, fifths: -6, bias: 'flat' },
@@ -86,17 +82,14 @@
         { value: 'sig-6', label: 'F# major / D# minor', tonic: 6, fifths: 6, bias: 'sharp' },
         { value: 'sig-7', label: 'C# major / A# minor', tonic: 1, fifths: 7, bias: 'sharp' }
     ];
-
     const KEY_PRESET_BY_VALUE = new Map(SIGNATURE_PRESETS.map(entry => [entry.value, entry]));
-
     function mod(n, m) {
         return ((n % m) + m) % m;
     }
-
     function isXmlString(rawData) {
         return typeof rawData === 'string' && /<score-partwise\b|<score-timewise\b/i.test(rawData);
     }
-
+    PianoTrainerTransposeEngine.isXmlString = isXmlString;
     function parseXml(xmlString) {
         const parser = new DOMParser();
         const xml = parser.parseFromString(xmlString, 'application/xml');
@@ -106,16 +99,15 @@
         }
         return xml;
     }
-
+    PianoTrainerTransposeEngine.parseXml = parseXml;
     function serializeXml(xmlDoc) {
         return new XMLSerializer().serializeToString(xmlDoc);
     }
-
+    PianoTrainerTransposeEngine.serializeXml = serializeXml;
     function getFirstText(parent, selector) {
         const node = parent ? parent.querySelector(selector) : null;
         return node ? String(node.textContent || '').trim() : '';
     }
-
     function ensureChild(parent, name) {
         let child = Array.from(parent.children || []).find(node => node.tagName === name);
         if (!child) {
@@ -124,36 +116,34 @@
         }
         return child;
     }
-
     function setOrRemoveChildText(parent, name, value) {
         const existing = Array.from(parent.children || []).find(node => node.tagName === name);
         const numeric = Number(value || 0);
         if (!Number.isFinite(numeric) || numeric === 0) {
-            if (existing) existing.remove();
+            if (existing)
+                existing.remove();
             return null;
         }
         const child = existing || parent.ownerDocument.createElement(name);
         child.textContent = String(numeric);
-        if (!existing) parent.appendChild(child);
+        if (!existing)
+            parent.appendChild(child);
         return child;
     }
-
     function pitchSemitone(step, alter) {
         return mod((STEP_TO_SEMITONE[String(step || '').toUpperCase()] ?? 0) + Number(alter || 0), 12);
     }
-
     function tonicFromKeySignature(fifths, mode) {
         const lookup = String(mode || 'major').toLowerCase() === 'minor' ? MINOR_KEY_BY_FIFTHS : MAJOR_KEY_BY_FIFTHS;
         return lookup[String(fifths)] || null;
     }
-
     function getGroupedLabelForFifths(fifths) {
         const majorInfo = MAJOR_KEY_BY_FIFTHS[String(fifths)] || null;
         const minorInfo = MINOR_KEY_BY_FIFTHS[String(fifths)] || null;
-        if (majorInfo && minorInfo) return `${majorInfo.label} / ${minorInfo.label}`;
+        if (majorInfo && minorInfo)
+            return `${majorInfo.label} / ${minorInfo.label}`;
         return majorInfo?.label || minorInfo?.label || 'Unknown';
     }
-
     function detectScoreKey(xmlDoc) {
         const keyNode = xmlDoc.querySelector('part > measure attributes key, measure attributes key, attributes key');
         if (!keyNode) {
@@ -182,66 +172,68 @@
             inferredPreset
         };
     }
-
+    PianoTrainerTransposeEngine.detectScoreKey = detectScoreKey;
     function getKeyPresets() {
         return SIGNATURE_PRESETS.map(entry => ({ ...entry }));
     }
-
+    PianoTrainerTransposeEngine.getKeyPresets = getKeyPresets;
     function getPresetByValue(value) {
         return KEY_PRESET_BY_VALUE.get(String(value || '').trim()) || null;
     }
-
+    PianoTrainerTransposeEngine.getPresetByValue = getPresetByValue;
     function chooseSpellingForPitchClass(pitchClass, bias = 'sharp') {
         const table = bias === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP;
         return table[mod(pitchClass, 12)];
     }
-
     function chooseKeySignatureForTonic(tonic, mode, preferredBias = 'sharp') {
         const lookup = String(mode || 'major').toLowerCase() === 'minor' ? MINOR_KEY_BY_FIFTHS : MAJOR_KEY_BY_FIFTHS;
         const matches = Object.entries(lookup)
             .filter(([, info]) => info.tonic === mod(tonic, 12))
             .map(([fifths, info]) => ({ fifths: Number(fifths), ...info }));
-
-        if (!matches.length) return null;
+        if (!matches.length)
+            return null;
         const exactBias = matches.find(entry => entry.bias === preferredBias);
-        if (exactBias) return exactBias;
+        if (exactBias)
+            return exactBias;
         return matches.slice().sort((a, b) => Math.abs(a.fifths) - Math.abs(b.fifths))[0];
     }
-
     function rewritePitchNode(pitchNode, semitoneDelta, keyBias) {
-        if (!pitchNode) return;
+        if (!pitchNode)
+            return;
         const stepNode = pitchNode.querySelector('step');
         const octaveNode = pitchNode.querySelector('octave');
-        if (!stepNode || !octaveNode) return;
-
+        if (!stepNode || !octaveNode)
+            return;
         const step = String(stepNode.textContent || '').trim().toUpperCase();
         const alterNode = pitchNode.querySelector('alter');
         const alter = alterNode ? Number.parseInt(alterNode.textContent || '0', 10) : 0;
         const octave = Number.parseInt(octaveNode.textContent || '0', 10);
-        if (!Number.isFinite(octave) || !(step in STEP_TO_SEMITONE)) return;
-
+        if (!Number.isFinite(octave) || !(step in STEP_TO_SEMITONE))
+            return;
         const absoluteSemitone = (octave * 12) + pitchSemitone(step, alter) + Number(semitoneDelta || 0);
         const nextPitchClass = mod(absoluteSemitone, 12);
         const nextOctave = Math.floor(absoluteSemitone / 12);
         const spelling = chooseSpellingForPitchClass(nextPitchClass, keyBias);
-
         stepNode.textContent = spelling.step;
         setOrRemoveChildText(pitchNode, 'alter', spelling.alter);
         octaveNode.textContent = String(nextOctave);
     }
-
     function rewriteHarmonyNode(harmonyNode, semitoneDelta, keyBias) {
-        if (!harmonyNode) return;
+        if (!harmonyNode)
+            return;
         const root = harmonyNode.querySelector('root');
         const bass = harmonyNode.querySelector('bass');
         [root, bass].forEach(section => {
-            if (!section) return;
+            if (!section)
+                return;
             const stepNode = section.querySelector('root-step, bass-step');
             const alterNode = section.querySelector('root-alter, bass-alter');
-            if (!stepNode) return;
+            if (!stepNode)
+                return;
             const step = String(stepNode.textContent || '').trim().toUpperCase();
             const alter = alterNode ? Number.parseInt(alterNode.textContent || '0', 10) : 0;
-            if (!(step in STEP_TO_SEMITONE)) return;
+            if (!(step in STEP_TO_SEMITONE))
+                return;
             const pitchClass = pitchSemitone(step, alter) + Number(semitoneDelta || 0);
             const spelling = chooseSpellingForPitchClass(pitchClass, keyBias);
             stepNode.textContent = spelling.step;
@@ -249,9 +241,9 @@
             setOrRemoveChildText(section, alterTag, spelling.alter);
         });
     }
-
     function rewriteKeyNode(keyNode, semitoneDelta, options) {
-        if (!keyNode) return { bias: options.defaultBias || 'sharp', mode: 'major', fifths: 0 };
+        if (!keyNode)
+            return { bias: options.defaultBias || 'sharp', mode: 'major', fifths: 0 };
         const fifthsNode = keyNode.querySelector('fifths');
         const modeNode = keyNode.querySelector('mode');
         const fifths = Number.parseInt(fifthsNode?.textContent || '0', 10);
@@ -259,26 +251,25 @@
         const tonicInfo = tonicFromKeySignature(fifths, currentMode);
         const preferredBias = options.targetBias || tonicInfo?.bias || options.defaultBias || (fifths < 0 ? 'flat' : 'sharp');
         const transposed = chooseKeySignatureForTonic((tonicInfo?.tonic ?? 0) + Number(semitoneDelta || 0), currentMode, preferredBias);
-        if (transposed && fifthsNode) fifthsNode.textContent = String(transposed.fifths);
-        if (modeNode) modeNode.textContent = currentMode;
+        if (transposed && fifthsNode)
+            fifthsNode.textContent = String(transposed.fifths);
+        if (modeNode)
+            modeNode.textContent = currentMode;
         return {
             bias: transposed?.bias || preferredBias,
             mode: currentMode,
             fifths: transposed?.fifths ?? fifths
         };
     }
-
     function transposeXml(xmlString, options = {}) {
         if (!isXmlString(xmlString)) {
             throw new Error('This score is not available as raw MusicXML text, so transpose is disabled for it right now.');
         }
-
         const xmlDoc = parseXml(xmlString);
         const detectedKey = detectScoreKey(xmlDoc);
         const mode = String(options.mode || 'semitone').toLowerCase();
-        let semitoneDelta = Number.parseInt(options.semitones || '0', 10);
+        let semitoneDelta = Number.parseInt(String(options.semitones || '0'), 10);
         let targetPreset = null;
-
         if (mode === 'key') {
             targetPreset = getPresetByValue(options.targetKey);
             if (!targetPreset) {
@@ -288,10 +279,11 @@
                 throw new Error('This score does not expose a readable key signature. Use semitones for this score.');
             }
             semitoneDelta = mod(targetPreset.tonic - detectedKey.tonic, 12);
-            if (semitoneDelta > 6) semitoneDelta -= 12;
+            if (semitoneDelta > 6)
+                semitoneDelta -= 12;
         }
-
-        if (!Number.isFinite(semitoneDelta)) semitoneDelta = 0;
+        if (!Number.isFinite(semitoneDelta))
+            semitoneDelta = 0;
         if (mode === 'key' && targetPreset && detectedKey.found && detectedKey.presetValue === targetPreset.value) {
             return {
                 xmlString,
@@ -310,11 +302,9 @@
                 targetPreset: null
             };
         }
-
         const updateKeySignature = options.updateKeySignature !== false;
         const defaultBias = targetPreset?.bias || detectedKey.bias || 'sharp';
         const parts = Array.from(xmlDoc.querySelectorAll('part'));
-
         parts.forEach(partNode => {
             let currentBias = defaultBias;
             Array.from(partNode.children || []).filter(node => node.tagName === 'measure').forEach(measureNode => {
@@ -329,29 +319,27 @@
                                     defaultBias
                                 });
                                 currentBias = rewritten.bias || currentBias;
-                            } else {
+                            }
+                            else {
                                 const currentFifths = Number.parseInt(getFirstText(keyNode, 'fifths') || '0', 10);
                                 currentBias = currentFifths < 0 ? 'flat' : 'sharp';
                             }
                         }
                     }
-
                     if (child.tagName === 'note') {
                         const pitchNode = Array.from(child.children || []).find(node => node.tagName === 'pitch');
-                        if (pitchNode) rewritePitchNode(pitchNode, semitoneDelta, currentBias);
+                        if (pitchNode)
+                            rewritePitchNode(pitchNode, semitoneDelta, currentBias);
                     }
-
                     if (child.tagName === 'harmony') {
                         rewriteHarmonyNode(child, semitoneDelta, currentBias);
                     }
                 });
             });
         });
-
         const targetKeyInfo = targetPreset
             ? { label: targetPreset.label, fifths: targetPreset.fifths, bias: targetPreset.bias, tonic: targetPreset.tonic }
             : detectScoreKey(xmlDoc);
-
         return {
             xmlString: serializeXml(xmlDoc),
             semitoneDelta,
@@ -360,16 +348,6 @@
             targetPreset: targetPreset || null
         };
     }
-
-    window.TransposeEngine = {
-        isXmlString,
-        parseXml,
-        serializeXml,
-        detectScoreKey,
-        getKeyPresets,
-        getPresetByValue,
-        transposeXml
-    };
-})();
-
-
+    PianoTrainerTransposeEngine.transposeXml = transposeXml;
+})(PianoTrainerTransposeEngine || (PianoTrainerTransposeEngine = {}));
+//# sourceMappingURL=transpose-engine.js.map

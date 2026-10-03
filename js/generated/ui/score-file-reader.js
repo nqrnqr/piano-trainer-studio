@@ -4,27 +4,35 @@ var PianoTrainerScoreFileReader;
 (function (PianoTrainerScoreFileReader) {
     function create(ports) {
         const pending = new Set();
-        function readScoreFile(file) {
+        function readFile(file, binary, failureMessage, build) {
             return new Promise((resolve, reject) => {
                 const reader = ports.createReader();
                 pending.add(reader);
-                reader.onerror = () => { pending.delete(reader); reject(reader.error || new Error('Could not read score file.')); };
+                reader.onerror = () => { pending.delete(reader); reject(reader.error || new Error(failureMessage)); };
                 reader.onabort = () => { pending.delete(reader); reject(new DOMException('Score file read aborted.', 'AbortError')); };
                 reader.onload = () => {
                     pending.delete(reader);
                     // Native load follows a completed readAsText/readAsArrayBuffer.
-                    resolve({ rawData: reader.result, fileName: file.name || 'Untitled Score',
-                        fileType: ports.format.getScoreFileTypeFromName(file.name || ''), title: ports.format.getScoreDisplayTitle(file.name || '') });
+                    resolve(build(reader.result));
                 };
-                if ((file.name || '').match(/\.(mxl)$/i))
+                if (binary)
                     reader.readAsArrayBuffer(file);
                 else
                     reader.readAsText(file);
             });
         }
+        function readScoreFile(file) {
+            return readFile(file, !!(file.name || '').match(/\.(mxl)$/i), 'Could not read score file.', rawData => ({ rawData,
+                fileName: file.name || 'Untitled Score', fileType: ports.format.getScoreFileTypeFromName(file.name || ''),
+                title: ports.format.getScoreDisplayTitle(file.name || '') }));
+        }
+        function readArrayBuffer(file) {
+            // This successful native read used readAsArrayBuffer, never readAsText.
+            return readFile(file, true, 'Could not read that file.', result => result);
+        }
         function dispose() { for (const reader of pending)
             reader.abort(); pending.clear(); }
-        return { readScoreFile, dispose };
+        return { readScoreFile, readArrayBuffer, dispose };
     }
     PianoTrainerScoreFileReader.create = create;
 })(PianoTrainerScoreFileReader || (PianoTrainerScoreFileReader = {}));

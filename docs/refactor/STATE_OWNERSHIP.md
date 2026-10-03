@@ -88,6 +88,14 @@ P8 loader 第一步：currentScore/currentScoreOriginal 元数据与 shared time
 之前。失败不回滚原已完成 writes。musicxml-io 无 AppState，FileReader private pending set
 仅在显式 dispose abort；file-controls 只拥有一个 input change listener。
 
+P8 converter/transpose：conversion 不写 AppState，私有 owned score set 保留 ordinary soft destroy 后的
+vendor handle，显式 dispose 调用 destroy(false) 一次。late score 返回也释放，late export 不再 load。
+vendor 在 load 失败、尚未返回 score handle 时创建的 worker 属于 vendor 内部；本次未改其私有实现。
+transpose-controller 的窄 state alias 拥有 transpose availability/defaults/active/target，保留对象身份
+及 await load 后的原读取时机；UI 写 mode/semitones/target/signature，DOM listener 在 controls。
+显式 dispose 失效 pending apply/reset 的后续 UI commit，普通加载/Pause/Reset 不更新 generation。
+完整应用的 loader notification dispose gate 仍由 P9 bootstrap 生命周期统一处理。
+
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。
 首次默认值与 input velocity / live low latency 强制开启规则保留。

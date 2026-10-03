@@ -12,6 +12,6 @@ document.getElementById('run').onclick=()=>{document.getElementById('run').disab
 (async()=>{
  let html=await(await fetch('/index.html')).text();
  const boot=new URLSearchParams(location.search).get('led')==='off'?'<script>window.__PT_BOOT_OPTIONS__={ledEnabled:false};<'+'/script>':'';
- frame.srcdoc=html.replace('<head>','<head><base href="/">'+boot);
+ frame.srcdoc=html.replace('<head>','<head><base href="/">'+boot+'<script src="/docs/testing/webmscore-worker-fixture.js"><'+'/script>');
 })();
 </script>
