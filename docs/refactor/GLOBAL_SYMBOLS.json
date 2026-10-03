@@ -6,6 +6,8 @@
     "js/generated/domain/score.js",
     "js/generated/state/preference-keys.js",
     "js/generated/state/app-state.js",
+    "js/generated/domain/hand-routing.js",
+    "js/generated/compatibility/hand-routing.js",
     "js/generated/state/preferences.js",
     "js/generated/state/player-range.js",
     "js/generated/state/settings-backup.js",
@@ -90,6 +92,12 @@
     "js/generated/ui/audio-level-controls.js",
     "js/generated/ui/loop-controls.js",
     "js/generated/compatibility/native-controls.js",
+    "js/generated/app/hand-assignment-controller.js",
+    "js/generated/ui/hand-assignment-controls.js",
+    "js/generated/ui/practice-controls.js",
+    "js/generated/ui/preference-controls.js",
+    "js/generated/ui/settings-actions.js",
+    "js/generated/compatibility/preference-controls.js",
     "js/trainer-core.js"
   ],
   "symbols": [
@@ -106,7 +114,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -181,6 +189,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/app-state.js",
+        "js/generated/compatibility/hand-routing.js",
         "js/generated/state/preferences.js",
         "js/generated/state/player-range.js",
         "js/generated/compatibility/transpose.js",
@@ -203,6 +212,7 @@
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/score-data.js",
         "js/generated/compatibility/native-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
@@ -306,6 +316,7 @@
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -316,7 +327,7 @@
           "symbol": "KEY_STATE_CLASSES",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 628
+          "line": 211
         }
       ],
       "referenceFiles": [
@@ -446,7 +457,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -479,7 +490,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -496,7 +507,7 @@
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js",
+        "js/generated/ui/preference-controls.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
     },
@@ -714,7 +725,8 @@
         }
       ],
       "referenceFiles": [
-        "js/generated/state/preference-keys.js"
+        "js/generated/state/preference-keys.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -777,7 +789,11 @@
         "js/generated/ui/display-controls.js",
         "js/generated/ui/tempo-controls.js",
         "js/generated/ui/audio-level-controls.js",
-        "js/generated/ui/loop-controls.js"
+        "js/generated/ui/loop-controls.js",
+        "js/generated/ui/hand-assignment-controls.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/ui/settings-actions.js"
       ]
     },
     {
@@ -868,6 +884,54 @@
       "referenceFiles": [
         "js/generated/render/geometry-engine.js",
         "js/generated/compatibility/geometry.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerHandAssignment",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerHandAssignment",
+          "kind": "var",
+          "file": "js/generated/app/hand-assignment-controller.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/app/hand-assignment-controller.js",
+        "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerHandAssignmentControls",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerHandAssignmentControls",
+          "kind": "var",
+          "file": "js/generated/ui/hand-assignment-controls.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/hand-assignment-controls.js",
+        "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerHandRouting",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerHandRouting",
+          "kind": "var",
+          "file": "js/generated/domain/hand-routing.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/domain/hand-routing.js",
+        "js/generated/compatibility/hand-routing.js",
+        "js/generated/ui/hand-assignment-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1251,6 +1315,36 @@
       ]
     },
     {
+      "symbol": "PianoTrainerPracticeControls",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerPracticeControls",
+          "kind": "var",
+          "file": "js/generated/ui/practice-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerPreferenceControls",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerPreferenceControls",
+          "kind": "var",
+          "file": "js/generated/ui/preference-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerScoreConversion",
       "definitions": [
         {
@@ -1401,6 +1495,21 @@
       "referenceFiles": [
         "js/generated/practice/scoring.js",
         "js/generated/compatibility/practice.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerSettingsActions",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerSettingsActions",
+          "kind": "var",
+          "file": "js/generated/ui/settings-actions.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/settings-actions.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1585,7 +1694,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/feedback-debug.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -1617,6 +1726,7 @@
       "referenceFiles": [
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/playback.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
@@ -1655,7 +1765,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1670,7 +1781,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1685,7 +1797,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1700,7 +1813,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1715,7 +1829,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1730,7 +1845,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1745,7 +1861,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1760,7 +1877,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1789,7 +1907,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1805,7 +1924,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -1820,7 +1939,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1836,7 +1956,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -1852,7 +1972,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1869,7 +1989,7 @@
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -1884,7 +2004,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1899,7 +2020,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1914,7 +2036,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1929,7 +2052,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1946,7 +2070,7 @@
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -1961,7 +2085,8 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -1978,7 +2103,7 @@
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -2066,7 +2191,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -2142,7 +2267,7 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js"
       ]
     },
     {
@@ -2284,7 +2409,7 @@
           "symbol": "activeVirtualPointerId",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 792
+          "line": 375
         }
       ],
       "referenceFiles": [
@@ -2298,7 +2423,7 @@
           "symbol": "activeVirtualPointerMidi",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 793
+          "line": 376
         }
       ],
       "referenceFiles": [
@@ -2312,7 +2437,7 @@
           "symbol": "applyInlineKeyVisual",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 638
+          "line": 221
         }
       ],
       "referenceFiles": [
@@ -2340,7 +2465,7 @@
           "symbol": "applyLedFuturePreviewStates",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 607
+          "line": 190
         }
       ],
       "referenceFiles": [
@@ -2352,12 +2477,15 @@
       "definitions": [
         {
           "symbol": "applyModeSettings",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 935
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 29
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/practice-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -2366,12 +2494,14 @@
       "definitions": [
         {
           "symbol": "applyPersistedTrainerAndSettingsPreferences",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 99
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 55
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -2389,6 +2519,8 @@
         "js/generated/audio/tone-adapter.js",
         "js/generated/compatibility/audio.js",
         "js/generated/compatibility/playback.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js",
         "docs/testing/audio-baseline.integration.js"
       ]
@@ -2406,7 +2538,8 @@
       "referenceFiles": [
         "js/generated/ui/display-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/render-baseline.integration.js"
       ]
@@ -2437,6 +2570,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/native-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -2455,6 +2589,7 @@
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/score-data.js",
         "js/generated/compatibility/native-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js",
         "docs/testing/audio-baseline.integration.js"
       ]
@@ -2477,44 +2612,17 @@
       ]
     },
     {
-      "symbol": "autoScrollCheckbox",
-      "definitions": [
-        {
-          "symbol": "autoScrollCheckbox",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1172
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "backupSettingsButton",
-      "definitions": [
-        {
-          "symbol": "backupSettingsButton",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1328
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "bindHandAssignmentControls",
       "definitions": [
         {
           "symbol": "bindHandAssignmentControls",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 515
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 44
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -2559,7 +2667,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/midi-baseline.integration.js",
         "docs/testing/render-baseline.integration.js",
@@ -2647,7 +2755,7 @@
           "symbol": "chooseHigherPriorityLedState",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 601
+          "line": 184
         }
       ],
       "referenceFiles": [
@@ -2675,7 +2783,7 @@
           "symbol": "clearFeedbackVisualStatePreserveScoring",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 784
+          "line": 367
         }
       ],
       "referenceFiles": [
@@ -2714,7 +2822,8 @@
       "referenceFiles": [
         "js/generated/state/preferences.js",
         "js/generated/state/settings-backup.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -2733,7 +2842,8 @@
         "js/generated/practice/playback-coordinator.js",
         "js/generated/ui/tempo-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -2766,7 +2876,8 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js"
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -2807,20 +2918,6 @@
       "referenceFiles": [
         "js/generated/ui/permission-help.js",
         "js/led.js"
-      ]
-    },
-    {
-      "symbol": "cloneModeRoutingState",
-      "definitions": [
-        {
-          "symbol": "cloneModeRoutingState",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 49
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
       ]
     },
     {
@@ -2905,7 +3002,7 @@
           "symbol": "consumeImmediateResumeStartFlag",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1121
+          "line": 511
         }
       ],
       "referenceFiles": [
@@ -2948,7 +3045,7 @@
           "symbol": "createKeyboard",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 804
+          "line": 387
         }
       ],
       "referenceFiles": [
@@ -3139,7 +3236,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/settings-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/settings-actions.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -3158,146 +3256,6 @@
         "js/generated/practice/expected-notes.js",
         "js/generated/practice/input-controller.js",
         "js/generated/compatibility/practice.js"
-      ]
-    },
-    {
-      "symbol": "enableHandStaves",
-      "definitions": [
-        {
-          "symbol": "enableHandStaves",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1252
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "enableInstrument",
-      "definitions": [
-        {
-          "symbol": "enableInstrument",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1266
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "enableMidiOutHandStaves",
-      "definitions": [
-        {
-          "symbol": "enableMidiOutHandStaves",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1281
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "enableMidiOutInstrument",
-      "definitions": [
-        {
-          "symbol": "enableMidiOutInstrument",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1295
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "enableMidiOutOther",
-      "definitions": [
-        {
-          "symbol": "enableMidiOutOther",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1288
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "enableMidiOutVirtualKeyboard",
-      "definitions": [
-        {
-          "symbol": "enableMidiOutVirtualKeyboard",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1302
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "enableOther",
-      "definitions": [
-        {
-          "symbol": "enableOther",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1259
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "enableStaffLh",
-      "definitions": [
-        {
-          "symbol": "enableStaffLh",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1228
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "enableStaffRh",
-      "definitions": [
-        {
-          "symbol": "enableStaffRh",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1240
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "enableVirtualKeyboard",
-      "definitions": [
-        {
-          "symbol": "enableVirtualKeyboard",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1274
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
       ]
     },
     {
@@ -3494,26 +3452,13 @@
       "definitions": [
         {
           "symbol": "formatStaffAssignmentValue",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 36
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "fullscreenOnPlayCheckbox",
-      "definitions": [
-        {
-          "symbol": "fullscreenOnPlayCheckbox",
           "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1179
+          "file": "js/generated/compatibility/hand-routing.js",
+          "line": 6
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/hand-routing.js",
         "js/trainer-core.js"
       ]
     },
@@ -3550,12 +3495,14 @@
       "definitions": [
         {
           "symbol": "getAssignedHandRoleForStaff",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 41
+          "kind": "const",
+          "file": "js/generated/compatibility/hand-routing.js",
+          "line": 4
         }
       ],
       "referenceFiles": [
+        "js/generated/domain/hand-routing.js",
+        "js/generated/compatibility/hand-routing.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
@@ -3575,7 +3522,8 @@
       "referenceFiles": [
         "js/generated/state/preferences.js",
         "js/led.js",
-        "js/trainer-core.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
     },
@@ -3667,20 +3615,6 @@
       ]
     },
     {
-      "symbol": "getCurrentModeSettings",
-      "definitions": [
-        {
-          "symbol": "getCurrentModeSettings",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 68
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "getCursorSvgX",
       "definitions": [
         {
@@ -3702,11 +3636,13 @@
         {
           "symbol": "getDefaultStaffAssignment",
           "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 22
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 31
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -3732,7 +3668,7 @@
           "symbol": "getFuturePreviewDepth",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 587
+          "line": 170
         }
       ],
       "referenceFiles": [
@@ -3746,7 +3682,7 @@
           "symbol": "getKeyInlineVisual",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 630
+          "line": 213
         }
       ],
       "referenceFiles": [
@@ -3788,7 +3724,7 @@
           "symbol": "getLedStatePriority",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 592
+          "line": 175
         }
       ],
       "referenceFiles": [
@@ -3833,7 +3769,7 @@
           "symbol": "getLegacyTraversalCursor",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 576
+          "line": 159
         }
       ],
       "referenceFiles": [
@@ -4141,7 +4077,7 @@
           "symbol": "getResolvedStaffAssignmentIdFromEntry",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 472
+          "line": 104
         }
       ],
       "referenceFiles": [
@@ -4157,7 +4093,7 @@
           "symbol": "getResolvedStaffAssignmentIdFromNote",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 452
+          "line": 84
         }
       ],
       "referenceFiles": [
@@ -4329,7 +4265,8 @@
       "referenceFiles": [
         "js/generated/compatibility/midi.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -4390,7 +4327,8 @@
         "js/generated/state/preferences.js",
         "js/led.js",
         "js/feedback-debug.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -4474,11 +4412,54 @@
           "symbol": "globalStaffIdentityMap",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 434
+          "line": 66
         }
       ],
       "referenceFiles": [
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "handAssignmentController",
+      "definitions": [
+        {
+          "symbol": "handAssignmentController",
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 32
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
+      "symbol": "handAssignmentControls",
+      "definitions": [
+        {
+          "symbol": "handAssignmentControls",
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 42
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
+      "symbol": "handRouting",
+      "definitions": [
+        {
+          "symbol": "handRouting",
+          "kind": "const",
+          "file": "js/generated/compatibility/hand-routing.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/hand-routing.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -4540,7 +4521,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/settings-controls.js",
-        "js/trainer-core.js",
+        "js/generated/ui/settings-actions.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/settings-baseline.integration.js"
       ]
     },
@@ -4616,34 +4598,6 @@
       ]
     },
     {
-      "symbol": "importSettingsButton",
-      "definitions": [
-        {
-          "symbol": "importSettingsButton",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1335
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "importSettingsInput",
-      "definitions": [
-        {
-          "symbol": "importSettingsInput",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1336
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "initLedBrightnessControls",
       "definitions": [
         {
@@ -4704,20 +4658,6 @@
       ]
     },
     {
-      "symbol": "initLedSimulatorToggleControl",
-      "definitions": [
-        {
-          "symbol": "initLedSimulatorToggleControl",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1015
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "initLegacyMidiLedTest",
       "definitions": [
         {
@@ -4768,7 +4708,7 @@
           "symbol": "initSongUI",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 530
+          "line": 113
         }
       ],
       "referenceFiles": [
@@ -4939,7 +4879,7 @@
           "symbol": "isPracticeHandEnabledForStaff",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 581
+          "line": 164
         }
       ],
       "referenceFiles": [
@@ -5191,20 +5131,6 @@
       ]
     },
     {
-      "symbol": "lowLatencyPlaybackCheckbox",
-      "definitions": [
-        {
-          "symbol": "lowLatencyPlaybackCheckbox",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1187
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "makeLedPreviewEntrySignature",
       "definitions": [
         {
@@ -5265,6 +5191,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/midi.js",
+        "js/generated/ui/practice-controls.js",
         "docs/testing/midi-baseline.integration.js"
       ]
     },
@@ -5313,20 +5240,6 @@
       "referenceFiles": [
         "js/generated/compatibility/midi.js",
         "docs/testing/midi-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "normalizeFollowModeSettings",
-      "definitions": [
-        {
-          "symbol": "normalizeFollowModeSettings",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 56
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
       ]
     },
     {
@@ -5511,12 +5424,29 @@
         "js/optional/midi-led-test.js",
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/native-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js",
+        "docs/testing/settings-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/midi-baseline.integration.js",
         "docs/testing/audio-baseline.integration.js",
         "docs/testing/metronome-baseline.integration.js",
         "docs/testing/playback-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "optionalLedPreferences",
+      "definitions": [
+        {
+          "symbol": "optionalLedPreferences",
+          "kind": "const",
+          "file": "js/generated/compatibility/optional-led.js",
+          "line": 46
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/optional-led.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -5526,7 +5456,7 @@
           "symbol": "osmd",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 398
+          "line": 30
         }
       ],
       "referenceFiles": [
@@ -5563,21 +5493,8 @@
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/score-data.js",
         "js/generated/compatibility/native-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/render-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "parseStaffAssignmentValue",
-      "definitions": [
-        {
-          "symbol": "parseStaffAssignmentValue",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 30
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
       ]
     },
     {
@@ -5594,7 +5511,7 @@
         "js/generated/practice/playback-coordinator.js",
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
@@ -5724,7 +5641,8 @@
       "referenceFiles": [
         "js/generated/ui/midi-controls.js",
         "js/generated/compatibility/midi.js",
-        "js/trainer-core.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/midi-baseline.integration.js"
       ]
     },
@@ -5773,6 +5691,21 @@
         "js/generated/compatibility/toolbar.js",
         "js/generated/ui/scores-drawer.js",
         "js/generated/compatibility/scores-ui.js"
+      ]
+    },
+    {
+      "symbol": "practiceControls",
+      "definitions": [
+        {
+          "symbol": "practiceControls",
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/preference-controls.js",
+        "js/trainer-core.js"
       ]
     },
     {
@@ -5883,6 +5816,20 @@
       ]
     },
     {
+      "symbol": "preferenceControls",
+      "definitions": [
+        {
+          "symbol": "preferenceControls",
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 45
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
       "symbol": "preserveMusicAreaScroll",
       "definitions": [
         {
@@ -5922,7 +5869,7 @@
           "symbol": "ptNeedsImmediateResumeStart",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 1113
+          "line": 503
         }
       ],
       "referenceFiles": [
@@ -5953,7 +5900,7 @@
           "symbol": "rebuildGlobalStaffIdentityMap",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 436
+          "line": 68
         }
       ],
       "referenceFiles": [
@@ -6064,7 +6011,7 @@
           "symbol": "releaseActiveVirtualPointer",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 796
+          "line": 379
         }
       ],
       "referenceFiles": [
@@ -6118,7 +6065,8 @@
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js"
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -6137,6 +6085,8 @@
         "js/generated/compatibility/playback.js",
         "js/generated/ui/loop-controls.js",
         "js/generated/compatibility/native-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js",
         "docs/testing/render-baseline.integration.js"
       ]
@@ -6168,7 +6118,7 @@
           "symbol": "renderVirtualKeyboard",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 646
+          "line": 229
         }
       ],
       "referenceFiles": [
@@ -6179,6 +6129,8 @@
         "js/optional/midi-led-test.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -6224,7 +6176,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -6257,20 +6209,6 @@
         "js/generated/practice/playback-coordinator.js",
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/native-controls.js"
-      ]
-    },
-    {
-      "symbol": "resetPreferencesButton",
-      "definitions": [
-        {
-          "symbol": "resetPreferencesButton",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 1349
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
       ]
     },
     {
@@ -6322,13 +6260,15 @@
       "definitions": [
         {
           "symbol": "restoreDefaultPreferences",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 232
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 56
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/ui/settings-actions.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -6653,21 +6593,8 @@
       ],
       "referenceFiles": [
         "js/feedback-debug.js",
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "setFollowPracticeHand",
-      "definitions": [
-        {
-          "symbol": "setFollowPracticeHand",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 88
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -6710,7 +6637,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -6725,7 +6652,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -6740,7 +6667,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -6755,7 +6682,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -6770,7 +6697,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -6813,7 +6740,8 @@
       ],
       "referenceFiles": [
         "js/generated/ui/player-range-controls.js",
-        "js/trainer-core.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/input-baseline.integration.js"
       ]
@@ -6834,7 +6762,8 @@
         "js/generated/ui/midi-controls.js",
         "js/feedback-debug.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -6849,7 +6778,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -6878,6 +6807,21 @@
       ],
       "referenceFiles": [
         "js/led.js"
+      ]
+    },
+    {
+      "symbol": "settingsActions",
+      "definitions": [
+        {
+          "symbol": "settingsActions",
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 57
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/preference-controls.js",
+        "js/trainer-core.js"
       ]
     },
     {
@@ -6974,7 +6918,8 @@
       "referenceFiles": [
         "js/generated/practice/playback-coordinator.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/audio-baseline.integration.js"
       ]
     },
@@ -7060,7 +7005,8 @@
         "js/generated/practice/playback-coordinator.js",
         "js/generated/ui/tempo-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
     },
@@ -7069,13 +7015,17 @@
       "definitions": [
         {
           "symbol": "syncActiveHandStateFromMode",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 80
+          "kind": "const",
+          "file": "js/generated/compatibility/hand-routing.js",
+          "line": 5
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js",
+        "js/generated/domain/hand-routing.js",
+        "js/generated/compatibility/hand-routing.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
@@ -7110,7 +7060,8 @@
       "referenceFiles": [
         "js/generated/ui/display-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -7118,12 +7069,15 @@
       "definitions": [
         {
           "symbol": "syncHandAssignmentFromControls",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 481
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 43
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/hand-assignment-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -7139,7 +7093,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -7182,7 +7136,7 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/optional-led.js"
       ]
     },
     {
@@ -7202,20 +7156,6 @@
       ]
     },
     {
-      "symbol": "syncLowLatencyPlaybackPreferenceUi",
-      "definitions": [
-        {
-          "symbol": "syncLowLatencyPlaybackPreferenceUi",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1008
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "syncMidiInBoostUi",
       "definitions": [
         {
@@ -7228,7 +7168,9 @@
       "referenceFiles": [
         "js/generated/ui/audio-level-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/practice-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -7289,7 +7231,9 @@
       "referenceFiles": [
         "js/generated/ui/tempo-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/practice-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -7314,13 +7258,15 @@
       "definitions": [
         {
           "symbol": "syncTrainerRoutingUiState",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 890
+          "kind": "const",
+          "file": "js/generated/compatibility/preference-controls.js",
+          "line": 30
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/midi.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -7380,7 +7326,8 @@
       "referenceFiles": [
         "js/generated/ui/display-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -7615,7 +7562,9 @@
       "referenceFiles": [
         "js/generated/ui/audio-level-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
     },
@@ -7632,7 +7581,8 @@
       "referenceFiles": [
         "js/generated/ui/audio-level-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -7648,7 +7598,8 @@
       "referenceFiles": [
         "js/generated/ui/audio-level-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -7664,7 +7615,9 @@
       "referenceFiles": [
         "js/generated/ui/audio-level-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/ui/preference-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "docs/testing/audio-baseline.integration.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
@@ -7692,7 +7645,7 @@
           "symbol": "updateScoreDisplay",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 416
+          "line": 48
         }
       ],
       "referenceFiles": [
@@ -8063,10 +8016,12 @@
           "symbol": "window.getAssignedHandRoleForStaff",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 479
+          "line": 111
         }
       ],
       "referenceFiles": [
+        "js/generated/domain/hand-routing.js",
+        "js/generated/compatibility/hand-routing.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
@@ -8080,7 +8035,7 @@
           "symbol": "window.getResolvedStaffAssignmentIdFromEntry",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 478
+          "line": 110
         }
       ],
       "referenceFiles": [
@@ -8096,7 +8051,7 @@
           "symbol": "window.getResolvedStaffAssignmentIdFromNote",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 476
+          "line": 108
         }
       ],
       "referenceFiles": [
@@ -8205,7 +8160,8 @@
       ],
       "referenceFiles": [
         "js/led.js",
-        "js/trainer-core.js"
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -8215,11 +8171,13 @@
           "symbol": "window.syncTrainerRoutingUiState",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 1418
+          "line": 644
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/midi.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
       ]
     },

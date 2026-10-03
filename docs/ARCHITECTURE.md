@@ -121,8 +121,16 @@ Native v1 IndexedDB operations and starter imports live in `score/score-library.
 permissive backup codec lives in `score/library-backup.ts`. Commands wait for native transaction
 completion, preserve the existing schema and generate new IDs on backup import. Explicit disposal
 aborts owned transactions, closes the connection and prevents late commands from reopening it.
-The score drawer and remaining UI move in later P8 checkpoints; classic assembly
-and forwards are temporary until the P9 bootstrap and module bundle.
+The score drawer now lives in `ui/scores-drawer`, `library-list`, `library-actions` and
+`library-dialogs`, with domain selection rules in `domain/library-view`. Toolbar, display,
+tempo, audio level and Loop controls own their native resources. Hand routing rules live
+in `domain/hand-routing`; `app/hand-assignment-controller` commits assignments using one
+captured frame through typed commands. Practice, preference and settings button controls
+live in their respective UI factories. They preserve mode-specific objects, saved routing
+choices, reset change-event order and the existing file commands. Only explicit disposal
+removes their listeners and invalidates old handlers; repeated initialization is deduplicated.
+Core still owns keyboard/score seek and score UI assembly. Classic composition and forwards
+remain temporary until the P9 bootstrap and module bundle.
 
 ## Fragile systems
 - Feedback-note anchor positioning and resize stability

@@ -16,6 +16,8 @@ var PianoTrainerControlDom;
         function optionalInput(id) { return typed(id, HTMLInputElement, false); }
         function button(id) { return typed(id, HTMLButtonElement, true); }
         function optionalButton(id) { return typed(id, HTMLButtonElement, false); }
+        function select(id) { return typed(id, HTMLSelectElement, true); }
+        function optionalSelect(id) { return typed(id, HTMLSelectElement, false); }
         function element(id) { return typed(id, HTMLElement, false); }
         function on(target, event, handler) {
             if (!target)
@@ -32,7 +34,7 @@ var PianoTrainerControlDom;
                 target.removeEventListener(event, handler);
             listeners.length = 0;
         }
-        return { input, optionalInput, button, optionalButton, element, on, onInput, dispose };
+        return { input, optionalInput, button, optionalButton, select, optionalSelect, element, on, onInput, dispose };
     }
     PianoTrainerControlDom.create = create;
 })(PianoTrainerControlDom || (PianoTrainerControlDom = {}));

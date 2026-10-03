@@ -1,6 +1,6 @@
 # 首轮 TypeScript 开发与运行
 
-当前已迁移 timing、状态、设置、键域/共享遍历、MIDI、音频、渲染、输入判定与 P7 调度/模式策略；P8 数据/UI 与 P9 入口仍待完成。
+当前已迁移 timing、状态、设置、键域/共享遍历、MIDI、音频、渲染、输入判定与 P7 调度/模式策略；P8 数据、曲库、工具栏和练习/偏好控件已迁移，键盘/score seek/score UI 与 P9 入口仍待完成。
 应用继续使用原生 DOM、经典脚本、现有 vendor 和静态资源；完整目标见 [PROGRESS.md](PROGRESS.md)。
 
 ## 运行应用
@@ -86,6 +86,10 @@ P1 仅有初始化空 namespace 的局部类型断言，以及 `Number.isFinite`
 
 修改／恢复同一 origin 偏好的测试页需依次运行并关闭，再打开下一页；并发运行 MIDI／audio 等
 fixture 会互相改写启动期间读取的 saved channel/device。显示与 practice 的声音路由关闭不证明实体音频表现。
+
+- `/docs/testing/preference-controls-baseline.html`：默认与 `?led=off` 各 39 项。真实 radio/checkbox/select/file input、Follow 互补手、Wait 限制/独立设置、音频/MIDI 路由、键盘/反馈/preview、实际 OSMD 分配与期望重建、persisted apply/reset、确认取消和无效设置导入。偏好在内存、测试库随机且结束删除；三个控制器实际监听数 22/2/4，显式 dispose 全为零，reinit 恢复同数。MIDI 权限失败时，测试用现有 production UI 方法填充通道选项再验证 selected value。
+- `/docs/testing/settings-baseline.html` 现将 `?led=off` 传入 iframe 及 reload，新增 actual port 检查；每种配置各 11 项真实 FileReader/备份/加载往返。P8e 26 页/1,003 项、9,000 次旧版命令对照和 282 项 Node 记录见 validation/P8e-preference-controls-*.txt。
+- `domain/hand-routing` 无 DOM/vendor/storage 依赖；`app/hand-assignment-controller` 接受一次捕获的 frame 命令，不读 OSMD。`ui/practice-controls` 分段 init 保留旧绑定位置，preference-controls 只同步调用已有设置/音频/显示/MIDI/LED 命令，settings-actions 只管理按钮与 input。实际 settings file commands 仍为 P2 边界，FileReader 的统一生命周期和全局收尾归后续入口工作。
 
 页面通过 iframe 注入测试脚本；生产 index.html 不加载测试 API。结束会暂停，重载 iframe
 恢复完整应用状态。显示页用受控 rAF；硬件和音频路由关闭。不要据此声称实体 MIDI 或音频延迟已验证。

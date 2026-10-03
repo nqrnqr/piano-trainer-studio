@@ -11,6 +11,7 @@
     const importFile = payload => handleSettingsBackupImportFile(new File([JSON.stringify(payload)], 'Settings-test.json', { type: 'application/json' }));
     try {
         if (harness.phase === 'initial') {
+            check(optionalLedOutput.enabled === (new URLSearchParams(parent.location.search).get('led') !== 'off'), 'settings import/reload runs with the requested default/no-op LED');
             harness.original = buildSettingsBackupPayload();
             check(harness.original.version === 1 && typeof harness.original.settings === 'object', 'backup preserves version 1 and string settings');
             const state = AppState;

@@ -43,6 +43,17 @@ const optionalLedOutput = optionalLedEnabled
     }) : PianoTrainerOptionalLed.createNoop();
 
 function wipeHardwareLEDs() { optionalLedOutput.wipeHardware(); }
+const optionalLedPreferences = {
+    reset() {
+        if (!optionalLedOutput.enabled) return;
+        setLedCount(88); setLedMasterBrightness(25); setLedFuture1BrightnessPct(1); setLedFuture2BrightnessPct(1);
+        resetAllLedCalibration(); setWledIp(''); setLedOutputMode('none');
+    },
+    syncControls() {
+        if (!optionalLedOutput.enabled) return;
+        syncLedBrightnessControls(); syncLedOutputModeControls();
+    }
+};
 if (!optionalLedOutput.enabled) {
     const settings = document.getElementById('fs-led-setup');
     if (settings instanceof HTMLFieldSetElement) {

@@ -1,4 +1,5 @@
 interface Window {
+    syncSettingsDebugVisibility?: () => void;
     // Values originate in the JSON manifest; consumers retain their String()
     // conversion until the explicit bootstrap validates external metadata.
     __PT_APP_MANIFEST__?: {
@@ -8,6 +9,7 @@ interface Window {
     };
     __PT_ASSET_VERSION__?: string;
 }
+declare function setDebugEnabled(value: boolean, options: {clearHistory: boolean; logChange: boolean; reason: string}): void;
 
 interface LegacyAppState {
     // Legacy startup currently assigns the persisted string without validation.

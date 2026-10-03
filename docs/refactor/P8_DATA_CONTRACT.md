@@ -67,3 +67,14 @@ IndexedDB `pianoTrainerLibrary` v1、stores/indexes、transaction completion、b
 - volume 0..100、boost 50..200，parseInt/falsy defaults、可选 DOM、storage→audio/MIDI 命令顺序不变；零 metronome level 为 -Infinity。input boost 不进入 MIDI output，display row 只按 instrument routing 决定可见性。
 - loop 空 input 编辑不提交，change/blur clamp；crossed bound 按 changed ID 移动另一边。loader 的 range reset 保留 max/min/value/state 原写入顺序。hold 没有即时 step：320ms 后建立 170ms interval，click 仍单独 step；pointer capture/right-button/leave/buttons=0/document release/blur 行为保持。explicit dispose 清 owned timers/capture/style、invalidate callbacks，不修改普通停止规则。
 - 每个 factory 不绑定资源；core 在原相对位置显式调用各段 init，P9 再统一 bootstrap。required inputs 的类型断言只在已校验 getter 返回，vendor zoom public property 和 optional cursor measure 只经 OSMD adapter；无 any/忽略检查。
+
+## Practice、staff assignment、preferences、settings actions 基线 6145dfc
+
+- Follow 的 practice left && !right 才选左，否则选右；playback 总互补。缺失 mode settings 仍补双手 true，未知 persisted mode 保留字符串并选 Realtime UI/规则；active practice/playback 对象不替换。staff 使用 radix 10 parseInt 的原前缀规则；right 优先，Number(null)=0 的 role 比较保留。
+- mode radio checked 才处理；pause（playing 或 count-in）→mode/storage→clear metro/stop Wait/silence/transient→apply mode（内部 latency）→再次 latency→读取当前 volume/update 的原顺序保留。Wait/Follow 限制 playback 控件，但不改 saved audio routing。apply mode 最后的 routing sync 会覆盖 Wait 的 MIDI-other disabled 状态，保留该旧行为。
+- future checkbox 缺失时整个原 init 包括 correct highlight 跳过；future depth 固定 1，change 才清 last preview。keyboard 显隐后 render/LED position/native resize；feedback off clear SVG、on render，再 optional debug UI。low latency off 释放原 synth；audio instrument change 后同步 boost row。
+- staff selects 的 LH dataset marker 为去重入口，right 无效时不提交。同步 assignment 清 preview，未请求 refresh 或无 iterator 时只 render；有事件且 measure 非 null 时用同一捕获帧 build→render，否则清原三个数组。selectors/原生 event targets 在 UI 边界检查类型；vendor entries 不进入 UI 或 app 协调器。
+- persisted apply 和 reset 的 storage/state/DOM/command 顺序逐句保留，使用 P2 实际 getClampedNumber：null/empty 返回 default，不改成 Number(null) 的零值。piano volume 会保存，startup MIDI/boost/metronome/zoom save:false；empty zoom 写 default。forced monitoring keys、invalid mode、原 reset 默认值和 mode objects 保持。
+- reset 先 clear preferences，再 mode/feedback/hands/routing/levels/layout/zoom/keyboard/metronome/debug/range/optional LED；按 midi-in、midi-out、midi-out-channel、midi-lights、midi-lights-channel 顺序赋值并 dispatch native change；staff defaults→mode→LED UI→loop/keyboard/position→optional reload devices。Web MIDI 失败时 channel select 空 options 原生赋值可 sanitize 为空，未更改生产行为。
+- settings actions 原 download 命令、不 stopPropagation，import button clear→click，change 读取 File|null|undefined→启动原 FileReader→立即清 input，reset confirmation 文本/取消/同步 reset 保持。普通交互不取消已有文件读取；统一 file command lifecycle 留后续 P9。
+- 新控制器重复 init/dispose 去重；dispose 只释放 own listeners/markers 并失效旧 callbacks，外部 marker 保留。hand-routing 是纯 state/domain 规则，hand-assignment app 命令不依赖 DOM/vendor；preference apply/reset 为无资源同步流程。无新增 any、忽略检查或大范围断言。

@@ -1,0 +1,7 @@
+Command: node .cache/preference-controls-parity.cjs
+Baseline: 6145dfc:js/trainer-core.js, extracted via TypeScript AST in ignored .cache only.
+PASS 9000 mode/routing/staff/preferences/native event commands match baseline 6145dfc
+300 streams x 30 operations; deterministic seed 0x883821.
+Compared return values, state and nested mode objects, full saved local/session preferences, native control values/checks/disabled/classes/labels/text/markers/listener counts and command effects after every action.
+Cases include native changes, mode switch pause/clear/latency/read levels, Follow hand edits, Wait playback constraints, routing sync with/without output, staff none/invalid/decimal prefix, missing/empty/populated current frame, persisted malformed/empty/numeric settings, invalid saved mode, reset defaults and optional device reload.
+Old and new ports map to the same trace vocabulary; domain/performance algorithms are not duplicated in production or durable tests.

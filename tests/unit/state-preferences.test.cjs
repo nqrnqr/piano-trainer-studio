@@ -115,9 +115,10 @@ test('settings do not replace the shared state, Map or Set identities', () => {
 
 test('mode-specific routing keeps independent objects and Follow chooses exactly one practice hand', () => {
     const h = stateHarness();
-    for (const name of ['normalizeFollowModeSettings', 'getCurrentModeSettings', 'syncActiveHandStateFromMode', 'setFollowPracticeHand']) runFunction(h.context, 'js/trainer-core.js', name);
+    runScript(h.context, 'js/generated/domain/hand-routing.js');
+    runScript(h.context, 'js/generated/compatibility/hand-routing.js');
     h.state.mode = 'follow';
-    h.context.setFollowPracticeHand('left');
+    h.evaluate("handRouting.setFollowPracticeHand('left')");
     assert.equal(h.state.practice.left, true);
     assert.equal(h.state.practice.right, false);
     assert.equal(h.state.playback.left, false);
@@ -126,7 +127,7 @@ test('mode-specific routing keeps independent objects and Follow chooses exactly
     assert.equal(h.state.modeSettings.wait.playback.right, false);
     assert.notEqual(h.state.practice, h.state.modeSettings.follow.practice);
     h.state.mode = 'wait';
-    h.context.syncActiveHandStateFromMode();
+    h.evaluate('syncActiveHandStateFromMode()');
     assert.equal(h.state.practice.right, true);
     assert.equal(h.state.playback.right, false);
 });

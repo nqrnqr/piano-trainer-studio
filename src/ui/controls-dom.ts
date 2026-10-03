@@ -12,6 +12,8 @@ namespace PianoTrainerControlDom {
         function optionalInput(id: string) { return typed(id, HTMLInputElement, false); }
         function button(id: string) { return typed(id, HTMLButtonElement, true)!; }
         function optionalButton(id: string) { return typed(id, HTMLButtonElement, false); }
+        function select(id: string) { return typed(id, HTMLSelectElement, true)!; }
+        function optionalSelect(id: string) { return typed(id, HTMLSelectElement, false); }
         function element(id: string) { return typed(id, HTMLElement, false); }
         function on(target: EventTarget | null, event: string, handler: EventListener) {
             if (!target) return;
@@ -24,6 +26,6 @@ namespace PianoTrainerControlDom {
             for (const {target,event,handler} of listeners) target.removeEventListener(event,handler);
             listeners.length = 0;
         }
-        return {input, optionalInput, button, optionalButton, element, on, onInput, dispose};
+        return {input, optionalInput, button, optionalButton, select, optionalSelect, element, on, onInput, dispose};
     }
 }

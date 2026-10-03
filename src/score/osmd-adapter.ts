@@ -264,6 +264,15 @@ namespace PianoTrainerOsmdAdapter {
             // Preserve its missing-measure exception semantics in this boundary.
             getCurrentMeasureIndex: () => ports.getRenderer().cursor!.Iterator.CurrentMeasureIndex,
             getCurrentMeasureIndexIfAvailable: () => ports.getRenderer()?.cursor?.Iterator?.CurrentMeasureIndex,
+            getDefaultStaffCount: () => ports.getRenderer()?.GraphicSheet?.MeasureList?.[0]?.length || 2,
+            readHandAssignmentFrame: () => {
+                const iterator = ports.getRenderer()?.cursor?.Iterator;
+                if (!iterator) return null;
+                const entries = iterator.CurrentVoiceEntries || [];
+                const measureIndex = iterator.CurrentMeasureIndex;
+                const timestamp = iterator.currentTimeStamp?.RealValue ?? null;
+                return {entries, measureIndex, timestamp};
+            },
             getStaffTopY: (measureIndex: number, staffIndex: number) => {
                 const measures = ports.getRenderer().GraphicSheet!.MeasureList;
                 const measure = measures[measureIndex][staffIndex] || measures[measureIndex][0];

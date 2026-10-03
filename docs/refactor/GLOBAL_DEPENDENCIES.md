@@ -11,6 +11,14 @@ generated/state/player-range。旧 led.js 的范围定义已删除；键盘、fe
 其计算和共享缓存现在由非硬件模块拥有。
 
 完整符号候选、定义行、引用文件及实际加载顺序见 [GLOBAL_SYMBOLS.json](GLOBAL_SYMBOLS.json)。
+P8e 当前库存为 513 candidates / 98 classic slots，同名函数覆盖为零。
+AppState 后加载 domain/hand-routing 与无资源 composition；原 native controls 后加载
+hand assignment、practice/preferences/settings actions factories 和 lazy compatibility。
+core 在旧位置调用三个 practice init 分段、settings init，score load 才绑定 staff selects。
+getAssignedHandRole/syncActiveHandState/formatStaffAssignment 与 apply/reset/routing UI 的少量旧名
+仍供 core、MIDI、LED 和测试使用，Window.syncTrainerRoutingUiState 原 facade 保留；
+无消费者的 parse/getCurrent/setFollow/normalize/clone/noop LED init forwards 已移除。
+新工厂不产生监听/查询副作用，实际 init/dispose 所有权见 STATE_OWNERSHIP。
 运行 `node scripts/inventory-legacy-globals.cjs` 可从当前入口重建。它扫描列首声明和
 `window.*` 赋值，引用是词法匹配，包含注释、局部遮蔽等候选；不是调用图或完整 AST。
 IIFE 内局部声明、解构声明、动态索引不自动认定为全局。以下是人工审阅的边界与副作用。

@@ -8,7 +8,7 @@ P2 保留一个 `const AppState` 词法对象。Map/Set 泛型、null 和动态�
 
 | 组 | 当前写入者和别名 | 计划最终所有者 |
 | --- | --- | --- |
-| modeSettings、practice、playback | core 的 `normalizeFollowModeSettings` / `getCurrentModeSettings` / `setFollowPracticeHand` 返回或持有 `follow`、`settings` 引用；复选框监听修改它们 | settings commands / practice coordinator |
+| modeSettings、practice、playback | domain/hand-routing 规范化 Follow、返回当前 mode settings 并复制 active booleans；practice-controls 仅更新用户选择，preference-controls 恢复三个原默认 settings entries | settings commands / practice coordinator |
 | expectedNotes / hit、score、提前预留 | src/practice 的 expected-notes、input-controller、early-grace、scoring；`expectedMatch.hit` 和 `expected.hit` 通过局部引用变更；playback-state/coordinator 负责原 reset | expected-notes / input-matching / scoring / coordinator |
 | 当前谱与移调源 | core loader、ScoresUI、TransposeUI 的 `state = ensureTransposeState()`；同一个 transpose 对象 | score-loader / transpose commands |
 | 真实遍历、当前期望、预览 timeline | playback coordinator 与 shared traversal；OSMD adapter 提供惰性 PlaybackEvent 与推进命令，core 仍有未迁 UI/loader 查询 | traversal / practice coordinator |
@@ -131,3 +131,16 @@ Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不
 设置备份先检查 unknown 的对象结构，再处理受支持的自有属性。受支持值按原 String 规则保存，
 不是借迁移修改备份格式；没有支持的键时先拒绝，不清理现有设置。下载、alert、FileReader 和 reload
 已移至 `src/ui/settings-controls.ts`；backup service 不读取 DOM 或触发 UI。
+
+P8e 当前直接 AppState 写入为 97（原 168）。迁出的写入通过 narrow state alias：
+hand-routing 保留 hands/modeSettings/practice/playback 的引用，Follow normalization 和独立模式默认值
+沿旧规则；practice-controls 更新 mode/preferences/audio/MIDI routing，只通过命令清理/暂停播放。
+preference-controls 同步应用存储值、强制 monitoring flags、恢复三个 modeSettings entries，并按原
+位置调用显示/audio/debug/range/LED/MIDI 命令。不会整体替换 AppState、Map/Set 或 active hands 对象。
+hand-assignment-controller 在 right assignment 有效时写 hands、dirty preview 和当前 preview events；
+只有显式刷新且有 iterator 的空帧才清 expected/visual/out-of-range arrays，有效帧 build→render。
+adapter 只捕获一次 entries/measure/timestamp；UI 不遍历 OSMD 对象。
+practice、staff select、settings actions 各自拥有 22/2/4 个原生监听（staff 在 load 后），无新增 timer。
+dispose 只移除自己的 listeners/markers，generation 使旧 handler 在 reinit 后仍失效；外部 marker 保留。
+偏好 apply/reset 是同步命令，不拥有异步资源；settings FileReader 下载/导入仍是 P2 UI 边界，生命周期
+统一归后续 P9，不因按钮 dispose 改变普通正在进行的设置导入行为。

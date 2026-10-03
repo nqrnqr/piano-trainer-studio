@@ -6,7 +6,7 @@
 <p>Uses the actual FileReader import handler and iframe reload. Saves supported settings first, tests imports, then restores the saved values. Run on a disposable local test origin.</p>
 <button id="run" disabled>Run checks</button>
 <pre id="results">Ready</pre>
-<iframe src="../../index.html" title="App under test"></iframe>
+<iframe title="App under test"></iframe>
 <script>
 const frame = document.querySelector('iframe');
 window.SettingsBaseline = {
@@ -29,4 +29,5 @@ document.getElementById('run').onclick = () => {
     SettingsBaseline.failed = false;
     SettingsBaseline.inject();
 };
+frame.src = '../../index.html' + (new URLSearchParams(location.search).get('led') === 'off' ? '?led=off' : '');
 </script>
