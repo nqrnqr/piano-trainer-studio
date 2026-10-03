@@ -281,6 +281,7 @@ export namespace PianoTrainerOsmdAdapter {
                 return measures.length > 0 ? measures[0]!.TempoInBPM : undefined;
             },
             setZoom: (value: number) => { ports.getRenderer().zoom = value; },
+            getZoom: () => ports.getRenderer().zoom,
             // Transitional UI wrapper consumes the captured entries only at this boundary.
             legacyEntriesForPlayback: (event: PianoTrainerDomain.PlaybackEvent) => playbackEntries.get(event),
             hasCursor: () => !!ports.getRenderer().cursor,

@@ -4575,6 +4575,7 @@
         setZoom: (value) => {
           ports.getRenderer().zoom = value;
         },
+        getZoom: () => ports.getRenderer().zoom,
         // Transitional UI wrapper consumes the captured entries only at this boundary.
         legacyEntriesForPlayback: (event) => playbackEntries.get(event),
         hasCursor: () => !!ports.getRenderer().cursor,
@@ -12647,6 +12648,86 @@
     } };
   }
 
+  // src/testing/controls-checks.ts
+  function createControlsChecks(getServices) {
+    let capture = null;
+    let lateToolbar = null, finishRefresh = null;
+    const nativeControllers = () => {
+      const s = getServices();
+      return [s.toolbarUi, s.displayControls, s.tempoControls, s.audioLevelControls, s.loopControls];
+    };
+    const commands = Object.freeze({
+      initNative: () => {
+        for (const controller of nativeControllers()) controller.init();
+      },
+      disposeNative: () => {
+        for (const controller of nativeControllers()) controller.dispose();
+      },
+      hidePanels: (immediate = true) => getServices().toolbarUi.hideToolbarPanels(immediate),
+      showPanel: (id) => getServices().toolbarUi.showToolbarPanel(document.getElementById(id)),
+      positionScores: () => getServices().toolbarUi.positionScoresPanel(),
+      showFirstRunIntro: () => getServices().toolbarUi.maybeShowFirstRunIntro(),
+      capturePracticeIdentity: () => {
+        const state = getServices().AppState;
+        capture = { context: state.currentExpectedContext, score: state.score };
+      },
+      readSnapshot: () => {
+        const s = getServices(), state = s.AppState;
+        return {
+          libraryView: state.scoreLibraryView,
+          zoom: state.zoom,
+          vendorZoom: s.osmdAdapter.getZoom(),
+          ready: s.osmdAdapter.isReady(),
+          speed: state.speedPercent,
+          midiOutVolume: state.midiOutVolume,
+          midiInBoost: state.midiInBoost,
+          metronomeMidiOut: state.metronomeMidiOutEnabled,
+          loopCountIn: state.loopCountInEnabled,
+          looper: { ...state.looper },
+          pseudoFullscreen: state.pseudoFullscreenActive,
+          scoreSameAsCapture: !!capture && capture.score === state.score,
+          contextSameAsCapture: !!capture && capture.context === state.currentExpectedContext
+        };
+      },
+      setBaseBpm: (value) => {
+        getServices().AppState.baseBpm = value;
+      },
+      requestFullscreen: () => getServices().displayControls.requestAppFullscreen(),
+      exitFullscreen: () => getServices().displayControls.exitAppFullscreen(),
+      preserveScroll: (callback) => getServices().displayControls.preserveMusicAreaScroll(callback),
+      createLateToolbar: () => {
+        lateToolbar?.dispose();
+        finishRefresh = null;
+        lateToolbar = PianoTrainerToolbar.create({
+          document,
+          window,
+          storage: localStorage,
+          state: getServices().AppState,
+          refreshScoresDrawer: () => new Promise((resolve) => {
+            finishRefresh = resolve;
+          })
+        });
+      },
+      disposeToolbar: () => getServices().toolbarUi.dispose(),
+      initLateToolbar: () => {
+        if (!lateToolbar) throw Error("Missing late toolbar scenario");
+        lateToolbar.init();
+      },
+      disposeLateToolbar: () => lateToolbar?.dispose(),
+      finishLateRefresh: () => {
+        if (!finishRefresh) throw Error("No pending toolbar refresh");
+        finishRefresh();
+        finishRefresh = null;
+      }
+    });
+    return { commands, clear: () => {
+      lateToolbar?.dispose();
+      lateToolbar = null;
+      finishRefresh = null;
+      capture = null;
+    } };
+  }
+
   // src/testing/facade.ts
   function createTestFacade(options = {}, injectedPorts = {}, libraryFixture) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
@@ -12658,6 +12739,7 @@
     const renderChecks = createRenderChecks(() => services);
     const scoreChecks = createScoreChecks(() => services);
     const libraryChecks = createLibraryChecks(() => services, libraryFixture);
+    const controlsChecks = createControlsChecks(() => services);
     return Object.freeze({
       loadScore: (raw, options2 = {}) => services.scoreLoader.loadScoreIntoApp(raw, options2),
       dispatchInput: (note, down) => services.practiceInput.handle({
@@ -12677,6 +12759,7 @@
       metronome: createMetronomeChecks(() => services),
       score: scoreChecks.commands,
       library: libraryChecks.commands,
+      controls: controlsChecks.commands,
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",
@@ -12714,6 +12797,7 @@
         renderChecks.clear();
         scoreChecks.clear();
         libraryChecks.clear();
+        controlsChecks.clear();
         playbackChecks?.dispose();
       },
       recreate: () => {
@@ -12721,6 +12805,7 @@
         renderChecks.clear();
         scoreChecks.clear();
         libraryChecks.clear();
+        controlsChecks.clear();
         playbackChecks?.dispose();
         services = createServices(servicePorts);
         playbackChecks?.attach(() => services);

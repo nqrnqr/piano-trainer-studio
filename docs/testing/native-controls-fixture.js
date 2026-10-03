@@ -4,10 +4,7 @@
  const owner=()=>{
   // Async caller frames can mention toolbar while library-list owns the listener.
   // Skip the shared binder, then attribute only the nearest UI implementation.
-  for(const match of (new Error().stack||'').matchAll(/\/ui\/([\w-]+)\.js\b/g)){
-   if(match[1]==='controls-dom')continue;
-   return modules.includes(match[1])?match[1]:undefined;
-  }
+  return window.__PT_MODULE_SOURCE__.nearestUi(new Error().stack,modules);
  };
  const add=EventTarget.prototype.addEventListener,remove=EventTarget.prototype.removeEventListener;let listeners=[];
  EventTarget.prototype.addEventListener=function(event,handler,options){const result=add.call(this,event,handler,options),module=owner();if(module&&!listeners.some(x=>x.target===this&&x.event===event&&x.handler===handler))listeners.push({module,target:this,event,handler,stack:new Error().stack});return result;};

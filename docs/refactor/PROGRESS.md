@@ -421,3 +421,14 @@
 - 浏览器：library/loader/transpose/bootstrap两种配置共8页310/310，累计26页1056项；validation/P9m-library-facade-browser.txt。全部自建标签关闭，终态在所有owner关闭与自己DB cleanup之后发布。
 - 验证：生产/测试最终strict、四文件clean comparison、336/336 Node；validation/P9m-library-facade-check.txt。生产JS保持，仅最小类型端口导致source map更新；vendor/asset/schema/backup格式/用户数据/设置/启动器不改。
 - 回退：revert本检查点恢复P9l接口/测试入口，无需清库。下一步UI资源归属用actual bundle source map适配原生fixture，保留listener/timer/frame计数和原assertions；当前1056项不替代全量。实体硬件/可听/Mac/LAN客户端限制保持，只有本地提交。
+
+## P9n：单 bundle 的原生 UI 资源归属与控件 facade
+
+- 状态：原 native-controls suite 迁移检查点完成（2026-10-04）；P9 其余UI suites与最终全量尚未完成，完整目标活跃。
+- 归属：旧fixture匹配 /ui/module.js stack → module-source-observer.js 解析实际served test-app.js.map，VLQ/binary search还原source。继续只观察最近UI owner、跳过controls-dom、不把较远异步toolbar调用算给library-list；原native add/remove/rAF/timer/interval APIs和计数不替换。
+- Loader：observeSources:true 在fixture前载入map/helper；只嵌入sources/mappings，不嵌入源码，JSON中的小于号转义。没有生产resource hook或固定生成行号。两项meaningful Node将实际数千bundle位置与Node SourceMap逐字段对照，并测试unmapped/invalid段与caller过滤。
+- 映射：原 toolbar/display/tempo/audio-level/loop globals/AppState/OSMD → controls-checks.ts 明确命令、复制字段/looper与private score/context identity capture。fullscreen callback return与native scroll保留；isolated late-refresh toolbar同一实际factory/privateowner，dispose统一释放引用。adapter只补最小readonly zoom观察，不返回vendor。
+- 浏览器：每配置原39项保留，native panel transitions/outside/picker/intro/navbarposition、实际OSMD/looprange/zoomrender身份、tempo preview/transport/原无上限BPM、volume保存/metro/loop prefs、empty/crossed/stepper/pointerhold320/170ms、fullscreen denialfallback/accessibility/scroll、resize资源、dispose无后续写入/freshlistener counts、captured late refresh gating。两配置native/bootstrap/render/display/playback共10页506/506，累计28页1134项。validation/P9n-native-controls-facade-browser.txt。
+- 验证：两套final strict、四文件clean comparison、338/338 Node（新增source map两个case），validation/P9n-native-controls-facade-check.txt。清单仍94 production ES modules/3slots/4runtime candidates/52directwrites。source map与TS对应，所有自建标签关闭与自己库cleanup完成。
+- 边界：其余native fixture尚待逐页接入maphelper与narrow facade，不能把旧regex失效造成0计数当成通过；当前1134项不替代全量。vendor/schema/backup/userdata/设置/启动器不变，实体硬件/可听/Mac/LAN客户端限制保持。
+- 回退：revert本检查点恢复P9m测试入口、adapter观察和原fixture，无数据迁移。下一步剩余preferences/keyboard/device/debug/settings/library-ui/legacy-led，只有本地提交，不推送。

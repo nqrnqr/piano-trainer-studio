@@ -4575,6 +4575,7 @@
         setZoom: (value) => {
           ports.getRenderer().zoom = value;
         },
+        getZoom: () => ports.getRenderer().zoom,
         // Transitional UI wrapper consumes the captured entries only at this boundary.
         legacyEntriesForPlayback: (event) => playbackEntries.get(event),
         hasCursor: () => !!ports.getRenderer().cursor,
