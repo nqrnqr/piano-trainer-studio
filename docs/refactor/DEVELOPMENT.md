@@ -103,8 +103,9 @@ readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命�
 
 `practice-baseline`、`input-baseline`、`traversal-baseline`、`render-baseline`、
 `score-display`、`playback-baseline`、`midi-baseline`、`audio-baseline` 和 `metronome-baseline`
-已迁移到窄 facade；default/no-op 连同 bootstrap 共 20 页 820 项通过。
-原 53/40/30或33/19/30/127/20或21/23/28 项行为断言保留，playback 每配置新增
+以及 `loader-baseline`、`transpose-baseline` 已迁移到窄 facade；
+default/no-op 连同 bootstrap 共 24 页 980 项通过。
+原 53/40/30或33/19/30/127/20或21/23/28/28/52 项行为断言保留，playback 每配置新增
 一项受控时钟销毁检查；几何与反复基线未替换。
 `module-test-frame.js` 加载原生产 HTML/vendors 与独立测试 bundle，使用内存偏好和随机库。
 测试完成先 dispose/清理库，再发布通过终态。身份捕获保留在测试实例内，返回 token/布尔观察；
@@ -124,7 +125,12 @@ MIDI 测试在原生 Web MIDI port fixture 上执行实际服务与控件，设�
 时间偏移、MIDI percussion 与节点销毁/重建保持原断言；输出静音。
 `module-test-frame.js` 的 lateFixtures 只在 vendor 后、bundle 前注入测试端口，生产默认仍用 Tone。
 
-其余数据/UI 浏览器页面和原断言保留，
+加载与移调测试通过 `testing/score-checks.ts` 执行实际 FileReader/controls/converter。
+只复制所需元数据、原 XML 文本、移调字段和 pitch；原始数据/移调状态的 identity
+在私有捕获中比较。Apply/Reset 的重复加载数观察实际 adapter.load，销毁恢复观察并清除引用。
+实际 MXL、XML golden、webmscore worker 与本地 WASM 请求均保留原测试。
+
+其余曲库/UI 浏览器页面和原断言保留，
 仍引用已经移除的经典全局接口，**尚未完成剩余窄 facade 迁移及模块入口的全量浏览器回归**。
 新的 37 项启动检查不能代替这些行为矩阵；后续必须逐页迁移并保留原验证范围。
 原生权限、实体 MIDI/WLED、可听同步、Mac 启动器不由静音模拟证明。

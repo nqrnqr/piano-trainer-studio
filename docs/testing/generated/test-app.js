@@ -12481,6 +12481,88 @@
     });
   }
 
+  // src/testing/score-checks.ts
+  function createScoreChecks(getServices) {
+    let capture = null;
+    let originalLoad = null, observedAdapter = null, loads = 0;
+    function clear() {
+      if (originalLoad && observedAdapter) observedAdapter.load = originalLoad;
+      capture = null;
+      originalLoad = null;
+      observedAdapter = null;
+      loads = 0;
+    }
+    function readSnapshot() {
+      const services = getServices(), state = services.AppState, data = state.currentScoreData;
+      return {
+        fileName: state.currentScoreFileName,
+        title: state.currentScoreTitle,
+        fileType: state.currentScoreFileType,
+        libraryId: state.currentScoreLibraryId,
+        originalFileName: state.currentScoreOriginalFileName,
+        originalText: typeof state.currentScoreOriginalData === "string" ? state.currentScoreOriginalData : null,
+        dataKind: typeof data === "string" ? "string" : data instanceof ArrayBuffer ? "arraybuffer" : "other",
+        dataByteLength: data instanceof ArrayBuffer ? data.byteLength : null,
+        speed: state.speedPercent,
+        playing: state.isPlaying,
+        transpose: { ...state.transpose },
+        dataSameAsCapture: !!capture && capture.data === data,
+        transposeSameAsCapture: !!capture && capture.transpose === state.transpose,
+        loads,
+        hasCursor: services.osmdAdapter.hasCursor(),
+        measure: services.osmdAdapter.hasCursor() ? services.osmdAdapter.getCurrentMeasureIndex() : null
+      };
+    }
+    return { clear, commands: Object.freeze({
+      readSnapshot,
+      capture: () => {
+        const state = getServices().AppState;
+        capture = { data: state.currentScoreData, transpose: state.transpose };
+      },
+      observeLoads: () => {
+        if (originalLoad) return;
+        const adapter = getServices().osmdAdapter, load = adapter.load;
+        originalLoad = load;
+        observedAdapter = adapter;
+        loads = 0;
+        adapter.load = (raw) => {
+          loads++;
+          return load(raw);
+        };
+      },
+      readFirstPitch: () => {
+        const adapter = getServices().osmdAdapter;
+        for (const entry of adapter.readPlaybackEvent(adapter.resolveStaffIdFromEntry).entries)
+          for (const note of entry.notes) return note.midi;
+        return null;
+      },
+      readFile: (file) => getServices().scoreFileReader.readScoreFile(file),
+      selectFile: (file) => getServices().scoreFileControls.handleDirectScoreFileSelection(file),
+      initFileControls: () => getServices().scoreFileControls.init(),
+      disposeFileControls: () => getServices().scoreFileControls.dispose(),
+      disposeConverter: () => getServices().scoreConversion.dispose(),
+      disposeCoordinator: () => getServices().trainerPlayback.dispose(),
+      updateTempo: (percent) => getServices().tempoControls.updateTempo("percent", percent),
+      applyTranspose: () => getServices().transposeCommands.applyTranspose(),
+      resetTranspose: () => getServices().transposeCommands.resetTranspose(),
+      initTranspose: () => {
+        const s = getServices();
+        s.transposeCommands.init();
+        s.transposeControls.init();
+      },
+      disposeTranspose: () => {
+        const s = getServices();
+        s.transposeControls.dispose();
+        s.transposeCommands.dispose();
+      },
+      transposeXml: (raw, options) => structuredClone(PianoTrainerTransposeEngine.transposeXml(raw, options)),
+      readKeyFifths: () => {
+        const raw = getServices().AppState.currentScoreData;
+        return typeof raw === "string" ? PianoTrainerTransposeEngine.detectScoreKey(PianoTrainerTransposeEngine.parseXml(raw)).fifths : null;
+      }
+    }) };
+  }
+
   // src/testing/facade.ts
   function createTestFacade(options = {}, injectedPorts = {}) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
@@ -12490,6 +12572,7 @@
     services.init();
     const checks = createPracticeChecks(() => services);
     const renderChecks = createRenderChecks(() => services);
+    const scoreChecks = createScoreChecks(() => services);
     return Object.freeze({
       loadScore: (raw, options2 = {}) => services.scoreLoader.loadScoreIntoApp(raw, options2),
       dispatchInput: (note, down) => services.practiceInput.handle({
@@ -12507,6 +12590,7 @@
       midi: createMidiChecks(() => services),
       audio: createAudioChecks(() => services),
       metronome: createMetronomeChecks(() => services),
+      score: scoreChecks.commands,
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",
@@ -12542,11 +12626,13 @@
       dispose: () => {
         services.dispose();
         renderChecks.clear();
+        scoreChecks.clear();
         playbackChecks?.dispose();
       },
       recreate: () => {
         services.dispose();
         renderChecks.clear();
+        scoreChecks.clear();
         playbackChecks?.dispose();
         services = createServices(servicePorts);
         playbackChecks?.attach(() => services);

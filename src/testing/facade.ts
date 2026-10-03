@@ -7,6 +7,7 @@ import {createPlaybackChecks} from './playback-checks';
 import {createMidiChecks} from './midi-checks';
 import {createAudioChecks} from './audio-checks';
 import {createMetronomeChecks} from './metronome-checks';
+import {createScoreChecks} from './score-checks';
 
 // Separate test entry: commands and copied observations, with no state/vendor object.
 export function createTestFacade(options: {controlledPlayback?:boolean} = {}, injectedPorts:ServicePorts = {}) {
@@ -17,6 +18,7 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
     services.init();
     const checks = createPracticeChecks(() => services);
     const renderChecks = createRenderChecks(() => services);
+    const scoreChecks = createScoreChecks(() => services);
     return Object.freeze({
         loadScore: (raw:PianoTrainerDomain.ScoreRawData,options:PianoTrainerDomain.ScoreLoadOptions={})=>services.scoreLoader.loadScoreIntoApp(raw,options),
         dispatchInput: (note:number,down:boolean)=>services.practiceInput.handle({kind:down?'note-on':'note-off',note,velocity:100,
@@ -28,6 +30,7 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
         midi:createMidiChecks(() => services),
         audio:createAudioChecks(() => services),
         metronome:createMetronomeChecks(() => services),
+        score:scoreChecks.commands,
         dispatchNote:(input:PianoTrainerDomain.TrainerNoteInput)=>services.practiceInput.handle({...input}),
         readViewportSnapshot:()=>({layout:services.ScoreDisplay.isHorizontal()?'horizontal':'traditional',
             ...services.osmdAdapter.readPositions(),measureCount:services.osmdAdapter.getMeasureCount(),
@@ -47,8 +50,8 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
             services.trainerPlayback.playbackLoop();
         },
         pause:()=>services.trainerPlayback.pausePlaybackFromToolbar(),
-        init:()=>services.init(),dispose:()=>{services.dispose();renderChecks.clear();playbackChecks?.dispose();},
-        recreate:()=>{services.dispose();renderChecks.clear();playbackChecks?.dispose();services=createServices(servicePorts);
+        init:()=>services.init(),dispose:()=>{services.dispose();renderChecks.clear();scoreChecks.clear();playbackChecks?.dispose();},
+        recreate:()=>{services.dispose();renderChecks.clear();scoreChecks.clear();playbackChecks?.dispose();services=createServices(servicePorts);
             playbackChecks?.attach(() => services);services.init();checks.observe();}
     });
 }

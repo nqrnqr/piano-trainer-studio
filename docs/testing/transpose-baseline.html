@@ -5,12 +5,10 @@
 <h1>Transpose regression checks</h1>
 <p>Native XML DOM golden outputs and actual transpose control events. No library writes or physical output.</p>
 <button id="run" disabled>Run checks</button><pre id="results">Loading</pre><iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script>
 <script>
 const frame=document.querySelector('iframe');
 frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
 document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/transpose-baseline.integration.js';frame.contentDocument.body.append(script);};
-(async()=>{let html=await(await fetch('/index.html')).text();
- const boot=new URLSearchParams(location.search).get('led')==='off'?'<script>window.__PT_BOOT_OPTIONS__={ledEnabled:false};<'+'/script>':'';
- frame.srcdoc=html.replace('<head>','<head><base href="/">'+boot);
-})();
+mountModuleTestFrame(frame,{});
 </script>

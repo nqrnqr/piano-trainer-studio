@@ -400,3 +400,14 @@
 - 验证：生产与测试最终严格类型、四文件clean comparison、336/336 Node；`validation/P9k-audio-metronome-facade-check.txt`。库存仍94 production ES modules/3slots/4runtime candidates/52 direct state writes。原vendor/资源/版本/DB schema/备份/设置/启动器不改。
 - 边界：静音测试证明实际context/节点/时钟计算与资源加载，实体音响可听质量/硬件延迟、MIDI/WLED、Mac/LAN客户端仍需手工验证。数据/UI剩余全局测试不能由820项替代。
 - 回退：revert本检查点恢复P9j测试入口与组成端口，用户数据无需改动。下一步数据loader/library/transpose和UI资源归属迁移；只有本地Git提交，不推送。
+
+## P9l：原生乐谱加载、转换与移调 facade
+
+- 状态：loader/transpose 原套件迁移检查点完成（2026-10-04）；P9 曲库/UI suites 尚未完成，完整目标活跃。
+- 映射：原词法 loader/converter/TransposeUI/TransposeEngine 与 AppState/OSMD访问 → testing/score-checks.ts 的明确命令和复制元数据。原 XML transform 结果 structuredClone 后返回，避免泄露 module preset 引用；first pitch 读真实 adapter领域数据，状态/原数据 identity 私有捕获只返布尔。
+- 加载计数：原测试 monkeypatch Window.loadScoreIntoApp → 私有 actual osmdAdapter.load 观察，所有 Apply/Reset仍实际load且原1/2/3调用数保持；dispose/recreate 恢复方法、清除捕获。生产源码与 bundle 不改，不增加替代加载实现。
+- Loader：每配置原28项全部保留，真实 FileReader text/binary/native file-input、XML/MXL渲染、compressed bytes/canonical original source、transpose/reset/speed保存、invalid XML alert/reject/old metadata保留；实际webmscore MIDI转换、相对WASM HTTP200、soft worker生命周期、explicit dispose一次/fresh worker/final release保持。
+- Transpose：每配置原52项，原 e91ca87 XML golden 未修改；native events/key matching error/positive-negative Apply/reset/unchecked signature/source与speed/state identity、重复init单load、dispose无listeners/fresh init均通过。
+- 浏览器：loader/transpose/bootstrap/playback/render两种配置共10页528/528；已迁移累计24页980项。validation/P9l-loader-transpose-facade-browser.txt；终态在完整dispose/worker与自己的DB cleanup之后发布，所有自建标签关闭。
+- 验证：两套最终严格检查、四文件clean comparison、336/336 Node，validation/P9l-loader-transpose-facade-check.txt。只有test bundle与测试源码/页面变更，vendor/生产逻辑/资源/用户DB/prefs/schema/backup/启动器不变。
+- 回退：revert本检查点恢复P9k测试入口/页面，无需清数据；继续曲库事务/备份/UI与资源归属迁移。当前980项不替代全量；实体硬件/可听/Mac/LAN客户端限制保持，只有本地提交。
