@@ -226,6 +226,20 @@ var PianoTrainerOsmdAdapter;
                 yield { staffId, notes };
             }
         }
+        const playbackEntries = new WeakMap();
+        function readPlaybackEvent(resolveStaffId) {
+            const entries = ports.getRenderer().cursor.Iterator.CurrentVoiceEntries;
+            const event = {
+                get isEmpty() { return !entries || entries.length === 0; },
+                get entries() { return readPracticeEntries(entries, resolveStaffId); },
+                get signature() { return PianoTrainerScoreTraversal.makeEntrySignature(entries); },
+                get fallbackLengthWhole() {
+                    return entries?.[0]?.Notes && entries[0].Notes.length > 0 ? entries[0].Notes[0].Length.RealValue : 1;
+                }
+            };
+            playbackEntries.set(event, entries);
+            return event;
+        }
         function dispose() {
             detachHook();
             displayedIterator = null;
@@ -234,7 +248,17 @@ var PianoTrainerOsmdAdapter;
             sourceNotes.clear();
             scoreRevision++;
         }
-        return { getCombinedTieLength, readPracticeEntries, noteRef, resolveNote, afterRender, getDefaults, setLayout, getGraphicalNote, getMeasureBox, readPositions, dispose,
+        return { getCombinedTieLength, readPracticeEntries, readPlaybackEvent, noteRef, resolveNote, afterRender, getDefaults, setLayout, getGraphicalNote, getMeasureBox, readPositions, dispose,
+            // Transitional UI wrapper consumes the captured entries only at this boundary.
+            legacyEntriesForPlayback: (event) => playbackEntries.get(event),
+            hasCursor: () => !!ports.getRenderer().cursor,
+            isEndReached: () => ports.getRenderer().cursor.Iterator.EndReached,
+            getCurrentTimestamp: () => ports.getRenderer().cursor.Iterator.currentTimeStamp.RealValue,
+            getPlaybackTempo: (index) => ports.getRenderer().Sheet.SourceMeasures[index]?.TempoInBPM,
+            advance: () => { ports.getRenderer().cursor.Iterator.moveToNext(); },
+            reset: () => { ports.getRenderer().cursor.reset(); },
+            updateCursor: () => { ports.getRenderer().cursor.update(); },
+            showCursor: () => { ports.getRenderer().cursor.show(); },
             getSourceMeasure: (measureIndex) => ports.getRenderer().Sheet?.SourceMeasures?.[measureIndex] || null,
             getSourceMeasureCount: () => ports.getRenderer().Sheet?.SourceMeasures?.length || 0,
             getCountInBeats: (measureIndex) => {

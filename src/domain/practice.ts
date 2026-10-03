@@ -41,6 +41,14 @@ namespace PianoTrainerDomain {
         readonly combinedLengthWhole: WholeNoteTime;
     }
     export interface PracticeSourceEntry { readonly staffId: number | null; readonly notes: Iterable<PracticeSourceNote>; }
+    // Captures one source entry array; values remain lazy at the adapter edge.
+    // This is event data, not an iterator snapshot or repeat restoration token.
+    export interface PlaybackEvent {
+        readonly isEmpty: boolean;
+        readonly entries: Iterable<PracticeSourceEntry>;
+        readonly signature: string;
+        readonly fallbackLengthWhole: WholeNoteTime;
+    }
     export interface SatisfiedMatch {
         midi: MidiNote; staffId: number | null; mIdx: number | null; source: 'already-hit' | 'sustained-visual';
     }

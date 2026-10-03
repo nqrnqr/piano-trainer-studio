@@ -41,6 +41,7 @@ declare namespace PianoTrainerToneVendor {
         envelope: {attack:number;decay:number;sustain:number;release:number};
     }
     interface Api {
+        Transport: {bpm: {value:number}; stop(): unknown; pause(): unknown; start(): unknown;};
         context: Context;
         getContext?(): Context;
         loaded?(): Promise<unknown>;

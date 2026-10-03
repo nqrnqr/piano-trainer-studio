@@ -32,7 +32,6 @@
     "js/generated/render/feedback-overlay.js",
     "js/generated/render/loop-overlay.js",
     "js/generated/compatibility/geometry.js",
-    "js/feedback-engine.js",
     "js/feedback-debug.js",
     "js/generated/domain/timing.js",
     "js/generated/score/osmd-adapter.js",
@@ -59,6 +58,11 @@
     "js/generated/practice/sustain-state.js",
     "js/generated/practice/input-controller.js",
     "js/generated/compatibility/practice.js",
+    "js/generated/audio/tone-transport.js",
+    "js/generated/ui/playback-controls.js",
+    "js/generated/practice/playback-state.js",
+    "js/generated/practice/playback-coordinator.js",
+    "js/generated/compatibility/playback.js",
     "js/trainer-core.js"
   ],
   "symbols": [
@@ -162,13 +166,13 @@
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
         "js/generated/compatibility/geometry.js",
-        "js/feedback-engine.js",
         "js/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/audio.js",
         "js/generated/compatibility/metronome.js",
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
@@ -178,7 +182,8 @@
         "docs/testing/audio-baseline.integration.js",
         "docs/testing/render-baseline.integration.js",
         "docs/testing/input-baseline.integration.js",
-        "docs/testing/metronome-baseline.integration.js"
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -209,20 +214,6 @@
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
         "js/generated/state/settings-backup.js"
-      ]
-    },
-    {
-      "symbol": "FOLLOW_ME_MIN_WAIT_RATIO",
-      "definitions": [
-        {
-          "symbol": "FOLLOW_ME_MIN_WAIT_RATIO",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 406
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
       ]
     },
     {
@@ -281,10 +272,10 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/geometry.js",
-        "js/feedback-engine.js",
         "js/feedback-debug.js",
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -295,7 +286,7 @@
           "symbol": "KEY_STATE_CLASSES",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 1039
+          "line": 1038
         }
       ],
       "referenceFiles": [
@@ -434,7 +425,7 @@
           "symbol": "LOOP_STEPPER_HOLD_DELAY_MS",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2402
+          "line": 2168
         }
       ],
       "referenceFiles": [
@@ -448,7 +439,7 @@
           "symbol": "LOOP_STEPPER_HOLD_REPEAT_MS",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2403
+          "line": 2169
         }
       ],
       "referenceFiles": [
@@ -1033,7 +1024,53 @@
       ],
       "referenceFiles": [
         "js/generated/audio/playback-clock.js",
-        "js/generated/compatibility/metronome.js"
+        "js/generated/compatibility/metronome.js",
+        "js/generated/compatibility/playback.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerPlaybackControls",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerPlaybackControls",
+          "kind": "var",
+          "file": "js/generated/ui/playback-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/playback-controls.js",
+        "js/generated/compatibility/playback.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerPlaybackCoordinator",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerPlaybackCoordinator",
+          "kind": "var",
+          "file": "js/generated/practice/playback-coordinator.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerPlaybackState",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerPlaybackState",
+          "kind": "var",
+          "file": "js/generated/practice/playback-state.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/practice/playback-state.js",
+        "js/generated/compatibility/playback.js"
       ]
     },
     {
@@ -1062,6 +1099,7 @@
         }
       ],
       "referenceFiles": [
+        "js/generated/score/osmd-adapter.js",
         "js/generated/score/score-traversal.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js"
@@ -1125,6 +1163,21 @@
       "referenceFiles": [
         "js/generated/ui/tempo-pulse.js",
         "js/generated/compatibility/metronome.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerToneTransport",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerToneTransport",
+          "kind": "var",
+          "file": "js/generated/audio/tone-transport.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/audio/tone-transport.js",
+        "js/generated/compatibility/playback.js"
       ]
     },
     {
@@ -1288,13 +1341,15 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-rendering.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/settings-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/render-baseline.integration.js",
-        "docs/testing/input-baseline.integration.js"
+        "docs/testing/input-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -1949,7 +2004,7 @@
           "symbol": "accentedDownbeatCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2295
+          "line": 2061
         }
       ],
       "referenceFiles": [
@@ -1963,7 +2018,7 @@
           "symbol": "activeLooperHold",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 2404
+          "line": 2170
         }
       ],
       "referenceFiles": [
@@ -1977,7 +2032,7 @@
           "symbol": "activeVirtualPointerId",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 1226
+          "line": 1202
         }
       ],
       "referenceFiles": [
@@ -1991,7 +2046,7 @@
           "symbol": "activeVirtualPointerMidi",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 1227
+          "line": 1203
         }
       ],
       "referenceFiles": [
@@ -2005,7 +2060,7 @@
           "symbol": "applyInlineKeyVisual",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1049
+          "line": 1048
         }
       ],
       "referenceFiles": [
@@ -2033,7 +2088,7 @@
           "symbol": "applyLedFuturePreviewStates",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1018
+          "line": 1017
         }
       ],
       "referenceFiles": [
@@ -2047,7 +2102,7 @@
           "symbol": "applyModeSettings",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1438
+          "line": 1345
         }
       ],
       "referenceFiles": [
@@ -2081,6 +2136,7 @@
       "referenceFiles": [
         "js/generated/audio/tone-adapter.js",
         "js/generated/compatibility/audio.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/audio-baseline.integration.js"
       ]
@@ -2092,7 +2148,7 @@
           "symbol": "applyZoom",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1954
+          "line": 1720
         }
       ],
       "referenceFiles": [
@@ -2141,6 +2197,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/audio.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/audio-baseline.integration.js"
       ]
@@ -2172,6 +2229,7 @@
       "referenceFiles": [
         "js/generated/compatibility/audio.js",
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/audio-baseline.integration.js"
       ]
     },
@@ -2182,7 +2240,7 @@
           "symbol": "autoScrollCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2116
+          "line": 1882
         }
       ],
       "referenceFiles": [
@@ -2196,7 +2254,7 @@
           "symbol": "backupSettingsButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2719
+          "line": 2248
         }
       ],
       "referenceFiles": [
@@ -2210,7 +2268,7 @@
           "symbol": "beginLooperHold",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2421
+          "line": 2187
         }
       ],
       "referenceFiles": [
@@ -2224,7 +2282,7 @@
           "symbol": "bindHandAssignmentControls",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 917
+          "line": 916
         }
       ],
       "referenceFiles": [
@@ -2252,7 +2310,7 @@
           "symbol": "bpmInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 1976
+          "line": 1742
         }
       ],
       "referenceFiles": [
@@ -2554,7 +2612,7 @@
           "symbol": "canUseNativeFullscreen",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1680
+          "line": 1587
         }
       ],
       "referenceFiles": [
@@ -2580,14 +2638,15 @@
       "definitions": [
         {
           "symbol": "checkWaitModeAdvance",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1365
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 49
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
-        "js/trainer-core.js"
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js"
       ]
     },
     {
@@ -2597,7 +2656,7 @@
           "symbol": "chooseHigherPriorityLedState",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1012
+          "line": 1011
         }
       ],
       "referenceFiles": [
@@ -2611,7 +2670,7 @@
           "symbol": "chooseMusicXmlEntry",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 608
+          "line": 607
         }
       ],
       "referenceFiles": [
@@ -2639,7 +2698,7 @@
           "symbol": "clearFeedbackVisualStatePreserveScoring",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1195
+          "line": 1194
         }
       ],
       "referenceFiles": [
@@ -2668,7 +2727,7 @@
           "symbol": "clearLooperHold",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2406
+          "line": 2172
         }
       ],
       "referenceFiles": [
@@ -2720,6 +2779,7 @@
       "referenceFiles": [
         "js/generated/audio/metronome.js",
         "js/generated/compatibility/metronome.js",
+        "js/generated/practice/playback-coordinator.js",
         "js/trainer-core.js"
       ]
     },
@@ -2750,6 +2810,7 @@
       "referenceFiles": [
         "js/generated/audio/metronome.js",
         "js/generated/compatibility/metronome.js",
+        "js/generated/practice/playback-coordinator.js",
         "js/trainer-core.js"
       ]
     },
@@ -2758,12 +2819,13 @@
       "definitions": [
         {
           "symbol": "clearTransientPlaybackState",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1821
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 57
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -2772,19 +2834,24 @@
       "definitions": [
         {
           "symbol": "clearVisuals",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1199
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 58
         }
       ],
       "referenceFiles": [
+        "js/generated/practice/playback-state.js",
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/midi-baseline.integration.js",
         "docs/testing/render-baseline.integration.js",
-        "docs/testing/input-baseline.integration.js"
+        "docs/testing/input-baseline.integration.js",
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -2823,7 +2890,7 @@
           "symbol": "cloneScoreRawData",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 470
+          "line": 469
         }
       ],
       "referenceFiles": [
@@ -2940,7 +3007,7 @@
           "symbol": "consumeImmediateResumeStartFlag",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1624
+          "line": 1531
         }
       ],
       "referenceFiles": [
@@ -2997,7 +3064,7 @@
           "symbol": "createKeyboard",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1238
+          "line": 1214
         }
       ],
       "referenceFiles": [
@@ -3198,8 +3265,9 @@
       "referenceFiles": [
         "js/generated/audio/metronome.js",
         "js/generated/compatibility/metronome.js",
-        "js/trainer-core.js",
-        "docs/testing/metronome-baseline.integration.js"
+        "js/generated/practice/playback-coordinator.js",
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -3256,7 +3324,7 @@
           "symbol": "enableHandStaves",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2196
+          "line": 1962
         }
       ],
       "referenceFiles": [
@@ -3270,7 +3338,7 @@
           "symbol": "enableInstrument",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2210
+          "line": 1976
         }
       ],
       "referenceFiles": [
@@ -3284,7 +3352,7 @@
           "symbol": "enableMidiOutHandStaves",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2225
+          "line": 1991
         }
       ],
       "referenceFiles": [
@@ -3298,7 +3366,7 @@
           "symbol": "enableMidiOutInstrument",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2239
+          "line": 2005
         }
       ],
       "referenceFiles": [
@@ -3312,7 +3380,7 @@
           "symbol": "enableMidiOutOther",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2232
+          "line": 1998
         }
       ],
       "referenceFiles": [
@@ -3326,7 +3394,7 @@
           "symbol": "enableMidiOutVirtualKeyboard",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2246
+          "line": 2012
         }
       ],
       "referenceFiles": [
@@ -3340,7 +3408,7 @@
           "symbol": "enableOther",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2203
+          "line": 1969
         }
       ],
       "referenceFiles": [
@@ -3354,7 +3422,7 @@
           "symbol": "enableStaffLh",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2172
+          "line": 1938
         }
       ],
       "referenceFiles": [
@@ -3368,7 +3436,7 @@
           "symbol": "enableStaffRh",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2184
+          "line": 1950
         }
       ],
       "referenceFiles": [
@@ -3382,7 +3450,7 @@
           "symbol": "enableVirtualKeyboard",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2218
+          "line": 1984
         }
       ],
       "referenceFiles": [
@@ -3394,13 +3462,14 @@
       "definitions": [
         {
           "symbol": "enforceLooperBounds",
-          "kind": "function",
-          "file": "js/feedback-engine.js",
-          "line": 6
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 59
         }
       ],
       "referenceFiles": [
-        "js/feedback-engine.js",
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -3416,7 +3485,6 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-traversal.js",
-        "js/trainer-core.js",
         "docs/testing/traversal-baseline.integration.js"
       ]
     },
@@ -3433,6 +3501,7 @@
       "referenceFiles": [
         "js/generated/audio/tone-adapter.js",
         "js/generated/compatibility/audio.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/audio-baseline.integration.js",
         "docs/testing/input-baseline.integration.js",
@@ -3477,7 +3546,7 @@
           "symbol": "exitAppFullscreen",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 1723
+          "line": 1630
         }
       ],
       "referenceFiles": [
@@ -3505,7 +3574,7 @@
           "symbol": "extractMusicXmlFromMxl",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 636
+          "line": 635
         }
       ],
       "referenceFiles": [
@@ -3519,7 +3588,7 @@
           "symbol": "extractZipEntryText",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 590
+          "line": 589
         }
       ],
       "referenceFiles": [
@@ -3680,7 +3749,7 @@
           "symbol": "fullscreenOnPlayCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2123
+          "line": 1889
         }
       ],
       "referenceFiles": [
@@ -3728,6 +3797,7 @@
       "referenceFiles": [
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -3738,7 +3808,7 @@
           "symbol": "getCanonicalMusicXmlForTranspose",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 662
+          "line": 661
         }
       ],
       "referenceFiles": [
@@ -3774,8 +3844,7 @@
       ],
       "referenceFiles": [
         "js/generated/score/osmd-adapter.js",
-        "js/generated/compatibility/practice.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/practice.js"
       ]
     },
     {
@@ -3944,7 +4013,7 @@
           "symbol": "getFullscreenElement",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1672
+          "line": 1579
         }
       ],
       "referenceFiles": [
@@ -3958,7 +4027,7 @@
           "symbol": "getFullscreenTargetElement",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1676
+          "line": 1583
         }
       ],
       "referenceFiles": [
@@ -3972,7 +4041,7 @@
           "symbol": "getFuturePreviewDepth",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 998
+          "line": 997
         }
       ],
       "referenceFiles": [
@@ -3986,7 +4055,7 @@
           "symbol": "getKeyInlineVisual",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1041
+          "line": 1040
         }
       ],
       "referenceFiles": [
@@ -4028,7 +4097,7 @@
           "symbol": "getLedStatePriority",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1003
+          "line": 1002
         }
       ],
       "referenceFiles": [
@@ -4073,7 +4142,7 @@
           "symbol": "getLegacyTraversalCursor",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 987
+          "line": 986
         }
       ],
       "referenceFiles": [
@@ -4114,7 +4183,8 @@
         "js/generated/compatibility/metronome.js",
         "js/generated/practice/early-grace.js",
         "js/generated/compatibility/practice.js",
-        "js/trainer-core.js",
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
@@ -4289,7 +4359,7 @@
           "symbol": "getOsmdLoadPayload",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 689
+          "line": 688
         }
       ],
       "referenceFiles": [
@@ -4394,11 +4464,12 @@
           "symbol": "getResolvedStaffAssignmentIdFromEntry",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 874
+          "line": 873
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -4409,7 +4480,7 @@
           "symbol": "getResolvedStaffAssignmentIdFromNote",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 854
+          "line": 853
         }
       ],
       "referenceFiles": [
@@ -4424,7 +4495,7 @@
           "symbol": "getScoreDisplayTitle",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 445
+          "line": 444
         }
       ],
       "referenceFiles": [
@@ -4440,7 +4511,7 @@
           "symbol": "getScoreFileTypeFromName",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 438
+          "line": 437
         }
       ],
       "referenceFiles": [
@@ -4723,7 +4794,7 @@
           "symbol": "getZipEntryDepth",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 499
+          "line": 498
         }
       ],
       "referenceFiles": [
@@ -4737,7 +4808,7 @@
           "symbol": "globalStaffIdentityMap",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 836
+          "line": 835
         }
       ],
       "referenceFiles": [
@@ -4755,8 +4826,8 @@
         }
       ],
       "referenceFiles": [
-        "js/feedback-engine.js",
         "js/generated/compatibility/score-rendering.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js"
       ]
@@ -4768,7 +4839,7 @@
           "symbol": "handleDirectScoreFileSelection",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 807
+          "line": 806
         }
       ],
       "referenceFiles": [
@@ -4845,6 +4916,7 @@
       ],
       "referenceFiles": [
         "js/toolbar-ui.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
@@ -4853,7 +4925,8 @@
         "docs/testing/audio-baseline.integration.js",
         "docs/testing/render-baseline.integration.js",
         "docs/testing/input-baseline.integration.js",
-        "docs/testing/metronome-baseline.integration.js"
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -4921,7 +4994,7 @@
           "symbol": "importSettingsButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2726
+          "line": 2255
         }
       ],
       "referenceFiles": [
@@ -4935,7 +5008,7 @@
           "symbol": "importSettingsInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2727
+          "line": 2256
         }
       ],
       "referenceFiles": [
@@ -4949,7 +5022,7 @@
           "symbol": "inflateZipEntryData",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 572
+          "line": 571
         }
       ],
       "referenceFiles": [
@@ -5023,7 +5096,7 @@
           "symbol": "initLedSimulatorToggleControl",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1518
+          "line": 1425
         }
       ],
       "referenceFiles": [
@@ -5081,7 +5154,7 @@
           "symbol": "initSongUI",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 932
+          "line": 931
         }
       ],
       "referenceFiles": [
@@ -5168,10 +5241,12 @@
           "symbol": "isFullscreenActive",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1685
+          "line": 1592
         }
       ],
       "referenceFiles": [
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -5260,7 +5335,7 @@
           "symbol": "isPracticeHandEnabledForStaff",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 992
+          "line": 991
         }
       ],
       "referenceFiles": [
@@ -5405,7 +5480,7 @@
           "symbol": "listZipEntries",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 516
+          "line": 515
         }
       ],
       "referenceFiles": [
@@ -5433,7 +5508,7 @@
           "symbol": "loadScoreIntoApp",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 729
+          "line": 728
         }
       ],
       "referenceFiles": [
@@ -5447,7 +5522,8 @@
         "docs/testing/midi-baseline.integration.js",
         "docs/testing/render-baseline.integration.js",
         "docs/testing/input-baseline.integration.js",
-        "docs/testing/metronome-baseline.integration.js"
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -5457,7 +5533,7 @@
           "symbol": "loopCountInCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2286
+          "line": 2052
         }
       ],
       "referenceFiles": [
@@ -5471,7 +5547,7 @@
           "symbol": "loopMaxDecreaseBtn",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2260
+          "line": 2026
         }
       ],
       "referenceFiles": [
@@ -5485,7 +5561,7 @@
           "symbol": "loopMaxIncreaseBtn",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2261
+          "line": 2027
         }
       ],
       "referenceFiles": [
@@ -5499,7 +5575,7 @@
           "symbol": "loopMaxInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2257
+          "line": 2023
         }
       ],
       "referenceFiles": [
@@ -5513,7 +5589,7 @@
           "symbol": "loopMaxSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2255
+          "line": 2021
         }
       ],
       "referenceFiles": [
@@ -5527,7 +5603,7 @@
           "symbol": "loopMinDecreaseBtn",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2258
+          "line": 2024
         }
       ],
       "referenceFiles": [
@@ -5541,7 +5617,7 @@
           "symbol": "loopMinIncreaseBtn",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2259
+          "line": 2025
         }
       ],
       "referenceFiles": [
@@ -5555,7 +5631,7 @@
           "symbol": "loopMinInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2256
+          "line": 2022
         }
       ],
       "referenceFiles": [
@@ -5569,7 +5645,7 @@
           "symbol": "loopMinSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2254
+          "line": 2020
         }
       ],
       "referenceFiles": [
@@ -5611,7 +5687,7 @@
           "symbol": "lowLatencyPlaybackCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2131
+          "line": 1897
         }
       ],
       "referenceFiles": [
@@ -5630,7 +5706,6 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-traversal.js",
-        "js/trainer-core.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/midi-baseline.integration.js",
         "docs/testing/input-baseline.integration.js"
@@ -5686,7 +5761,7 @@
           "symbol": "metroVolInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2050
+          "line": 1816
         }
       ],
       "referenceFiles": [
@@ -5700,7 +5775,7 @@
           "symbol": "metroVolSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2049
+          "line": 1815
         }
       ],
       "referenceFiles": [
@@ -5714,7 +5789,7 @@
           "symbol": "metronomeCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2323
+          "line": 2089
         }
       ],
       "referenceFiles": [
@@ -5743,7 +5818,7 @@
           "symbol": "metronomeMidiOutCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2312
+          "line": 2078
         }
       ],
       "referenceFiles": [
@@ -5802,7 +5877,7 @@
           "symbol": "midiInBoostInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2077
+          "line": 1843
         }
       ],
       "referenceFiles": [
@@ -5816,7 +5891,7 @@
           "symbol": "midiInBoostSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2076
+          "line": 1842
         }
       ],
       "referenceFiles": [
@@ -5830,7 +5905,7 @@
           "symbol": "midiOutVolInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2063
+          "line": 1829
         }
       ],
       "referenceFiles": [
@@ -5844,7 +5919,7 @@
           "symbol": "midiOutVolSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2062
+          "line": 1828
         }
       ],
       "referenceFiles": [
@@ -5865,7 +5940,7 @@
         "js/generated/compatibility/midi.js",
         "js/generated/compatibility/audio.js",
         "js/generated/compatibility/metronome.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/audio-baseline.integration.js"
       ]
     },
@@ -6052,7 +6127,7 @@
           "symbol": "normalizeZipEntryPath",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 495
+          "line": 494
         }
       ],
       "referenceFiles": [
@@ -6066,7 +6141,7 @@
           "symbol": "normalizeZoomValue",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1941
+          "line": 1707
         }
       ],
       "referenceFiles": [
@@ -6094,7 +6169,7 @@
           "symbol": "openScoreFilePicker",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 432
+          "line": 431
         }
       ],
       "referenceFiles": [
@@ -6147,11 +6222,13 @@
         "js/generated/ui/player-range-controls.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/midi-baseline.integration.js",
         "docs/testing/audio-baseline.integration.js",
-        "docs/testing/metronome-baseline.integration.js"
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -6182,7 +6259,6 @@
       "referenceFiles": [
         "index.html",
         "js/generated/compatibility/geometry.js",
-        "js/feedback-engine.js",
         "js/generated/score/osmd-adapter.js",
         "js/generated/compatibility/score-rendering.js",
         "js/trainer-core.js",
@@ -6192,7 +6268,8 @@
         "docs/testing/midi-baseline.integration.js",
         "docs/testing/render-baseline.integration.js",
         "docs/testing/input-baseline.integration.js",
-        "docs/testing/metronome-baseline.integration.js"
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -6210,6 +6287,7 @@
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/metronome.js",
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/render-baseline.integration.js"
       ]
     },
@@ -6246,12 +6324,14 @@
       "definitions": [
         {
           "symbol": "pausePlaybackFromToolbar",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1865
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 53
         }
       ],
       "referenceFiles": [
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
@@ -6259,7 +6339,8 @@
         "docs/testing/midi-baseline.integration.js",
         "docs/testing/render-baseline.integration.js",
         "docs/testing/input-baseline.integration.js",
-        "docs/testing/metronome-baseline.integration.js"
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -6284,7 +6365,7 @@
           "symbol": "pianoVolInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2048
+          "line": 1814
         }
       ],
       "referenceFiles": [
@@ -6298,7 +6379,7 @@
           "symbol": "pianoVolSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2047
+          "line": 1813
         }
       ],
       "referenceFiles": [
@@ -6328,7 +6409,7 @@
           "symbol": "playPauseButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 1669
+          "line": 1576
         }
       ],
       "referenceFiles": [
@@ -6336,19 +6417,77 @@
       ]
     },
     {
+      "symbol": "playbackClock",
+      "definitions": [
+        {
+          "symbol": "playbackClock",
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/playback.js"
+      ]
+    },
+    {
+      "symbol": "playbackControls",
+      "definitions": [
+        {
+          "symbol": "playbackControls",
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 9
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/playback.js"
+      ]
+    },
+    {
       "symbol": "playbackLoop",
       "definitions": [
         {
           "symbol": "playbackLoop",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 2480
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 50
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js",
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "playbackState",
+      "definitions": [
+        {
+          "symbol": "playbackState",
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 10
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/playback.js"
+      ]
+    },
+    {
+      "symbol": "playbackTransport",
+      "definitions": [
+        {
+          "symbol": "playbackTransport",
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 8
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/playback.js",
+        "js/trainer-core.js"
       ]
     },
     {
@@ -6452,7 +6591,8 @@
         }
       ],
       "referenceFiles": [
-        "js/generated/compatibility/practice.js"
+        "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js"
       ]
     },
     {
@@ -6467,6 +6607,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -6526,7 +6667,8 @@
         }
       ],
       "referenceFiles": [
-        "js/generated/compatibility/practice.js"
+        "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js"
       ]
     },
     {
@@ -6541,6 +6683,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -6551,10 +6694,11 @@
           "symbol": "preserveMusicAreaScroll",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1760
+          "line": 1667
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -6571,7 +6715,7 @@
       "referenceFiles": [
         "js/generated/practice/scoring.js",
         "js/generated/compatibility/practice.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/input-baseline.integration.js"
       ]
     },
@@ -6596,7 +6740,7 @@
           "symbol": "ptNeedsImmediateResumeStart",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 1616
+          "line": 1523
         }
       ],
       "referenceFiles": [
@@ -6610,7 +6754,7 @@
           "symbol": "rawDataToArrayBuffer",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 505
+          "line": 504
         }
       ],
       "referenceFiles": [
@@ -6624,7 +6768,7 @@
           "symbol": "readScoreFile",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 451
+          "line": 450
         }
       ],
       "referenceFiles": [
@@ -6639,7 +6783,7 @@
           "symbol": "readUint16LE",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 482
+          "line": 481
         }
       ],
       "referenceFiles": [
@@ -6653,7 +6797,7 @@
           "symbol": "readUint32LE",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 486
+          "line": 485
         }
       ],
       "referenceFiles": [
@@ -6667,7 +6811,7 @@
           "symbol": "rebuildGlobalStaffIdentityMap",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 838
+          "line": 837
         }
       ],
       "referenceFiles": [
@@ -6773,7 +6917,7 @@
           "symbol": "releaseActiveVirtualPointer",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1230
+          "line": 1206
         }
       ],
       "referenceFiles": [
@@ -6826,6 +6970,7 @@
         "js/generated/compatibility/geometry.js",
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -6834,15 +6979,15 @@
       "definitions": [
         {
           "symbol": "renderLooper",
-          "kind": "function",
-          "file": "js/feedback-engine.js",
-          "line": 2
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 60
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/geometry.js",
-        "js/feedback-engine.js",
         "js/generated/compatibility/score-rendering.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/render-baseline.integration.js"
       ]
@@ -6872,7 +7017,7 @@
           "symbol": "renderVirtualKeyboard",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1057
+          "line": 1056
         }
       ],
       "referenceFiles": [
@@ -6882,6 +7027,7 @@
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -6892,10 +7038,11 @@
           "symbol": "requestAppFullscreen",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 1703
+          "line": 1610
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -6933,12 +7080,30 @@
       "definitions": [
         {
           "symbol": "resetPlaybackForLoadedScore",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1869
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 54
         }
       ],
       "referenceFiles": [
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "resetPlaybackFromToolbar",
+      "definitions": [
+        {
+          "symbol": "resetPlaybackFromToolbar",
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 55
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -6949,7 +7114,7 @@
           "symbol": "resetPreferencesButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2740
+          "line": 2269
         }
       ],
       "referenceFiles": [
@@ -6963,7 +7128,7 @@
           "symbol": "resizeTimer",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 1925
+          "line": 1691
         }
       ],
       "referenceFiles": [
@@ -7069,7 +7234,7 @@
       "referenceFiles": [
         "js/generated/audio/metronome.js",
         "js/generated/compatibility/metronome.js",
-        "js/trainer-core.js",
+        "js/generated/practice/playback-coordinator.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
     },
@@ -7115,7 +7280,7 @@
       "referenceFiles": [
         "js/generated/audio/audio-routing.js",
         "js/generated/compatibility/audio.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/audio-baseline.integration.js"
       ]
     },
@@ -7126,7 +7291,7 @@
           "symbol": "scoreFullscreenButton",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 1670
+          "line": 1577
         }
       ],
       "referenceFiles": [
@@ -7145,6 +7310,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/metronome.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
     },
@@ -7618,7 +7784,8 @@
       "referenceFiles": [
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/metronome.js",
-        "js/generated/compatibility/practice.js"
+        "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js"
       ]
     },
     {
@@ -7743,12 +7910,14 @@
       "definitions": [
         {
           "symbol": "silencePlaybackOutputsImmediately",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1816
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 56
         }
       ],
       "referenceFiles": [
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
         "docs/testing/audio-baseline.integration.js"
       ]
@@ -7760,7 +7929,7 @@
           "symbol": "speedInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 1975
+          "line": 1741
         }
       ],
       "referenceFiles": [
@@ -7774,7 +7943,7 @@
           "symbol": "speedSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 1974
+          "line": 1740
         }
       ],
       "referenceFiles": [
@@ -7786,13 +7955,16 @@
       "definitions": [
         {
           "symbol": "startPlaybackFromToolbar",
-          "kind": "async function",
-          "file": "js/trainer-core.js",
-          "line": 1774
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 51
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
+        "js/trainer-core.js",
+        "docs/testing/metronome-baseline.integration.js"
       ]
     },
     {
@@ -7808,7 +7980,7 @@
       "referenceFiles": [
         "js/generated/practice/sustain-state.js",
         "js/generated/compatibility/practice.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/input-baseline.integration.js"
       ]
     },
@@ -7825,7 +7997,7 @@
       "referenceFiles": [
         "js/generated/audio/metronome.js",
         "js/generated/compatibility/metronome.js",
-        "js/trainer-core.js",
+        "js/generated/practice/playback-coordinator.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
     },
@@ -7836,7 +8008,7 @@
           "symbol": "stepLooperValue",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2380
+          "line": 2146
         }
       ],
       "referenceFiles": [
@@ -7848,13 +8020,14 @@
       "definitions": [
         {
           "symbol": "stopPlaybackState",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 1836
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 52
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js"
       ]
     },
     {
@@ -7870,6 +8043,7 @@
       "referenceFiles": [
         "js/generated/audio/metronome.js",
         "js/generated/compatibility/metronome.js",
+        "js/generated/practice/playback-coordinator.js",
         "js/trainer-core.js",
         "docs/testing/metronome-baseline.integration.js"
       ]
@@ -7889,7 +8063,8 @@
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
-        "docs/testing/midi-baseline.integration.js"
+        "docs/testing/midi-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -7913,7 +8088,7 @@
           "symbol": "syncFullscreenUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1689
+          "line": 1596
         }
       ],
       "referenceFiles": [
@@ -7927,7 +8102,7 @@
           "symbol": "syncHandAssignmentFromControls",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 883
+          "line": 882
         }
       ],
       "referenceFiles": [
@@ -7999,7 +8174,7 @@
           "symbol": "syncLooper",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2344
+          "line": 2110
         }
       ],
       "referenceFiles": [
@@ -8013,7 +8188,7 @@
           "symbol": "syncLooperDependentUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2263
+          "line": 2029
         }
       ],
       "referenceFiles": [
@@ -8027,7 +8202,7 @@
           "symbol": "syncLooperInputIfReady",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2373
+          "line": 2139
         }
       ],
       "referenceFiles": [
@@ -8041,7 +8216,7 @@
           "symbol": "syncLowLatencyPlaybackPreferenceUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1511
+          "line": 1418
         }
       ],
       "referenceFiles": [
@@ -8055,7 +8230,7 @@
           "symbol": "syncMidiInBoostUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2079
+          "line": 1845
         }
       ],
       "referenceFiles": [
@@ -8114,7 +8289,7 @@
           "symbol": "syncTempoMetronomeDependentUi",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1978
+          "line": 1744
         }
       ],
       "referenceFiles": [
@@ -8128,7 +8303,7 @@
           "symbol": "syncTempoPreviewFromPercent",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2011
+          "line": 1777
         }
       ],
       "referenceFiles": [
@@ -8158,7 +8333,7 @@
           "symbol": "syncTrainerRoutingUiState",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1324
+          "line": 1300
         }
       ],
       "referenceFiles": [
@@ -8216,7 +8391,7 @@
           "symbol": "syncZoomControls",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1948
+          "line": 1714
         }
       ],
       "referenceFiles": [
@@ -8258,7 +8433,7 @@
           "symbol": "toggleAppFullscreen",
           "kind": "async function",
           "file": "js/trainer-core.js",
-          "line": 1737
+          "line": 1644
         }
       ],
       "referenceFiles": [
@@ -8319,8 +8494,26 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/metronome.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js",
-        "docs/testing/metronome-baseline.integration.js"
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "trainerPlayback",
+      "definitions": [
+        {
+          "symbol": "trainerPlayback",
+          "kind": "const",
+          "file": "js/generated/compatibility/playback.js",
+          "line": 15
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/playback.js",
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -8369,7 +8562,8 @@
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/audio-baseline.integration.js",
-        "docs/testing/input-baseline.integration.js"
+        "docs/testing/input-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -8457,7 +8651,7 @@
           "symbol": "updateMetroVolume",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2096
+          "line": 1862
         }
       ],
       "referenceFiles": [
@@ -8472,7 +8666,7 @@
           "symbol": "updateMidiInBoost",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2085
+          "line": 1851
         }
       ],
       "referenceFiles": [
@@ -8486,7 +8680,7 @@
           "symbol": "updateMidiOutVolume",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2065
+          "line": 1831
         }
       ],
       "referenceFiles": [
@@ -8500,7 +8694,7 @@
           "symbol": "updatePianoVolume",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2052
+          "line": 1818
         }
       ],
       "referenceFiles": [
@@ -8516,10 +8710,11 @@
           "symbol": "updatePlayPauseButton",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 1753
+          "line": 1660
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -8530,11 +8725,12 @@
           "symbol": "updateScoreDisplay",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 417
+          "line": 416
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -8559,11 +8755,14 @@
           "symbol": "updateTempo",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2020
+          "line": 1786
         }
       ],
       "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/compatibility/playback.js",
+        "js/trainer-core.js",
+        "docs/testing/metronome-baseline.integration.js",
+        "docs/testing/playback-baseline.integration.js"
       ]
     },
     {
@@ -8573,7 +8772,7 @@
           "symbol": "visualPulseCheckbox",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 2303
+          "line": 2069
         }
       ],
       "referenceFiles": [
@@ -8658,7 +8857,7 @@
       "referenceFiles": [
         "js/generated/domain/timing.js",
         "js/generated/compatibility/practice.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/practice-baseline.integration.js"
       ]
     },
@@ -8689,7 +8888,8 @@
       "referenceFiles": [
         "js/generated/domain/timing.js",
         "js/generated/compatibility/practice.js",
-        "js/trainer-core.js",
+        "js/generated/practice/playback-coordinator.js",
+        "js/generated/compatibility/playback.js",
         "docs/testing/practice-baseline.integration.js"
       ]
     },
@@ -8908,12 +9108,13 @@
           "symbol": "window.getAssignedHandRoleForStaff",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 881
+          "line": 880
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -8924,11 +9125,12 @@
           "symbol": "window.getResolvedStaffAssignmentIdFromEntry",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 880
+          "line": 879
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
+        "js/generated/compatibility/playback.js",
         "js/trainer-core.js"
       ]
     },
@@ -8939,7 +9141,7 @@
           "symbol": "window.getResolvedStaffAssignmentIdFromNote",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 878
+          "line": 877
         }
       ],
       "referenceFiles": [
@@ -8954,7 +9156,7 @@
           "symbol": "window.openScoreFilePicker",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 436
+          "line": 435
         }
       ],
       "referenceFiles": [
@@ -9029,7 +9231,7 @@
           "symbol": "window.syncTrainerRoutingUiState",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 2809
+          "line": 2338
         }
       ],
       "referenceFiles": [
@@ -9052,7 +9254,7 @@
         "js/generated/compatibility/optional-led.js",
         "js/generated/compatibility/midi.js",
         "js/optional/midi-led-test.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/playback.js"
       ]
     },
     {
@@ -9062,7 +9264,7 @@
           "symbol": "wireLooperHold",
           "kind": "function",
           "file": "js/trainer-core.js",
-          "line": 2438
+          "line": 2204
         }
       ],
       "referenceFiles": [
@@ -9076,7 +9278,7 @@
           "symbol": "zoomInput",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 1938
+          "line": 1704
         }
       ],
       "referenceFiles": [
@@ -9090,7 +9292,7 @@
           "symbol": "zoomSlider",
           "kind": "const",
           "file": "js/trainer-core.js",
-          "line": 1937
+          "line": 1703
         }
       ],
       "referenceFiles": [

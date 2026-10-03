@@ -39,6 +39,23 @@
   AppState.isPlaying=true;doCountInAndStart(()=>handoff++);const beforeDispose=f.events.length;trainerMetronome.dispose();await wait(300);
   check(f.events.length===beforeDispose&&metronomeClock.readResources().timers===0,'explicit dispose cancels native count-in and pulse resources');
   check(!document.getElementById('btn-tempo').classList.contains('metronome-pulse'),'visual pulse cleanup removes its DOM class');
+  // Native startup through the real coordinator, with actual muted Tone voices.
+  for(const mode of ['wait','follow','realtime']){
+   stop();trainerPlayback.dispose();await loadScoreIntoApp(xml,{fileName:'simple-repeat.musicxml'});clearVisuals();
+   AppState.mode=mode;AppState.practice.left=AppState.practice.right=false;AppState.playback.left=AppState.playback.right=true;
+   AppState.audioEnabled.hands=true;AppState.midiOutEnabled.hands=AppState.midiOutEnabled.other=false;
+   AppState.lowLatencyPlaybackEnabled=true;AppState.fullscreenOnPlay=false;AppState.metronomeMidiOutEnabled=false;
+   updateTempo('percent',200);updatePianoVolume(0,{save:false});updateMetroVolume(0,{save:false});
+   f.events.length=0;AudioFixture.events.length=0;
+   await startPlaybackFromToolbar();await wait(1130);pausePlaybackFromToolbar();
+   const notes=f.events.filter(event=>event.note),piano=AudioFixture.events.find(event=>event[0]==='attack'||event[0]==='attack-release');
+   const pianoTime=piano?.[piano[0]==='attack'?3:4];
+   const lookAhead=Tone.getContext().lookAhead;
+   results.textContent+=`NATIVE_SYNC ${mode} ${JSON.stringify({pianoTime,lastCountInTarget:notes[3]?.time,lastCountInImmediate:notes[3]?.immediate,firstWindowTarget:notes[4]?.time,lookAhead})}\n`;
+   check(notes.length>=5&&piano&&piano[1]===(mode==='wait'?'sampler':'synth'),`${mode}: native coordinator count-in reaches actual routed piano and metronome voices`);
+   check(Math.abs(pianoTime+(mode==='wait'?lookAhead:0)-notes[4].time)<.08,`${mode}: native piano and playback-window click preserve the original mode time offset`);
+   check(Math.abs(pianoTime-(notes[3].immediate+.25))<.10,`${mode}: native piano handoff follows the last count-in callback by a full beat`);
+  }
   metronomeOutput.dispose();metronomeOutput.init();metronomeOutput.setVolumeDecibels(-Infinity);
   check(f.nodes.length===2&&f.events.some(e=>e.kind==='dispose'),'actual metronome output can be disposed and reinitialized once');
   check(optionalLedOutput.enabled===(new URLSearchParams(parent.location.search).get('led')!=='off'),'metronome checks complete with the selected default/no-op LED port');

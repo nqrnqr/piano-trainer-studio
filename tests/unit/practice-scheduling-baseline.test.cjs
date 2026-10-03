@@ -1,10 +1,9 @@
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const vm = require('node:vm');
-const { runFunction, read } = require('../helpers/legacy-script.cjs');
+const { harness: playbackHarness } = require('../helpers/playback-harness.cjs');
 
 // Fake clock only at the existing scheduler boundary; execute the original
-// checkWaitModeAdvance body to characterize timing and side-effect order.
+// typed coordinator to retain the P0 timing and side-effect assertions.
 function harness(mode, { now = 10, anchor = 10.8, hit = true } = {}) {
     const events = [];
     const timers = [];
@@ -14,19 +13,17 @@ function harness(mode, { now = 10, anchor = 10.8, hit = true } = {}) {
         pendingAudio: [{ midi: 48, durationMs: 450, velocity: 80, toLocalAudio: true, toMidiOut: false }],
         followAdvanceInfo: { currentMeasureIdx: 0, currentTimestamp: 0, waitSeconds: 1, beatsToWait: 2 }
     };
-    const ratio = read('js/trainer-core.js').match(/^const FOLLOW_ME_MIN_WAIT_RATIO = ([\d.]+);/m);
-    assert.ok(ratio, 'production Follow minimum ratio exists');
-    const context = vm.createContext({
-        AppState: state, FOLLOW_ME_MIN_WAIT_RATIO: Number(ratio[1]), Tone: { now: () => now },
-        osmd: { cursor: { update: () => events.push('cursor') } },
-        schedulePlaybackForDestinations: (...args) => events.push(['audio', ...args]),
-        startVisualSustains: () => events.push('sustains'),
-        scheduleMetronomeForPlaybackWindow: (...args) => events.push(['metronome', ...args]),
-        handleAutoScroll: () => events.push('scroll'), playbackLoop: () => events.push('loop'),
-        setTimeout: (callback, delay) => timers.push({ callback, delay })
-    });
-    runFunction(context, 'js/trainer-core.js', 'checkWaitModeAdvance');
-    return { context, state, events, timers };
+    const h = playbackHarness({now, state});
+    assert.equal(h.api('PianoTrainerPlaybackCoordinator').FOLLOW_ME_MIN_WAIT_RATIO, 0.6);
+    h.ports.audio.schedule = (...args) => events.push(['audio', ...args]);
+    h.ports.practice.startSustains = () => events.push('sustains');
+    h.ports.metronome.scheduleMetronomeForPlaybackWindow = (...args) => events.push(['metronome', ...args]);
+    h.ports.score.update = () => events.push('cursor');
+    h.ports.ui.scroll = () => events.push('scroll');
+    h.ports.score.isEndReached = () => {events.push('loop');return true;};
+    h.ports.controls.isLoopEnabledAtEnd = () => true;
+    h.backend.setTimer = (callback, delay) => timers.push({callback, delay});
+    return {context:{checkWaitModeAdvance:h.service.checkWaitModeAdvance}, state:h.state, events, timers};
 }
 
 test('Wait holds partial chords without accompaniment or advancement', () => {

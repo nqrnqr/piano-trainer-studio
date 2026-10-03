@@ -30,6 +30,7 @@ declare namespace PianoTrainerOsmdVendor {
     }
     interface GraphicSheet { MeasureList: GraphicalMeasure[][]; }
     interface Cursor extends PianoTrainerScoreTraversal.Cursor {
+        show(): void;
         // Actual OSMD getter and its backing field. Neither is a domain position.
         iterator: PianoTrainerScoreTraversal.Iterator;
         cursorElement?: HTMLElement;

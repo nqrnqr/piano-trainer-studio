@@ -152,6 +152,21 @@
 - 未验证：可听音频与硬件节拍同步、实体 MIDI/WLED、Mac/触屏；当前 muted native timer 验证不能代替这些手工检查。P7 全阶段矩阵待协调器/策略完成后验收。
 - 命令：npm run build/check、两个 inventory 脚本、metronome/audio/display/practice/traversal 浏览器页、.cache/metronome-parity.cjs 原算法对照。回退：revert 本检查点恢复原节拍器/cache 槽位与 MIDI click bridge；不清空用户数据，P6 输入迁移保留。
 
-## P7 后续–P9
+## P7a：播放协调器检查点
 
-P7a 接着迁移 Play/Pause/Reset、playbackLoop/checkWaitModeAdvance 与 Loop 协调，按契约保留现有时钟/取消规则。P7b 再从同一个循环提取模式策略，保留实际 OSMD repeat traversal 与 painted/prefetch 两个位置；P8 数据/UI、P9 显式 bootstrap/module/dispose 尚未开始。当前检查点不代表 P7a 或完整重构完成。
+- 状态：完成（2026-10-03）；P7a 两个子步骤均已迁出，完整目标仍活跃。P7b 模式策略尚待分离。
+- 映射：core 的 Play/Pause/Reset、checkWaitModeAdvance/playbackLoop、feedback-engine 的 Loop enforcement → `src/practice/playback-coordinator.ts`；clearVisuals/clearTransient → playback-state。`src/audio/tone-transport.ts` 原样调用 Transport 的 stop/pause/start/bpm；`src/ui/playback-controls.ts` 读取必需 Loop 与可选 metro controls，core 原 DOM binding 暂时保留。
+- 唯一实现：旧 coordinator/core 函数、feedback-engine.js 与 HTML 槽位均已删除。`src/compatibility/playback.ts` 在 practice composition 后无资源组装并提供旧名；factory 本身不分配 node/timer/listener。静态入口断言只加载一个循环/输入推进/Play 实现。
+- 数据边界：OSMD adapter 捕获 entries 并惰性投影 PlaybackEvent；领域数据不含 vendor 对象，原 keyboard 仅在 composition 边界取回 capture。当前 displayed event/context 先建立，再 advance/prefetch；fallback 仍是首个 note 的 raw Length，与 combined tie 区分。真实 repeats/ending 与第一匹配位置恢复规则未改。
+- 行为：Follow comfort=.6、命中后 Math.round 毫秒、Realtime 累加 anchor、Wait empty 10ms、Follow empty 的双 window 调用、already-hit 0ms、空 voice rAF、tempo 更新、伴奏 defer/flush、miss→paint→scroll→loop 顺序保留。Reset/loaded-score Reset 不合并；Loop enforcement 用 state bounds、窗口回跳用 UI bounds，waitSeconds 不沿 anchor 修正。
+- 生命周期：Pause 保留原 sustain/event timers 与 prefetched cursor，ClearVisuals 才取消 activeTimeouts；rapid Pause/Resume 的旧回调和 pending unlock/两个 Play 的原行为都有用例。显式 dispose 才取消 owned clock 与 metronome/count-in、失效 pending async start，重复 dispose 幂等。没有新增 Tone.Transport schedule 事件、tempo scheduler 或 iterator 时钟。
+- 类型：coordinator/transient state 仅依赖领域数据、窄 state 和命令端口，不读 DOM/Tone/OSMD/storage。adapter 的 loaded cursor/source assertion 保留原调用条件，required UI 缺失明确报错；optional LED 无影响。无 any/忽略检查，严格类型检查与 108 文件干净生成比较通过。
+- Node：182/182（新增 23 项协调器/异步/生命周期/惰性 projection；P0 的 8 项调度断言仍保留并接新 coordinator），见 validation/P7a-coordinator-check.txt。基线 3a76224 的 700 流/6300 动作、399 timer callback/11 frame callback、150 Play/count-in 比较，状态、时长、副作用与 iterator 命令完全一致。
+- 浏览器：完整受影响矩阵 default/no-op 各 playback 127、metronome 28、input 40、practice 53、display 30、render 19、audio 23，traversal 30/33、MIDI 20/21，共 744 项；最终结果见 validation/P7a-coordinator-browser.txt。新 playback 页用实际 toolbar/OSMD/input、受控 clock/count-in，覆盖三模式×两布局的 Play/viewport/prefetch、正确/错误/漏音、速度/取整、Pause/Resume/rapid、Reset/Loop/count-in/UI min、28 事件反复/结尾、歌曲结束、播放中换谱与旧 timer gate。
+- 原生音频：另用真实 sampler/synth/MembraneSynth、native timer 和实际 coordinator startup，验证三模式 first-piano/window target、count-in 末拍完整 handoff，保存 NATIVE_SYNC 记录。Wait 的 Tone.now/lookAhead 相对 immediate piano 偏移是原行为；Follow/Realtime window 用 immediate，不以断言消除差异。场景间显式 dispose 隔离已记录的旧 pending callbacks。输出静音，实体/可听同步仍未验证。
+- 清单：612 global candidates/63 classic slots、同名函数覆盖为零；229 直接 AppState 写入，state aliases/owned timers 见 STATE_OWNERSHIP 与 scheduling contract。偏好、库 schema/格式、vendor/helper/启动器未改。
+- 命令：npm run build/check、两个 inventory 脚本、全部 playback/metronome/input/practice/display/render/audio/MIDI/traversal 页、.cache/playback-parity.cjs。回退：revert 此 coordinator 检查点恢复完整旧循环与槽位；不同时运行半套旧/新 timer，不清空用户数据，上一 metronome 检查点保留。
+
+## P7b–P9
+
+下一入口：从同一个 coordinator 提取 Wait/Follow/Realtime 的决策策略，继续保持 flags、event 顺序与真实 repeats；P8 数据/UI、P9 显式 bootstrap/module/dispose 尚未开始。P7a 完成不代表整个 P7 或完整重构完成。

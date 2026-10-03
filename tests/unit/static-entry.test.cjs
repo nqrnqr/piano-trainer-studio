@@ -18,6 +18,12 @@ test('static entry loads exactly one timing implementation before its core consu
     assert.ok(scripts.indexOf('js/generated/domain/timing.js') < scripts.indexOf('js/trainer-core.js'));
     assert.equal(fs.existsSync(path.join(root, 'js/trainer-timing.js')), false);
     assert.notEqual(JSON.parse(read('package.json')).type, 'module');
+    assert.equal(scripts.filter(file => file === 'js/generated/practice/playback-coordinator.js').length, 1);
+    assert.equal(scripts.includes('js/feedback-engine.js'), false);
+    assert.equal(fs.existsSync(path.join(root, 'js/feedback-engine.js')), false);
+    for (const name of ['playbackLoop', 'checkWaitModeAdvance', 'startPlaybackFromToolbar']) {
+        assert.equal([...runtime.matchAll(new RegExp(`function ${name}\\(`, 'g'))].length, 1, `${name} has one runtime implementation`);
+    }
 });
 
 test('served source map embeds the unique TS source and maps both timing calculations', () => {

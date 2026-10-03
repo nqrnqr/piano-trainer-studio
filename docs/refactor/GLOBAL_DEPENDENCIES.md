@@ -151,5 +151,16 @@ P7a 第一子步骤：core 不再创建 MembraneSynth 或持有 metronome/cache/
 所有 timing decisions 只读注入状态和端口；MIDI raw percussion bytes/release 捕获由 midi-output 提供，
 Tone/DOM/OSMD/vendor 对象不进入节拍器。最小 source-measure ports 仍位于 score 层而非 domain。
 兼容旧函数名的 const forwards 只有一份实现；UI 改读 getWaitMeasureIndex 与 volume setter。
-Play/Pause/Reset、Tone.Transport 与 playbackLoop/checkWaitModeAdvance 仍由旧 core 协调，
-P7a 后续搬运、P7b 再提取模式策略。普通 Pause 与显式 dispose 的区别在 scheduling contract 中固定。
+Play/Pause/Reset、Tone.Transport 与 playbackLoop/checkWaitModeAdvance 随后由下面的 coordinator
+检查点接管，P7b 再提取模式策略。普通 Pause 与显式 dispose 的区别在 scheduling contract 中固定。
+
+P7a 协调器检查点：`src/practice/playback-coordinator.ts` 是 Play/Pause/Reset、Loop enforcement、
+checkWaitModeAdvance/playbackLoop 的唯一实现；原 core 函数与 feedback-engine.js/HTML 槽位已删除。
+core 保留原位置的 DOM binding，转发仅在 `src/compatibility/playback.ts`，P8/P9 再移除。
+clearVisuals/clearTransient 在 playback-state，Transport 原 API 在 audio/tone-transport，Loop/metro
+checkbox/min/max 读取在 ui/playback-controls；coordinator 不读 DOM、Tone、OSMD、storage。
+OSMD adapter 捕获 entry array，惰性投影领域 PlaybackEvent；旧 keyboard 只在 composition 边界
+取回这些 entries，不把 vendor 对象传入 practice。adapter 的 loaded cursor/source assertions 与既有
+异常条件一致；fallback 是 raw first-note Length，不能用 combined tie 替代。
+工厂均无创建时 timer/node/listener 副作用；计时/资源实际工作在命令调用时发生，
+显式 dispose 统一清除 event clock 和 count-in/metronome，普通 Pause 保留旧 callback gates。

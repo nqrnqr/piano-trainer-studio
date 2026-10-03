@@ -6,8 +6,8 @@
 
 
 // trainer-core.js
-// Central trainer orchestration, score render lifecycle coordination, and playback scheduling.
-// This file remains the integration layer while repeat/jump timing and metronome behavior are being stabilized.
+// Remaining loader/UI integration and classic composition consumers.
+// Typed practice/audio/score factories now own input, playback, repeat timing and metronome decisions.
 
 // State and persisted preference helpers load from generated/state TS modules.
 // Keep trainer-core.js focused on orchestration and cross-module coordination.
@@ -403,7 +403,6 @@ ScoreDisplay.init();
 
 audioOutput.init();
 
-const FOLLOW_ME_MIN_WAIT_RATIO = 0.6;
 
 metronomeOutput.init();
 
@@ -1196,29 +1195,6 @@ function clearFeedbackVisualStatePreserveScoring() {
     practiceFeedback.clearPreserveScoring();
 }
 
-function clearVisuals() {
-    clearFeedbackVisualStatePreserveScoring();
-    AppState.activeTimeouts.forEach(id => clearTimeout(id));
-    AppState.activeTimeouts = [];
-    AppState.sustainedVisuals = [];
-    AppState.visualNotesToStart = [];
-    AppState.expectedNotes = [];
-    AppState.outOfRangeCurrentNotes = [];
-    AppState.activeHeldIncorrectFeedback.clear();
-    AppState.releasedIncorrectFeedback = [];
-    AppState.correctFeedbackHistory = [];
-    AppState.realtimeWrongPressInCurrentContext = false;
-    AppState.heldCorrectNotes.clear(); 
-    AppState.preExpectedHeldNotes.clear();
-    AppState.lastLedPreviewEvents = [];
-    AppState.ledPreviewTraversalIndex = -1;
-    AppState.followAdvanceInfo = null;
-    AppState.currentExpectedContext = null;
-    AppState.earlyGraceReservations.clear();
-    wipeHardwareLEDs(); 
-    renderVirtualKeyboard();
-}
-
 
 // ==========================================
 // VIRTUAL KEYBOARD & DYNAMIC MIDI
@@ -1361,75 +1337,6 @@ function syncTrainerRoutingUiState() {
 // ==========================================
 
 // ===== Trainer mode flow =====
-
-function checkWaitModeAdvance() {
-    if (!AppState.isPlaying || (AppState.mode !== 'wait' && AppState.mode !== 'follow') || !AppState.isAudioBusy) return;
-
-    if (AppState.expectedNotes.length === 0) return; 
-
-    const allHit = AppState.expectedNotes.every(n => n.hit);
-    
-    if (allHit) {
-        AppState.isAudioBusy = false;
-        
-        AppState.pendingAudio.forEach(audio => {
-            schedulePlaybackForDestinations(audio.midi, audio.durationMs, audio.velocity ?? 100, { toLocalAudio: !!audio.toLocalAudio, toMidiOut: !!audio.toMidiOut });
-        });
-        AppState.pendingAudio = []; 
-
-        // Keep practicing-hand sustain visuals active in wait/follow modes so notes that
-        // legitimately ring across later beats remain visible until their visual
-        // duration ends. We only clear stale held-correct states when a note is no
-        // longer expected or visually sustained.
-        startVisualSustains();
-
-        const followInfo = AppState.followAdvanceInfo || null;
-        const shouldFollow = AppState.mode === 'follow' && followInfo && Number.isFinite(followInfo.waitSeconds);
-        if (shouldFollow) {
-            const fullWaitSeconds = Math.max(0, followInfo.waitSeconds);
-            const rawRemainingSeconds = Number.isFinite(AppState.anchorTime)
-                ? (AppState.anchorTime - Tone.now())
-                : fullWaitSeconds;
-
-            // Keep the original beat grid when the player is on time or early.
-            // If the player arrives late, do not collapse the next delay into a tiny
-            // catch-up burst. Let Follow Me breathe from the player's actual hit time.
-            let effectiveWaitSeconds = rawRemainingSeconds > 0
-                ? rawRemainingSeconds
-                : fullWaitSeconds;
-            const minimumComfortWaitSeconds = fullWaitSeconds * FOLLOW_ME_MIN_WAIT_RATIO;
-            if (effectiveWaitSeconds < minimumComfortWaitSeconds) {
-                effectiveWaitSeconds = fullWaitSeconds;
-            }
-            effectiveWaitSeconds = Math.max(0, effectiveWaitSeconds);
-
-            scheduleMetronomeForPlaybackWindow(
-                Tone.now(),
-                followInfo.currentMeasureIdx,
-                followInfo.currentTimestamp,
-                effectiveWaitSeconds,
-                followInfo.beatsToWait
-            );
-            const delayMs = Math.max(0, Math.round(effectiveWaitSeconds * 1000));
-            setTimeout(() => {
-                if (AppState.isPlaying && AppState.mode === 'follow') {
-                    osmd.cursor.update(); 
-                    handleAutoScroll();
-                    playbackLoop();
-                }
-            }, delayMs);
-            return;
-        }
-
-        setTimeout(() => {
-            if (AppState.isPlaying && AppState.mode === 'wait') {
-                osmd.cursor.update(); 
-                handleAutoScroll();
-                playbackLoop();       
-            }
-        }, 10); 
-    }
-}
 
 
 // ==========================================
@@ -1653,7 +1560,7 @@ document.getElementById('canvas-wrapper').addEventListener('click', (e) => {
             return;
         }
 
-        Tone.Transport.stop();
+        playbackTransport.stop();
 
         osmd.cursor.reset();
         while (!osmd.cursor.Iterator.EndReached && osmd.cursor.Iterator.CurrentMeasureIndex < targetMeasureIdx) {
@@ -1771,111 +1678,6 @@ function preserveMusicAreaScroll(callback) {
     return result;
 }
 
-async function startPlaybackFromToolbar() {
-    if (!osmd.cursor || AppState.isPlaying) return;
-
-    if (AppState.fullscreenOnPlay && !isFullscreenActive()) {
-        await requestAppFullscreen();
-    }
-
-    await ensureLiveAudioReady();
-
-    AppState.isPlaying = true;
-    updatePlayPauseButton();
-
-    hideToolbarPanels();
-    Tone.Transport.stop();
-    clearScheduledMetronomeEvents();
-    stopWaitModeMetronome();
-
-    AppState.lastLedPreviewEvents = [];
-    AppState.ledPreviewTraversalIndex = -1;
-
-    // WARNING:
-    // Building the LED preview timeline temporarily resets/traverses the OSMD cursor.
-    // Preserve the user's pre-play viewport so auto-scroll does not jump to measure 1 during count-in.
-    preserveMusicAreaScroll(() => {
-        ensureLedPreviewTimelineBuilt();
-    });
-
-    applyToneLatencyProfileForMode();
-
-    doCountInAndStart(() => {
-        AppState.anchorTime = Tone.now();
-        osmd.cursor.show();
-        handleAutoScroll();
-        Tone.Transport.bpm.value = AppState.baseBpm * AppState.speedPercent;
-        Tone.Transport.start();
-        if (AppState.mode === 'wait' && document.getElementById('check-metronome')?.checked) {
-            startWaitModeMetronome(osmd?.cursor?.Iterator?.CurrentMeasureIndex ?? 0);
-        }
-        playbackLoop();
-    });
-}
-
-function silencePlaybackOutputsImmediately() {
-    audioOutput.silence();
-    midiOutput.silence();
-}
-
-function clearTransientPlaybackState({ clearVisualState = false } = {}) {
-    AppState.pendingAudio = [];
-    AppState.followAdvanceInfo = null;
-    AppState.currentExpectedContext = null;
-    AppState.earlyGraceReservations.clear();
-    AppState.isAudioBusy = false;
-    AppState.expectedNotes = [];
-    AppState.realtimeWrongPressInCurrentContext = false;
-    AppState.preExpectedHeldNotes.clear();
-
-    if (clearVisualState) {
-        clearVisuals();
-    }
-}
-
-function stopPlaybackState({ pauseTransport = true } = {}) {
-    ScoreDisplay.cancel();
-    AppState.isPlaying = false;
-    AppState.countInActive = false;
-    AppState.lastLedPreviewEvents = [];
-    AppState.ledPreviewTraversalIndex = -1;
-    clearTransientPlaybackState();
-
-    if (pauseTransport) {
-        Tone.Transport.pause();
-    } else {
-        Tone.Transport.stop();
-    }
-
-    clearScheduledMetronomeEvents();
-    stopWaitModeMetronome();
-    silencePlaybackOutputsImmediately();
-    clearTempoVisualPulse();
-    applyToneLatencyProfileForMode();
-    updatePlayPauseButton();
-
-    if (AppState.ledOutputMode === 'midi') {
-        wipeHardwareLEDs();
-    }
-    if (AppState.ledOutputMode === 'wled') {
-        optionalLedOutput.clearOutputs().catch(() => {});
-    }
-}
-
-function pausePlaybackFromToolbar() {
-    stopPlaybackState({ pauseTransport: true });
-}
-
-function resetPlaybackForLoadedScore() {
-    stopPlaybackState({ pauseTransport: false });
-
-    GeometryEngine.clearSvgFeedback();
-    AppState.pendingAudio = [];
-    AppState.score.correct = 0;
-    AppState.score.wrong = 0;
-    updateScoreDisplay();
-    clearVisuals();
-}
 
 if (playPauseButton) {
     playPauseButton.onclick = async () => {
@@ -1884,43 +1686,7 @@ if (playPauseButton) {
     };
 }
 
-document.getElementById('btn-reset').onclick = () => { 
-    ScoreDisplay.cancel();
-    AppState.isPlaying = false; 
-    AppState.countInActive = false;
-
-    Tone.Transport.stop();
-    clearScheduledMetronomeEvents();
-    stopWaitModeMetronome();
-    silencePlaybackOutputsImmediately();
-    clearTempoVisualPulse();
-    applyToneLatencyProfileForMode();
-    
-    GeometryEngine.clearSvgFeedback(); 
-    clearTransientPlaybackState();
-    AppState.score.correct = 0;
-    AppState.score.wrong = 0;
-    updateScoreDisplay();
-
-    osmd.cursor.reset(); 
-    const isLoopEnabled = document.getElementById('check-looper').checked;
-    if (isLoopEnabled) {
-        const minLoop = parseInt(document.getElementById('val-loop-min').value);
-        while (!osmd.cursor.Iterator.EndReached && osmd.cursor.Iterator.CurrentMeasureIndex < minLoop - 1) {
-            osmd.cursor.Iterator.moveToNext();
-        }
-    }
-    osmd.cursor.update();
-    handleAutoScroll();
-    AppState.ledPreviewTraversalIndex = -1;
-    AppState.lastLedPreviewEvents = [];
-    clearVisuals();
-    if (AppState.ledOutputMode === 'wled') {
-        optionalLedOutput.clearOutputs().catch(() => {});
-    }
-    hideToolbarPanels();
-    updatePlayPauseButton();
-};
+document.getElementById('btn-reset').onclick = resetPlaybackFromToolbar;
 
 let resizeTimer;
 window.addEventListener('resize', () => {
@@ -2033,7 +1799,7 @@ function updateTempo(source, value) {
     speedInput.value = newPercent;
     bpmInput.value = newBpm;
     AppState.speedPercent = newPercent / 100;
-    Tone.Transport.bpm.value = newBpm;
+    playbackTransport.setBpm(newBpm);
 
     if (AppState.isPlaying && !AppState.countInActive && AppState.mode === 'wait') {
         rebuildWaitModeMetronome(osmd?.cursor?.Iterator?.CurrentMeasureIndex ?? trainerMetronome.getWaitMeasureIndex());
@@ -2477,244 +2243,7 @@ window.addEventListener('blur', clearLooperHold);
 // WARNING:
 // This loop coordinates cursor movement, repeat/jump behavior, trainer expectations, and timer-based playback.
 // Change with regression testing for repeats, metronome drift, and complex score navigation.
-function playbackLoop() {
-    if (!AppState.isPlaying) return;
-    
-    if (osmd.cursor.Iterator.EndReached) {
-        const isLoopEnabledAtEnd = document.getElementById('check-looper')?.checked;
-        if (!isLoopEnabledAtEnd) {
-            pausePlaybackFromToolbar();
-            osmd.cursor.update();
-            handleAutoScroll();
-        }
-        return;
-    }
-    
-    const entries = osmd.cursor.Iterator.CurrentVoiceEntries;
-    if (!entries || entries.length === 0) {
-        osmd.cursor.Iterator.moveToNext();
-        osmd.cursor.update();
-        requestAnimationFrame(playbackLoop);
-        return;
-    }
 
-    const currentTimestamp = osmd.cursor.Iterator.currentTimeStamp.RealValue;
-    const currentMeasureIdx = osmd.cursor.Iterator.CurrentMeasureIndex;
-    
-    const currentMeasure = osmd.Sheet.SourceMeasures[currentMeasureIdx];
-    if (currentMeasure && currentMeasure.TempoInBPM && currentMeasure.TempoInBPM !== AppState.baseBpm) {
-        AppState.baseBpm = currentMeasure.TempoInBPM;
-        updateTempo('percent', AppState.speedPercent * 100); 
-    }
-
-    buildExpectedNotesFromEntries(entries, currentMeasureIdx, currentTimestamp);
-    AppState.currentExpectedContext = {
-        measureIndex: currentMeasureIdx,
-        timestamp: currentTimestamp,
-        signature: makeLedPreviewEntrySignature(entries)
-    };
-
-    renderFeedbackOverlay();
-    renderVirtualKeyboard(entries, currentMeasureIdx, currentTimestamp);
-
-    entries.forEach(e => {
-        const sid = getResolvedStaffAssignmentIdFromEntry(e);
-        const handRole = getAssignedHandRoleForStaff(sid);
-        const isRH = handRole === 'right';
-        const isLH = handRole === 'left';
-        const isOther = (!isRH && !isLH);
-        const isPracticingThisHand = (isRH && AppState.practice.right) || (isLH && AppState.practice.left);
-        const playbackLeftEnabled = !!AppState.playback.left;
-        const playbackRightEnabled = !!AppState.playback.right;
-        const isSelectedHandPlayback = (isRH && playbackRightEnabled) || (isLH && playbackLeftEnabled);
-
-        const routeToLocalAudio = ((isRH || isLH) && isSelectedHandPlayback && AppState.audioEnabled.hands) || 
-                                  (isOther && AppState.audioEnabled.other);
-        const routeToMidiOut = ((isRH || isLH) && isSelectedHandPlayback && AppState.midiOutEnabled.hands) || 
-                               (isOther && AppState.midiOutEnabled.other);
-
-        if (routeToLocalAudio || routeToMidiOut) {
-            e.Notes.forEach(n => {
-                if (!n.isRest()) {
-                    const isTieContinuation = n.NoteTie && n.NoteTie.StartNote !== n;
-                    if (!isTieContinuation) {
-                        const m = n.halfTone + 12;
-
-                        const combinedLength = (n.NoteTie && n.NoteTie.StartNote === n)
-                            ? getCombinedTieLength(n)
-                            : n.Length.RealValue;
-
-                        const noteDurationSeconds = (combinedLength * 4) * (60 / (AppState.baseBpm * AppState.speedPercent));
-                        const durationMs = (noteDurationSeconds * 1000) * 0.9;
-                        
-                        if ((AppState.mode === 'wait' || AppState.mode === 'follow') && AppState.expectedNotes.length > 0 && !isPracticingThisHand) {
-                            AppState.pendingAudio.push({ midi: m, durationMs: durationMs, velocity: 100, toLocalAudio: routeToLocalAudio, toMidiOut: routeToMidiOut });
-                        } else {
-                            schedulePlaybackForDestinations(m, durationMs, 100, { toLocalAudio: routeToLocalAudio, toMidiOut: routeToMidiOut });
-                        }
-                    }
-                }
-            });
-        }
-    });
-
-    osmd.cursor.Iterator.moveToNext(); 
-    
-    const nextMeasureIdx = osmd.cursor.Iterator.CurrentMeasureIndex;
-    let nextTimestamp = osmd.cursor.Iterator.currentTimeStamp.RealValue;
-    const isEndReached = osmd.cursor.Iterator.EndReached;
-    
-    let fallbackLength = 1;
-    if (entries && entries[0] && entries[0].Notes && entries[0].Notes.length > 0) {
-        fallbackLength = entries[0].Notes[0].Length.RealValue;
-    }
-
-    if (isEndReached) {
-        nextTimestamp = currentTimestamp + fallbackLength;
-    }
-
-    const beatsToWait = window.PTTiming.getTraversalBeatsToWait({
-        currentMeasureIdx,
-        currentTimestamp,
-        nextMeasureIdx,
-        nextTimestamp,
-        fallbackLength,
-        getMeasureTimingInfo
-    });
-
-    const currentRunningBpm = AppState.baseBpm * AppState.speedPercent;
-    const waitSeconds = beatsToWait * (60 / currentRunningBpm);
-    const playbackWindowStartSec = (AppState.mode === 'wait' || AppState.mode === 'follow') ? Tone.now() : AppState.anchorTime;
-
-    const shouldDeferFollowScheduling = AppState.mode === 'follow' && AppState.expectedNotes.length > 0;
-    if (!shouldDeferFollowScheduling) {
-        scheduleMetronomeForPlaybackWindow(
-            playbackWindowStartSec,
-            currentMeasureIdx,
-            currentTimestamp,
-            waitSeconds,
-            beatsToWait
-        );
-    } else {
-        clearScheduledMetronomeEvents();
-        clearTempoVisualPulse();
-    }
-
-    let timeToWaitMs = waitSeconds * 1000;
-    
-    const isLoopEnabled = document.getElementById('check-looper').checked;
-    const maxLoop = parseInt(document.getElementById('val-loop-max').value);
-    const minLoop = parseInt(document.getElementById('val-loop-min').value);
-    
-    if (isLoopEnabled && (isEndReached || (osmd.cursor.Iterator.CurrentMeasureIndex + 1 > maxLoop))) {
-        
-        setTimeout(() => {
-            if (!AppState.isPlaying) return;
-            
-            processMissedNotes(); 
-            Tone.Transport.stop(); 
-
-            osmd.cursor.reset();
-            while (!osmd.cursor.Iterator.EndReached && osmd.cursor.Iterator.CurrentMeasureIndex < minLoop - 1) {
-                osmd.cursor.Iterator.moveToNext();
-            }
-            osmd.cursor.update();
-            handleAutoScroll();
-            clearVisuals();
-
-            const restartLoopPlayback = () => {
-                GeometryEngine.clearSvgFeedback(); 
-                AppState.pendingAudio = []; 
-                AppState.score.correct = 0;
-                AppState.score.wrong = 0;
-                updateScoreDisplay();
-                
-                AppState.anchorTime = Tone.now(); 
-                Tone.Transport.start(); 
-                playbackLoop(); 
-            };
-
-            if (AppState.loopCountInEnabled) {
-                doCountInAndStart(restartLoopPlayback);
-            } else {
-                restartLoopPlayback();
-            }
-            
-        }, timeToWaitMs);
-        
-        return; 
-    }
-
-    if (AppState.mode === 'wait' || AppState.mode === 'follow') {
-        AppState.anchorTime = Tone.now() + waitSeconds;
-    } else {
-        AppState.anchorTime += waitSeconds;
-    }
-    
-    timeToWaitMs = (AppState.anchorTime - Tone.now()) * 1000;
-    
-    if (timeToWaitMs < 0) {
-        timeToWaitMs = 0; 
-        if (AppState.mode === 'wait' || AppState.mode === 'follow') {
-            AppState.anchorTime = Tone.now(); 
-        }
-    }
-
-    if (AppState.mode === 'wait' || AppState.mode === 'follow') {
-        AppState.isAudioBusy = true;
-        AppState.followAdvanceInfo = AppState.mode === 'follow' ? {
-            currentMeasureIdx,
-            currentTimestamp,
-            waitSeconds,
-            beatsToWait
-        } : null;
-        
-        if (AppState.expectedNotes.length > 0) {
-            const allExpectedAlreadyHit = AppState.expectedNotes.every(n => n.hit);
-            if (allExpectedAlreadyHit) {
-                // One-hand early-grace reservations can promote held notes to hit as soon as
-                // a new expected group is built. In wait/follow modes, that means this step
-                // is already satisfied before any fresh keydown event occurs, so we need to
-                // advance immediately instead of deadlocking on an already-hit group.
-                setTimeout(() => {
-                    if (!AppState.isPlaying || (AppState.mode !== 'wait' && AppState.mode !== 'follow')) return;
-                    checkWaitModeAdvance();
-                }, 0);
-            }
-            // Otherwise engine waits for user input.
-        } else {
-            startVisualSustains();
-            const advanceDelayMs = AppState.mode === 'follow' ? Math.max(0, timeToWaitMs) : 10;
-            if (AppState.mode === 'follow') {
-                scheduleMetronomeForPlaybackWindow(
-                    playbackWindowStartSec,
-                    currentMeasureIdx,
-                    currentTimestamp,
-                    waitSeconds,
-                    beatsToWait
-                );
-            }
-            setTimeout(() => {
-                if (AppState.isPlaying && (AppState.mode === 'wait' || AppState.mode === 'follow')) {
-                    processMissedNotes();
-                    osmd.cursor.update(); 
-                    handleAutoScroll();
-                    playbackLoop();
-                }
-            }, advanceDelayMs); 
-        }
-    } else {
-        startVisualSustains(); 
-        setTimeout(() => {
-            if (AppState.isPlaying) {
-                processMissedNotes();
-                osmd.cursor.update(); 
-                handleAutoScroll();
-                playbackLoop();
-            }
-        }, timeToWaitMs);
-    }
-}
 
 const backupSettingsButton = document.getElementById('btn-backup-settings');
 if (backupSettingsButton) {

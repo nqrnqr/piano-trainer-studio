@@ -5,7 +5,7 @@
 - `/assets/audio` = static audio assets such as Salamander samples
 - `/js` = extracted app modules with focused ownership
 - `/src` = migrated TypeScript source; `/js/generated` = committed classic-script output and embedded source maps
-- `trainer-core.js` = remaining integration layer for rendering lifecycle, playback scheduling, metronome flow, repeat/jump handling, and cross-module orchestration
+- `trainer-core.js` = remaining loader, UI bindings and compatibility integration; typed factories own input, render and playback coordination
 - `/docs` = architecture notes and development notes
 
 ## Current modules
@@ -23,7 +23,9 @@
 - `js/led.js` = LED simulator, calibration, and hardware/WLED output
 - `src/midi/*.ts`, `src/ui/midi-controls.ts` = Web MIDI decoding, service, output and device controls; old js/midi.js is removed
 - `src/audio/*.ts`, `src/domain/velocity.ts` = Tone voice/loading/unlock lifecycle, independent audio/MIDI routing and shared velocity normalization
-- `js/feedback-engine.js` = remaining Loop navigation only, to move with the P7 coordinator
+- `src/practice/playback-coordinator.ts`, `playback-state.ts` = single Play/Pause/Reset/Loop coordinator and original transient/visual cleanup; old feedback-engine.js is removed
+- `src/audio/metronome.ts`, `metronome-output.ts`, `playback-clock.ts`, `tone-transport.ts` = count-in/beat decisions, actual Tone node, native clock resource ownership and unchanged Transport commands
+- `src/score/measure-timing.ts`, `src/ui/tempo-pulse.ts`, `playback-controls.ts` = actual traversal cache, DOM pulse and playback control reads
 - `js/feedback-debug.js` = developer-only feedback diagnostics and sticky debug labels
 - `trainer-core.js` = remaining trainer core and orchestration
 
@@ -32,7 +34,7 @@
 - `src/domain/timing.ts` is shared infrastructure for all practice modes, exposing the existing `window.PTTiming` API through generated classic JS
 - It answers **how long** structural traversal should wait
 - It must not directly move the cursor, render feedback, or update UI
-- `trainer-core.js` remains the orchestrator that decides **when** each mode advances
+- `src/practice/playback-coordinator.ts` is the single orchestrator that decides **when** each mode advances; P7b will extract policies from its existing branches
 - Realtime structural jumps should use current-measure remainder timing instead of first-note fallbacks or raw iterator deltas
 - Edit the TS source, run `npm run build`, and commit both JS and map. `npm run check` validates types, generated output, and Node behavior tests. See `docs/refactor/DEVELOPMENT.md` for the staged migration and browser checks.
 
@@ -46,8 +48,24 @@ has no DOM, vendor object or audio clock access. Ties remain an adapter concern,
 rest/continuation, hand and range filtering remain explicit in expected-notes.
 Same-staff pitch merging and cross-staff identities retain their original rules. Feedback records
 belong to practice; SVG overlays only draw them. Sustain timers still use the original shared
-activeTimeouts cancellation list until the coordinator migration. Classic assembly and forwards
+activeTimeouts cancellation list; playback-state cancels that list only on original visual cleanup. Classic assembly and forwards
 live in `src/compatibility/practice.ts` and will move into bootstrap at P9.
+
+## Playback coordination boundary
+
+The coordinator reads lazy domain PlaybackEvent data and numeric traversal observations from the OSMD
+adapter; only the adapter moves or paints the real iterator. Event entries stay captured while the
+iterator prefetches the next event. Painted snapshots remain private to the adapter and viewport.
+Classic playback composition temporarily passes captured entries back to the legacy keyboard at that
+boundary; vendor objects do not enter practice. State flags, Follow comfort rules, real repeats and
+timer ordering retain their existing meanings.
+
+Normal Pause and Reset retain their original cancellation rules. Explicit dispose clears the event
+clock and metronome/count-in clock and rejects pending async starts; native Transport owns no scheduled
+events in this application. Original late-callback and pending-unlock behavior is documented and tested
+in `docs/refactor/P7_SCHEDULING_CONTRACT.md`. The muted native Tone fixture records the original Wait
+look-ahead offset and the immediate-time Follow/Realtime window; hardware/audible synchronization
+remains a separate manual check.
 
 ## Score display modes
 
@@ -83,15 +101,13 @@ physical MIDI devices and hardware outputs require separate manual verification.
 The test harness drives animation frames deterministically because background browsers
 may suspend native animation callbacks. Production following uses native requestAnimationFrame.
 
-## Why `trainer-core.js` stays together for now
-The remaining file still owns the most timing-sensitive systems:
-- playback scheduling
-- repeat/jump traversal
-- metronome behavior and drift fixes
-- count-in handoff
-- render commands still enter through transitional compatibility; lifecycle implementation is in src/render
-
-Keeping those areas together is safer while playback/navigation behavior is still being stabilized.
+## Why playback keeps one coordinator
+The original mode branches remain together in `src/practice/playback-coordinator.ts` for P7a.
+P7b will extract decisions while keeping this one event loop, existing flags, real repeat traversal,
+painted/prefetched positions and native clock behavior. Metronome and count-in own their separate
+clock resources, but handoff remains a coordinator command. No independent cursor clock or tempo
+scheduler has been added. Remaining loader and UI bindings in core move at P8; classic assembly
+and forwards are temporary until the P9 bootstrap and module bundle.
 
 ## Fragile systems
 - Feedback-note anchor positioning and resize stability
@@ -112,7 +128,7 @@ Keeping those areas together is safer while playback/navigation behavior is stil
 
 ## Rename note
 - `app.js` was renamed to `trainer-core.js` once the safer module boundaries were extracted
-- The rename is organizational only; playback/rendering logic remains together on purpose
+- The rename was organizational only. The staged TypeScript migration now assigns playback/rendering to explicit factories while preserving their behavior.
 
 ------------------------
 - Note - if first run values look different in menu than what they actually are - check if the storagehelper looks to localstorage and is defaulting to 0. 

@@ -9,11 +9,11 @@ P2 保留一个 `const AppState` 词法对象。Map/Set 泛型、null 和动态�
 | 组 | 当前写入者和别名 | 计划最终所有者 |
 | --- | --- | --- |
 | modeSettings、practice、playback | core 的 `normalizeFollowModeSettings` / `getCurrentModeSettings` / `setFollowPracticeHand` 返回或持有 `follow`、`settings` 引用；复选框监听修改它们 | settings commands / practice coordinator |
-| expectedNotes / hit、score、提前预留 | src/practice 的 expected-notes、input-controller、early-grace、scoring；`expectedMatch.hit` 和 `expected.hit` 通过局部引用变更；总 reset 仍在 core | expected-notes / input-matching / scoring |
+| expectedNotes / hit、score、提前预留 | src/practice 的 expected-notes、input-controller、early-grace、scoring；`expectedMatch.hit` 和 `expected.hit` 通过局部引用变更；playback-state/coordinator 负责原 reset | expected-notes / input-matching / scoring / coordinator |
 | 当前谱与移调源 | core loader、ScoresUI、TransposeUI 的 `state = ensureTransposeState()`；同一个 transpose 对象 | score-loader / transpose commands |
-| 真实遍历、当前期望、预览 timeline | core playback 与 ensureLedPreviewTimelineBuilt；OSMD iterator 暂在 core | traversal / practice coordinator |
+| 真实遍历、当前期望、预览 timeline | playback coordinator 与 shared traversal；OSMD adapter 提供惰性 PlaybackEvent 与推进命令，core 仍有未迁 UI/loader 查询 | traversal / practice coordinator |
 | feedback / debug 历史与几何锚点 | practice/feedback-state、FeedbackDebug，ScoreDisplay 通过 `expected` 引用重写 anchor | practice 记录、geometry / overlays 绘制 |
-| played / held / pending / timers | practice 输入／延音、core 调度与总取消，LED 键域刷新 | practice / audio scheduler |
+| played / held / pending / timers | practice 输入／延音、playback-state 的原总清理、coordinator 的 pendingAudio/flags，LED 键域刷新 | practice / coordinator / audio scheduler |
 | 音频与 MIDI 路由、通道、回声 | preferences 初始化、core UI、midi listeners | audio / midi services；偏好命令更新 |
 | LED / WLED 状态 | led.js、core 虚拟键盘、midi LED test | optional adapter |
 | 共享键域 | src/domain/playable-range.ts 纯计算；src/state/player-range.ts 缓存，旧键盘／判定消费者转发 | domain / explicit controller |
@@ -65,11 +65,19 @@ pruneAtTimestamp / markHeldPreview 在原 keyboard 呈现位置调用。clearVis
 
 P7a 的 metronome `state` alias 仅写 countInActive，以及停止后的 lastLedPreviewEvents /
 ledPreviewTraversalIndex；isPlaying/mode/BPM/routing 开关只读。Play/Pause/Reset 和这些字段的
-总协调仍留在 core，下一子步骤再迁移。measureTimingCache、Wait beat/counter/target/measure、
+总协调由后续 P7a coordinator 检查点接管。measureTimingCache、Wait beat/counter/target/measure、
 window timer IDs、pulse IDs/lastPulse 都由独立实例私有持有，不向 AppState 追加字段。
 playback-clock 持有 metronome timer/rAF 资源及 dispose epoch；普通 Pause 不重置 epoch。
 percussion release timer 与捕获的 MIDI output 由 midi-output 持有，只有显式 dispose 失效。
 这与原 Pause 仍允许已排 attack/release 的规则区分，详见 P7_SCHEDULING_CONTRACT.md。
+
+P7a 后续：coordinator 的窄 state alias 拥有 playing/busy、anchorTime、followAdvanceInfo、
+currentExpectedContext、pendingAudio、score reset 与 baseBpm 的原自动 tempo 更新；
+playback-state 拥有原 clearVisuals/clearTransient 的数组替换和 Map/Set.clear。
+普通 Pause 的 transient cleanup 不取消 activeTimeouts、不清 sustain/held-correct，
+Reset/loaded-score/Loop 的 visual cleanup 才执行原列表取消。pressed keys 仍由 input-controller 拥有。
+event clock timer/rAF 为独立实例资源，不进入 AppState；只在显式 dispose 取消全部，
+async start generation 也只在 dispose 更新。Tempo UI 和模式/手设置仍在 core，P8 再移到 UI commands。
 
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。

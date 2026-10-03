@@ -16,6 +16,9 @@ document.getElementById('run').onclick=()=>{document.getElementById('run').disab
 (async()=>{
  let html=await(await fetch('/index.html')).text();
  html=html.replace('<head>','<head><base href="/"><script src="/docs/testing/midi-device-fixture.js"><'+'/script>');
+ const audioSlot=html.indexOf("    <script>document.write('<script src=\"js/generated/compatibility/audio.js");
+ if(audioSlot<0)throw Error('Missing audio composition slot');
+ html=html.slice(0,audioSlot)+'<script src="/docs/testing/audio-tone-fixture.js"><'+'/script>'+html.slice(audioSlot);
  const slot=html.indexOf("    <script>document.write('<script src=\"js/generated/compatibility/metronome.js");
  if(slot<0)throw Error('Missing metronome composition slot');
  frame.srcdoc=html.slice(0,slot)+'<script src="/docs/testing/metronome-tone-fixture.js"><'+'/script>'+html.slice(slot);

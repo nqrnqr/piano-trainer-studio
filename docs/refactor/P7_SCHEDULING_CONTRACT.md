@@ -22,3 +22,14 @@
 count-in 的 beats 优先当前 source measure 的 ActiveTimeSignature，其次第一小节，最后 4；沿用原 raw numerator，不借类型迁移加钳制。窗口 metronome 沿缓存 length 与 epsilon=1e-7 调度，保留原 beatOffsetSec 算式。measure timing cache 仍按实际 OSMD 反复遍历与 100000 限制构建，再沿原第一匹配位置恢复规则；不能改成新的线性时间线。
 
 显式 dispose 可取消模块持有的全部 timer/rAF 并使迟到回调失效，为 P9 生命周期准备；普通 Pause/Reset 不新增 epoch 或批量取消。历史迟到回调在恢复播放后仍可能执行，必须作为原行为用例记录，独立修复不属于本次迁移。
+
+## P7a 协调器搬运补充
+
+- Play 在入口检查 cursor/playing，随后 await fullscreen/audio unlock；不在 await 后重新检查 playing。暂停发生于 pending unlock 时，旧 promise 仍可开始；两个 pending Play 也可能建立两次 count-in。这些旧语义保留。只在显式 dispose 后用 generation 忽略 pending start。
+- Pause 的 clearTransient 不取消 activeTimeouts，不移回 painted iterator、不清除 sustained/held-correct；只清 expected/pending/context/preExpected 与 busy。随后 Transport.pause、window/Wait cancel、local/midi silence、pulse、latency、button、optional LED 清理的顺序固定。
+- toolbar Reset 与 loaded-score Reset 是不同命令。前者沿 UI Loop min seek，后者不 seek；两者清 score/visual，且不能把前者合并成 stopPlaybackState 后改变顺序。score/hit Map/Set identity 与 pressed keys 的旧保留规则继续生效。
+- Loop enforcement 沿 AppState.looper bounds，播放窗口回跳沿 UI min/max；这一历史区别不在迁移时统一。Loop callback 使用未修正的 waitSeconds，先 miss/stop/seek/paint/scroll/clearVisuals，再 optional count-in 和 score reset/start。
+- 当前 event 捕获 entry array，并惰性投影领域字段；fallback 为第一 note 的 raw Length，不能换成 combined tie length。expected/context/feedback/keyboard/accompaniment 均先处理此 event，再 advance 真 iterator。数值 currentExpectedContext 仍不是完整 repeat token。
+- Tone.Transport 仅 stop/pause/start 与 bpm.value；没有 schedule/scheduleRepeat 事件可取消。生产 audio/tone-transport 直接调用同一 API，UI 的原 seek/tempo 也使用这一个端口。
+- playback-clock 的 timer/rAF 列表只为 dispose 所有权增加 bookkeeping；普通 Pause/Reset 不清空它，guard 与先前相同。dispose 在同一 coordinator 内取消 event clock 与 count-in/metronome，重复 dispose 不创建/重复释放资源。
+- 实际 Tone 调用还有既有模式差异：Wait tick 的 local metronome 使用 Tone.now（含 context lookAhead），而钢琴使用 immediate time；Follow/Realtime 的播放窗口 click 使用 getLiveAudioTime/immediate。原生测试保存两种 target 和 count-in callback 之后的整拍 handoff，不在 P7 借同步断言调整 API 或消除旧偏移。输出静音，不能据此声明可听/硬件同步。
