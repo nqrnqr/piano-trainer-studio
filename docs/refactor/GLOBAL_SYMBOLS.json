@@ -7,11 +7,16 @@
     "js/generated/ui/controls-dom.js",
     "js/generated/state/preference-keys.js",
     "js/generated/state/app-state.js",
+    "js/generated/compatibility/app-state.js",
     "js/generated/domain/hand-routing.js",
     "js/generated/compatibility/hand-routing.js",
+    "js/generated/domain/preference-values.js",
     "js/generated/state/preferences.js",
+    "js/generated/compatibility/preferences.js",
     "js/generated/state/player-range.js",
+    "js/generated/compatibility/player-range.js",
     "js/generated/state/settings-backup.js",
+    "js/generated/compatibility/settings-backup.js",
     "js/generated/ui/settings-controls.js",
     "js/generated/compatibility/settings-files.js",
     "js/generated/score/transpose-engine.js",
@@ -137,46 +142,19 @@
       ]
     },
     {
-      "symbol": "APP_MANIFEST",
-      "definitions": [
-        {
-          "symbol": "APP_MANIFEST",
-          "kind": "const",
-          "file": "js/generated/state/app-state.js",
-          "line": 3
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/app-state.js"
-      ]
-    },
-    {
-      "symbol": "APP_REPO_SLUG",
-      "definitions": [
-        {
-          "symbol": "APP_REPO_SLUG",
-          "kind": "const",
-          "file": "js/generated/state/app-state.js",
-          "line": 4
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/app-state.js"
-      ]
-    },
-    {
       "symbol": "APP_VERSION",
       "definitions": [
         {
           "symbol": "APP_VERSION",
           "kind": "const",
-          "file": "js/generated/state/app-state.js",
+          "file": "js/generated/compatibility/app-state.js",
           "line": 5
         }
       ],
       "referenceFiles": [
-        "js/generated/state/app-state.js",
+        "js/generated/compatibility/app-state.js",
         "js/generated/state/settings-backup.js",
+        "js/generated/compatibility/settings-backup.js",
         "js/generated/compatibility/device-controls.js",
         "docs/testing/traversal-baseline.integration.js"
       ]
@@ -202,15 +180,17 @@
         {
           "symbol": "AppState",
           "kind": "const",
-          "file": "js/generated/state/app-state.js",
-          "line": 9
+          "file": "js/generated/compatibility/app-state.js",
+          "line": 8
         }
       ],
       "referenceFiles": [
-        "js/generated/state/app-state.js",
+        "js/generated/compatibility/app-state.js",
         "js/generated/compatibility/hand-routing.js",
         "js/generated/state/preferences.js",
+        "js/generated/compatibility/preferences.js",
         "js/generated/state/player-range.js",
+        "js/generated/compatibility/player-range.js",
         "js/generated/compatibility/transpose.js",
         "js/generated/compatibility/toolbar.js",
         "js/generated/compatibility/scores-ui.js",
@@ -244,20 +224,6 @@
         "docs/testing/input-baseline.integration.js",
         "docs/testing/metronome-baseline.integration.js",
         "docs/testing/playback-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "DEFAULT_PREFERENCES",
-      "definitions": [
-        {
-          "symbol": "DEFAULT_PREFERENCES",
-          "kind": "const",
-          "file": "js/generated/state/preferences.js",
-          "line": 3
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js"
       ]
     },
     {
@@ -722,7 +688,25 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
+        "js/generated/compatibility/preferences.js",
+        "js/generated/compatibility/settings-backup.js",
+        "js/generated/compatibility/midi.js",
         "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerAppState",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerAppState",
+          "kind": "var",
+          "file": "js/generated/state/app-state.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/state/app-state.js",
+        "js/generated/compatibility/app-state.js"
       ]
     },
     {
@@ -1407,6 +1391,21 @@
       ]
     },
     {
+      "symbol": "PianoTrainerPlayerRange",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerPlayerRange",
+          "kind": "var",
+          "file": "js/generated/state/player-range.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/state/player-range.js",
+        "js/generated/compatibility/player-range.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerPlayerRangeControls",
       "definitions": [
         {
@@ -1449,6 +1448,37 @@
       "referenceFiles": [
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerPreferenceValues",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerPreferenceValues",
+          "kind": "var",
+          "file": "js/generated/domain/preference-values.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/domain/preference-values.js",
+        "js/generated/state/preferences.js",
+        "js/generated/compatibility/preferences.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerPreferences",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerPreferences",
+          "kind": "var",
+          "file": "js/generated/state/preferences.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/state/preferences.js",
+        "js/generated/compatibility/preferences.js"
       ]
     },
     {
@@ -1677,6 +1707,21 @@
       "referenceFiles": [
         "js/generated/ui/settings-actions.js",
         "js/generated/compatibility/preference-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerSettingsBackup",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerSettingsBackup",
+          "kind": "var",
+          "file": "js/generated/state/settings-backup.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/state/settings-backup.js",
+        "js/generated/compatibility/settings-backup.js"
       ]
     },
     {
@@ -1936,7 +1981,9 @@
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
         "js/generated/state/preferences.js",
-        "js/generated/state/settings-backup.js"
+        "js/generated/compatibility/preferences.js",
+        "js/generated/state/settings-backup.js",
+        "js/generated/compatibility/settings-backup.js"
       ]
     },
     {
@@ -2458,12 +2505,12 @@
         {
           "symbol": "UPDATE_MANIFEST_URL",
           "kind": "const",
-          "file": "js/generated/state/app-state.js",
+          "file": "js/generated/compatibility/app-state.js",
           "line": 6
         }
       ],
       "referenceFiles": [
-        "js/generated/state/app-state.js",
+        "js/generated/compatibility/app-state.js",
         "js/generated/compatibility/device-controls.js"
       ]
     },
@@ -2479,7 +2526,7 @@
       ],
       "referenceFiles": [
         "js/generated/state/preference-keys.js",
-        "js/generated/state/app-state.js",
+        "js/generated/compatibility/app-state.js",
         "js/generated/compatibility/device-controls.js"
       ]
     },
@@ -2489,27 +2536,13 @@
         {
           "symbol": "UPDATE_RELEASES_URL",
           "kind": "const",
-          "file": "js/generated/state/app-state.js",
+          "file": "js/generated/compatibility/app-state.js",
           "line": 7
         }
       ],
       "referenceFiles": [
-        "js/generated/state/app-state.js",
+        "js/generated/compatibility/app-state.js",
         "js/generated/compatibility/device-controls.js"
-      ]
-    },
-    {
-      "symbol": "UPDATE_TAG_ZIP_URL",
-      "definitions": [
-        {
-          "symbol": "UPDATE_TAG_ZIP_URL",
-          "kind": "const",
-          "file": "js/generated/state/app-state.js",
-          "line": 8
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/app-state.js"
       ]
     },
     {
@@ -2590,6 +2623,20 @@
         "js/generated/state/preference-keys.js",
         "js/led.js",
         "js/generated/compatibility/legacy-led.js"
+      ]
+    },
+    {
+      "symbol": "appMetadata",
+      "definitions": [
+        {
+          "symbol": "appMetadata",
+          "kind": "const",
+          "file": "js/generated/compatibility/app-state.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/app-state.js"
       ]
     },
     {
@@ -2751,22 +2798,6 @@
       ]
     },
     {
-      "symbol": "buildSettingsBackupPayload",
-      "definitions": [
-        {
-          "symbol": "buildSettingsBackupPayload",
-          "kind": "function",
-          "file": "js/generated/state/settings-backup.js",
-          "line": 2
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/settings-backup.js",
-        "js/generated/compatibility/settings-files.js",
-        "docs/testing/settings-baseline.integration.js"
-      ]
-    },
-    {
       "symbol": "checkForUpdates",
       "definitions": [
         {
@@ -2829,23 +2860,6 @@
         "js/generated/ui/permission-help.js",
         "js/generated/compatibility/midi.js",
         "docs/testing/traversal-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "clearSavedPreferences",
-      "definitions": [
-        {
-          "symbol": "clearSavedPreferences",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 84
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/generated/state/settings-backup.js",
-        "js/generated/ui/preference-controls.js",
-        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -3020,21 +3034,6 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/device-controls.js"
-      ]
-    },
-    {
-      "symbol": "consumePendingFirstRunNotice",
-      "definitions": [
-        {
-          "symbol": "consumePendingFirstRunNotice",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 37
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/trainer-core.js"
       ]
     },
     {
@@ -3503,25 +3502,6 @@
       ]
     },
     {
-      "symbol": "getClampedNumber",
-      "definitions": [
-        {
-          "symbol": "getClampedNumber",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 74
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/led.js",
-        "js/generated/compatibility/legacy-led.js",
-        "js/generated/ui/preference-controls.js",
-        "js/generated/compatibility/preference-controls.js",
-        "docs/testing/metronome-baseline.integration.js"
-      ]
-    },
-    {
       "symbol": "getCombinedTieLength",
       "definitions": [
         {
@@ -3606,7 +3586,7 @@
           "symbol": "getLegacyMidiOutput",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 57
+          "line": 58
         }
       ],
       "referenceFiles": [
@@ -3624,7 +3604,7 @@
           "symbol": "getLegacyMidiPort",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 56
+          "line": 57
         }
       ],
       "referenceFiles": [
@@ -3731,29 +3711,13 @@
       ]
     },
     {
-      "symbol": "getMidiKeyPosition01",
-      "definitions": [
-        {
-          "symbol": "getMidiKeyPosition01",
-          "kind": "function",
-          "file": "js/generated/state/player-range.js",
-          "line": 15
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/player-range.js",
-        "js/led.js",
-        "js/generated/compatibility/legacy-led.js"
-      ]
-    },
-    {
       "symbol": "getMidiLightsStatus",
       "definitions": [
         {
           "symbol": "getMidiLightsStatus",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 60
+          "line": 61
         }
       ],
       "referenceFiles": [
@@ -3769,7 +3733,7 @@
           "symbol": "getMidiOutExpressionValue",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 64
+          "line": 65
         }
       ],
       "referenceFiles": [
@@ -3783,7 +3747,7 @@
           "symbol": "getMidiOutStatus",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 59
+          "line": 60
         }
       ],
       "referenceFiles": [
@@ -3813,7 +3777,7 @@
           "symbol": "getMidiStatus",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 58
+          "line": 59
         }
       ],
       "referenceFiles": [
@@ -3835,25 +3799,6 @@
       "referenceFiles": [
         "js/generated/domain/playable-range.js",
         "js/generated/state/player-range.js"
-      ]
-    },
-    {
-      "symbol": "getPlayerPlayableRange",
-      "definitions": [
-        {
-          "symbol": "getPlayerPlayableRange",
-          "kind": "function",
-          "file": "js/generated/state/player-range.js",
-          "line": 3
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/player-range.js",
-        "js/led.js",
-        "js/generated/compatibility/legacy-led.js",
-        "js/generated/compatibility/player-range-controls.js",
-        "js/optional/midi-led-test.js",
-        "js/generated/compatibility/midi-led-test.js"
       ]
     },
     {
@@ -4002,7 +3947,7 @@
           "symbol": "getSelectedMidiInChannel",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 53
+          "line": 54
         }
       ],
       "referenceFiles": [
@@ -4017,7 +3962,7 @@
           "symbol": "getSelectedMidiLightsChannel",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 55
+          "line": 56
         }
       ],
       "referenceFiles": [
@@ -4034,7 +3979,7 @@
           "symbol": "getSelectedMidiOutChannel",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 54
+          "line": 55
         }
       ],
       "referenceFiles": [
@@ -4049,7 +3994,7 @@
           "symbol": "getSelectedMidiOutOutput",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 63
+          "line": 64
         }
       ],
       "referenceFiles": [
@@ -4087,41 +4032,6 @@
       "referenceFiles": [
         "js/generated/practice/early-grace.js",
         "js/generated/compatibility/practice.js"
-      ]
-    },
-    {
-      "symbol": "getStoredBool",
-      "definitions": [
-        {
-          "symbol": "getStoredBool",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 60
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/led.js",
-        "js/generated/compatibility/legacy-led.js",
-        "js/generated/compatibility/feedback-debug.js",
-        "js/generated/ui/preference-controls.js",
-        "js/generated/compatibility/preference-controls.js"
-      ]
-    },
-    {
-      "symbol": "getStoredNumber",
-      "definitions": [
-        {
-          "symbol": "getStoredNumber",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 70
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "docs/testing/traversal-baseline.integration.js",
-        "docs/testing/input-baseline.integration.js"
       ]
     },
     {
@@ -4278,22 +4188,6 @@
       ]
     },
     {
-      "symbol": "importSettingsBackupPayload",
-      "definitions": [
-        {
-          "symbol": "importSettingsBackupPayload",
-          "kind": "function",
-          "file": "js/generated/state/settings-backup.js",
-          "line": 16
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/settings-backup.js",
-        "js/generated/compatibility/settings-files.js",
-        "docs/testing/settings-baseline.integration.js"
-      ]
-    },
-    {
       "symbol": "initLegacyMidiLedTest",
       "definitions": [
         {
@@ -4392,20 +4286,6 @@
       ]
     },
     {
-      "symbol": "isCurrentOutOfRangeScoreNote",
-      "definitions": [
-        {
-          "symbol": "isCurrentOutOfRangeScoreNote",
-          "kind": "function",
-          "file": "js/generated/state/player-range.js",
-          "line": 9
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/player-range.js"
-      ]
-    },
-    {
       "symbol": "isDebugEnabled",
       "definitions": [
         {
@@ -4469,26 +4349,6 @@
       ]
     },
     {
-      "symbol": "isMidiInPlayerRange",
-      "definitions": [
-        {
-          "symbol": "isMidiInPlayerRange",
-          "kind": "function",
-          "file": "js/generated/state/player-range.js",
-          "line": 12
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/player-range.js",
-        "js/generated/compatibility/player-range-controls.js",
-        "js/generated/compatibility/score-traversal.js",
-        "js/generated/compatibility/practice.js",
-        "js/generated/compatibility/keyboard-and-score-controls.js",
-        "docs/testing/traversal-baseline.integration.js",
-        "docs/testing/input-baseline.integration.js"
-      ]
-    },
-    {
       "symbol": "isPracticeHandEnabledForStaff",
       "definitions": [
         {
@@ -4512,7 +4372,7 @@
           "symbol": "isRecentOutgoingMidiEcho",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 62
+          "line": 63
         }
       ],
       "referenceFiles": [
@@ -4863,85 +4723,6 @@
       ]
     },
     {
-      "symbol": "normalizeLedCount",
-      "definitions": [
-        {
-          "symbol": "normalizeLedCount",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 42
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/led.js",
-        "js/generated/compatibility/legacy-led.js"
-      ]
-    },
-    {
-      "symbol": "normalizeLedFuturePct",
-      "definitions": [
-        {
-          "symbol": "normalizeLedFuturePct",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 54
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/led.js",
-        "js/generated/compatibility/legacy-led.js"
-      ]
-    },
-    {
-      "symbol": "normalizeLedMasterBrightness",
-      "definitions": [
-        {
-          "symbol": "normalizeLedMasterBrightness",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 48
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/led.js",
-        "js/generated/compatibility/legacy-led.js"
-      ]
-    },
-    {
-      "symbol": "normalizeMidiChannel",
-      "definitions": [
-        {
-          "symbol": "normalizeMidiChannel",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 89
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/generated/ui/midi-controls.js",
-        "js/generated/compatibility/midi.js"
-      ]
-    },
-    {
-      "symbol": "normalizeMidiInputChannel",
-      "definitions": [
-        {
-          "symbol": "normalizeMidiInputChannel",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 95
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/generated/ui/midi-controls.js"
-      ]
-    },
-    {
       "symbol": "normalizePlayerPianoType",
       "definitions": [
         {
@@ -5109,21 +4890,6 @@
       ]
     },
     {
-      "symbol": "pendingFirstRunNotice",
-      "definitions": [
-        {
-          "symbol": "pendingFirstRunNotice",
-          "kind": "let",
-          "file": "js/generated/state/preferences.js",
-          "line": 14
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/generated/state/settings-backup.js"
-      ]
-    },
-    {
       "symbol": "playMetronomeClick",
       "definitions": [
         {
@@ -5216,6 +4982,23 @@
       ]
     },
     {
+      "symbol": "playerRange",
+      "definitions": [
+        {
+          "symbol": "playerRange",
+          "kind": "const",
+          "file": "js/generated/compatibility/player-range.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/state/app-state.js",
+        "js/generated/state/player-range.js",
+        "js/generated/compatibility/player-range.js",
+        "js/generated/ui/player-range-controls.js"
+      ]
+    },
+    {
       "symbol": "playerRangeControls",
       "definitions": [
         {
@@ -5236,7 +5019,7 @@
           "symbol": "populateMIDIDevices",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 49
+          "line": 50
         }
       ],
       "referenceFiles": [
@@ -5254,7 +5037,7 @@
           "symbol": "populateMidiChannelSelect",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 50
+          "line": 51
         }
       ],
       "referenceFiles": [
@@ -5416,6 +5199,29 @@
       ]
     },
     {
+      "symbol": "preferences",
+      "definitions": [
+        {
+          "symbol": "preferences",
+          "kind": "const",
+          "file": "js/generated/compatibility/preferences.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "index.html",
+        "js/generated/state/preferences.js",
+        "js/generated/compatibility/preferences.js",
+        "js/generated/compatibility/settings-backup.js",
+        "js/generated/compatibility/optional-led.js",
+        "js/generated/ui/practice-controls.js",
+        "js/generated/ui/settings-actions.js",
+        "js/trainer-core.js",
+        "docs/testing/settings-baseline.integration.js",
+        "docs/testing/traversal-baseline.integration.js"
+      ]
+    },
+    {
       "symbol": "preserveMusicAreaScroll",
       "definitions": [
         {
@@ -5573,7 +5379,7 @@
           "symbol": "rememberOutgoingMidiMessage",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 61
+          "line": 62
         }
       ],
       "referenceFiles": [
@@ -5817,7 +5623,7 @@
           "symbol": "scheduleMidiOutPlaybackNote",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 68
+          "line": 69
         }
       ],
       "referenceFiles": [
@@ -6043,27 +5849,13 @@
       ]
     },
     {
-      "symbol": "seedFirstRunDefaults",
-      "definitions": [
-        {
-          "symbol": "seedFirstRunDefaults",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 15
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js"
-      ]
-    },
-    {
       "symbol": "sendMidiOutExpressionLevel",
       "definitions": [
         {
           "symbol": "sendMidiOutExpressionLevel",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 65
+          "line": 66
         }
       ],
       "referenceFiles": [
@@ -6094,7 +5886,7 @@
           "symbol": "sendMidiOutNoteOff",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 67
+          "line": 68
         }
       ],
       "referenceFiles": [
@@ -6109,7 +5901,7 @@
           "symbol": "sendMidiOutNoteOn",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 66
+          "line": 67
         }
       ],
       "referenceFiles": [
@@ -6168,27 +5960,6 @@
       ]
     },
     {
-      "symbol": "setStoredBool",
-      "definitions": [
-        {
-          "symbol": "setStoredBool",
-          "kind": "function",
-          "file": "js/generated/state/preferences.js",
-          "line": 81
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/state/preferences.js",
-        "js/led.js",
-        "js/generated/compatibility/legacy-led.js",
-        "js/generated/ui/midi-controls.js",
-        "js/generated/compatibility/feedback-debug.js",
-        "js/generated/compatibility/native-controls.js",
-        "js/generated/ui/preference-controls.js",
-        "js/generated/compatibility/preference-controls.js"
-      ]
-    },
-    {
       "symbol": "settingsActions",
       "definitions": [
         {
@@ -6201,6 +5972,20 @@
       "referenceFiles": [
         "js/generated/compatibility/preference-controls.js",
         "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "settingsBackup",
+      "definitions": [
+        {
+          "symbol": "settingsBackup",
+          "kind": "const",
+          "file": "js/generated/compatibility/settings-backup.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/settings-backup.js"
       ]
     },
     {
@@ -6224,7 +6009,7 @@
           "symbol": "setupMIDI",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 48
+          "line": 49
         }
       ],
       "referenceFiles": [
@@ -6516,7 +6301,7 @@
           "symbol": "syncMidiInputConfigVisibility",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 51
+          "line": 52
         }
       ],
       "referenceFiles": [
@@ -6531,7 +6316,7 @@
           "symbol": "syncMidiOutChannelVisibility",
           "kind": "function",
           "file": "js/generated/compatibility/midi.js",
-          "line": 52
+          "line": 53
         }
       ],
       "referenceFiles": [
@@ -7216,7 +7001,7 @@
       ],
       "referenceFiles": [
         "index.html",
-        "js/generated/state/app-state.js"
+        "js/generated/compatibility/app-state.js"
       ]
     },
     {
@@ -7231,7 +7016,7 @@
       ],
       "referenceFiles": [
         "index.html",
-        "js/generated/state/app-state.js"
+        "js/generated/compatibility/app-state.js"
       ]
     },
     {

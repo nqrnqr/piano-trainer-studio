@@ -36,23 +36,23 @@ test('range normalization keeps legacy coercion and unsupported sizes default to
 test('shared cache works with LED off, reuses identity and refreshes on keyboard change', () => {
     const h = stateHarness();
     h.state.ledOutputMode = 'none';
-    const range = h.context.getPlayerPlayableRange();
-    assert.equal(h.context.getPlayerPlayableRange(), range);
-    assert.equal(h.context.isMidiInPlayerRange(21), true);
+    const range = h.commands.getPlayerPlayableRange();
+    assert.equal(h.commands.getPlayerPlayableRange(), range);
+    assert.equal(h.commands.isMidiInPlayerRange(21), true);
     h.state.playerPianoType = 25;
-    const smaller = h.context.getPlayerPlayableRange();
+    const smaller = h.commands.getPlayerPlayableRange();
     assert.notEqual(smaller, range);
-    assert.equal(h.context.getPlayerPlayableRange(), smaller);
-    assert.equal(h.context.isMidiInPlayerRange(21), false);
-    assert.equal(h.context.getMidiKeyPosition01(52), 0);
-    assert.equal(h.context.getMidiKeyPosition01(76), 1);
+    assert.equal(h.commands.getPlayerPlayableRange(), smaller);
+    assert.equal(h.commands.isMidiInPlayerRange(21), false);
+    assert.equal(h.commands.getMidiKeyPosition01(52), 0);
+    assert.equal(h.commands.getMidiKeyPosition01(76), 1);
 });
 
 test('out-of-range score-note forwarding retains note coercion and no state mutation', () => {
     const h = stateHarness();
     h.state.outOfRangeCurrentNotes = [{ midi: 15, staffId: 1, mIdx: 0 }];
     const before = h.state.outOfRangeCurrentNotes;
-    assert.equal(h.context.isCurrentOutOfRangeScoreNote('15'), true);
-    assert.equal(h.context.isCurrentOutOfRangeScoreNote(60), false);
+    assert.equal(h.commands.isCurrentOutOfRangeScoreNote('15'), true);
+    assert.equal(h.commands.isCurrentOutOfRangeScoreNote(60), false);
     assert.equal(h.state.outOfRangeCurrentNotes, before);
 });

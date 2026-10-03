@@ -1,6 +1,6 @@
 const vm=require('node:vm');
 const {harness:base,Node,Input,Button,event}=require('./native-controls-harness.cjs');
-const {runScript,runFunction}=require('./legacy-script.cjs');
+const {runScript}=require('./legacy-script.cjs');
 const {storage}=require('./state-harness.cjs');
 class Select extends Node {constructor(id){super(id);this.value='';this.selectedOptions=[];}}
 function harness(){
@@ -20,7 +20,9 @@ function harness(){
  expectedNotes:[{midi:60}],visualNotesToStart:[{midi:60}],outOfRangeCurrentNotes:[{midi:20}],ledPreviewTimelineDirty:false});
  for(const file of ['domain/hand-routing','app/hand-assignment-controller','ui/hand-assignment-controls','ui/practice-controls','ui/preference-controls','ui/settings-actions','state/preference-keys'])runScript(h.context,`js/generated/${file}.js`);
  h.context.localStorage=storage();h.context.sessionStorage=storage();
- for(const name of ['getStoredBool','getClampedNumber','setStoredBool','clearSavedPreferences'])runFunction(h.context,'js/generated/state/preferences.js',name);
+ runScript(h.context,'js/generated/domain/preference-values.js');runScript(h.context,'js/generated/state/preferences.js');
+ const startupPreferences=h.api('PianoTrainerPreferences').create({state:h.state,storage:h.context.localStorage,session:h.context.sessionStorage,keys:h.api('PREFERENCE_STORAGE_KEYS'),resettableKeys:h.api('RESETTABLE_PREFERENCE_KEYS')});
+ Object.assign(h.context,startupPreferences);
  const keys=vm.runInContext('PREFERENCE_STORAGE_KEYS',h.context),routing=h.api('PianoTrainerHandRouting').create(h.state);
  const trace=name=>(...args)=>h.effects.push([name,...args]);
  const practicePorts={document:h.document,state:h.state,routing,getSelectedMidiOutOutput:()=>null,

@@ -1,5 +1,5 @@
 const vm=require('node:vm');
-const {runScript,runFunction}=require('./legacy-script.cjs');
+const {runScript}=require('./legacy-script.cjs');
 
 async function midiHarness() {
     const elements=new Map();
@@ -13,7 +13,8 @@ async function midiHarness() {
         ['test-output',{id:'test-output',name:'Test output',state:'connected',send:bytes=>sent.push(Array.from(bytes))}]
     ]),onstatechange:null};
     const context=vm.createContext({});
-    for(const name of ['normalizeMidiChannel','normalizeMidiInputChannel'])runFunction(context,'js/generated/state/preferences.js',name);
+    runScript(context,'js/generated/domain/preference-values.js');
+    Object.assign(context,vm.runInContext('PianoTrainerPreferenceValues',context));
     runScript(context,'js/generated/domain/velocity.js');
     for(const file of ['midi-input','midi-service','midi-output'])runScript(context,`js/generated/midi/${file}.js`);
     const api=vm.runInContext('({input:PianoTrainerMidiInput,service:PianoTrainerMidiService,output:PianoTrainerMidiOutput,velocity:PianoTrainerVelocity})',context);

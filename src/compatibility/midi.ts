@@ -32,6 +32,7 @@ const midiOutput = PianoTrainerMidiOutput.create({
     clearTimer: id => window.clearTimeout(id)
 });
 const midiControls = PianoTrainerMidiControls.create({
+    document, storage: localStorage, keys: PREFERENCE_STORAGE_KEYS, normalizeMidiChannel, normalizeMidiInputChannel, setStoredBool,
     state: AppState, service: midiService, optionalLedEnabled: optionalLedOutput.enabled,
     ledTest: () => legacyMidiLedTest.controller,
     updateConnections: () => updateConnectionStatuses(),

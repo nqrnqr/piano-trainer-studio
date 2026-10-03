@@ -129,6 +129,11 @@ fixture 会互相改写启动期间读取的 saved channel/device。显示与 pr
   10传输routes/2MIDI sweeps对照见`validation/P9c-legacy-led-*.txt`，契约见P9_LED_CONTRACT.md。
   static paths/原启动器继续保留；imports/single bundle/bootstrap/test facade尚未切换。
 
+- P9d 状态/偏好/备份/键域现在为无启动副作用的工厂。临时 compatibility 在原位置分配实例、
+  显式调用 preferences.init；notice、范围缓存和嵌套 Map/Set 按应用隔离。MIDI 控件接收明确的
+  document/storage/key/normalizer ports。331 项 Node、242 个生成文件、20 页 763 项浏览器验证
+  见 `validation/P9d-cold-state-*.txt`；最终 imports/bundle/bootstrap/test facade 仍待切换。
+
 `timing.js` 的 sourceMappingURL 指向同目录 map，含完整 TS 源；无需开放 `/src`。
 自动测试确认两项算法的生成行映射到 TS 对应行，HTTP 确认 map 可访问。
 手工调试：F12 → Sources → `src/domain/timing.ts`，在等待计算处下断点后 Play；本轮未进行 F12 交互断点验证。

@@ -3,6 +3,8 @@
 var PianoTrainerMidiControls;
 (function (PianoTrainerMidiControls) {
     function create(ports) {
+        const { document, storage: localStorage, normalizeMidiChannel, normalizeMidiInputChannel, setStoredBool } = ports;
+        const { MIDI_IN_CHANNEL_STORAGE_KEY, MIDI_IN_ID_STORAGE_KEY, MIDI_IN_NAME_STORAGE_KEY, MIDI_LED_LOW_VELOCITY_STORAGE_KEY, MIDI_LIGHTS_CHANNEL_STORAGE_KEY, MIDI_LIGHTS_ID_STORAGE_KEY, MIDI_LIGHTS_NAME_STORAGE_KEY, MIDI_OUT_CHANNEL_STORAGE_KEY, MIDI_OUT_ID_STORAGE_KEY, MIDI_OUT_NAME_STORAGE_KEY } = ports.keys;
         const state = ports.state;
         const bindings = [];
         let initialized = false;

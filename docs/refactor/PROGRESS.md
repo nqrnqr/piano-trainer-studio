@@ -313,3 +313,12 @@
 - 新fixture误读不存在的AppState.osmd，改为adapter measure count；sweep对照改为创建时callback读取同一个range对象，保留全部行为断言。native资源统计分别记录listeners与markers。最终报告只记录成功的唯一页面。
 - 清单：117 classic slots、453 candidates、重复函数零、53 direct writes（LED为闭包内注入state alias）。vendor/helper、存储/DB/备份、音色/WASM/启动器不变；经典组成尚非最终模块化。
 - 回退：revert本检查点恢复原LED scripts/ambient/slots，之前P8/P9a/P9b保留，不清用户数据。下一入口：真实imports/exports、唯一typed bootstrap与单bundle、有限test entry；最终严格配置/clean install/原启动器验收。
+
+## P9d：显式状态分配与偏好启动命令
+
+- 状态：准备检查点完成（2026-10-03）；P9 整体进行中，尚未切换 imports/bundle/bootstrap/test facade。
+- `state/app-state` 分离 fresh state factory 与显式 metadata read；`state/preferences` 将原顶层 seed/read/forced writes 移入 init，notice 属于实例；`settings-backup` 注入 storage/time/notice commands；`player-range` 缓存属于注入的应用 state。纯 normalizers 移到 `domain/preference-values`，MIDI UI 显式接收 document/storage/keys/normalizers/persistence ports。
+- 四个临时 compatibility slot 在原位置创建实例/调用 init，保留 metadata→seed→channels/flags→backup/range 的顺序、原 key/coercion/默认值/备份格式及 Map/Set 身份。模块加载不读取 Window/storage、不创建应用实例；dispose 只取消自身 notice/init 标记，不写存储。仅显式 init 在同生命周期去重。
+- 331/331 Node：新增五组 cold import/creation、实例与缓存隔离、精确 startup write order、init/dispose、private notice/import skip 和 metadata precedence；原测试改用显式 commands，断言未降低。strict typecheck 与 242 个生成文件 byte comparison 通过，报告 `validation/P9d-cold-state-check.txt`。
+- 浏览器 20 页 763/763：default/no-op 各 settings11/preferences39/MIDI20或21/traversal30或33/LED19或6/playback127/loader28/render19/input40/practice53。实际 FileReader/重新加载、持久化、native DOM/MIDI/OSMD、三模式两布局均通过；所有自建标签关闭。报告 `validation/P9d-cold-state-browser.txt`。实体硬件、可听同步、最终 launcher 验收仍未验证。
+- 清单：122 classic slots、439 lexical candidates、重复函数零；53 direct state writes。vendor/helper、设置/DB/schema/备份、资源路径与启动器不变。回退此检查点恢复原 state startup/slots，无数据迁移。下一步直接完成源码 imports/exports、统一显式 bootstrap 和单 bundle，再迁移测试入口。

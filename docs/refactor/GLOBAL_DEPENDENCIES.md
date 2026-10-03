@@ -246,3 +246,8 @@ capture/reader/request/download/wait，classic compatibility在旧slot显式组�
 三个无消费者的staff Window forwards与原LED ambient commands删除。hardware internals暂保留
 untyped JS，但无OSMD/private score或隐式核心free identifiers，AST semantic gate验证边界。
 当前117 classic slots、453 lexical candidates、重复函数零；imports/bundle仍待完成。
+
+P9d：app state、metadata、preferences、backup 和 range 改为显式工厂/命令；模块加载无
+Window/storage 副作用。四个 compatibility 在原 slot 分配/init，normalizers 成为 domain 纯规则。
+MIDI UI 明确注入 DOM/storage/key/parsing ports。122 classic slots、439 candidates、重复函数零；
+这些临时 slot 将由实际 import/export bootstrap 接管，仍不是最终模块入口。

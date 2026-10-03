@@ -178,3 +178,8 @@ MIDI test为1/1。explicit dispose才取消owned资源；old callbacks/await/Pro
 失效，waits解析为false。completed request/read与外部timer/marker保留，普通operation语义不变。
 核心仍拥有同一hardwareLEDState Map；LED释放cache对应输出，MIDI test只停止自己active run。
 硬件发送失败仍完成native cleanup。完整契约见P9_LED_CONTRACT.md。
+
+P9d：默认 state 每次 create 重新分配全部嵌套对象/Map/Set；metadata 只通过显式 ports 读取。
+preferences 私有持有 initialized/notice，init 才执行原 seed→channel/flags→forced storage writes，
+dispose 不写存储；backup 只通过命令取消 owning notice。range factory 只修改 owning state 的缓存，
+纯键域函数仍在 domain。直接 writes 仍53，MIDI UI 明确注入 DOM/storage/keys/normalizers。

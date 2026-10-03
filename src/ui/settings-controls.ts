@@ -7,7 +7,7 @@ namespace PianoTrainerSettingsFiles {
         createObjectURL(blob: Blob): string;
         revokeObjectURL(url: string): void;
         now(): Date;
-        buildPayload(): SettingsBackupPayload;
+        buildPayload(): PianoTrainerSettingsBackup.Payload;
         importPayload(payload: unknown): void;
         alert(message: string): void;
         reload(): void;

@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { runFunction, runScript } = require('../helpers/legacy-script.cjs');
+const { runScript } = require('../helpers/legacy-script.cjs');
 const { stateHarness } = require('../helpers/state-harness.cjs');
 
 test('first run seeds the same defaults and consumes the notice only once', () => {
@@ -15,8 +15,8 @@ test('first run seeds the same defaults and consumes the notice only once', () =
     assert.equal(saved.pt_ledMasterBrightness, '25');
     assert.equal(saved.pt_ledFuture1Pct, '1');
     assert.equal(saved.pt_ledFuture2Pct, '1');
-    assert.equal(h.context.consumePendingFirstRunNotice(), true);
-    assert.equal(h.context.consumePendingFirstRunNotice(), false);
+    assert.equal(h.commands.consumePendingFirstRunNotice(), true);
+    assert.equal(h.commands.consumePendingFirstRunNotice(), false);
 });
 
 test('existing settings persist, including layout, while monitoring flags remain forced', () => {
@@ -27,7 +27,7 @@ test('existing settings persist, including layout, while monitoring flags remain
     });
     assert.equal(h.localStorage.getItem('pt_trainerPianoVolume'), '37');
     assert.equal(h.localStorage.getItem('pt_scoreLayout'), 'horizontal');
-    assert.equal(h.context.consumePendingFirstRunNotice(), false);
+    assert.equal(h.commands.consumePendingFirstRunNotice(), false);
     assert.equal(h.state.inputVelocityEnabled, true);
     assert.equal(h.state.liveLowLatencyMonitoringEnabled, true);
     assert.equal(h.state.lowLatencyPlaybackEnabled, true);
@@ -38,14 +38,14 @@ test('existing settings persist, including layout, while monitoring flags remain
 
 test('preference normalization preserves legacy missing-number and malformed-value behavior', () => {
     const h = stateHarness({ pt_badBool: 'yes', pt_badNumber: 'garbage' });
-    assert.equal(h.context.getStoredBool('pt_missing', true), true);
-    assert.equal(h.context.getStoredBool('pt_badBool', false), false);
-    assert.equal(h.context.getStoredNumber('pt_missing', 80), 0); // Number(null), not a new defaulting rule.
-    assert.equal(h.context.getStoredNumber('pt_badNumber', 80), 80);
-    assert.equal(h.context.getClampedNumber('pt_missing', 0, 100, 80), 80);
-    assert.equal(h.context.normalizeMidiChannel('18'), 16);
-    assert.equal(h.context.normalizeMidiInputChannel('-3'), 0);
-    assert.equal(h.context.normalizeMidiInputChannel('bad', 0), 0);
+    assert.equal(h.commands.getStoredBool('pt_missing', true), true);
+    assert.equal(h.commands.getStoredBool('pt_badBool', false), false);
+    assert.equal(h.commands.getStoredNumber('pt_missing', 80), 0); // Number(null), not a new defaulting rule.
+    assert.equal(h.commands.getStoredNumber('pt_badNumber', 80), 80);
+    assert.equal(h.commands.getClampedNumber('pt_missing', 0, 100, 80), 80);
+    assert.equal(h.commands.normalizeMidiChannel('18'), 16);
+    assert.equal(h.commands.normalizeMidiInputChannel('-3'), 0);
+    assert.equal(h.commands.normalizeMidiInputChannel('bad', 0), 0);
 });
 
 test('backup round trip preserves string values and layout; reload skip keeps imported defaults', () => {
@@ -53,25 +53,25 @@ test('backup round trip preserves string values and layout; reload skip keeps im
         pt_firstRunInit_20260321: 'true', pt_scoreLayout: 'horizontal', pt_savedMidiInChannel: '8',
         pt_trainerPianoVolume: '33', pt_trainerMode: 'follow', unrelated: 'retain'
     });
-    const payload = original.context.buildSettingsBackupPayload();
+    const payload = original.commands.buildSettingsBackupPayload();
     assert.equal(payload.version, 1);
     assert.equal(payload.settings.pt_scoreLayout, 'horizontal');
     assert.equal('unrelated' in payload.settings, false);
     const h = stateHarness({ pt_firstRunInit_20260321: 'true', unrelated: 'retain', pt_scoreLayout: 'traditional' });
-    h.context.importSettingsBackupPayload(JSON.parse(JSON.stringify(payload)));
+    h.commands.importSettingsBackupPayload(JSON.parse(JSON.stringify(payload)));
     assert.equal(h.localStorage.getItem('unrelated'), 'retain');
     assert.equal(h.localStorage.getItem('pt_scoreLayout'), 'horizontal');
     assert.equal(h.sessionStorage.getItem('pt_skipFirstRunOnce'), 'true');
     const reloaded = stateHarness(h.localStorage.snapshot(), h.sessionStorage.snapshot());
     assert.equal(reloaded.localStorage.getItem('pt_trainerPianoVolume'), '33');
     assert.equal(reloaded.state.midiInChannel, 8);
-    assert.equal(reloaded.context.consumePendingFirstRunNotice(), false);
+    assert.equal(reloaded.commands.consumePendingFirstRunNotice(), false);
     assert.equal(reloaded.sessionStorage.getItem('pt_skipFirstRunOnce'), null);
 });
 
 test('flat backups retain legacy coercion and ignore unsupported / null values', () => {
     const h = stateHarness();
-    h.context.importSettingsBackupPayload({ pt_scoreLayout: 'horizontal', pt_savedMidiInChannel: 5, pt_ledReverse: false, pt_trainerMode: null, unrelated: 'no' });
+    h.commands.importSettingsBackupPayload({ pt_scoreLayout: 'horizontal', pt_savedMidiInChannel: 5, pt_ledReverse: false, pt_trainerMode: null, unrelated: 'no' });
     assert.equal(h.localStorage.getItem('pt_savedMidiInChannel'), '5');
     assert.equal(h.localStorage.getItem('pt_ledReverse'), 'false');
     assert.equal(h.localStorage.getItem('pt_trainerMode'), null);
@@ -82,30 +82,30 @@ test('invalid backup rejects before changing storage', () => {
     const h = stateHarness();
     const before = h.localStorage.snapshot();
     for (const invalid of [null, 1, 'bad', [], {}, { settings: { unsupported: 'only' } }]) {
-        assert.throws(() => h.context.importSettingsBackupPayload(invalid), /Invalid settings backup payload|No supported settings/);
+        assert.throws(() => h.commands.importSettingsBackupPayload(invalid), /Invalid settings backup payload|No supported settings/);
         assert.deepEqual(h.localStorage.snapshot(), before);
     }
 });
 
 test('reset removes supported settings and first-run flags but preserves unrelated / update values', () => {
     const h = stateHarness({ pt_firstRunInit_20260321: 'true', pt_scoreLayout: 'horizontal', pt_updateManifestUrl: '/custom.json', pt_assetVersionOverride: 'test', unrelated: 'yes' }, { pt_skipFirstRunOnce: 'true' });
-    h.context.clearSavedPreferences();
+    h.commands.clearSavedPreferences();
     assert.equal(h.localStorage.getItem('pt_scoreLayout'), null);
     assert.equal(h.localStorage.getItem('pt_firstRunInit_20260321'), null);
     assert.equal(h.sessionStorage.getItem('pt_skipFirstRunOnce'), null);
     assert.equal(h.localStorage.getItem('unrelated'), 'yes');
     assert.equal(h.localStorage.getItem('pt_updateManifestUrl'), '/custom.json');
     assert.equal(h.localStorage.getItem('pt_assetVersionOverride'), 'test');
-    h.context.seedFirstRunDefaults();
+    h.commands.seedFirstRunDefaults();
     assert.equal(h.localStorage.getItem('pt_trainerPianoVolume'), '80');
 });
 
 test('settings do not replace the shared state, Map or Set identities', () => {
     const h = stateHarness();
     const state = h.state, pressed = state.pressedKeys, reservations = state.earlyGraceReservations;
-    h.context.importSettingsBackupPayload({ pt_scoreLayout: 'horizontal' });
-    h.context.clearSavedPreferences();
-    h.context.seedFirstRunDefaults();
+    h.commands.importSettingsBackupPayload({ pt_scoreLayout: 'horizontal' });
+    h.commands.clearSavedPreferences();
+    h.commands.seedFirstRunDefaults();
     assert.equal(h.evaluate('AppState'), state);
     assert.equal(state.pressedKeys, pressed);
     assert.equal(state.earlyGraceReservations, reservations);

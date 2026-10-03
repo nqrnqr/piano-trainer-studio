@@ -8,6 +8,15 @@ namespace PianoTrainerMidiControls {
         syncControls(): void;
     }
     export interface Ports {
+        document: Document;
+        storage: Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
+        keys: Pick<typeof PREFERENCE_STORAGE_KEYS, 'MIDI_IN_CHANNEL_STORAGE_KEY' | 'MIDI_IN_ID_STORAGE_KEY' |
+            'MIDI_IN_NAME_STORAGE_KEY' | 'MIDI_LED_LOW_VELOCITY_STORAGE_KEY' | 'MIDI_LIGHTS_CHANNEL_STORAGE_KEY' |
+            'MIDI_LIGHTS_ID_STORAGE_KEY' | 'MIDI_LIGHTS_NAME_STORAGE_KEY' | 'MIDI_OUT_CHANNEL_STORAGE_KEY' |
+            'MIDI_OUT_ID_STORAGE_KEY' | 'MIDI_OUT_NAME_STORAGE_KEY'>;
+        normalizeMidiChannel: typeof PianoTrainerPreferenceValues.normalizeMidiChannel;
+        normalizeMidiInputChannel: typeof PianoTrainerPreferenceValues.normalizeMidiInputChannel;
+        setStoredBool(key: string, value: boolean): void;
         state: State;
         service: PianoTrainerMidiService.Service;
         optionalLedEnabled: boolean;
@@ -21,6 +30,10 @@ namespace PianoTrainerMidiControls {
         renderKeyboard(): void;
     }
     export function create(ports: Ports) {
+        const {document, storage: localStorage, normalizeMidiChannel, normalizeMidiInputChannel, setStoredBool} = ports;
+        const {MIDI_IN_CHANNEL_STORAGE_KEY, MIDI_IN_ID_STORAGE_KEY, MIDI_IN_NAME_STORAGE_KEY,
+            MIDI_LED_LOW_VELOCITY_STORAGE_KEY, MIDI_LIGHTS_CHANNEL_STORAGE_KEY, MIDI_LIGHTS_ID_STORAGE_KEY,
+            MIDI_LIGHTS_NAME_STORAGE_KEY, MIDI_OUT_CHANNEL_STORAGE_KEY, MIDI_OUT_ID_STORAGE_KEY, MIDI_OUT_NAME_STORAGE_KEY} = ports.keys;
         const state = ports.state;
         const bindings: (() => void)[] = [];
         let initialized = false;
