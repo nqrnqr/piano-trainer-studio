@@ -1,5 +1,5 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {LegacyAppState} from '../state/model';
 // Pure mode decisions. The coordinator owns clocks, state writes and side effects.
 export namespace PianoTrainerModePolicy {
     export const FOLLOW_ME_MIN_WAIT_RATIO = 0.6;

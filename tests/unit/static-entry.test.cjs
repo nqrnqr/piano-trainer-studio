@@ -21,7 +21,10 @@ test('static entry loads one private production bundle after the optional hardwa
  assert.equal(html.includes('test-app.js'),false,'production HTML does not load a test entry');
  assert.equal(app.includes('stopHealthChecks'),false,'optional cleanup uses its actual singular controller method');
  assert.notEqual(JSON.parse(read('package.json')).type,'module','native Node launchers keep CommonJS');
- assert.equal(JSON.parse(read('tsconfig.json')).compilerOptions.module,'ESNext');
+ const config=JSON.parse(read('tsconfig.json')).compilerOptions;
+ assert.equal(config.module,'ESNext');
+ for (const option of ['strict','noUncheckedIndexedAccess','exactOptionalPropertyTypes','verbatimModuleSyntax'])
+  assert.equal(config[option],true,`${option} applies to the production module graph`);
  assert.equal(fs.existsSync(path.join(root,'tsconfig.legacy.json')),false);
  assert.equal(fs.existsSync(path.join(root,'src/compatibility')),false);
  for(const file of ['js/trainer-core.js','js/trainer-timing.js','js/feedback-engine.js','js/midi-import.js','js/score-library.js',

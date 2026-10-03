@@ -1,8 +1,8 @@
 import {PianoTrainerLibraryView} from '../domain/library-view';
-import {PianoTrainerScoreLibrary} from '../score/score-library';
-import {PianoTrainerLibraryActions} from './library-actions';
-import {PianoTrainerLibraryControlsState} from './library-controls-state';
-import {PianoTrainerLibraryList} from './library-list';
+import type {PianoTrainerScoreLibrary} from '../score/score-library';
+import type {PianoTrainerLibraryActions} from './library-actions';
+import type {PianoTrainerLibraryControlsState} from './library-controls-state';
+import type {PianoTrainerLibraryList} from './library-list';
 // Existing score-library UI; native DOM and commands are isolated from practice.
 export namespace PianoTrainerScoresDrawer {
     export interface Toolbar {

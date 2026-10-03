@@ -1,5 +1,5 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {LegacyAppState} from '../state/model';
 import {PianoTrainerControlDom} from './controls-dom';
 // Observational debug UI owns its checkbox, heartbeat and SVG layer. No practice rules.
 export namespace PianoTrainerFeedbackDebug {

@@ -1299,11 +1299,11 @@
       const status = data[0];
       const note = data[1];
       const velocity = data.length > 2 ? data[2] : 0;
-      const messageChannel = (status & 15) + 1;
+      const messageChannel = ((status ?? 0) & 15) + 1;
       if (selectedChannel > 0 && messageChannel !== selectedChannel) return null;
-      const command = status & 240;
+      const command = (status ?? 0) & 240;
       if (command !== 144 && command !== 128) return null;
-      if (!Number.isInteger(status) || status < 0 || status > 255 || !Number.isInteger(note) || note < 0 || note > 127 || !Number.isInteger(velocity) || velocity < 0 || velocity > 127) return null;
+      if (status === void 0 || note === void 0 || velocity === void 0 || !Number.isInteger(status) || status < 0 || status > 255 || !Number.isInteger(note) || note < 0 || note > 127 || !Number.isInteger(velocity) || velocity < 0 || velocity > 127) return null;
       return {
         kind: command === 144 && velocity > 0 ? "note-on" : "note-off",
         note,
@@ -1811,6 +1811,7 @@
           const notes = getRenderableNotesForHandFromTimelineEvent(timeline[i], handRole);
           if (notes.length > 0) {
             referenceEvent = {
+              // Nonempty filtered notes prove this timeline entry exists.
               measureIndex: timeline[i].measureIndex,
               timestamp: timeline[i].timestamp,
               notes
@@ -2318,19 +2319,20 @@
           });
         }
         if (candidates.length === 0) return null;
+        const first = candidates[0];
         if (candidates.length === 1) {
           if (state.debugMatchLogs) {
             ports.debugLog("MATCH_CHOSEN", {
               midi,
               reason: "single-candidate",
               chosen: {
-                staffId: candidates[0].staffId,
-                mIdx: candidates[0].mIdx,
-                anchor: candidates[0].anchor ? { x: candidates[0].anchor.x, y: candidates[0].anchor.y } : null
+                staffId: first.staffId,
+                mIdx: first.mIdx,
+                anchor: first.anchor ? { x: first.anchor.x, y: first.anchor.y } : null
               }
             });
           }
-          return candidates[0];
+          return first;
         }
         const cursorX = ports.getCursorX();
         if (cursorX == null) {
@@ -2339,13 +2341,13 @@
               midi,
               reason: "no-cursor-x",
               chosen: {
-                staffId: candidates[0].staffId,
-                mIdx: candidates[0].mIdx,
-                anchor: candidates[0].anchor ? { x: candidates[0].anchor.x, y: candidates[0].anchor.y } : null
+                staffId: first.staffId,
+                mIdx: first.mIdx,
+                anchor: first.anchor ? { x: first.anchor.x, y: first.anchor.y } : null
               }
             });
           }
-          return candidates[0];
+          return first;
         }
         const chosen = candidates.slice().sort((a, b) => {
           const ax = a.anchor?.x ?? cursorX;
@@ -3099,7 +3101,7 @@
                 const staffIdx = Math.max(0, (Number(targetStaffId) || 1) - 1);
                 const staffTopY = ports.score.getStaffTopY(mIdx, staffIdx);
                 const pitchMap = [0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6];
-                const step = (Math.floor(midi / 12) - 1) * 7 + pitchMap[midi % 12];
+                const step = (Math.floor(midi / 12) - 1) * 7 + (pitchMap[midi % 12] ?? NaN);
                 const fallbackAnchor = staffIdx === 0 ? 38 : 26;
                 yPos = staffTopY + (fallbackAnchor - step) * 5;
               }
@@ -3831,10 +3833,10 @@
         return rawData;
       }
       function readUint16LE(bytes, offset) {
-        return bytes[offset] | bytes[offset + 1] << 8;
+        return (bytes[offset] ?? 0) | (bytes[offset + 1] ?? 0) << 8;
       }
       function readUint32LE(bytes, offset) {
-        return (bytes[offset] | bytes[offset + 1] << 8 | bytes[offset + 2] << 16 | bytes[offset + 3] << 24) >>> 0;
+        return ((bytes[offset] ?? 0) | (bytes[offset + 1] ?? 0) << 8 | (bytes[offset + 2] ?? 0) << 16 | (bytes[offset + 3] ?? 0) << 24) >>> 0;
       }
       function normalizeZipEntryPath(path) {
         return String(path || "").replace(/^\/+/, "").replace(/\\/g, "/");

@@ -1,8 +1,8 @@
 import {PianoTrainerKeyboardState} from '../domain/keyboard-state';
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerOptionalLed} from '../optional/led/legacy-led-adapter';
-import {PianoTrainerSustainState} from '../practice/sustain-state';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerOptionalLed} from '../optional/led/legacy-led-adapter';
+import type {PianoTrainerSustainState} from '../practice/sustain-state';
+import type {LegacyAppState} from '../state/model';
 // Coordinate existing sustain/preview effects with keyboard and optional LED output.
 // No renderer/vendor/DOM access; rendering cannot decide whether input was correct.
 export namespace PianoTrainerKeyboardController {

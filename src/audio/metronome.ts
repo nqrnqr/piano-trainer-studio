@@ -1,7 +1,7 @@
-import {PianoTrainerPlaybackClock} from './playback-clock';
-import {PianoTrainerMeasureTiming} from '../score/measure-timing';
-import {LegacyAppState} from '../state/model';
-import {PianoTrainerTempoPulse} from '../ui/tempo-pulse';
+import type {PianoTrainerPlaybackClock} from './playback-clock';
+import type {PianoTrainerMeasureTiming} from '../score/measure-timing';
+import type {LegacyAppState} from '../state/model';
+import type {PianoTrainerTempoPulse} from '../ui/tempo-pulse';
 // Moved from 1ec34ee without changing traversal, timing or cancellation rules.
 export namespace PianoTrainerMetronome {
     export interface Ports {

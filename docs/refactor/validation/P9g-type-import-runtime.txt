@@ -1,0 +1,5 @@
+Comparison: after strict runtime input fixes, before/after explicit type imports only.
+Type-only import names: 144
+Changed source files: 68
+js/generated/app.js: identical runtime bytes = true
+docs/testing/generated/test-app.js: identical runtime bytes = true

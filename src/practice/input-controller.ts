@@ -1,9 +1,9 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerEarlyGrace} from './early-grace';
-import {PianoTrainerFeedbackState} from './feedback-state';
-import {PianoTrainerInputMatching} from './input-matching';
-import {PianoTrainerScoring} from './scoring';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerEarlyGrace} from './early-grace';
+import type {PianoTrainerFeedbackState} from './feedback-state';
+import type {PianoTrainerInputMatching} from './input-matching';
+import type {PianoTrainerScoring} from './scoring';
+import type {LegacyAppState} from '../state/model';
 // Preserve the P5 input contract and side-effect order; all external effects use ports.
 export namespace PianoTrainerInputController {
     export interface Ports {

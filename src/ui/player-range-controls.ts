@@ -1,6 +1,6 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerOptionalLed} from '../optional/led/legacy-led-adapter';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerOptionalLed} from '../optional/led/legacy-led-adapter';
+import type {LegacyAppState} from '../state/model';
 import {PianoTrainerControlDom} from './controls-dom';
 // Playable-range settings coordinate typed state/commands and own the native select.
 export namespace PianoTrainerPlayerRangeControls {

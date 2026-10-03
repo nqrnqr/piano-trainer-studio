@@ -1,5 +1,5 @@
-import {PianoTrainerHandRouting} from '../domain/hand-routing';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerHandRouting} from '../domain/hand-routing';
+import type {LegacyAppState} from '../state/model';
 import {PianoTrainerControlDom} from './controls-dom';
 // Native practice controls issue commands and retain the existing mode UI rules.
 export namespace PianoTrainerPracticeControls {

@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 // Narrow drawer state, selection ownership and disposal tokens for this UI group.
 export namespace PianoTrainerLibraryControlsState {
     export type State = Pick<LegacyAppState, 'currentScoreData' | 'currentScoreFileName' | 'currentScoreFileType' | 'currentScoreTitle' | 'currentScoreLibraryId' | 'scoreLibrarySelectedFolderId' | 'scoreLibraryView' | 'scoreLibraryManageMode' | 'scoreLibrarySelectedScoreIds' | 'scoreLibrarySelectedFolderIds' | 'scoreLibraryFolderManageMode'>;

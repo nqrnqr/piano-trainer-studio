@@ -2,7 +2,7 @@
 // DOM types and listener ownership shared by native trainer controls.
 export namespace PianoTrainerControlDom {
     export function create(document: Document) {
-        const listeners: {target: EventTarget; event: string; handler: EventListener; options?: boolean | AddEventListenerOptions}[] = [];
+        const listeners: {target: EventTarget; event: string; handler: EventListener; options: boolean | AddEventListenerOptions | undefined}[] = [];
         function typed<T extends HTMLElement>(id: string, type: {new(): T}, required: boolean): T | null {
             const element = document.getElementById(id);
             if (element && !(element instanceof type)) throw Error('Invalid trainer control: ' + id);

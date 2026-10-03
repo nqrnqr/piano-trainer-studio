@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 import {PianoTrainerControlDom} from './controls-dom';
 export namespace PianoTrainerScoreStatus {
     export function create(document: Document, getScore: () => Readonly<LegacyAppState['score']>) {

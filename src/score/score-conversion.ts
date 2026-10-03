@@ -1,4 +1,4 @@
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 import {PianoTrainerWebmscoreAdapter} from './webmscore-adapter';
 // Existing conversion dispatch/export order. Ordinary finally keeps vendor soft destroy.
 export namespace PianoTrainerScoreConversion {
@@ -14,7 +14,8 @@ export namespace PianoTrainerScoreConversion {
         let generation=0;
         const owned=new Set<OwnedScore>();
         function assertActive(started: number) {if(started!==generation)throw new DOMException('Score conversion disposed.','AbortError');}
-        function getFileExtension(fileName='') {const match=String(fileName||'').trim().toLowerCase().match(/(\.[^.]+)$/);return match?match[1]:'';}
+        // The sole capturing group is mandatory whenever this regex matches.
+        function getFileExtension(fileName='') {const match=String(fileName||'').trim().toLowerCase().match(/(\.[^.]+)$/);return match?match[1]!:'';}
         function getBaseTitle(fileName='') {const base=String(fileName||'').trim();return base?base.replace(/\.[^.]+$/i,'').trim()||'Imported Score':'Imported Score';}
         function getWebMscoreFormat(fileName='') {return FORMATS[getFileExtension(fileName)]||null;}
         function isConverterImportFileName(fileName='') {return !!getWebMscoreFormat(fileName);}

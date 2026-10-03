@@ -10,7 +10,7 @@ import {PianoTrainerPlaybackClock} from '../audio/playback-clock';
 import {PianoTrainerAudioOutput} from '../audio/tone-adapter';
 import {PianoTrainerToneTransport} from '../audio/tone-transport';
 import {PianoTrainerHandRouting} from '../domain/hand-routing';
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 import {FULL_PIANO_KEY_COUNT, FULL_PIANO_MIDI_MIN, derivePlayerRangeFromKeyboardSize, normalizePlayerPianoType} from '../domain/playable-range';
 import {PianoTrainerPreferenceValues} from '../domain/preference-values';
 import {PianoTrainerTiming} from '../domain/timing';

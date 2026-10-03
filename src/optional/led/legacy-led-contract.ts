@@ -1,9 +1,9 @@
-import {PianoTrainerDomain} from '../../domain/model';
-import {PianoTrainerMidiService} from '../../midi/midi-service';
-import {PianoTrainerOptionalLed} from './legacy-led-adapter';
-import {PianoTrainerLegacyLedResources} from './legacy-led-resources';
-import {LegacyAppState} from '../../state/model';
-import {PianoTrainerMidiControls} from '../../ui/midi-controls';
+import type {PianoTrainerDomain} from '../../domain/model';
+import type {PianoTrainerMidiService} from '../../midi/midi-service';
+import type {PianoTrainerOptionalLed} from './legacy-led-adapter';
+import type {PianoTrainerLegacyLedResources} from './legacy-led-resources';
+import type {LegacyAppState} from '../../state/model';
+import type {PianoTrainerMidiControls} from '../../ui/midi-controls';
 // Explicit application ports for the retained JavaScript hardware implementation.
 // Untyped hardware internals remain confined to this optional LED boundary.
 export namespace PianoTrainerLegacyLed {

@@ -1,4 +1,4 @@
-import {PianoTrainerMidiService} from './midi-service';
+import type {PianoTrainerMidiService} from './midi-service';
 // One implementation: preserve the later legacy core's effective MIDI behavior.
 export namespace PianoTrainerMidiOutput {
     export interface Ports {

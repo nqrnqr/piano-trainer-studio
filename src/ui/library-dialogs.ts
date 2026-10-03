@@ -1,6 +1,6 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerScoreLibrary} from '../score/score-library';
-import {PianoTrainerLibraryControlsState} from './library-controls-state';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerScoreLibrary} from '../score/score-library';
+import type {PianoTrainerLibraryControlsState} from './library-controls-state';
 // Existing score-library UI; native DOM and commands are isolated from practice.
 export namespace PianoTrainerLibraryDialogs {
     export interface FolderChoiceOptions {

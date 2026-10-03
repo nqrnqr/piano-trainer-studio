@@ -1,4 +1,4 @@
-import {PianoTrainerDomain} from './model';
+import type {PianoTrainerDomain} from './model';
 // Pure persisted value normalization, shared by startup and device controls.
 export namespace PianoTrainerPreferenceValues {
     export function normalizeLedCount(value: unknown) {

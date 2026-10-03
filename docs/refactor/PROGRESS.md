@@ -345,3 +345,14 @@
 - 验证：生产/测试类型检查、四文件 clean bundle comparison 与 335/335 Node 通过；`validation/P9f-practice-render-facade-check.txt`。原断言数量一致；no-op 无 health/reconnect 检查改观察资源所有者 timers/intervals 均零，比单独两个私有 timer 字段覆盖更完整。
 - 未验证：其余原浏览器套件仍引用已删全局；当前 421 项不代表全量完成。noUncheckedIndexedAccess/exactOptionalPropertyTypes 预检已定位诊断，下一检查点处理；launcher/clean install/static gates 待完成，实体硬件/可听/Mac 依旧未验证。
 - 回退：revert 本测试迁移检查点恢复 P9e facade/测试文件；无需清库或改设置。下一步迁移剩余 suites 并完成严格配置。只有本地提交。
+
+## P9g：最终严格配置与显式类型导入
+
+- 状态：严格模块检查点完成（2026-10-04）；P9 其余 suites/clean install/static/launcher 门槛尚未完成，完整目标活跃。
+- 配置：生产及独立测试入口统一 strict/noUncheckedIndexedAccess/exactOptionalPropertyTypes/verbatimModuleSyntax。144 个纯类型导入名、68 文件依据 TypeScript 实际 emit 明确为 `import type`，无核心检查豁免或 any。
+- 索引与可选字段：局部 dense/nonempty/bounds 不变量明确，原 sparse/vendor/malformed source 错误保留。MIDI 短消息在解码前仍 prune echo，缺失/非法 bytes 仍拒绝；ZIP 原缺字节 bitwise→0 和非法 pitch→NaN 显式表达。timing 显式 undefined 默认语义与 listener record 的 options 字段准确建模。详见 `STRICT_MODULE_CONTRACT.md`，没有修改匹配/几何/时序算法。
+- 类型导入验证：在严格输入修正后的同一源码上比较类型导入转换前/后，生产与测试运行时 JS 均 byte-identical，只有 map 内容随 TS 变更；`validation/P9g-type-import-runtime.txt`。未将此结论泛化为所有严格修正代码字节相同。
+- Node：335/335，现有 MIDI cases 增加 holes/undefined/NaN 与短系统消息 expiry，timing 原显式 undefined/NaN 和 ZIP fallback/error 断言保留。四文件 clean bundle comparison 和两套类型检查通过，`validation/P9g-strict-modules-check.txt`。
+- 浏览器：12 页 421/421，default/no-op 各 practice53/input40/render19/display30/bootstrap37、traversal30/33。既有几何 golden、三模式×两布局、early reservation/错音/tie、真实反复、原生 scroll/full disposal 再次通过，所有自建标签关闭；`validation/P9g-strict-modules-browser.txt`。
+- 清单：94 ES modules、三个应用 slots、四个 runtime candidates、重复函数零、52 direct state writes；库存行号重建。原 vendor/LED JS 为明确类型化边界，资源/prefs/DB/schema/backup/启动器不变。
+- 未验证与下一步：剩余 playback/MIDI/audio/metronome/数据/UI 浏览器 facade 仍待迁移；clean install/静态部署/原 launcher 门槛待完成。实体硬件/可听与 Mac 环境不可由模拟证明。回退本检查点恢复上一严格配置与源码，不清数据；继续剩余套件，仅本地提交。

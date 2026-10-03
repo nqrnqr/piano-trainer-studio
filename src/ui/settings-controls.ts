@@ -1,4 +1,4 @@
-import {PianoTrainerSettingsBackup} from '../state/settings-backup';
+import type {PianoTrainerSettingsBackup} from '../state/settings-backup';
 // Settings commands keep ordinary file/dialog behavior; disposal owns readers and downloads.
 export namespace PianoTrainerSettingsFiles {
     export interface Ports {

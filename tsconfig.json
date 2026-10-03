@@ -9,11 +9,17 @@
       "DOM.Iterable"
     ],
     "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": true
   },
-  "exclude": ["src/testing", "node_modules", "js/generated"],
+  "exclude": [
+    "src/testing",
+    "node_modules",
+    "js/generated"
+  ],
   "include": [
     "src/**/*.ts",
     "types/**/*.d.ts"

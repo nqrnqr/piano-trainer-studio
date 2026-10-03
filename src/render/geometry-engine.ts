@@ -1,7 +1,7 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerLoopOverlay} from './loop-overlay';
-import {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerLoopOverlay} from './loop-overlay';
+import type {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
+import type {LegacyAppState} from '../state/model';
 // Stabilized notehead selection. Preserve candidate order, constants, dot rejection
 // and chord cluster precedence; geometry does not decide matching or scoring.
 export namespace PianoTrainerGeometry {
@@ -76,7 +76,8 @@ export namespace PianoTrainerGeometry {
                             const staffIdx = Math.max(0, (Number(targetStaffId) || 1) - 1);
                             const staffTopY = ports.score.getStaffTopY(mIdx, staffIdx);
                             const pitchMap = [0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6];
-                            const step = (Math.floor(midi / 12) - 1) * 7 + pitchMap[midi % 12];
+                            // Invalid pitches retain the original undefined-arithmetic NaN.
+                            const step = (Math.floor(midi / 12) - 1) * 7 + (pitchMap[midi % 12] ?? NaN);
                             const fallbackAnchor = staffIdx === 0 ? 38 : 26;
                             yPos = staffTopY + (fallbackAnchor - step) * 5;
                         }
@@ -192,7 +193,8 @@ export namespace PianoTrainerGeometry {
                     };
                     return score(aArea, aAspect, aCenterX, aCenterY) - score(bArea, bAspect, bCenterX, bCenterY);
                 });
-                return compactShapes[0];
+                // The dense collected list passed the nonempty guard above.
+                return compactShapes[0]!;
             },
             getSvgNoteheadAnchor(graphicalNote: PianoTrainerOsmdVendor.GraphicalNote | null, preferredAnchor: PianoTrainerDomain.SvgPoint | null = null, debugContext: Readonly<Record<string, unknown>> | null = null): PianoTrainerDomain.SvgPoint | null {
                 if (!graphicalNote?.getSVGGElement)
@@ -310,7 +312,7 @@ export namespace PianoTrainerGeometry {
                 candidates.sort((a, b) => a.score - b.score);
                 const selectCandidate = (() => {
                     if (preferredX == null && preferredY == null)
-                        return candidates[0];
+                        return candidates[0]!;
                     const annotate = (items: typeof candidates) => items.map(c => {
                         const cx = c.box.x + (c.box.width / 2);
                         const cy = c.box.y + (c.box.height / 2);
@@ -322,7 +324,7 @@ export namespace PianoTrainerGeometry {
                             yDistance: preferredY == null ? 0 : Math.abs(cy - preferredY)
                         };
                     });
-                    const topScore = candidates[0].score;
+                    const topScore = candidates[0]!.score;
                     const closeScoreCandidates = candidates.filter(c => (c.score - topScore) <= 18);
                     const closeScoreAnnotated = annotate(closeScoreCandidates);
                     const closeScoreMinCx = closeScoreAnnotated.length ? Math.min(...closeScoreAnnotated.map(item => item.cx)) : null;
@@ -336,7 +338,7 @@ export namespace PianoTrainerGeometry {
                         ? closeScoreAnnotated
                         : (anchorNeighborhood.length > 0 ? anchorNeighborhood : closeScoreAnnotated);
                     if (geometricPool.length <= 1)
-                        return geometricPool[0]?.entry || closeScoreCandidates[0] || candidates[0];
+                        return geometricPool[0]?.entry || closeScoreCandidates[0] || candidates[0]!;
                     const ranked = geometricPool.sort((a, b) => {
                         if (useChordClusterTieBreak) {
                             if (a.yDistance !== b.yDistance)
@@ -351,7 +353,7 @@ export namespace PianoTrainerGeometry {
                             return a.yDistance - b.yDistance;
                         return a.entry.score - b.entry.score;
                     });
-                    const winner = ranked[0]?.entry || candidates[0];
+                    const winner = ranked[0]?.entry || candidates[0]!;
                     const logType = useChordClusterTieBreak
                         ? 'SVG_NOTEHEAD_CHORD_CLUSTER_TIEBREAK'
                         : (anchorNeighborhood.length > 0 ? 'SVG_NOTEHEAD_ANCHOR_NEIGHBORHOOD_TIEBREAK' : 'SVG_NOTEHEAD_X_PROXIMITY_TIEBREAK');

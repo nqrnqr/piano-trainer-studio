@@ -1,4 +1,4 @@
-import {PianoTrainerScoreTraversal} from './score-traversal';
+import type {PianoTrainerScoreTraversal} from './score-traversal';
 // Moved from 1ec34ee without changing traversal, timing or cancellation rules.
 export namespace PianoTrainerMeasureTiming {
     export interface MeasureInfo {

@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 // Original visual/transient cleanup, including the distinct Pause/Reset rules.
 export namespace PianoTrainerPlaybackState {
     export type State = Pick<LegacyAppState, 'activeTimeouts' | 'sustainedVisuals' | 'visualNotesToStart' |

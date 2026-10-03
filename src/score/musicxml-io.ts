@@ -1,4 +1,4 @@
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 // Original XML/MXL bytes and ZIP selection; normalization is only a transpose source.
 export namespace PianoTrainerMusicXmlIO {
     export interface ZipEntry {fileName: string; compressionMethod: number; compressedSize: number; uncompressedSize: number; localHeaderOffset: number;}
@@ -38,15 +38,16 @@ export namespace PianoTrainerMusicXmlIO {
         }
 
         function readUint16LE(bytes: Uint8Array, offset: number) {
-            return bytes[offset] | (bytes[offset + 1] << 8);
+            // JS bitwise reads already coerce a truncated/missing byte to zero.
+            return (bytes[offset] ?? 0) | ((bytes[offset + 1] ?? 0) << 8);
         }
 
         function readUint32LE(bytes: Uint8Array, offset: number) {
             return (
-                bytes[offset] |
-                (bytes[offset + 1] << 8) |
-                (bytes[offset + 2] << 16) |
-                (bytes[offset + 3] << 24)
+                (bytes[offset] ?? 0) |
+                ((bytes[offset + 1] ?? 0) << 8) |
+                ((bytes[offset + 2] ?? 0) << 16) |
+                ((bytes[offset + 3] ?? 0) << 24)
             ) >>> 0;
         }
 

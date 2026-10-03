@@ -1,4 +1,4 @@
-import {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
+import type {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
 // The original render lifecycle. Call order is part of the visual contract.
 export namespace PianoTrainerScoreRenderer {
     export interface Ports {

@@ -1,9 +1,9 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerMusicXmlIO} from '../score/musicxml-io';
-import {PianoTrainerScoreConversion} from '../score/score-conversion';
-import {PianoTrainerScoreLibrary} from '../score/score-library';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerMusicXmlIO} from '../score/musicxml-io';
+import type {PianoTrainerScoreConversion} from '../score/score-conversion';
+import type {PianoTrainerScoreLibrary} from '../score/score-library';
 import {PianoTrainerLibraryControlsState} from './library-controls-state';
-import {PianoTrainerLibraryDialogs} from './library-dialogs';
+import type {PianoTrainerLibraryDialogs} from './library-dialogs';
 // Existing score-library UI; native DOM and commands are isolated from practice.
 export namespace PianoTrainerLibraryActions {
     export interface Ports {

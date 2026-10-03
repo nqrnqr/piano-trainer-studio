@@ -24,8 +24,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -42,23 +42,23 @@
         },
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../optional/led/legacy-led-adapter",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerOptionalLed}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerOptionalLed}"
         },
         {
           "source": "../practice/sustain-state",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerSustainState}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerSustainState}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -70,13 +70,13 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -88,8 +88,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -161,8 +161,8 @@
         },
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../domain/playable-range",
@@ -529,8 +529,8 @@
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -542,13 +542,13 @@
       "imports": [
         {
           "source": "./tone-adapter",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerAudioOutput}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerAudioOutput}"
         },
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../domain/velocity",
@@ -557,13 +557,13 @@
         },
         {
           "source": "../midi/midi-output",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMidiOutput}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMidiOutput}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -582,23 +582,23 @@
       "imports": [
         {
           "source": "./playback-clock",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerPlaybackClock}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerPlaybackClock}"
         },
         {
           "source": "../score/measure-timing",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMeasureTiming}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMeasureTiming}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "../ui/tempo-pulse",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerTempoPulse}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerTempoPulse}"
         }
       ],
       "exports": [
@@ -622,8 +622,8 @@
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -642,13 +642,13 @@
       "imports": [
         {
           "source": "./model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -660,8 +660,8 @@
       "imports": [
         {
           "source": "./model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         }
       ],
       "exports": [
@@ -673,8 +673,8 @@
       "imports": [
         {
           "source": "./model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         }
       ],
       "exports": [
@@ -693,8 +693,8 @@
       "imports": [
         {
           "source": "./model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         }
       ],
       "exports": [
@@ -713,8 +713,8 @@
       "imports": [
         {
           "source": "./model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         }
       ],
       "exports": [
@@ -758,8 +758,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         }
       ],
       "exports": [
@@ -771,8 +771,8 @@
       "imports": [
         {
           "source": "./midi-service",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMidiService}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMidiService}"
         }
       ],
       "exports": [
@@ -784,8 +784,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./midi-input",
@@ -809,33 +809,33 @@
       "imports": [
         {
           "source": "../../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../../midi/midi-service",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMidiService}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMidiService}"
         },
         {
           "source": "./legacy-led-adapter",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerOptionalLed}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerOptionalLed}"
         },
         {
           "source": "./legacy-led-resources",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerLegacyLedResources}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerLegacyLedResources}"
         },
         {
           "source": "../../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "../../ui/midi-controls",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMidiControls}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMidiControls}"
         }
       ],
       "exports": [
@@ -854,23 +854,23 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../domain/timing",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerTiming}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerTiming}"
         },
         {
           "source": "../score/score-traversal",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerScoreTraversal}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerScoreTraversal}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -882,23 +882,23 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./feedback-state",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerFeedbackState}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerFeedbackState}"
         },
         {
           "source": "./scoring",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerScoring}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerScoring}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -910,13 +910,13 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -928,33 +928,33 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./early-grace",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerEarlyGrace}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerEarlyGrace}"
         },
         {
           "source": "./feedback-state",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerFeedbackState}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerFeedbackState}"
         },
         {
           "source": "./input-matching",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerInputMatching}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerInputMatching}"
         },
         {
           "source": "./scoring",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerScoring}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerScoring}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -966,13 +966,13 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -984,13 +984,13 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1002,28 +1002,28 @@
       "imports": [
         {
           "source": "../audio/audio-routing",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerAudioRouting}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerAudioRouting}"
         },
         {
           "source": "../audio/metronome",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMetronome}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMetronome}"
         },
         {
           "source": "../audio/playback-clock",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerPlaybackClock}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerPlaybackClock}"
         },
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../domain/timing",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerTiming}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerTiming}"
         },
         {
           "source": "./mode-policy",
@@ -1032,13 +1032,13 @@
         },
         {
           "source": "./playback-state",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerPlaybackState}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerPlaybackState}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1050,8 +1050,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1063,13 +1063,13 @@
       "imports": [
         {
           "source": "./feedback-state",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerFeedbackState}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerFeedbackState}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1081,13 +1081,13 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1099,13 +1099,13 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1117,23 +1117,23 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./loop-overlay",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerLoopOverlay}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerLoopOverlay}"
         },
         {
           "source": "../score/osmd-adapter",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerOsmdAdapter}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerOsmdAdapter}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1145,8 +1145,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1158,8 +1158,8 @@
       "imports": [
         {
           "source": "../score/osmd-adapter",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerOsmdAdapter}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerOsmdAdapter}"
         }
       ],
       "exports": [
@@ -1171,18 +1171,18 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../score/osmd-adapter",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerOsmdAdapter}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerOsmdAdapter}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1201,8 +1201,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         }
       ],
       "exports": [
@@ -1214,8 +1214,8 @@
       "imports": [
         {
           "source": "./score-traversal",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerScoreTraversal}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerScoreTraversal}"
         }
       ],
       "exports": [
@@ -1227,8 +1227,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         }
       ],
       "exports": [
@@ -1240,8 +1240,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./score-traversal",
@@ -1265,8 +1265,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./webmscore-adapter",
@@ -1283,8 +1283,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./library-backup",
@@ -1293,8 +1293,8 @@
         },
         {
           "source": "./musicxml-io",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMusicXmlIO}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMusicXmlIO}"
         }
       ],
       "exports": [
@@ -1306,18 +1306,18 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./musicxml-io",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMusicXmlIO}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMusicXmlIO}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1329,8 +1329,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         }
       ],
       "exports": [
@@ -1342,18 +1342,18 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./transpose-engine",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerTransposeEngine}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerTransposeEngine}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1379,13 +1379,13 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "./model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1410,8 +1410,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../domain/playable-range",
@@ -1420,8 +1420,8 @@
         },
         {
           "source": "./model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1506,13 +1506,13 @@
         },
         {
           "source": "./model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./preference-keys",
-          "typeOnly": false,
-          "bindings": "{PREFERENCE_STORAGE_KEYS}"
+          "typeOnly": true,
+          "bindings": "type {PREFERENCE_STORAGE_KEYS}"
         }
       ],
       "exports": [
@@ -1524,8 +1524,8 @@
       "imports": [
         {
           "source": "./preference-keys",
-          "typeOnly": false,
-          "bindings": "{PREFERENCE_STORAGE_KEYS}"
+          "typeOnly": true,
+          "bindings": "type {PREFERENCE_STORAGE_KEYS}"
         }
       ],
       "exports": [
@@ -1544,8 +1544,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./controls-dom",
@@ -1562,8 +1562,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1582,8 +1582,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./controls-dom",
@@ -1600,13 +1600,13 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./controls-dom",
@@ -1641,23 +1641,23 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../score/musicxml-io",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMusicXmlIO}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMusicXmlIO}"
         },
         {
           "source": "../score/score-conversion",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerScoreConversion}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerScoreConversion}"
         },
         {
           "source": "../score/score-library",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerScoreLibrary}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerScoreLibrary}"
         },
         {
           "source": "./library-controls-state",
@@ -1666,8 +1666,8 @@
         },
         {
           "source": "./library-dialogs",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerLibraryDialogs}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerLibraryDialogs}"
         }
       ],
       "exports": [
@@ -1679,8 +1679,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -1692,18 +1692,18 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../score/score-library",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerScoreLibrary}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerScoreLibrary}"
         },
         {
           "source": "./library-controls-state",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerLibraryControlsState}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerLibraryControlsState}"
         }
       ],
       "exports": [
@@ -1720,18 +1720,18 @@
         },
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../score/musicxml-io",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMusicXmlIO}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMusicXmlIO}"
         },
         {
           "source": "../score/score-library",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerScoreLibrary}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerScoreLibrary}"
         },
         {
           "source": "./library-controls-state",
@@ -1740,8 +1740,8 @@
         },
         {
           "source": "./library-dialogs",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerLibraryDialogs}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerLibraryDialogs}"
         }
       ],
       "exports": [
@@ -1753,8 +1753,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./controls-dom",
@@ -1771,23 +1771,23 @@
       "imports": [
         {
           "source": "../domain/preference-values",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerPreferenceValues}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerPreferenceValues}"
         },
         {
           "source": "../midi/midi-service",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMidiService}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMidiService}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "../state/preference-keys",
-          "typeOnly": false,
-          "bindings": "{PREFERENCE_STORAGE_KEYS}"
+          "typeOnly": true,
+          "bindings": "type {PREFERENCE_STORAGE_KEYS}"
         }
       ],
       "exports": [
@@ -1817,18 +1817,18 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../optional/led/legacy-led-adapter",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerOptionalLed}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerOptionalLed}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./controls-dom",
@@ -1845,13 +1845,13 @@
       "imports": [
         {
           "source": "../domain/hand-routing",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerHandRouting}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerHandRouting}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./controls-dom",
@@ -1873,18 +1873,18 @@
         },
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "../state/preference-keys",
-          "typeOnly": false,
-          "bindings": "{PREFERENCE_STORAGE_KEYS}"
+          "typeOnly": true,
+          "bindings": "type {PREFERENCE_STORAGE_KEYS}"
         },
         {
           "source": "./controls-dom",
@@ -1901,8 +1901,8 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         }
       ],
       "exports": [
@@ -1914,13 +1914,13 @@
       "imports": [
         {
           "source": "../domain/model",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerDomain}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerDomain}"
         },
         {
           "source": "../score/musicxml-io",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerMusicXmlIO}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerMusicXmlIO}"
         }
       ],
       "exports": [
@@ -1945,8 +1945,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./controls-dom",
@@ -1968,23 +1968,23 @@
         },
         {
           "source": "../score/score-library",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerScoreLibrary}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerScoreLibrary}"
         },
         {
           "source": "./library-actions",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerLibraryActions}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerLibraryActions}"
         },
         {
           "source": "./library-controls-state",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerLibraryControlsState}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerLibraryControlsState}"
         },
         {
           "source": "./library-list",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerLibraryList}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerLibraryList}"
         }
       ],
       "exports": [
@@ -2009,8 +2009,8 @@
       "imports": [
         {
           "source": "../state/settings-backup",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerSettingsBackup}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerSettingsBackup}"
         }
       ],
       "exports": [
@@ -2022,8 +2022,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./controls-dom",
@@ -2047,8 +2047,8 @@
       "imports": [
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         }
       ],
       "exports": [
@@ -2060,13 +2060,13 @@
       "imports": [
         {
           "source": "../score/transpose-controller",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerTransposeController}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerTransposeController}"
         },
         {
           "source": "../score/transpose-engine",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerTransposeEngine}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerTransposeEngine}"
         }
       ],
       "exports": [
@@ -2078,13 +2078,13 @@
       "imports": [
         {
           "source": "../app/update-controller",
-          "typeOnly": false,
-          "bindings": "{PianoTrainerUpdateController}"
+          "typeOnly": true,
+          "bindings": "type {PianoTrainerUpdateController}"
         },
         {
           "source": "../state/model",
-          "typeOnly": false,
-          "bindings": "{LegacyAppState}"
+          "typeOnly": true,
+          "bindings": "type {LegacyAppState}"
         },
         {
           "source": "./controls-dom",

@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 import {PianoTrainerControlDom} from './controls-dom';
 // User level/boost edits stay at the DOM/storage boundary; audio/MIDI receive numbers.
 export namespace PianoTrainerAudioLevelControls {

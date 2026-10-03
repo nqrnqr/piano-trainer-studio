@@ -17,10 +17,11 @@ export namespace PianoTrainerTiming {
     }
 
     export interface RemainingMeasureWaitOptions {
-        currentMeasureIdx?: number;
-        currentTimestamp?: WholeNoteTime | null;
-        fallbackLength?: WholeNoteTime;
-        getMeasureTimingInfo?: (measureIndex: number | undefined) => MeasureTimingInfo | null | undefined;
+        // Explicit undefined has the same legacy default/fallback meaning as omission.
+        currentMeasureIdx?: number | undefined;
+        currentTimestamp?: WholeNoteTime | null | undefined;
+        fallbackLength?: WholeNoteTime | undefined;
+        getMeasureTimingInfo?: ((measureIndex: number | undefined) => MeasureTimingInfo | null | undefined) | undefined;
     }
 
     export interface TraversalWaitOptions extends RemainingMeasureWaitOptions {

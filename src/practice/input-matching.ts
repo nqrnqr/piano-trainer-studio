@@ -1,5 +1,5 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {LegacyAppState} from '../state/model';
 // Preserve the P5 input contract and side-effect order; all external effects use ports.
 export namespace PianoTrainerInputMatching {
     export interface Ports {
@@ -25,19 +25,21 @@ export namespace PianoTrainerInputMatching {
                 });
             }
             if (candidates.length === 0) return null;
+            // filter produces a dense nonempty array; sorting preserves its length.
+            const first = candidates[0]!;
             if (candidates.length === 1) {
                 if (state.debugMatchLogs) {
                     ports.debugLog('MATCH_CHOSEN', {
                         midi,
                         reason: 'single-candidate',
                         chosen: {
-                            staffId: candidates[0].staffId,
-                            mIdx: candidates[0].mIdx,
-                            anchor: candidates[0].anchor ? { x: candidates[0].anchor.x, y: candidates[0].anchor.y } : null
+                            staffId: first.staffId,
+                            mIdx: first.mIdx,
+                            anchor: first.anchor ? { x: first.anchor.x, y: first.anchor.y } : null
                         }
                     });
                 }
-                return candidates[0];
+                return first;
             }
 
             const cursorX = ports.getCursorX();
@@ -47,13 +49,13 @@ export namespace PianoTrainerInputMatching {
                         midi,
                         reason: 'no-cursor-x',
                         chosen: {
-                            staffId: candidates[0].staffId,
-                            mIdx: candidates[0].mIdx,
-                            anchor: candidates[0].anchor ? { x: candidates[0].anchor.x, y: candidates[0].anchor.y } : null
+                            staffId: first.staffId,
+                            mIdx: first.mIdx,
+                            anchor: first.anchor ? { x: first.anchor.x, y: first.anchor.y } : null
                         }
                     });
                 }
-                return candidates[0];
+                return first;
             }
 
             const chosen = candidates
@@ -62,7 +64,7 @@ export namespace PianoTrainerInputMatching {
                     const ax = a.anchor?.x ?? cursorX;
                     const bx = b.anchor?.x ?? cursorX;
                     return Math.abs(ax - cursorX) - Math.abs(bx - cursorX);
-                })[0];
+                })[0]!;
 
             if (state.debugMatchLogs) {
                 ports.debugLog('MATCH_CHOSEN', {

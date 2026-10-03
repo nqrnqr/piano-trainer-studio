@@ -7,7 +7,8 @@ test('decoded domain input carries channel/source/time, two-byte release and rej
     const input=h.api.input.decode(Uint8Array.from([0x9F,127,55]),0,1234);
     assert.deepEqual(JSON.parse(JSON.stringify(input)),{kind:'note-on',note:127,velocity:55,source:'midi',channel:16,receivedAtMs:1234});
     assert.equal(h.api.input.decode([0x90,60],0,0).kind,'note-off');
-    for(const data of [null,[],[0x90],[0x90,-1,100],[0x90,128,100],[0x90,60,128],[0x90,60,3.5],[0xB0,60,100]]) {
+    for(const data of [null,[],[0x90],Array(3),[undefined,60,100],[0x90,undefined,100],[0x90,60,undefined],
+        [0x90,-1,100],[0x90,128,100],[0x90,60,128],[0x90,60,3.5],[0x90,60,NaN],[0xB0,60,100]]) {
         assert.equal(h.api.input.decode(data,0,0),null);
     }
 });
@@ -74,6 +75,11 @@ test('echo window uses strict expiry and preserves bounded replacement/pruning o
     h.advance(1);h.input.onmidimessage({data:[0xB0,64,0]});
     assert.equal(h.state.recentMidiEchoes.length,0);
     assert.equal(h.received.length,0);
+    for (const data of [[],[0xF8],[0xC0,4]]) {
+        h.echo.remember(0x90,60,100);h.advance(120);h.input.onmidimessage({data});
+        assert.equal(h.state.recentMidiEchoes.length,0,'short native messages still prune expired echoes');
+        assert.equal(h.received.length,0);
+    }
 });
 test('output expression/silence preserve CC order; scheduled release chooses current output and disposal cancels timer',async()=>{
     const h=await midiHarness();

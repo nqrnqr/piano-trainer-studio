@@ -1,6 +1,6 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerMusicXmlIO} from './musicxml-io';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerMusicXmlIO} from './musicxml-io';
+import type {LegacyAppState} from '../state/model';
 // Preserve load effects and promise completion. Raw MXL remains the render source.
 export namespace PianoTrainerScoreLoader {
     export type State = Pick<LegacyAppState, 'ledPreviewTimeline' | 'ledPreviewTimelineDirty' | 'ledPreviewTraversalIndex' |

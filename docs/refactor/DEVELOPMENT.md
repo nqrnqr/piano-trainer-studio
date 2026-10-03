@@ -104,7 +104,9 @@ readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命�
 仍引用已经移除的经典全局接口，**尚未完成剩余窄 facade 迁移及模块入口的全量浏览器回归**。
 新的 37 项启动检查不能代替这些行为矩阵；后续必须逐页迁移并保留原验证范围。
 原生权限、实体 MIDI/WLED、可听同步、Mac 启动器不由静音模拟证明。
-最终 noUncheckedIndexedAccess/exactOptionalPropertyTypes、干净安装/重建与原启动器门槛仍归 P9。
+生产与测试入口已开启 noUncheckedIndexedAccess、exactOptionalPropertyTypes 和
+verbatimModuleSyntax，局部不变量/原错误路径见 [STRICT_MODULE_CONTRACT.md](STRICT_MODULE_CONTRACT.md)。
+干净安装/重建、全量浏览器迁移与原启动器门槛仍归 P9。
 
 ## 调试与回退
 

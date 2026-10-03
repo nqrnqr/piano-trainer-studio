@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 import {PianoTrainerControlDom} from './controls-dom';
 // Fullscreen, Play/Reset shell and zoom/resize commands preserve their native UI order.
 export namespace PianoTrainerDisplayControls {

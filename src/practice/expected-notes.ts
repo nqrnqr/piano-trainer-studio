@@ -1,7 +1,7 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerFeedbackState} from './feedback-state';
-import {PianoTrainerScoring} from './scoring';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerFeedbackState} from './feedback-state';
+import type {PianoTrainerScoring} from './scoring';
+import type {LegacyAppState} from '../state/model';
 // Build expectations in original source order; do not combine distinct staves.
 export namespace PianoTrainerExpectedNotes {
     export interface Ports {

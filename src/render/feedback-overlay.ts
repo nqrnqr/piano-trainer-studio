@@ -1,5 +1,5 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {LegacyAppState} from '../state/model';
 // Draw recorded feedback only. Context and scoring are supplied by practice.
 export namespace PianoTrainerFeedbackOverlay {
     export interface Ports {

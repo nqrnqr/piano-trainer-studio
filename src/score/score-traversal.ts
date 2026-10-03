@@ -1,4 +1,4 @@
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 // Shared musical traversal. LED output consumes this data; it does not own it.
 // P3 preserves the legacy position restoration rule and 100000-step limits.
 export namespace PianoTrainerScoreTraversal {
@@ -98,7 +98,8 @@ export namespace PianoTrainerScoreTraversal {
         if (!Array.isArray(timeline) || timeline.length === 0)
             return -1;
         for (let i = Math.max(0, startIndex); i < timeline.length; i++) {
-            const event = timeline[i];
+            // The timeline is a dense sequence built with push; retain sparse-input errors.
+            const event = timeline[i]!;
             if (event.measureIndex === measureIndex && event.timestamp === timestamp && event.signature === signature) {
                 return i;
             }
@@ -213,7 +214,7 @@ export namespace PianoTrainerScoreTraversal {
             const signature = makeEntrySignature(currentEntries);
             const currentIndex = state.ledPreviewTraversalIndex;
             if (currentIndex >= 0 && currentIndex < timeline.length) {
-                const currentEvent = timeline[currentIndex];
+                const currentEvent = timeline[currentIndex]!;
                 if (currentEvent.measureIndex === currentMeasureIdx && currentEvent.timestamp === currentTimestamp && currentEvent.signature === signature) {
                     return currentIndex;
                 }

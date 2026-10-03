@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 import {PianoTrainerControlDom} from './controls-dom';
 // Loop range/input/hold UI. Playback owns cursor enforcement and loop timing.
 export namespace PianoTrainerLoopControls {

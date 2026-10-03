@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 export namespace PianoTrainerLoopOverlay {
     export interface Box { x: number; y: number; width: number; height: number; }
     export interface Ports {

@@ -1,4 +1,4 @@
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 // Required file input and native target guards; import effects go through commands.
 export namespace PianoTrainerScoreFileControls {
     export interface Ports {

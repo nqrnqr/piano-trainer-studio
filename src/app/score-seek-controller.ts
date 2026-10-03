@@ -1,5 +1,5 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {LegacyAppState} from '../state/model';
 // Seek the first matching measure along the existing real iterator traversal.
 export namespace PianoTrainerScoreSeek {
     export interface Box {x: number; y: number; width: number; height: number;}

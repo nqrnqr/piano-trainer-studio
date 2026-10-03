@@ -1,6 +1,6 @@
 import {PianoTrainerPreferenceValues} from '../domain/preference-values';
-import {LegacyAppState} from './model';
-import {PREFERENCE_STORAGE_KEYS} from './preference-keys';
+import type {LegacyAppState} from './model';
+import type {PREFERENCE_STORAGE_KEYS} from './preference-keys';
 // Storage and startup writes are explicit commands on an application-owned service.
 export namespace PianoTrainerPreferences {
     // Preference parsing and first-run defaults, without UI effects.

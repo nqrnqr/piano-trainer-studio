@@ -1,4 +1,4 @@
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 import {PianoTrainerMidiInput} from './midi-input';
 // Web MIDI is confined to this device boundary. UI and practice receive ports.
 export namespace PianoTrainerMidiService {
@@ -10,7 +10,7 @@ export namespace PianoTrainerMidiService {
         onDevicesChanged(): void;
         onAccessError(error: unknown): void;
         selectedInputChannel(): number;
-        isEcho(status: number, note: number, velocity: number): boolean;
+        isEcho(status: number | undefined, note: number | undefined, velocity: number | undefined): boolean;
         dispatch(input: PianoTrainerDomain.TrainerNoteInput): void;
         nowMs(): number;
     }

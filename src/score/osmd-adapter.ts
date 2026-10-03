@@ -1,4 +1,4 @@
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 import {PianoTrainerScoreTraversal} from './score-traversal';
 // OSMD object identity, revision-scoped note references and painted cursor state.
 // Preserve the existing prototype/shallow-array snapshot and repeat state.
@@ -99,17 +99,19 @@ export namespace PianoTrainerOsmdAdapter {
             try {
                 const renderer = ports.getRenderer();
                 if (!renderer.GraphicSheet || !renderer.GraphicSheet.MeasureList) return null;
-                const measure = renderer.GraphicSheet.MeasureList[mIdx][staffIdx];
+                // Loaded vendor arrays are dense. Preserve the legacy caught error
+                // for a missing measure row, rather than changing this lookup's fallback.
+                const measure = renderer.GraphicSheet.MeasureList[mIdx]![staffIdx];
                 if (!measure || !measure.staffEntries) return null;
                 const debugCandidates: {isExact: boolean; sameHalfTone: boolean; sameTimestamp: boolean; sameLength: boolean}[] = [];
                 for (let i = 0; i < measure.staffEntries.length; i++) {
-                    const se = measure.staffEntries[i];
+                    const se = measure.staffEntries[i]!;
                     if (!se.graphicalVoiceEntries) continue;
                     for (let j = 0; j < se.graphicalVoiceEntries.length; j++) {
-                        const gve = se.graphicalVoiceEntries[j];
+                        const gve = se.graphicalVoiceEntries[j]!;
                         if (!gve.notes) continue;
                         for (let k = 0; k < gve.notes.length; k++) {
-                            const gn = gve.notes[k], src = gn?.sourceNote;
+                            const gn = gve.notes[k]!, src = gn?.sourceNote;
                             if (src) {
                                 debugCandidates.push({isExact: src === logicalNote,
                                     sameHalfTone: src?.halfTone === logicalNote?.halfTone,
@@ -148,8 +150,8 @@ export namespace PianoTrainerOsmdAdapter {
             let topYUnits = sys.PositionAndShape.AbsolutePosition.y;
             let bottomYUnits = topYUnits + sys.PositionAndShape.Size.height;
             if (sys.StaffLines && sys.StaffLines.length > 0) {
-                topYUnits = sys.StaffLines[0].PositionAndShape.AbsolutePosition.y;
-                bottomYUnits = sys.StaffLines[sys.StaffLines.length - 1].PositionAndShape.AbsolutePosition.y + 4;
+                topYUnits = sys.StaffLines[0]!.PositionAndShape.AbsolutePosition.y;
+                bottomYUnits = sys.StaffLines[sys.StaffLines.length - 1]!.PositionAndShape.AbsolutePosition.y + 4;
             }
             const paddingUnits = 4;
             return {x: measure.PositionAndShape.AbsolutePosition.x * unitsToPx,
@@ -198,14 +200,14 @@ export namespace PianoTrainerOsmdAdapter {
             const entryCount = entries.length;
             for (let entryIndex = 0; entryIndex < entryCount; entryIndex++) {
                 if (!(entryIndex in entries)) continue;
-                const entry = entries[entryIndex];
+                const entry = entries[entryIndex]!;
                 const staffId = resolveStaffId(entry);
                 const notes: Iterable<PianoTrainerDomain.PracticeSourceNote> = {
                     *[Symbol.iterator]() {
                         const sourceNotes = entry.Notes!, noteCount = sourceNotes.length;
                         for (let noteIndex = 0; noteIndex < noteCount; noteIndex++) {
                             if (!(noteIndex in sourceNotes)) continue;
-                            const note = sourceNotes[noteIndex];
+                            const note = sourceNotes[noteIndex]!;
                             yield {
                                 get midi() { return note.halfTone + 12; },
                                 get noteRef() { return noteRef(note); },
@@ -256,7 +258,7 @@ export namespace PianoTrainerOsmdAdapter {
                 get entries() { return readPracticeEntries(entries!, resolveStaffId); },
                 get signature() { return PianoTrainerScoreTraversal.makeEntrySignature(entries); },
                 get fallbackLengthWhole() {
-                    return entries?.[0]?.Notes && entries[0].Notes.length > 0 ? entries[0].Notes[0].Length!.RealValue : 1;
+                    return entries?.[0]?.Notes && entries[0].Notes.length > 0 ? entries[0].Notes[0]!.Length!.RealValue : 1;
                 }
             };
             playbackEntries.set(event, entries);
@@ -273,10 +275,10 @@ export namespace PianoTrainerOsmdAdapter {
             getTraversalCursor: () => ports.getRenderer()?.cursor,
             hasGraphicSheet: () => !!ports.getRenderer().GraphicSheet,
             getGraphicalMeasureCount: () => ports.getRenderer().GraphicSheet!.MeasureList.length,
-            getLoadedStaffCount: () => ports.getRenderer().GraphicSheet!.MeasureList[0].length,
+            getLoadedStaffCount: () => ports.getRenderer().GraphicSheet!.MeasureList[0]!.length,
             getFirstScoreTempo: () => {
                 const measures = ports.getRenderer().Sheet!.SourceMeasures!;
-                return measures.length > 0 ? measures[0].TempoInBPM : undefined;
+                return measures.length > 0 ? measures[0]!.TempoInBPM : undefined;
             },
             setZoom: (value: number) => { ports.getRenderer().zoom = value; },
             // Transitional UI wrapper consumes the captured entries only at this boundary.
@@ -315,7 +317,7 @@ export namespace PianoTrainerOsmdAdapter {
             },
             getStaffTopY: (measureIndex: number, staffIndex: number) => {
                 const measures = ports.getRenderer().GraphicSheet!.MeasureList;
-                const measure = measures[measureIndex][staffIndex] || measures[measureIndex][0];
+                const measure = measures[measureIndex]![staffIndex] || measures[measureIndex]![0]!;
                 return measure.PositionAndShape.AbsolutePosition.y * 10;
             },
             isReady: () => ports.getRenderer().IsReadyToRender(),

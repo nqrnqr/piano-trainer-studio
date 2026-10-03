@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 // Loading coordinates score metadata and UI commands in the original order.
 export namespace PianoTrainerScoreUiController {
     export interface Ports {

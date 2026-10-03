@@ -1,5 +1,5 @@
-import {PianoTrainerFeedbackState} from './feedback-state';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerFeedbackState} from './feedback-state';
+import type {LegacyAppState} from '../state/model';
 // Score changes retain the original per-note feedback and batched UI ordering.
 export namespace PianoTrainerScoring {
     export interface Ports {

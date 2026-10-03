@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 // Coordinate a committed staff assignment without reading vendor objects or DOM.
 export namespace PianoTrainerHandAssignment {
     export interface Frame {

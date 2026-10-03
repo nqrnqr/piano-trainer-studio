@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 import {PianoTrainerControlDom} from './controls-dom';
 // Tempo edits preview before change; existing Wait metronome rebuild timing is retained.
 export namespace PianoTrainerTempoControls {

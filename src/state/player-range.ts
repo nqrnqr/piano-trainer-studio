@@ -1,6 +1,6 @@
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 import {derivePlayerRangeFromKeyboardSize, getPlayableRangePosition01, isMidiInPlayableRange} from '../domain/playable-range';
-import {LegacyAppState} from './model';
+import type {LegacyAppState} from './model';
 // Per-application range cache; pure range calculations remain in domain.
 export namespace PianoTrainerPlayerRange {
     export function create(AppState: Pick<LegacyAppState, 'playerRange' | 'playerPianoType' | 'outOfRangeCurrentNotes'>) {

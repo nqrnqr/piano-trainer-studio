@@ -1,4 +1,4 @@
-import {PianoTrainerDomain} from './model';
+import type {PianoTrainerDomain} from './model';
 // Pure keyboard range math. No DOM, storage, audio, OSMD or LED hardware.
 export const FULL_PIANO_MIDI_MIN = 21;
 export const FULL_PIANO_MIDI_MAX = 108;

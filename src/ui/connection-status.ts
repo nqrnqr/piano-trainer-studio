@@ -1,4 +1,4 @@
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 // Read-only connection presentation; hardware observations enter through typed ports.
 export namespace PianoTrainerConnectionStatus {
     export interface Ports {

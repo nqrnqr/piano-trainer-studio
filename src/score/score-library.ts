@@ -1,6 +1,6 @@
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 import {PianoTrainerLibraryBackup} from './library-backup';
-import {PianoTrainerMusicXmlIO} from './musicxml-io';
+import type {PianoTrainerMusicXmlIO} from './musicxml-io';
 // Native IndexedDB transaction completion and existing v1 CRUD/starter commands.
 export namespace PianoTrainerScoreLibrary {
     const SCORE_LIBRARY_DB_NAME = 'pianoTrainerLibrary', SCORE_LIBRARY_DB_VERSION = 1;

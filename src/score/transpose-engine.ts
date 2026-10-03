@@ -230,7 +230,9 @@ export namespace PianoTrainerTransposeEngine {
         const absoluteSemitone = (octave * 12) + pitchSemitone(step, alter) + Number(semitoneDelta || 0);
         const nextPitchClass = mod(absoluteSemitone, 12);
         const nextOctave = Math.floor(absoluteSemitone / 12);
-        const spelling = chooseSpellingForPitchClass(nextPitchClass, keyBias);
+        // Valid integral MusicXML pitches select one of twelve spellings.
+        // Malformed/nonintegral input retains its original missing-spelling error.
+        const spelling = chooseSpellingForPitchClass(nextPitchClass, keyBias)!;
 
         stepNode.textContent = spelling.step;
         setOrRemoveChildText(pitchNode, 'alter', spelling.alter);
@@ -250,7 +252,7 @@ export namespace PianoTrainerTransposeEngine {
             const alter = alterNode ? Number.parseInt(alterNode.textContent || '0', 10) : 0;
             if (!(step in STEP_TO_SEMITONE)) return;
             const pitchClass = pitchSemitone(step, alter) + Number(semitoneDelta || 0);
-            const spelling = chooseSpellingForPitchClass(pitchClass, keyBias);
+            const spelling = chooseSpellingForPitchClass(pitchClass, keyBias)!;
             stepNode.textContent = spelling.step;
             const alterTag = /root/i.test(stepNode.tagName) ? 'root-alter' : 'bass-alter';
             setOrRemoveChildText(section, alterTag, spelling.alter);

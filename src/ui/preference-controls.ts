@@ -1,7 +1,7 @@
 import {PianoTrainerHandRouting} from '../domain/hand-routing';
-import {PianoTrainerDomain} from '../domain/model';
-import {LegacyAppState} from '../state/model';
-import {PREFERENCE_STORAGE_KEYS} from '../state/preference-keys';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {LegacyAppState} from '../state/model';
+import type {PREFERENCE_STORAGE_KEYS} from '../state/preference-keys';
 import {PianoTrainerControlDom} from './controls-dom';
 // Persisted preference orchestration retains command and native change-event order.
 export namespace PianoTrainerPreferenceControls {

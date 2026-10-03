@@ -1,5 +1,5 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {LegacyAppState} from './model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {LegacyAppState} from './model';
 // Fresh state allocation and explicit boot metadata; importing allocates no app instance.
 export namespace PianoTrainerAppState {
     export interface MetadataPorts {

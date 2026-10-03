@@ -1,5 +1,5 @@
 import {PianoTrainerVelocity} from '../domain/velocity';
-import {LegacyAppState} from '../state/model';
+import type {LegacyAppState} from '../state/model';
 // Tone resources, loading/unlock, latency profile and playback voices.
 // Factory creation allocates nothing. init is called at the old core startup slot.
 export namespace PianoTrainerAudioOutput {

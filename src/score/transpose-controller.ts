@@ -1,6 +1,6 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerTransposeEngine} from './transpose-engine';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerTransposeEngine} from './transpose-engine';
+import type {LegacyAppState} from '../state/model';
 // Original-source transpose commands. State identity and post-load reads are preserved.
 export namespace PianoTrainerTransposeController {
     export type State = LegacyAppState['transpose'];

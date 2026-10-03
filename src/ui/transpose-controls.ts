@@ -1,5 +1,5 @@
-import {PianoTrainerTransposeController} from '../score/transpose-controller';
-import {PianoTrainerTransposeEngine} from '../score/transpose-engine';
+import type {PianoTrainerTransposeController} from '../score/transpose-controller';
+import type {PianoTrainerTransposeEngine} from '../score/transpose-engine';
 // Transpose DOM IDs, input values and one owned set of native listeners.
 export namespace PianoTrainerTransposeControls {
     export interface Ports {

@@ -1,4 +1,4 @@
-import {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerDomain} from '../domain/model';
 // The existing permissive v1 backup boundary; preserve native coercion and field order.
 export namespace PianoTrainerLibraryBackup {
     export type RawPayload = {

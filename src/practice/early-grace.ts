@@ -1,7 +1,7 @@
-import {PianoTrainerDomain} from '../domain/model';
-import {PianoTrainerTiming} from '../domain/timing';
-import {PianoTrainerScoreTraversal} from '../score/score-traversal';
-import {LegacyAppState} from '../state/model';
+import type {PianoTrainerDomain} from '../domain/model';
+import type {PianoTrainerTiming} from '../domain/timing';
+import type {PianoTrainerScoreTraversal} from '../score/score-traversal';
+import type {LegacyAppState} from '../state/model';
 // Preserve the P5 input contract and side-effect order; all external effects use ports.
 export namespace PianoTrainerEarlyGrace {
     export interface PracticeWindow {
@@ -56,8 +56,9 @@ export namespace PianoTrainerEarlyGrace {
                 const notes = getRenderableNotesForHandFromTimelineEvent(timeline[i], handRole);
                 if (notes.length > 0) {
                     referenceEvent = {
-                        measureIndex: timeline[i].measureIndex,
-                        timestamp: timeline[i].timestamp,
+                        // Nonempty filtered notes prove this timeline entry exists.
+                        measureIndex: timeline[i]!.measureIndex,
+                        timestamp: timeline[i]!.timestamp,
                         notes
                     };
                     referenceIndex = i;
@@ -71,8 +72,8 @@ export namespace PianoTrainerEarlyGrace {
                 const notes = getRenderableNotesForHandFromTimelineEvent(timeline[i], handRole);
                 if (notes.length > 0) {
                     nextEvent = {
-                        measureIndex: timeline[i].measureIndex,
-                        timestamp: timeline[i].timestamp,
+                        measureIndex: timeline[i]!.measureIndex,
+                        timestamp: timeline[i]!.timestamp,
                         notes
                     };
                     nextIndex = i;
