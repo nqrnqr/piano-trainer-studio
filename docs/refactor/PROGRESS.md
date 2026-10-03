@@ -451,3 +451,12 @@
 - 浏览器：keyboard/input/practice/render/bootstrap两配置共10页370/370，累计32页1284项，validation/P9p-keyboard-facade-browser.txt。真实原生events、OSMD与fixture内存偏好/随机DB，终态在全部dispose和cleanup之后，所有自建标签关闭。
 - 验证：生产与独立test入口final strict、四文件clean comparison、338/338 Node，validation/P9p-keyboard-facade-check.txt。production bundle/vendor/prefs/schema/backup/resources/launcher不改。
 - 回退：revert本检查点恢复P9o测试入口/页面与fixture，不清库或改用户设置；继续剩余原套件与最终全集。当前1284项不替代全量，实体硬件/可听/Mac/LAN客户端限制保持。只有本地Git提交，无push。
+
+## P9q：键域、连接标签与更新请求 facade
+
+- 状态：原 device-controls suite 迁移检查点完成（2026-10-04）；P9 debug/settings/library-ui/legacy-led与最终全集尚未完成，完整目标活跃。
+- 映射：原range/connection/update globals与AppState → testing/device-checks.ts 的明确命令和复制range/update快照。原部分测试note记录改为完整领域记录，noteRef取真实fixture event；held Map private capture仅返回identity布尔和复制keys。生产算法/时序不改。
+- 资源：nativefixture最近UI owner与update fetch归属通过actual source map识别，原native fetch/AbortController与signal仍实际使用。原每配置19项完整保留：25键域save/prune/held identity/sharedpreview失效、range marker/listener生命周期、none/blank/connected标签、actual local version manifest/state/button/native signal、dispose abort和旧commit/finally gating、fresh automatic/manualchecks与全资源归零。
+- 浏览器：device/preferences/MIDI/keyboard/bootstrap两配置共10页303/303，累计34页1322项；validation/P9q-device-facade-browser.txt。实际DOM/OSMD/native请求，通过终态在full dispose与自己DB cleanup之后发布，所有自建标签关闭。
+- 验证：两套final strict、四文件clean comparison、338/338 Node，validation/P9q-device-facade-check.txt。production bundle/vendor/资源/用户prefs/DB schema/backup/launcher不改。
+- 回退：revert本检查点恢复P9p测试入口/页面与fixture，无需清库；下一步debug/settings/library-ui/legacy-led与最终全量。当前1322项不替代全集，实体硬件/可听/Mac/LAN客户端限制保持，只有本地Git提交，无push。

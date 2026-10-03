@@ -1,0 +1,356 @@
+P9q native device controls + affected preferences/MIDI/keyboard/bootstrap regression
+
+PAGE device-controls-baseline.html?led=off
+PASS repeated native init retains one range select and update button
+PASS native select preserves saved 25-key range
+PASS range change prunes original note arrays and retains held Map identity
+PASS range label and actual keyboard update together
+PASS range change invalidates shared preview
+PASS explicit range disposal removes native binding and marker
+PASS fresh range lifetime restores one native binding
+PASS connection UI observes native no-device states
+PASS blank WLED address remains None
+PASS connection UI retains WLED connected label
+PASS actual local version manifest keeps original state and button text
+PASS update fetch receives its owned native abort signal
+PASS explicit controller disposal aborts native fetch without late state commit
+PASS disposed old request does not run its finally button sync
+PASS explicit update UI disposal removes only its button binding
+PASS fresh update lifetime performs original automatic checks with one listener
+PASS native update button accepts a fresh manual check
+PASS explicit range/update resources all return to zero
+PASS device controls work with default and no-op LED
+RESOURCES {"player-range-controls":0,"update-controls":0}
+CLEANUP 1 disposable databases
+DONE
+
+PAGE device-controls-baseline.html
+PASS repeated native init retains one range select and update button
+PASS native select preserves saved 25-key range
+PASS range change prunes original note arrays and retains held Map identity
+PASS range label and actual keyboard update together
+PASS range change invalidates shared preview
+PASS explicit range disposal removes native binding and marker
+PASS fresh range lifetime restores one native binding
+PASS connection UI observes native no-device states
+PASS blank WLED address remains None
+PASS connection UI retains WLED connected label
+PASS actual local version manifest keeps original state and button text
+PASS update fetch receives its owned native abort signal
+PASS explicit controller disposal aborts native fetch without late state commit
+PASS disposed old request does not run its finally button sync
+PASS explicit update UI disposal removes only its button binding
+PASS fresh update lifetime performs original automatic checks with one listener
+PASS native update button accepts a fresh manual check
+PASS explicit range/update resources all return to zero
+PASS device controls work with default and no-op LED
+RESOURCES {"player-range-controls":0,"update-controls":0}
+CLEANUP 1 disposable databases
+DONE
+
+PAGE preference-controls-baseline.html?led=off
+INITIAL {"practice-controls":22,"hand-assignment-controls":2,"settings-actions":4}
+PASS repeated init retains one native listener set
+PASS score load and settings buttons bind their original two/four listeners
+PASS native mode radio commits and saves Follow
+PASS Follow starts with its original right-practice/left-playback pair
+PASS Follow keeps the selected practice hand checked
+PASS native Follow hand click selects its opposite accompaniment
+PASS Follow updates disabled playback controls and note
+PASS Wait retains its independent hand settings
+PASS Wait rejects programmatic playback toggle edits
+PASS mode changes retain saved audio preference and previous Follow hand
+PASS returning to Realtime restores its original settings object and choices
+PASS instrument audio routing updates boost visibility
+PASS MIDI virtual route persists independently
+PASS native low-latency toggle persists its disabled preference
+PASS fullscreen-on-play native preference updates state and storage
+PASS Auto Scroll native preference saves its checkbox
+PASS future preview edit preserves depth one and invalidates its current events
+PASS correct highlight native preference persists
+PASS feedback checkbox commits its preference
+PASS keyboard toggle hides native container
+PASS keyboard toggle shows and redraws native container
+PASS native staff assignment accepts the left none option and rebuilds its preview
+PASS captured OSMD frame uses the newly assigned practiced staff
+PASS empty right-staff assignment retains the previous committed hands
+PASS persisted application retains invalid mode fallback and clamped levels
+PASS persisted application seeds empty zoom and forces monitoring flags
+MIDI_RESET [["midi-in","none"],["midi-out","none"],["midi-out-channel","1"],["midi-lights","none"],["midi-lights-channel","1"]]
+PASS reset dispatches the five native MIDI change events in the original order
+PASS reset restores Realtime, traditional layout and 100 percent zoom
+PASS reset restores actual score default staff assignments
+PASS reset retains shared Set/Map identity and highlight defaults
+PASS reset restores original volume and MIDI boost defaults
+PASS cancelled native reset confirmation retains preferences
+PASS confirmed native reset invokes the full preference command
+PASS native import binding clears the input immediately after starting FileReader
+PASS native file selection reaches the existing invalid-backup alert
+PASS explicit dispose removes all three owned listener sets
+PASS disposed native change events do not mutate preference state
+PASS reinit restores the same native listener counts and markers
+PASS practice/preferences controls work with default and no-op LED
+RESOURCES {"practice-controls":0,"hand-assignment-controls":0,"settings-actions":0}
+CLEANUP 1 disposable databases
+DONE
+
+PAGE preference-controls-baseline.html
+INITIAL {"practice-controls":22,"hand-assignment-controls":2,"settings-actions":4}
+PASS repeated init retains one native listener set
+PASS score load and settings buttons bind their original two/four listeners
+PASS native mode radio commits and saves Follow
+PASS Follow starts with its original right-practice/left-playback pair
+PASS Follow keeps the selected practice hand checked
+PASS native Follow hand click selects its opposite accompaniment
+PASS Follow updates disabled playback controls and note
+PASS Wait retains its independent hand settings
+PASS Wait rejects programmatic playback toggle edits
+PASS mode changes retain saved audio preference and previous Follow hand
+PASS returning to Realtime restores its original settings object and choices
+PASS instrument audio routing updates boost visibility
+PASS MIDI virtual route persists independently
+PASS native low-latency toggle persists its disabled preference
+PASS fullscreen-on-play native preference updates state and storage
+PASS Auto Scroll native preference saves its checkbox
+PASS future preview edit preserves depth one and invalidates its current events
+PASS correct highlight native preference persists
+PASS feedback checkbox commits its preference
+PASS keyboard toggle hides native container
+PASS keyboard toggle shows and redraws native container
+PASS native staff assignment accepts the left none option and rebuilds its preview
+PASS captured OSMD frame uses the newly assigned practiced staff
+PASS empty right-staff assignment retains the previous committed hands
+PASS persisted application retains invalid mode fallback and clamped levels
+PASS persisted application seeds empty zoom and forces monitoring flags
+MIDI_RESET [["midi-in","none"],["midi-out","none"],["midi-out-channel","1"],["midi-lights","none"],["midi-lights-channel","1"]]
+PASS reset dispatches the five native MIDI change events in the original order
+PASS reset restores Realtime, traditional layout and 100 percent zoom
+PASS reset restores actual score default staff assignments
+PASS reset retains shared Set/Map identity and highlight defaults
+PASS reset restores original volume and MIDI boost defaults
+PASS cancelled native reset confirmation retains preferences
+PASS confirmed native reset invokes the full preference command
+PASS native import binding clears the input immediately after starting FileReader
+PASS native file selection reaches the existing invalid-backup alert
+PASS explicit dispose removes all three owned listener sets
+PASS disposed native change events do not mutate preference state
+PASS reinit restores the same native listener counts and markers
+PASS practice/preferences controls work with default and no-op LED
+RESOURCES {"practice-controls":0,"hand-assignment-controls":0,"settings-actions":0}
+CLEANUP 1 disposable databases
+DONE
+
+PAGE midi-baseline.html?led=off
+PASS startup and repeated setup share one access request
+PASS stored device selection binds actual input through DOM controls
+PASS device connection UI observes the service
+PASS raw press, release velocity and zero-velocity Note On reach the common input bridge
+PASS raw MIDI grades the real OSMD practice expectation
+PASS Any input accepts channel 16
+PASS specified channel and non-note filtering preserve the UI preference
+PASS one output implementation preserves effective core velocity and channel behavior
+PASS output reads committed state when DOM channel is stale
+PASS exact outgoing echo is suppressed while another velocity passes
+PASS echo is accepted after the 120ms window
+PASS device switching detaches previous callback
+PASS None releases input callback
+PASS hot unplug releases listener and refreshes device selection
+PASS reconnected saved device binds the new port object once
+PASS repeated UI init registers one expression callback
+PASS UI dispose removes its listeners
+PASS UI reinit restores exactly one callback
+PASS service dispose releases input and connection listeners
+PASS service reinit requests access and restores saved selection
+PASS MIDI input/output controls work with optional LED device DOM absent
+
+All checks passed.
+
+PAGE midi-baseline.html
+PASS startup and repeated setup share one access request
+PASS stored device selection binds actual input through DOM controls
+PASS device connection UI observes the service
+PASS raw press, release velocity and zero-velocity Note On reach the common input bridge
+PASS raw MIDI grades the real OSMD practice expectation
+PASS Any input accepts channel 16
+PASS specified channel and non-note filtering preserve the UI preference
+PASS one output implementation preserves effective core velocity and channel behavior
+PASS output reads committed state when DOM channel is stale
+PASS exact outgoing echo is suppressed while another velocity passes
+PASS echo is accepted after the 120ms window
+PASS device switching detaches previous callback
+PASS None releases input callback
+PASS hot unplug releases listener and refreshes device selection
+PASS reconnected saved device binds the new port object once
+PASS repeated UI init registers one expression callback
+PASS UI dispose removes its listeners
+PASS UI reinit restores exactly one callback
+PASS service dispose releases input and connection listeners
+PASS service reinit requests access and restores saved selection
+
+All checks passed.
+
+PAGE keyboard-controls-baseline.html?led=off
+INITIAL {"virtual-keyboard-controls":{"owned":892,"connected":892},"score-seek-controls":{"owned":1,"connected":1}}
+PASS repeated init retains one keyboard/seek listener set
+PASS native keyboard owns 880 key/12 activation listeners and seek owns one
+PASS actual keyboard retains 88 keys and the original white/black pattern
+PASS native pointer down and compatibility mouse share one down state
+PASS mismatched global pointer release retains active input
+PASS matching native pointer up releases and clears its key marker
+PASS touch pointer leave retains input until a release event
+PASS native pointer cancel releases touch-pointer input
+PASS native touch identifier mismatch preserves the original active touch
+PASS native touch end releases its matching key
+PASS empty changed-touch fallback cancels the active touch
+PASS native mouse leave releases keyboard input
+PASS blur releases the note while retaining the original per-key down marker
+PASS release before ordinary audio unlock retains the baseline delayed attack
+PASS ordinary keyboard rebuild preserves pending old-key attack
+PASS ordinary rebuild retains detached owned handlers until explicit disposal
+PASS explicit disposal invalidates pending unlock attack after reinit
+PASS fresh keyboard init accepts input
+PASS explicit dispose releases its active input, all key DOM and detached listeners
+PASS detached disposed key cannot send new input
+PASS native score click reaches the requested measure through real repeat traversal
+PASS native score click outside the active loop retains its cursor
+PASS open native toolbar panel blocks score seeking
+PASS playing score blocks native seek
+PASS paused seek resets and paints the first real event
+PASS score status keeps the original rounded percentage
+PASS actual two-instrument notes retain distinct global staff identities
+PASS score UI rebuild retains default assignments/options and score reset
+PASS pending same-pitch staff overrides sustained staff in original presentation order
+PASS native key presentation keeps sustained expected and future colors
+PASS held early carry keeps expected key color
+PASS correct highlight follows the actual left staff
+PASS native calibration clears recognized key state classes
+PASS explicit dispose releases all keyboard/seek resources
+PASS fresh init restores the same keyboard/seek resource counts
+PASS keyboard/shared preview/seek work with default and no-op LED
+RESOURCES {"virtual-keyboard-controls":{"owned":0,"connected":0},"score-seek-controls":{"owned":0,"connected":0}}
+CLEANUP 1 disposable databases
+DONE
+
+PAGE keyboard-controls-baseline.html
+INITIAL {"virtual-keyboard-controls":{"owned":892,"connected":892},"score-seek-controls":{"owned":1,"connected":1}}
+PASS repeated init retains one keyboard/seek listener set
+PASS native keyboard owns 880 key/12 activation listeners and seek owns one
+PASS actual keyboard retains 88 keys and the original white/black pattern
+PASS native pointer down and compatibility mouse share one down state
+PASS mismatched global pointer release retains active input
+PASS matching native pointer up releases and clears its key marker
+PASS touch pointer leave retains input until a release event
+PASS native pointer cancel releases touch-pointer input
+PASS native touch identifier mismatch preserves the original active touch
+PASS native touch end releases its matching key
+PASS empty changed-touch fallback cancels the active touch
+PASS native mouse leave releases keyboard input
+PASS blur releases the note while retaining the original per-key down marker
+PASS release before ordinary audio unlock retains the baseline delayed attack
+PASS ordinary keyboard rebuild preserves pending old-key attack
+PASS ordinary rebuild retains detached owned handlers until explicit disposal
+PASS explicit disposal invalidates pending unlock attack after reinit
+PASS fresh keyboard init accepts input
+PASS explicit dispose releases its active input, all key DOM and detached listeners
+PASS detached disposed key cannot send new input
+PASS native score click reaches the requested measure through real repeat traversal
+PASS native score click outside the active loop retains its cursor
+PASS open native toolbar panel blocks score seeking
+PASS playing score blocks native seek
+PASS paused seek resets and paints the first real event
+PASS score status keeps the original rounded percentage
+PASS actual two-instrument notes retain distinct global staff identities
+PASS score UI rebuild retains default assignments/options and score reset
+PASS pending same-pitch staff overrides sustained staff in original presentation order
+PASS native key presentation keeps sustained expected and future colors
+PASS held early carry keeps expected key color
+PASS correct highlight follows the actual left staff
+PASS native calibration clears recognized key state classes
+PASS explicit dispose releases all keyboard/seek resources
+PASS fresh init restores the same keyboard/seek resource counts
+PASS keyboard/shared preview/seek work with default and no-op LED
+RESOURCES {"virtual-keyboard-controls":{"owned":0,"connected":0},"score-seek-controls":{"owned":0,"connected":0}}
+CLEANUP 1 disposable databases
+DONE
+
+PAGE bootstrap-baseline.html?led=off
+PASS test facade exposes commands and observations
+PASS bundle keeps application state, score and business services private
+PASS wait/traditional: real score enters playback with expected notes
+PASS wait/traditional: viewport observes the requested layout and real score
+PASS wait/traditional: returned observations cannot mutate internal practice state
+PASS wait/traditional: input command releases the note
+PASS wait/traditional: pause stops playback
+PASS follow/traditional: real score enters playback with expected notes
+PASS follow/traditional: viewport observes the requested layout and real score
+PASS follow/traditional: returned observations cannot mutate internal practice state
+PASS follow/traditional: input command releases the note
+PASS follow/traditional: pause stops playback
+PASS realtime/traditional: real score enters playback with expected notes
+PASS realtime/traditional: viewport observes the requested layout and real score
+PASS realtime/traditional: returned observations cannot mutate internal practice state
+PASS realtime/traditional: input command releases the note
+PASS realtime/traditional: pause stops playback
+PASS wait/horizontal: real score enters playback with expected notes
+PASS wait/horizontal: viewport observes the requested layout and real score
+PASS wait/horizontal: returned observations cannot mutate internal practice state
+PASS wait/horizontal: input command releases the note
+PASS wait/horizontal: pause stops playback
+PASS follow/horizontal: real score enters playback with expected notes
+PASS follow/horizontal: viewport observes the requested layout and real score
+PASS follow/horizontal: returned observations cannot mutate internal practice state
+PASS follow/horizontal: input command releases the note
+PASS follow/horizontal: pause stops playback
+PASS realtime/horizontal: real score enters playback with expected notes
+PASS realtime/horizontal: viewport observes the requested layout and real score
+PASS realtime/horizontal: returned observations cannot mutate internal practice state
+PASS realtime/horizontal: input command releases the note
+PASS realtime/horizontal: pause stops playback
+PASS duplicate init keeps one keyboard
+PASS duplicate init does not allocate another listener, timer, interval or frame
+PASS duplicate dispose and later init cannot revive the old application
+RESOURCES {"listeners":0,"timers":0,"intervals":0,"frames":0}
+PASS full application disposal releases all observed native resources
+PASS fresh application initializes and loads after full disposal
+DONE
+
+PAGE bootstrap-baseline.html
+PASS test facade exposes commands and observations
+PASS bundle keeps application state, score and business services private
+PASS wait/traditional: real score enters playback with expected notes
+PASS wait/traditional: viewport observes the requested layout and real score
+PASS wait/traditional: returned observations cannot mutate internal practice state
+PASS wait/traditional: input command releases the note
+PASS wait/traditional: pause stops playback
+PASS follow/traditional: real score enters playback with expected notes
+PASS follow/traditional: viewport observes the requested layout and real score
+PASS follow/traditional: returned observations cannot mutate internal practice state
+PASS follow/traditional: input command releases the note
+PASS follow/traditional: pause stops playback
+PASS realtime/traditional: real score enters playback with expected notes
+PASS realtime/traditional: viewport observes the requested layout and real score
+PASS realtime/traditional: returned observations cannot mutate internal practice state
+PASS realtime/traditional: input command releases the note
+PASS realtime/traditional: pause stops playback
+PASS wait/horizontal: real score enters playback with expected notes
+PASS wait/horizontal: viewport observes the requested layout and real score
+PASS wait/horizontal: returned observations cannot mutate internal practice state
+PASS wait/horizontal: input command releases the note
+PASS wait/horizontal: pause stops playback
+PASS follow/horizontal: real score enters playback with expected notes
+PASS follow/horizontal: viewport observes the requested layout and real score
+PASS follow/horizontal: returned observations cannot mutate internal practice state
+PASS follow/horizontal: input command releases the note
+PASS follow/horizontal: pause stops playback
+PASS realtime/horizontal: real score enters playback with expected notes
+PASS realtime/horizontal: viewport observes the requested layout and real score
+PASS realtime/horizontal: returned observations cannot mutate internal practice state
+PASS realtime/horizontal: input command releases the note
+PASS realtime/horizontal: pause stops playback
+PASS duplicate init keeps one keyboard
+PASS duplicate init does not allocate another listener, timer, interval or frame
+PASS duplicate dispose and later init cannot revive the old application
+RESOURCES {"listeners":0,"timers":0,"intervals":0,"frames":0}
+PASS full application disposal releases all observed native resources
+PASS fresh application initializes and loads after full disposal
+DONE
