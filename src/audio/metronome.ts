@@ -1,5 +1,9 @@
+import {PianoTrainerPlaybackClock} from './playback-clock';
+import {PianoTrainerMeasureTiming} from '../score/measure-timing';
+import {LegacyAppState} from '../state/model';
+import {PianoTrainerTempoPulse} from '../ui/tempo-pulse';
 // Moved from 1ec34ee without changing traversal, timing or cancellation rules.
-namespace PianoTrainerMetronome {
+export namespace PianoTrainerMetronome {
     export interface Ports {
         state: Pick<LegacyAppState, 'accentedDownbeatEnabled' | 'metronomeMidiOutEnabled' | 'visualPulseEnabled' | 'baseBpm' | 'speedPercent' | 'isPlaying' | 'countInActive' | 'mode' | 'lastLedPreviewEvents' | 'ledPreviewTraversalIndex'>;
         clock: PianoTrainerPlaybackClock.Service;

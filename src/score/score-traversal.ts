@@ -1,6 +1,7 @@
+import {PianoTrainerDomain} from '../domain/model';
 // Shared musical traversal. LED output consumes this data; it does not own it.
 // P3 preserves the legacy position restoration rule and 100000-step limits.
-namespace PianoTrainerScoreTraversal {
+export namespace PianoTrainerScoreTraversal {
     export interface Note {
         halfTone: number;
         ParentStaff?: {

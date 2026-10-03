@@ -1,5 +1,6 @@
+
 // DOM lookup and the forced layout read stay at the UI boundary.
-namespace PianoTrainerTempoPulse {
+export namespace PianoTrainerTempoPulse {
     export interface Target { restart(): void; hide(): void; }
     export function create(getElement: () => HTMLElement | null) {
         return {getTarget(): Target | null {

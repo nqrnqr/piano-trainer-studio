@@ -6,16 +6,15 @@
 
 | 位置 | 目标 | 操作 |
 | --- | --- | --- |
-| src/compatibility/feedback-debug.ts:26 | AppState[flag] | = |
-| src/state/player-range.ts:7 | AppState.playerRange | = |
-| src/state/preferences.ts:95 | AppState.midiInChannel | = |
-| src/state/preferences.ts:96 | AppState.midiOutChannel | = |
-| src/state/preferences.ts:97 | AppState.midiLightsChannel | = |
-| src/state/preferences.ts:98 | AppState.midiLedLowVelocity | = |
-| src/state/preferences.ts:99 | AppState.ledReverse | = |
-| src/state/preferences.ts:100 | AppState.inputVelocityEnabled | = |
-| src/state/preferences.ts:101 | AppState.liveLowLatencyMonitoringEnabled | = |
-| src/state/preferences.ts:102 | AppState.lowLatencyPlaybackEnabled | = |
+| src/state/player-range.ts:10 | AppState.playerRange | = |
+| src/state/preferences.ts:98 | AppState.midiInChannel | = |
+| src/state/preferences.ts:99 | AppState.midiOutChannel | = |
+| src/state/preferences.ts:100 | AppState.midiLightsChannel | = |
+| src/state/preferences.ts:101 | AppState.midiLedLowVelocity | = |
+| src/state/preferences.ts:102 | AppState.ledReverse | = |
+| src/state/preferences.ts:103 | AppState.inputVelocityEnabled | = |
+| src/state/preferences.ts:104 | AppState.liveLowLatencyMonitoringEnabled | = |
+| src/state/preferences.ts:105 | AppState.lowLatencyPlaybackEnabled | = |
 | js/led.js:138 | AppState.ledCalibrationMode | = |
 | js/led.js:153 | AppState.ledCalibrationSelectedMidi | = |
 | js/led.js:162 | AppState.ledCalibrationSelectedMidi | = |

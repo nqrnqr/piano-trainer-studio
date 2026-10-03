@@ -1,5 +1,6 @@
+
 // Vendor observations for diagnostics only; no matching or anchor-placement rules.
-namespace PianoTrainerOsmdDebugObservation {
+export namespace PianoTrainerOsmdDebugObservation {
     export function describeLogicalNoteForDebug(note: PianoTrainerOsmdVendor.Note | null | undefined,
         measureIndex: number | null = null, staffIndex: number | null = null) {
         const voice = note?.ParentVoiceEntry;

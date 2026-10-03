@@ -1,5 +1,6 @@
+import {PianoTrainerDomain} from './model';
 // Original score list presentation/filter rules.
-namespace PianoTrainerLibraryView {
+export namespace PianoTrainerLibraryView {
     export function normalizeComparableScoreName(value: unknown) {
         return String(value || '')
             .trim()

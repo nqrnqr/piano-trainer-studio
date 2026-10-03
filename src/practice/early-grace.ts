@@ -1,5 +1,9 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerTiming} from '../domain/timing';
+import {PianoTrainerScoreTraversal} from '../score/score-traversal';
+import {LegacyAppState} from '../state/model';
 // Preserve the P5 input contract and side-effect order; all external effects use ports.
-namespace PianoTrainerEarlyGrace {
+export namespace PianoTrainerEarlyGrace {
     export interface PracticeWindow {
         handRole: PianoTrainerDomain.HandRole;
         timeline: PianoTrainerDomain.PreviewTimelineEvent[];

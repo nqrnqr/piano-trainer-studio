@@ -1,5 +1,9 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerFeedbackState} from './feedback-state';
+import {PianoTrainerScoring} from './scoring';
+import {LegacyAppState} from '../state/model';
 // Build expectations in original source order; do not combine distinct staves.
-namespace PianoTrainerExpectedNotes {
+export namespace PianoTrainerExpectedNotes {
     export interface Ports {
         state: Pick<LegacyAppState, 'expectedNotes' | 'visualNotesToStart' | 'outOfRangeCurrentNotes' | 'practice' | 'mode' | 'baseBpm' | 'speedPercent' | 'realtimeWrongPressInCurrentContext' | 'earlyGraceReservations' | 'pressedKeys' | 'heldCorrectNotes' | 'preExpectedHeldNotes'>;
         getHandRole(staffId: number | null): PianoTrainerDomain.HandRole | null;

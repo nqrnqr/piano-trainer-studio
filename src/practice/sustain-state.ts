@@ -1,13 +1,36 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {LegacyAppState} from '../state/model';
 // Preserve the P5 input contract and side-effect order; all external effects use ports.
-namespace PianoTrainerSustainState {
+export namespace PianoTrainerSustainState {
     export interface Ports {
         state: Pick<LegacyAppState, 'mode' | 'visualNotesToStart' | 'sustainedVisuals' | 'activeTimeouts' | 'heldCorrectNotes' | 'preExpectedHeldNotes'>;
         renderKeyboard(): void;
         setTimer(callback: () => void, delayMs: number): number;
+        clearTimer(id: number): void;
     }
     export function create(ports: Ports) {
         const state = ports.state;
+        const timers = new Set<number>();
+        let active = true, generation = 0;
+        function setTimer(callback: () => void, delayMs: number) {
+            const started = generation;
+            const id = ports.setTimer(() => {
+                timers.delete(id);
+                if (active && generation === started) callback();
+            }, delayMs);
+            timers.add(id);
+            return id;
+        }
+        function cancelTimer(id: number) { timers.delete(id); ports.clearTimer(id); }
+        function init() { active = true; }
+        function dispose() {
+            if (!active) return;
+            active = false; generation++;
+            for (const id of timers) ports.clearTimer(id);
+            timers.clear();
+        }
         function startVisualSustains() {
+            if (!active) return;
             const RETRIGGER_GAP_MS = 35;
 
             const pendingVisuals = state.visualNotesToStart.slice();
@@ -19,7 +42,7 @@ namespace PianoTrainerSustainState {
                 ports.renderKeyboard();
 
                 if (!((state.mode === 'wait' || state.mode === 'follow') && Number.isFinite(n.endTimestamp))) {
-                    const tId = ports.setTimer(() => {
+                    const tId = setTimer(() => {
                         const idx = state.sustainedVisuals.indexOf(vis);
                         if (idx > -1) {
                             state.sustainedVisuals.splice(idx, 1);
@@ -54,7 +77,7 @@ namespace PianoTrainerSustainState {
                     );
                     ports.renderKeyboard();
 
-                    const gapId = ports.setTimer(() => {
+                    const gapId = setTimer(() => {
                         startOneVisual(n);
                     }, RETRIGGER_GAP_MS);
 
@@ -76,7 +99,7 @@ namespace PianoTrainerSustainState {
                 state.preExpectedHeldNotes.add(midi);
             }
         }
-        return {startVisualSustains, pruneAtTimestamp, markHeldPreview};
+        return {init, dispose, cancelTimer, startVisualSustains, pruneAtTimestamp, markHeldPreview};
     }
     export type Service = ReturnType<typeof create>;
 }

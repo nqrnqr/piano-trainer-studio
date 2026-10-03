@@ -1,5 +1,6 @@
+
 // The core depends on this output port. Hardware and LED UI stay in legacy JS.
-namespace PianoTrainerOptionalLed {
+export namespace PianoTrainerOptionalLed {
     export interface Output {
         readonly enabled: boolean;
         initControls(): void;

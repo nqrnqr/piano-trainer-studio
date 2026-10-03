@@ -1,7 +1,10 @@
+import {PianoTrainerDomain} from '../../src/domain/model';
+import {PianoTrainerScoreTraversal} from '../../src/score/score-traversal';
+declare global {
 // Minimal used surface of bundled OSMD 1.9.7. Private cursor operations belong
 // exclusively to score/osmd-adapter. Shape fields model the stabilized geometry
 // access pattern; opaque/private enumeration is limited to two adapter sites.
-declare namespace PianoTrainerOsmdVendor {
+namespace PianoTrainerOsmdVendor {
     interface Fraction { RealValue: number; }
     interface Note extends PianoTrainerScoreTraversal.Note {
         ParentVoiceEntry?: {Timestamp?: Fraction; ParentSourceStaffEntry?: {ParentStaff?: Staff}};
@@ -69,3 +72,8 @@ declare namespace PianoTrainerOsmdVendor {
         render(): void;
     }
 }
+
+const opensheetmusicdisplay: {OpenSheetMusicDisplay: new (container: string, options: {autoResize:boolean;drawTitle:boolean}) => PianoTrainerOsmdVendor.Renderer};
+
+}
+export {};

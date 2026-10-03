@@ -1,5 +1,6 @@
+
 // Ownership around the existing clock APIs; no new scheduling or tempo rules.
-namespace PianoTrainerPlaybackClock {
+export namespace PianoTrainerPlaybackClock {
     export interface Ports {
         nowSeconds(): number;
         monotonicMilliseconds(): number;

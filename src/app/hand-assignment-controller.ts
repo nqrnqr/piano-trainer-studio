@@ -1,5 +1,6 @@
+import {LegacyAppState} from '../state/model';
 // Coordinate a committed staff assignment without reading vendor objects or DOM.
-namespace PianoTrainerHandAssignment {
+export namespace PianoTrainerHandAssignment {
     export interface Frame {
         hasEntries: boolean;
         measureIndex: number | null;

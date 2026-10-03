@@ -1,5 +1,6 @@
+import {LegacyAppState} from '../state/model';
 // Native toolbar/menu state. Ordinary transitions retain the baseline callback order.
-namespace PianoTrainerToolbar {
+export namespace PianoTrainerToolbar {
     const panelIds = ['scores-panel', 'options-overlay', 'tempo-popup', 'practice-popup', 'looper-popup',
         'more-popup', 'audio-popup', 'display-popup', 'transpose-popup', 'help-overlay'] as const;
     export type PanelId = typeof panelIds[number];

@@ -322,3 +322,15 @@
 - 331/331 Node：新增五组 cold import/creation、实例与缓存隔离、精确 startup write order、init/dispose、private notice/import skip 和 metadata precedence；原测试改用显式 commands，断言未降低。strict typecheck 与 242 个生成文件 byte comparison 通过，报告 `validation/P9d-cold-state-check.txt`。
 - 浏览器 20 页 763/763：default/no-op 各 settings11/preferences39/MIDI20或21/traversal30或33/LED19或6/playback127/loader28/render19/input40/practice53。实际 FileReader/重新加载、持久化、native DOM/MIDI/OSMD、三模式两布局均通过；所有自建标签关闭。报告 `validation/P9d-cold-state-browser.txt`。实体硬件、可听同步、最终 launcher 验收仍未验证。
 - 清单：122 classic slots、439 lexical candidates、重复函数零；53 direct state writes。vendor/helper、设置/DB/schema/备份、资源路径与启动器不变。回退此检查点恢复原 state startup/slots，无数据迁移。下一步直接完成源码 imports/exports、统一显式 bootstrap 和单 bundle，再迁移测试入口。
+
+## P9e：真实模块、单 bundle 与统一应用生命周期
+
+- 状态：模块入口检查点完成（2026-10-04）；P9 整体仍进行中。原浏览器全集尚未迁移到 facade，剩余严格配置、干净安装/静态部署/启动器验收待完成。
+- 映射：94 个核心 TS 文件改为实际 imports/exports；domain 共享模型归 `domain/model.ts`，状态模型归 `state/model.ts`。29 个 compatibility、trainer-core、旧生成槽位及七个无消费者 ambient 文件删除。唯一组装为 `app/services.ts`，`bootstrap.ts` 提供 init/dispose/loadScore/dispatchInput，`main.ts` 启动并在 pagehide 销毁。
+- 构建：固定 esbuild 0.28.2 与 TypeScript 5.9.3，ESNext/Bundler 严格检查后在内存打包；生产 app.js/map、独立 test-app.js/map 共四文件，失败保留上次输出。CommonJS 服务器/helper、原 vendor、资源、settings/DB/schema/backup 与启动器保持。完整文件树/字节/Git 跟踪检查防止陈旧或额外产物。
+- 生命周期：显式分配 fresh state，原 preferences→UI→OSMD→core 初始化顺序保持。重复 init 去重，dispose 永久结束该实例，新应用通过 factory 重新创建；first-run timer、监听、转换/读取/更新/播放/音频/MIDI/LED 等均有所有者。loader 的晚到 canonical/vendor/library continuation 失效；延音服务释放原 activeTimeouts 列表之外的自己 native timers，普通 Pause/Reset 规则保持。
+- 类型与测试：生产不发布业务 Window 对象；测试入口只给窄命令和复制快照，不返回完整 state/vendor。Node harness 加载实际 CommonJS 模块与依赖，不剥离 imports；335/335（新增三组 loader dispose/新实例和一组 sustain timer 代际隔离）。source-map 验证 timing 原表达式映射。报告 `validation/P9e-module-bootstrap-check.txt`。
+- 浏览器：模块入口 default/no-op 各 37/37，共 74，真实 XML/OSMD、三模式×两布局、输入/暂停、快照隔离、重复启动/销毁、全部 native listeners/timeouts/intervals/rAF 归零及新实例。报告 `validation/P9e-module-bootstrap-browser.txt`；自建标签关闭，memory prefs/random DB 结束只删除自己库。
+- 验证边界：这 74 项不替代原全量行为矩阵。既有浏览器页面与原断言保留，但仍使用已删除全局，下一步逐页迁移窄 facade 后全量执行。最终 noUncheckedIndexedAccess/exactOptionalPropertyTypes 与 launcher 尚未验证；实体 MIDI/WLED、可听同步及 Mac 不能由当前环境模拟结果证明。
+- 清单：三个静态应用槽位、四个运行时候选、94 ES 模块、重复函数零；52 direct state writes，别名资源见 STATE_OWNERSHIP。历史经典开发文档独立保留，当前 DEVELOPMENT/ARCHITECTURE 已更新。
+- 回退：revert 本检查点恢复 `7fe81d0` 的经典入口与工具链；不清库或改用户数据。下一步完成原浏览器 facade 迁移、全量回归和最终门槛。仅本地 Git 提交，不推送。

@@ -1,5 +1,7 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {LegacyAppState} from '../state/model';
 // Pure mode decisions. The coordinator owns clocks, state writes and side effects.
-namespace PianoTrainerModePolicy {
+export namespace PianoTrainerModePolicy {
     export const FOLLOW_ME_MIN_WAIT_RATIO = 0.6;
     export type AdvanceGuard = 'wait' | 'follow' | 'input-modes' | 'playing';
     export interface Position {readonly measureIndex: number; readonly timestampWhole: number;}

@@ -121,6 +121,20 @@ test('score-position sustain expiry uses strict boundary; Follow null expiry sti
     h.state.mode='realtime';h.state.sustainedVisuals.push(visual(64,1,0,{endTimestamp:.1}));
     h.sustains.pruneAtTimestamp(9);assert.equal(h.state.sustainedVisuals.length,2);
 });
+test('explicit sustain dispose releases only owned timers and rejects captured callbacks across a fresh init',()=>{
+    const h=harness({mode:'realtime'});
+    h.state.visualNotesToStart=[visual(60)];h.sustains.startVisualSustains();
+    const id=h.state.activeTimeouts[0],old=h.timers.get(id).callback;
+    h.timers.set(999,{callback(){},delay:99});
+    h.sustains.dispose();h.sustains.dispose();
+    assert.equal(h.timers.has(id),false);assert.equal(h.timers.has(999),true);
+    const events=h.events.length;old();assert.equal(h.events.length,events);
+    h.sustains.init();old();assert.equal(h.events.length,events);
+    h.state.sustainedVisuals=[];h.state.visualNotesToStart=[visual(62)];h.sustains.startVisualSustains();
+    const fresh=h.state.activeTimeouts.at(-1);h.fireTimer(fresh);assert.equal(h.state.sustainedVisuals.length,0);
+    assert.equal(h.timers.has(999),true);
+});
+
 test('held preview marking retains existing physical input and no longer requires keyboard DOM',()=>{
     const h=harness();h.state.heldCorrectNotes.set(60,1);h.sustains.markHeldPreview(60,'future1-r');
     h.sustains.markHeldPreview(61,'future1-r');h.sustains.markHeldPreview(60,'future2-r');

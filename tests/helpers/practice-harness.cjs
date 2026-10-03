@@ -40,7 +40,7 @@ function harness(overrides = {}) {
     const matching=api('PianoTrainerInputMatching').create({state,getCursorX:()=>cursorX,debugLog});
     const early=api('PianoTrainerEarlyGrace').create({state,getHandRole,isPracticeHandEnabled,
         getTimeline:()=>timeline,findTimelineIndex:api('PianoTrainerScoreTraversal').findMatchingTimelineIndex,
-        getBeatsToWait:context.window.PTTiming.getTraversalBeatsToWait,
+        getBeatsToWait:context.PianoTrainerTiming.getTraversalBeatsToWait,
         getMeasureTimingInfo:()=>({startTimestamp:0,actualLengthWhole:1})});
     const expected=api('PianoTrainerExpectedNotes').create({state,getHandRole,
         isMidiInRange:midi=>midi>=range[0]&&midi<=range[1],
@@ -49,7 +49,7 @@ function harness(overrides = {}) {
         getTraversalTimestamp:()=>score.readPositions().traversal?.timestampWhole??null,
         pushDebugFrame:frame=>debugFrames.push(frame),debugAnchor:debugLog,debugLog});
     const setTimer=(callback,delay)=>{const id=++nextTimer;timers.set(id,{callback,delay});events.push(['timer',delay]);return id;};
-    const sustains=api('PianoTrainerSustainState').create({state,renderKeyboard,setTimer});
+    const sustains=api('PianoTrainerSustainState').create({state,renderKeyboard,setTimer,clearTimer:id=>timers.delete(id)});
     const input=api('PianoTrainerInputController').create({state,matching,early,feedback,scoring,
         audio:{monitorNoteOn:(midi,source,velocity)=>events.push(['audio-on',midi,source,velocity,state.pressedKeys.has(midi)]),
             monitorNoteOff:(midi,source)=>events.push(['audio-off',midi,source,state.pressedKeys.has(midi)])},

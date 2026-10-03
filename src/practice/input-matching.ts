@@ -1,5 +1,7 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {LegacyAppState} from '../state/model';
 // Preserve the P5 input contract and side-effect order; all external effects use ports.
-namespace PianoTrainerInputMatching {
+export namespace PianoTrainerInputMatching {
     export interface Ports {
         state: Pick<LegacyAppState, 'expectedNotes' | 'debugMatchLogs' | 'sustainedVisuals' | 'visualNotesToStart'>;
         getCursorX(): number | null;

@@ -62,7 +62,7 @@ function harness(options={}){
    getTimestamp:adapter.getCurrentTimestamp,getMeasureIndex:adapter.getCurrentMeasureIndex,getTempo:adapter.getPlaybackTempo,
    advance:adapter.advance,reset:adapter.reset,update:adapter.updateCursor,show:adapter.showCursor},
   practice:{buildExpected:domainBuild,getHandRole,startSustains:()=>events.push('sustains'),processMisses:()=>{events.push('misses');state.score.wrong+=state.expectedNotes.filter(n=>!n.hit).length;}},
-  timing:{getTraversalBeatsToWait:api('window.PTTiming').getTraversalBeatsToWait,getMeasureTimingInfo:()=>({startTimestamp:0,actualLengthWhole:1,nominalMeasureLengthWhole:1,beatLengthWhole:.25,numerator:4,denominator:4})}};
+  timing:{getTraversalBeatsToWait:api('PianoTrainerTiming').getTraversalBeatsToWait,getMeasureTimingInfo:()=>({startTimestamp:0,actualLengthWhole:1,nominalMeasureLengthWhole:1,beatLengthWhole:.25,numerator:4,denominator:4})}};
  const service=api('PianoTrainerPlaybackCoordinator').create(ports);
  return {context,api,state,events,timers,frames,countIns,backend,clock,ports,service,adapter,renderer,iterator,cursor,resolveStaff,domainBuild,plain,
   setNow:value=>now=value,getNow:()=>now,setStep:value=>step=value,getStep:()=>step,setLoop:value=>loopEnabled=value,setMetro:value=>metroEnabled=value,

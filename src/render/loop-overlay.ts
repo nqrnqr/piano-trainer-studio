@@ -1,4 +1,5 @@
-namespace PianoTrainerLoopOverlay {
+import {LegacyAppState} from '../state/model';
+export namespace PianoTrainerLoopOverlay {
     export interface Box { x: number; y: number; width: number; height: number; }
     export interface Ports {
         bounds: Pick<LegacyAppState['looper'], 'min' | 'max'>;

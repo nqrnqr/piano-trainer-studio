@@ -1,0 +1,81 @@
+bootstrap-baseline.html?led=off
+PASS test facade exposes commands and observations
+PASS bundle keeps application state, score and business services private
+PASS wait/traditional: real score enters playback with expected notes
+PASS wait/traditional: viewport observes the requested layout and real score
+PASS wait/traditional: returned observations cannot mutate internal practice state
+PASS wait/traditional: input command releases the note
+PASS wait/traditional: pause stops playback
+PASS follow/traditional: real score enters playback with expected notes
+PASS follow/traditional: viewport observes the requested layout and real score
+PASS follow/traditional: returned observations cannot mutate internal practice state
+PASS follow/traditional: input command releases the note
+PASS follow/traditional: pause stops playback
+PASS realtime/traditional: real score enters playback with expected notes
+PASS realtime/traditional: viewport observes the requested layout and real score
+PASS realtime/traditional: returned observations cannot mutate internal practice state
+PASS realtime/traditional: input command releases the note
+PASS realtime/traditional: pause stops playback
+PASS wait/horizontal: real score enters playback with expected notes
+PASS wait/horizontal: viewport observes the requested layout and real score
+PASS wait/horizontal: returned observations cannot mutate internal practice state
+PASS wait/horizontal: input command releases the note
+PASS wait/horizontal: pause stops playback
+PASS follow/horizontal: real score enters playback with expected notes
+PASS follow/horizontal: viewport observes the requested layout and real score
+PASS follow/horizontal: returned observations cannot mutate internal practice state
+PASS follow/horizontal: input command releases the note
+PASS follow/horizontal: pause stops playback
+PASS realtime/horizontal: real score enters playback with expected notes
+PASS realtime/horizontal: viewport observes the requested layout and real score
+PASS realtime/horizontal: returned observations cannot mutate internal practice state
+PASS realtime/horizontal: input command releases the note
+PASS realtime/horizontal: pause stops playback
+PASS duplicate init keeps one keyboard
+PASS duplicate init does not allocate another listener, timer, interval or frame
+PASS duplicate dispose and later init cannot revive the old application
+RESOURCES {"listeners":0,"timers":0,"intervals":0,"frames":0}
+PASS full application disposal releases all observed native resources
+PASS fresh application initializes and loads after full disposal
+DONE
+
+bootstrap-baseline.html
+PASS test facade exposes commands and observations
+PASS bundle keeps application state, score and business services private
+PASS wait/traditional: real score enters playback with expected notes
+PASS wait/traditional: viewport observes the requested layout and real score
+PASS wait/traditional: returned observations cannot mutate internal practice state
+PASS wait/traditional: input command releases the note
+PASS wait/traditional: pause stops playback
+PASS follow/traditional: real score enters playback with expected notes
+PASS follow/traditional: viewport observes the requested layout and real score
+PASS follow/traditional: returned observations cannot mutate internal practice state
+PASS follow/traditional: input command releases the note
+PASS follow/traditional: pause stops playback
+PASS realtime/traditional: real score enters playback with expected notes
+PASS realtime/traditional: viewport observes the requested layout and real score
+PASS realtime/traditional: returned observations cannot mutate internal practice state
+PASS realtime/traditional: input command releases the note
+PASS realtime/traditional: pause stops playback
+PASS wait/horizontal: real score enters playback with expected notes
+PASS wait/horizontal: viewport observes the requested layout and real score
+PASS wait/horizontal: returned observations cannot mutate internal practice state
+PASS wait/horizontal: input command releases the note
+PASS wait/horizontal: pause stops playback
+PASS follow/horizontal: real score enters playback with expected notes
+PASS follow/horizontal: viewport observes the requested layout and real score
+PASS follow/horizontal: returned observations cannot mutate internal practice state
+PASS follow/horizontal: input command releases the note
+PASS follow/horizontal: pause stops playback
+PASS realtime/horizontal: real score enters playback with expected notes
+PASS realtime/horizontal: viewport observes the requested layout and real score
+PASS realtime/horizontal: returned observations cannot mutate internal practice state
+PASS realtime/horizontal: input command releases the note
+PASS realtime/horizontal: pause stops playback
+PASS duplicate init keeps one keyboard
+PASS duplicate init does not allocate another listener, timer, interval or frame
+PASS duplicate dispose and later init cannot revive the old application
+RESOURCES {"listeners":0,"timers":0,"intervals":0,"frames":0}
+PASS full application disposal releases all observed native resources
+PASS fresh application initializes and loads after full disposal
+DONE

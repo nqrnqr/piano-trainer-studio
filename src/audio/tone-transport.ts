@@ -1,5 +1,6 @@
+
 // The old coordinator only controls Transport; it owns no Transport events.
-namespace PianoTrainerToneTransport {
+export namespace PianoTrainerToneTransport {
     export function create(tone: Pick<PianoTrainerToneVendor.Api, 'Transport'>) {
         return {
             stop: () => { tone.Transport.stop(); },

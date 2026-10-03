@@ -1,5 +1,9 @@
+import {PianoTrainerPreferenceValues} from '../domain/preference-values';
+import {PianoTrainerMidiService} from '../midi/midi-service';
+import {LegacyAppState} from '../state/model';
+import {PREFERENCE_STORAGE_KEYS} from '../state/preference-keys';
 // DOM/device selection and persistence live here, outside MIDI protocol/service.
-namespace PianoTrainerMidiControls {
+export namespace PianoTrainerMidiControls {
     export type State = Pick<LegacyAppState, 'midiInChannel' | 'midiOutChannel' | 'midiLightsChannel' | 'midiLedLowVelocity' | 'ledOutputMode'>;
     export interface LedTest {
         stop(options?: {

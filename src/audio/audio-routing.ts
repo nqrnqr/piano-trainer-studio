@@ -1,5 +1,10 @@
+import {PianoTrainerAudioOutput} from './tone-adapter';
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerVelocity} from '../domain/velocity';
+import {PianoTrainerMidiOutput} from '../midi/midi-output';
+import {LegacyAppState} from '../state/model';
 // Route commands only. Practice matching and coordinator timing stay outside.
-namespace PianoTrainerAudioRouting {
+export namespace PianoTrainerAudioRouting {
     export type State = Pick<LegacyAppState, 'audioEnabled' | 'midiOutEnabled' |
         'midiInBoost' | 'inputVelocityEnabled' | 'liveLowLatencyMonitoringEnabled'>;
     export interface Destinations { toLocalAudio?: boolean; toMidiOut?: boolean; }

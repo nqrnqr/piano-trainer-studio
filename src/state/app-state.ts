@@ -1,5 +1,7 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {LegacyAppState} from './model';
 // Fresh state allocation and explicit boot metadata; importing allocates no app instance.
-namespace PianoTrainerAppState {
+export namespace PianoTrainerAppState {
     export interface MetadataPorts {
         manifest: Window['__PT_APP_MANIFEST__'];
         assetVersion: string | undefined;

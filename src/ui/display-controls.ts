@@ -1,5 +1,7 @@
+import {LegacyAppState} from '../state/model';
+import {PianoTrainerControlDom} from './controls-dom';
 // Fullscreen, Play/Reset shell and zoom/resize commands preserve their native UI order.
-namespace PianoTrainerDisplayControls {
+export namespace PianoTrainerDisplayControls {
     interface FullscreenDocument extends Document {
         webkitFullscreenElement?: Element | null;
         webkitExitFullscreen?: () => void;

@@ -1,5 +1,8 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
+import {LegacyAppState} from '../state/model';
 // Display layout and scrolling only. Musical advancement belongs to practice.
-namespace PianoTrainerScoreViewport {
+export namespace PianoTrainerScoreViewport {
     export interface Elements {
         area: HTMLElement; wrapper: HTMLElement;
         layout: HTMLSelectElement; autoScroll: HTMLInputElement;

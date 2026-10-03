@@ -5,6 +5,7 @@ const root = path.resolve(__dirname, '..');
 function sourceFiles(directory) {
     return fs.readdirSync(path.join(root, directory), {withFileTypes:true}).flatMap(entry => {
         const file = `${directory}/${entry.name}`;
+        if (file === 'src/testing') return [];
         return entry.isDirectory() ? sourceFiles(file) : file.endsWith('.ts') ? [file] : [];
     });
 }

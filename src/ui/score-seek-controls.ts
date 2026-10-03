@@ -1,4 +1,5 @@
-namespace PianoTrainerScoreSeekControls {
+import {PianoTrainerControlDom} from './controls-dom';
+export namespace PianoTrainerScoreSeekControls {
     export interface Ports {document: Document; seek(x: number, y: number): void;}
     export function create(ports: Ports) {
         const dom = PianoTrainerControlDom.create(ports.document);

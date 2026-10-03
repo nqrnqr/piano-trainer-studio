@@ -1,5 +1,7 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerMusicXmlIO} from '../score/musicxml-io';
 // One-shot native file reads. Explicit disposal aborts only this service's readers.
-namespace PianoTrainerScoreFileReader {
+export namespace PianoTrainerScoreFileReader {
     export interface Ports {
         createReader(): FileReader;
         format: Pick<PianoTrainerMusicXmlIO.Service, 'getScoreFileTypeFromName' | 'getScoreDisplayTitle'>;

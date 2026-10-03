@@ -1,5 +1,8 @@
+import {PianoTrainerHandRouting} from '../domain/hand-routing';
+import {LegacyAppState} from '../state/model';
+import {PianoTrainerControlDom} from './controls-dom';
 // Native practice controls issue commands and retain the existing mode UI rules.
-namespace PianoTrainerPracticeControls {
+export namespace PianoTrainerPracticeControls {
     export type State = Pick<LegacyAppState, 'mode' | 'practice' | 'playback' | 'isPlaying' | 'countInActive' |
         'feedbackEnabled' | 'futurePreviewEnabled' | 'futurePreviewDepth' | 'correctHighlightEnabled' |
         'lastLedPreviewEvents' | 'fullscreenOnPlay' | 'lowLatencyPlaybackEnabled' | 'audioEnabled' | 'midiOutEnabled'>;

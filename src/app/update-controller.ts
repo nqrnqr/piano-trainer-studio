@@ -1,5 +1,7 @@
+import {PianoTrainerVersion} from '../domain/version';
+import {LegacyAppState} from '../state/model';
 // Preserve update checks/navigation order; explicit disposal aborts only owned requests.
-namespace PianoTrainerUpdateController {
+export namespace PianoTrainerUpdateController {
     export interface Ports {
         state: Pick<LegacyAppState, 'updateManifestUrl' | 'updateLastCheckedAt' | 'updateInfo' | 'updateStatus'>;
         version: string;

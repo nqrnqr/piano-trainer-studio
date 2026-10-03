@@ -1,5 +1,6 @@
+
 // Own the original MembraneSynth without allocating a node during composition.
-namespace PianoTrainerMetronomeOutput {
+export namespace PianoTrainerMetronomeOutput {
     export interface Ports { tone: Pick<PianoTrainerToneVendor.Api, 'MembraneSynth'>; }
     export function create(ports: Ports) {
         let synth: PianoTrainerToneVendor.MembraneVoice | null = null;

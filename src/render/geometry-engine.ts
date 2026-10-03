@@ -1,6 +1,10 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerLoopOverlay} from './loop-overlay';
+import {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
+import {LegacyAppState} from '../state/model';
 // Stabilized notehead selection. Preserve candidate order, constants, dot rejection
 // and chord cluster precedence; geometry does not decide matching or scoring.
-namespace PianoTrainerGeometry {
+export namespace PianoTrainerGeometry {
     export interface Anchor extends PianoTrainerDomain.SvgPoint {
         measureIndex: number;
         staffIndex: number;

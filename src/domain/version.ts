@@ -1,5 +1,6 @@
+
 // Preserve the application's loose version comparison, including coercion/fallbacks.
-namespace PianoTrainerVersion {
+export namespace PianoTrainerVersion {
     export function compareSemverLoose(a: unknown, b: unknown) {
         const parse = (value: unknown) => String(value || '')
             .trim()

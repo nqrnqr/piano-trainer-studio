@@ -1,4 +1,6 @@
-namespace PianoTrainerScoreStatus {
+import {LegacyAppState} from '../state/model';
+import {PianoTrainerControlDom} from './controls-dom';
+export namespace PianoTrainerScoreStatus {
     export function create(document: Document, getScore: () => Readonly<LegacyAppState['score']>) {
         const dom = PianoTrainerControlDom.create(document);
         function update() {

@@ -1,5 +1,7 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerWebmscoreAdapter} from './webmscore-adapter';
 // Existing conversion dispatch/export order. Ordinary finally keeps vendor soft destroy.
-namespace PianoTrainerScoreConversion {
+export namespace PianoTrainerScoreConversion {
     const FORMATS: Readonly<Record<string,string>>=Object.freeze({'.mid':'midi','.midi':'midi','.mscz':'mscz','.mscx':'mscx',
         '.gp':'gp','.gp3':'gp3','.gp4':'gp4','.gp5':'gp5','.gpx':'gpx','.gtp':'gtp','.ptb':'ptb'});
     export interface Ports {

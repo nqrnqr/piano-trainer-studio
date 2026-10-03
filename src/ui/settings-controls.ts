@@ -1,5 +1,6 @@
+import {PianoTrainerSettingsBackup} from '../state/settings-backup';
 // Settings commands keep ordinary file/dialog behavior; disposal owns readers and downloads.
-namespace PianoTrainerSettingsFiles {
+export namespace PianoTrainerSettingsFiles {
     export interface Ports {
         document: Document;
         createReader(): FileReader;

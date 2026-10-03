@@ -1,5 +1,7 @@
+import {PianoTrainerTransposeController} from '../score/transpose-controller';
+import {PianoTrainerTransposeEngine} from '../score/transpose-engine';
 // Transpose DOM IDs, input values and one owned set of native listeners.
-namespace PianoTrainerTransposeControls {
+export namespace PianoTrainerTransposeControls {
     export interface Ports {
         document: Document; commands: PianoTrainerTransposeController.Service;
         getEngine(): typeof PianoTrainerTransposeEngine | undefined;

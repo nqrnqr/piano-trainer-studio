@@ -22,7 +22,18 @@ function harness() {
     h.context.window.location={hostname:'127.0.0.1',protocol:'http:',href:'http://127.0.0.1:8081/index.html?led=off#score',
         replace:url=>replaced.push(url),reload:()=>replaced.push('reload')};
     h.context.window.history={replaceState(){}};
-    for(const file of ['ui/controls-dom','ui/permission-help','ui/connection-status','domain/version','app/update-controller','ui/update-controls','compatibility/device-controls']) runScript(h.context,`js/generated/${file}.js`);
+    for(const file of ['ui/controls-dom','ui/permission-help','ui/connection-status','domain/version','app/update-controller','ui/update-controls']) runScript(h.context,`js/generated/${file}.js`);
+    const api=h.context,keys=api.PREFERENCE_STORAGE_KEYS;
+    const connection=api.PianoTrainerConnectionStatus.create({document:api.document,state:h.state,
+        getPort:api.getLegacyMidiPort,syncMidiOutChannelVisibility:api.syncMidiOutChannelVisibility,syncWledStatus:api.syncWledStatus});
+    const controller=api.PianoTrainerUpdateController.create({state:h.state,version:api.APP_VERSION,releaseUrl:api.UPDATE_RELEASES_URL,
+        manifestUrl:api.UPDATE_MANIFEST_URL,storage:h.localStorage,keys:{assetOverride:keys.ASSET_VERSION_OVERRIDE_STORAGE_KEY,manifestUrl:keys.UPDATE_MANIFEST_URL_STORAGE_KEY},
+        location:api.window.location,replaceHistory:()=>{},fetch:(...args)=>api.fetch(...args),createAbortController:()=>new AbortController(),nowMs:()=>Date.now(),
+        getErrorMessage:api.getUnknownErrorMessage,setChecking:()=>ui.setChecking(),syncControls:()=>ui.syncUpdateControls()});
+    const ui=api.PianoTrainerUpdateControls.create({document:api.document,state:h.state,version:api.APP_VERSION,commands:controller,
+        open(){},alert(){},confirm:()=>false});
+    Object.assign(api,{updateConnectionStatuses:connection.updateConnectionStatuses,checkForUpdates:controller.checkForUpdates,
+        compareSemverLoose:api.PianoTrainerVersion.compareSemverLoose});
     h.state.updateManifestUrl='/manifest.json';
     return {...h,elements,button,replaced};
 }

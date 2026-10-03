@@ -2,7 +2,7 @@
  * Centralized timing math for score traversal and playback scheduling.
  * Time calculations only; no cursor rendering, feedback anchors or UI.
  */
-namespace PianoTrainerTiming {
+export namespace PianoTrainerTiming {
     // Aliases document units; they do not enforce nominal unit separation.
     export type WholeNoteTime = number;
     export type QuarterNoteBeats = number;
@@ -32,15 +32,10 @@ namespace PianoTrainerTiming {
         getRemainingMeasureWaitWhole(options?: RemainingMeasureWaitOptions): WholeNoteTime;
         getTraversalBeatsToWait(options?: TraversalWaitOptions): QuarterNoteBeats;
     }
-}
-
-// Legacy startup assembles this object synchronously before any consumers run.
-// This assertion is confined to the initially empty namespace, not input data.
-window.PTTiming = window.PTTiming || {} as PianoTrainerTiming.Api;
 
 // CRITICAL: Repeats / ending skips use the playable remainder of the current
 // measure, preserving the legacy comparisons, defaults and returned units.
-window.PTTiming.getRemainingMeasureWaitWhole = function getRemainingMeasureWaitWhole(options: PianoTrainerTiming.RemainingMeasureWaitOptions = {}) {
+export function getRemainingMeasureWaitWhole(options: PianoTrainerTiming.RemainingMeasureWaitOptions = {}) {
     const {
         currentMeasureIdx,
         currentTimestamp,
@@ -68,9 +63,9 @@ window.PTTiming.getRemainingMeasureWaitWhole = function getRemainingMeasureWaitW
     }
 
     return Math.max(1e-6, remainingWhole);
-};
+}
 
-window.PTTiming.getTraversalBeatsToWait = function getTraversalBeatsToWait(options: PianoTrainerTiming.TraversalWaitOptions = {}) {
+export function getTraversalBeatsToWait(options: PianoTrainerTiming.TraversalWaitOptions = {}) {
     const {
         currentMeasureIdx,
         currentTimestamp,
@@ -80,7 +75,7 @@ window.PTTiming.getTraversalBeatsToWait = function getTraversalBeatsToWait(optio
         getMeasureTimingInfo
     } = options;
 
-    const remainingMeasureWhole = window.PTTiming.getRemainingMeasureWaitWhole({
+    const remainingMeasureWhole = getRemainingMeasureWaitWhole({
         currentMeasureIdx,
         currentTimestamp,
         fallbackLength,
@@ -97,4 +92,6 @@ window.PTTiming.getTraversalBeatsToWait = function getTraversalBeatsToWait(optio
     }
 
     return (nextTimestamp! - currentTimestamp!) * 4;
-};
+}
+
+}

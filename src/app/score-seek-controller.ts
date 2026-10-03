@@ -1,5 +1,7 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {LegacyAppState} from '../state/model';
 // Seek the first matching measure along the existing real iterator traversal.
-namespace PianoTrainerScoreSeek {
+export namespace PianoTrainerScoreSeek {
     export interface Box {x: number; y: number; width: number; height: number;}
     export interface Ports {
         state: Pick<LegacyAppState, 'isPlaying' | 'looper'>;

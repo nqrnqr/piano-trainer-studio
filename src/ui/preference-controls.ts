@@ -1,5 +1,10 @@
+import {PianoTrainerHandRouting} from '../domain/hand-routing';
+import {PianoTrainerDomain} from '../domain/model';
+import {LegacyAppState} from '../state/model';
+import {PREFERENCE_STORAGE_KEYS} from '../state/preference-keys';
+import {PianoTrainerControlDom} from './controls-dom';
 // Persisted preference orchestration retains command and native change-event order.
-namespace PianoTrainerPreferenceControls {
+export namespace PianoTrainerPreferenceControls {
     export type State = Pick<LegacyAppState, 'mode' | 'modeSettings' | 'practice' | 'playback' |
         'audioEnabled' | 'midiOutEnabled' | 'midiOutVolume' | 'midiInBoost' | 'inputVelocityEnabled' |
         'liveLowLatencyMonitoringEnabled' | 'visualPulseEnabled' | 'accentedDownbeatEnabled' |

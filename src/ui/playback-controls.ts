@@ -1,5 +1,6 @@
+
 // DOM reads stay at the UI boundary. Factories do not bind listeners.
-namespace PianoTrainerPlaybackControls {
+export namespace PianoTrainerPlaybackControls {
     export interface Ports {getElement(id: string): HTMLElement | null;}
     export function create(ports: Ports) {
         function input(id: string) {

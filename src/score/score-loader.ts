@@ -1,5 +1,8 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerMusicXmlIO} from './musicxml-io';
+import {LegacyAppState} from '../state/model';
 // Preserve load effects and promise completion. Raw MXL remains the render source.
-namespace PianoTrainerScoreLoader {
+export namespace PianoTrainerScoreLoader {
     export type State = Pick<LegacyAppState, 'ledPreviewTimeline' | 'ledPreviewTimelineDirty' | 'ledPreviewTraversalIndex' |
         'lastLedPreviewEvents' | 'currentScoreData' | 'currentScoreOriginalData' | 'currentScoreFileName' |
         'currentScoreOriginalFileName' | 'currentScoreFileType' | 'currentScoreOriginalFileType' | 'currentScoreLibraryId' | 'currentScoreTitle'>;
@@ -13,11 +16,16 @@ namespace PianoTrainerScoreLoader {
     }
     export function create(ports: Ports) {
         const state = ports.state, format = ports.format;
+        let disposed = false;
+        function assertActive() {
+            if (disposed) throw new DOMException('Score loading disposed.', 'AbortError');
+        }
         async function loadScoreIntoApp(rawData: PianoTrainerDomain.ScoreRawData, {
             fileName = 'Untitled Score', fileType = 'xml', libraryScoreId = null, title = null,
             originalRawData = undefined, originalFileName = undefined, originalFileType = undefined, skipTransposeReset = false
         }: PianoTrainerDomain.ScoreLoadOptions = {}) {
             try {
+                assertActive();
                 ports.resetPlayback();
                 if (!skipTransposeReset) ports.resetTempo();
                 const resolvedOriginalRawData = originalRawData !== undefined ? originalRawData : rawData;
@@ -28,8 +36,10 @@ namespace PianoTrainerScoreLoader {
                 const canonicalOriginalMusicXml = await format.getCanonicalMusicXmlForTranspose(transposeSourceRawData, {
                     fileName: resolvedOriginalFileName, fileType: resolvedOriginalFileType
                 });
+                assertActive();
                 const osmdLoadPayload = format.getOsmdLoadPayload(osmdSourceRawData, fileType, fileName);
                 await ports.score.load(osmdLoadPayload);
+                assertActive();
                 ports.render();
                 ports.initSongUI();
                 if (ports.score.hasCursor()) {
@@ -50,15 +60,18 @@ namespace PianoTrainerScoreLoader {
                 const library = libraryScoreId ? ports.getLibrary() : undefined;
                 if (libraryScoreId && library) {
                     await library.markScoreOpened(libraryScoreId);
+                    assertActive();
                     await ports.refreshLibrary();
+                    assertActive();
                 }
                 ports.notifyTranspose(skipTransposeReset);
                 ports.success();
             } catch (error) {
-                ports.reportError(error);
+                if (!disposed) ports.reportError(error);
                 throw error;
             }
         }
-        return {loadScoreIntoApp};
+        function dispose() { disposed = true; }
+        return {loadScoreIntoApp, dispose};
     }
 }

@@ -116,7 +116,8 @@ test('settings do not replace the shared state, Map or Set identities', () => {
 test('mode-specific routing keeps independent objects and Follow chooses exactly one practice hand', () => {
     const h = stateHarness();
     runScript(h.context, 'js/generated/domain/hand-routing.js');
-    runScript(h.context, 'js/generated/compatibility/hand-routing.js');
+    h.context.handRouting = h.context.PianoTrainerHandRouting.create(h.state);
+    h.context.syncActiveHandStateFromMode = h.context.handRouting.syncActiveHandStateFromMode;
     h.state.mode = 'follow';
     h.evaluate("handRouting.setFollowPracticeHand('left')");
     assert.equal(h.state.practice.left, true);
@@ -144,7 +145,15 @@ test('persisted display layout restores after recreating the display module', ()
             return elements.get(id);
         } };
         h.context.osmd = { EngravingRules: {}, cursor: null, setOptions() {}, IsReadyToRender: () => false };
-        for(const file of ['score/osmd-adapter','render/score-viewport','render/score-renderer','compatibility/score-rendering'])runScript(h.context,`js/generated/${file}.js`);
+        for(const file of ['score/osmd-adapter','render/score-viewport'])runScript(h.context,`js/generated/${file}.js`);
+        const adapter = h.context.PianoTrainerOsmdAdapter.create({getRenderer:()=>h.context.osmd,
+            describeNote:()=>({}),describeGraphicalNote:()=>({}),debugLog(){},reportError(){}});
+        h.context.ScoreDisplay = h.context.PianoTrainerScoreViewport.create({
+            elements:{area:h.context.document.getElementById('music-area'),wrapper:h.context.document.getElementById('canvas-wrapper'),
+                layout:h.context.document.getElementById('select-score-layout'),autoScroll:h.context.document.getElementById('check-autoscroll')},
+            score:adapter,state:h.state,storage:h.localStorage,storageKey:'pt_scoreLayout',getSvg:()=>null,getAnchor:()=>null,
+            clearFeedbackPreserveScoring(){},renderScoreAndRefreshGeometry(){},requestFrame:()=>1,cancelFrame(){},prefersReducedMotion:()=>false
+        });
         h.evaluate('ScoreDisplay.init()');
         assert.equal(h.evaluate('ScoreDisplay.isHorizontal()'), true);
         assert.equal(elements.get('select-score-layout').value, 'horizontal');

@@ -1,5 +1,13 @@
+import {PianoTrainerAudioRouting} from '../audio/audio-routing';
+import {PianoTrainerMetronome} from '../audio/metronome';
+import {PianoTrainerPlaybackClock} from '../audio/playback-clock';
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerTiming} from '../domain/timing';
+import {PianoTrainerModePolicy} from './mode-policy';
+import {PianoTrainerPlaybackState} from './playback-state';
+import {LegacyAppState} from '../state/model';
 // One event loop. Pure policies decide mode rules; this factory owns effects.
-namespace PianoTrainerPlaybackCoordinator {
+export namespace PianoTrainerPlaybackCoordinator {
     export type State = Pick<LegacyAppState, 'mode' | 'isPlaying' | 'countInActive' | 'fullscreenOnPlay' |
         'baseBpm' | 'speedPercent' | 'lastLedPreviewEvents' | 'ledPreviewTraversalIndex' | 'pendingAudio' |
         'expectedNotes' | 'followAdvanceInfo' | 'anchorTime' | 'isAudioBusy' | 'currentExpectedContext' |

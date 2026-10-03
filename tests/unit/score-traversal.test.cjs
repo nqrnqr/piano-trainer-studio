@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const vm = require('node:vm');
-const {runScript, runFunction} = require('../helpers/legacy-script.cjs');
+const {runScript} = require('../helpers/legacy-script.cjs');
 
 function harness(events, {practice = {left:true, right:true}, range = [21,108]} = {}) {
     const context = vm.createContext({});
@@ -123,7 +123,7 @@ test('single-hand early input uses shared timeline with no LED globals or output
         state: h.state, getTimeline: h.service.ensurePreviewTimelineBuilt,
         findTimelineIndex: h.api.findMatchingTimelineIndex,
         getHandRole: h.context.getAssignedHandRoleForStaff, isPracticeHandEnabled: staff => staff === 1,
-        getBeatsToWait: h.context.window.PTTiming.getTraversalBeatsToWait,
+        getBeatsToWait: h.context.PianoTrainerTiming.getTraversalBeatsToWait,
         getMeasureTimingInfo: h.context.getMeasureTimingInfo
     });
     const reservation = early.tryReserveSingleHandEarlyGrace(60);

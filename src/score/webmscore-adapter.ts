@@ -1,5 +1,6 @@
+
 // Browser script/ready boundary for the bundled converter. No load at factory creation.
-namespace PianoTrainerWebmscoreAdapter {
+export namespace PianoTrainerWebmscoreAdapter {
     export const SCRIPT_URL='assets/vendor/webmscore/webmscore.js';
     export interface Ports {document: Document; getVendor(): PianoTrainerWebmscoreVendor.Engine | undefined;}
     function bufferLike(data: unknown) {

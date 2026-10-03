@@ -73,6 +73,26 @@ test('library failure occurs after new score state writes and does not notify su
  assert.equal(h.state.currentScoreData,'new');assert.equal(h.events.at(-1)[1],error);assert.equal(h.events.includes('success'),false);
 });
 
+for (const phase of ['canonical source', 'vendor load', 'library refresh']) {
+ test(`application dispose prevents pending ${phase} from rendering or committing late effects`,async()=>{
+  let finish, entered=false;
+  const pendingStage=new Promise(resolve=>finish=resolve);
+  const h=harness({library:{markScoreOpened:async()=>{}}});
+  if(phase==='canonical source')h.format.getCanonicalMusicXmlForTranspose=async()=>{entered=true;await pendingStage;return '<canonical/>';};
+  if(phase==='vendor load')h.ports.score.load=async()=>{entered=true;await pendingStage;};
+  if(phase==='library refresh')h.ports.refreshLibrary=async()=>{entered=true;await pendingStage;};
+  const command=h.service.loadScoreIntoApp('<new/>',{libraryScoreId:'id'});
+  const rejected=assert.rejects(command,{name:'AbortError'});
+  await new Promise(resolve=>setImmediate(resolve));assert.equal(entered,true);
+  const events=h.events.slice(),state=JSON.stringify(h.state);
+  h.service.dispose();h.service.dispose();finish();await rejected;
+  assert.deepEqual(h.events,events);assert.equal(JSON.stringify(h.state),state);
+  await assert.rejects(h.service.loadScoreIntoApp('<late/>'),{name:'AbortError'});
+  assert.deepEqual(h.events,events);
+  const fresh=harness();await fresh.service.loadScoreIntoApp('<fresh/>');assert.equal(fresh.state.currentScoreData,'<fresh/>');
+ });
+}
+
 class Reader {
  result=null;error=null;mode=null;aborts=0;
  readAsText(file){this.mode='text';this.file=file;}

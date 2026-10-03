@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8"><title>Module bootstrap checks</title>
+<style>body{font:14px system-ui;margin:12px}pre{white-space:pre-wrap;max-height:360px;overflow:auto}iframe{width:1200px;height:450px}</style>
+<h1>Module bootstrap checks</h1><p>Separate test bundle, native OSMD/input, copied snapshots and owned resources.</p>
+<button disabled>Run checks</button><pre id="results">Loading</pre><iframe title="App under test"></iframe>
+<script>
+const frame=document.querySelector('iframe'),button=document.querySelector('button');
+frame.onload=()=>{button.disabled=false;document.getElementById('results').textContent='Ready';};
+button.onclick=()=>{button.disabled=true;const script=document.createElement('script');script.src='/docs/testing/bootstrap-baseline.integration.js';frame.contentDocument.body.append(script);};
+(async()=>{const html=await(await fetch('/index.html')).text(),boot=new URLSearchParams(location.search).get('led')==='off'?'<script>window.__PT_BOOT_OPTIONS__={ledEnabled:false};<'+'/script>':'';
+if(!html.includes('js/generated/app.js'))throw Error('Missing production module entry');
+frame.srcdoc=html.replace('js/generated/app.js','docs/testing/generated/test-app.js').replace('<head>','<head><base href="/">'+boot+'<script src="/docs/testing/library-fixture.js"><'+'/script><script>localStorage.setItem("pt_firstRunIntroSeen","true");<'+'/script><script src="/docs/testing/bootstrap-fixture.js"><'+'/script>');})();
+</script>

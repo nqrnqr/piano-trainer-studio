@@ -2,3 +2,4 @@
 src/**/*.ts text eol=lf
 types/**/*.d.ts text eol=lf
 js/generated/** text eol=lf
+docs/testing/generated/** text eol=lf

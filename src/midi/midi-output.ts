@@ -1,5 +1,6 @@
+import {PianoTrainerMidiService} from './midi-service';
 // One implementation: preserve the later legacy core's effective MIDI behavior.
-namespace PianoTrainerMidiOutput {
+export namespace PianoTrainerMidiOutput {
     export interface Ports {
         getOutput(): PianoTrainerMidiService.Output | null;
         getChannel(): number;

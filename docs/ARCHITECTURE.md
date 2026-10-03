@@ -3,18 +3,18 @@
 ## Current structure
 - `/assets/js` = local third-party vendor libraries kept separate for offline use
 - `/assets/audio` = static audio assets such as Salamander samples
-- `/js` = extracted app modules with focused ownership
-- `/src` = migrated TypeScript source; `/js/generated` = committed classic-script output and embedded source maps
-- `trainer-core.js` = original startup order only; typed factories own score data, input, render and playback coordination
+- `/src` = TypeScript ES modules with explicit imports/exports; `/js/generated/app.js` and its embedded-source map are the committed production bundle
+- `src/main.ts` starts one application; `src/app/services.ts` owns service composition, original initialization order and final disposal
+- `src/app/bootstrap.ts` exposes application lifecycle, score loading and input commands; business state and vendor instances remain private
 - `/docs` = architecture notes and development notes
 
 ## Current modules
-- `src/state/app-state.ts`, `preference-keys.ts`, `preferences.ts`, `settings-backup.ts` = typed shared state, canonical settings keys, persistence and backup format; generated classic scripts retain the original lexical bindings
+- `src/state/model.ts`, `app-state.ts`, `preference-keys.ts`, `preferences.ts`, `settings-backup.ts` = instance state, canonical settings keys, explicit persistence startup and unchanged backup format
 - `src/ui/settings-controls.ts` = settings download, FileReader import, alert and reload boundary with owned-reader/link/URL disposal
 - `src/domain/playable-range.ts` / `src/state/player-range.ts` = hardware-independent keyboard range math and shared range cache used by input grading and previews
 - `src/ui/player-range-controls.ts`, `connection-status.ts` = native range selection/filtering commands and read-only MIDI/LED status presentation
 - `src/domain/version.ts`, `src/app/update-controller.ts`, `src/ui/update-controls.ts` = loose version comparison, update request/navigation ownership and native button display; explicit disposal aborts owned pending checks
-- `src/domain/timing.ts` → `js/generated/domain/timing.js` = shared timing math for traversal waits, measure remainder checks, and playback scheduling inputs
+- `src/domain/timing.ts` = pure exported timing math for traversal waits, measure remainder checks, and playback scheduling inputs
 - `src/score/osmd-adapter.ts` = OSMD graph access, revision-scoped NoteRef registry, private iterator snapshot and painted cursor restoration
 - `src/render/score-viewport.ts`, `score-renderer.ts` = layout/scroll ownership and the unchanged render lifecycle
 - `src/render/geometry-engine.ts`, `feedback-overlay.ts`, `loop-overlay.ts` = stabilized notehead anchors and independent SVG layers
@@ -22,7 +22,7 @@
 - `src/ui/toolbar.ts` = native toolbar/menu/first-run shell and owned transitions; old toolbar-ui.js is removed
 - `src/ui/controls-dom.ts`, `display-controls.ts`, `tempo-controls.ts`, `audio-level-controls.ts`, `loop-controls.ts` = typed DOM access, fullscreen/Play/Reset/zoom/resize, speed/metronome, numeric audio levels and loop range/hold resources
 - `src/score/musicxml-io.ts`, `score-loader.ts`, `score-conversion.ts`, `webmscore-adapter.ts`, `transpose-*.ts` = score data, native loading, conversion and transpose boundaries
-- `src/domain/library.ts`, `library-view.ts`, `src/score/library-backup.ts`, `score-library.ts` = v1 library records, filtering, backup and IndexedDB repository
+- `src/domain/model.ts`, `library-view.ts`, `src/score/library-backup.ts`, `score-library.ts` = domain/v1 library records, filtering, backup and IndexedDB repository
 - `src/ui/library-controls-state.ts`, `library-dialogs.ts`, `library-actions.ts`, `library-list.ts`, `scores-drawer.ts` = selection, native dialogs, library commands, rows and responsive drawer; old scores-ui.js and score-library.js are removed
 - `js/led.js` = LED simulator, calibration, and hardware/WLED output
 - `src/midi/*.ts`, `src/ui/midi-controls.ts` = Web MIDI decoding, service, output and device controls; old js/midi.js is removed
@@ -34,14 +34,15 @@
 - `src/domain/keyboard-state.ts`, `src/app/keyboard-controller.ts`, `src/render/virtual-keyboard.ts` = key-state priority, sustain/preview/output coordination and native key presentation
 - `src/ui/virtual-keyboard-controls.ts`, `score-seek-controls.ts`, `score-status.ts` = owned pointer/mouse/touch/activation events, native score clicks and score percentage
 - `src/app/score-seek-controller.ts`, `score-ui-controller.ts` = real-iterator seeking and loaded-score metadata/UI commands; staff identity stays inside the OSMD adapter
-- `trainer-core.js` = remaining startup sequence; classic composition moves into bootstrap at P9
+- Former `trainer-core.js`, classic compatibility modules and ambient business globals have been removed. Only vendor/version boundaries and two parameterized optional LED factories remain public.
+- `src/testing/main.ts` builds a separate test bundle with copied observations and narrow commands. Production does not contain this facade. Original browser suites still require migration; P9 is not complete.
 
 
 ## Timing module boundary
-- `src/domain/timing.ts` is shared infrastructure for all practice modes, exposing the existing `window.PTTiming` API through generated classic JS
+- `src/domain/timing.ts` is shared infrastructure imported by all practice modes; it publishes no Window API
 - It answers **how long** structural traversal should wait
 - It must not directly move the cursor, render feedback, or update UI
-- `src/practice/playback-coordinator.ts` is the single orchestrator that decides **when** each mode advances; P7b will extract policies from its existing branches
+- `src/practice/playback-coordinator.ts` is the single orchestrator that decides **when** each mode advances; mode decisions live in `practice/mode-policy.ts`
 - Realtime structural jumps should use current-measure remainder timing instead of first-note fallbacks or raw iterator deltas
 - Edit the TS source, run `npm run build`, and commit both JS and map. `npm run check` validates types, generated output, and Node behavior tests. See `docs/refactor/DEVELOPMENT.md` for the staged migration and browser checks.
 
@@ -55,15 +56,16 @@ has no DOM, vendor object or audio clock access. Ties remain an adapter concern,
 rest/continuation, hand and range filtering remain explicit in expected-notes.
 Same-staff pitch merging and cross-staff identities retain their original rules. Feedback records
 belong to practice; SVG overlays only draw them. Sustain timers still use the original shared
-activeTimeouts cancellation list; playback-state cancels that list only on original visual cleanup. Classic assembly and forwards
-live in `src/compatibility/practice.ts` and will move into bootstrap at P9.
+activeTimeouts cancellation list; playback-state cancels that list only on original visual cleanup.
+The sustain service also owns its native timers, so final application disposal cancels survivors and
+invalidates captured callbacks. Assembly lives in `src/app/services.ts` without global forwards.
 
 ## Playback coordination boundary
 
 The coordinator reads lazy domain PlaybackEvent data and numeric traversal observations from the OSMD
 adapter; only the adapter moves or paints the real iterator. Event entries stay captured while the
 iterator prefetches the next event. Painted snapshots remain private to the adapter and viewport.
-Classic playback composition temporarily passes captured entries back to the legacy keyboard at that
+Explicit playback composition passes captured entries to the typed keyboard controller at that
 boundary; vendor objects do not enter practice. State flags, Follow comfort rules, real repeats and
 timer ordering retain their existing meanings.
 

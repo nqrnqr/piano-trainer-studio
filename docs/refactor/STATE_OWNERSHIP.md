@@ -1,7 +1,13 @@
 # 共享状态的迁移契约与所有权
 
-P2 保留一个 `const AppState` 词法对象。Map/Set 泛型、null 和动态字段按实际代码建模；
-`types/legacy-state.d.ts` 不能当作所有旧 JS 已完成严格检查的证明。旧消费者逐阶段迁移。
+P9e（2026-10-04）：`state/model.ts` 定义状态端口，`state/app-state.ts` 分配每个应用的
+fresh state。`AppState` 是 `app/services.ts` 内部实例变量，服务只接收各自窄端口；
+没有词法全局或 Window 状态。旧 ambient state 声明已删除，模块与测试入口分别严格检查。
+以下阶段说明保留迁移历史，当前唯一组成与生命周期入口见 [DEVELOPMENT.md](DEVELOPMENT.md)。
+
+最终 dispose 先使 score-loader 的 pending canonical/vendor/library awaits 失效，再释放
+各自服务资源；普通换谱/并发完成顺序保持。sustain-state 独立拥有 native timers，
+与原 activeTimeouts 视觉清理列表同时保持正确取消语义，结束后旧回调不能影响新实例。
 
 直接写入清单见 [STATE_WRITES.md](STATE_WRITES.md)。生成脚本使用 TypeScript AST 收集赋值、
 增减、Map/Set 与数组变更；经由别名的变更需人工审阅，主要如下。

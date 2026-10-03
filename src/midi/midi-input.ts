@@ -1,5 +1,6 @@
+import {PianoTrainerDomain} from '../domain/model';
 // Protocol parsing and echo filtering have no DOM or device dependencies.
-namespace PianoTrainerMidiInput {
+export namespace PianoTrainerMidiInput {
     export function decode(data: ArrayLike<number> | null, selectedChannel: number, receivedAtMs: number): PianoTrainerDomain.TrainerNoteInput | null {
         if (!data) return null;
         const status = data[0];

@@ -5,7 +5,7 @@ const { runScript } = require('../helpers/legacy-script.cjs');
 
 const context = vm.createContext({ window: {} });
 runScript(context, process.env.PT_TIMING_SCRIPT || 'js/generated/domain/timing.js');
-const timing = context.window.PTTiming;
+const timing = context.PianoTrainerTiming;
 const measure = { startTimestamp: 4, actualLengthWhole: 1, nominalMeasureLengthWhole: 1 };
 const options = {
     currentMeasureIdx: 4, currentTimestamp: 4.75,
@@ -60,10 +60,12 @@ test('callback receives current measure index, including omitted index', () => {
     assert.deepEqual(indices, [4, undefined]);
 });
 
-test('classic script reuses an existing namespace', () => {
+test('timing module does not publish or overwrite a Window namespace', () => {
     const existing = { sentinel: 42 };
     const other = vm.createContext({ window: { PTTiming: existing } });
     runScript(other, process.env.PT_TIMING_SCRIPT || 'js/generated/domain/timing.js');
     assert.equal(other.window.PTTiming, existing);
     assert.equal(existing.sentinel, 42);
+    assert.notEqual(other.PianoTrainerTiming, existing);
+    assert.equal(other.PianoTrainerTiming.getRemainingMeasureWaitWhole(), 1);
 });

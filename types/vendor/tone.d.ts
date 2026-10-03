@@ -1,6 +1,8 @@
+
+declare global {
 // Minimal used surface of the bundled Tone 14.8.49. Do not model internal nodes
 // or widen the vendor to any; unsupported return values are deliberately unused.
-declare namespace PianoTrainerToneVendor {
+namespace PianoTrainerToneVendor {
     interface Context {
         state: AudioContextState;
         resume(): Promise<unknown>;
@@ -56,4 +58,7 @@ declare namespace PianoTrainerToneVendor {
         MembraneSynth: new (options: MembraneOptions) => MembraneVoice;
     }
 }
-declare const Tone: PianoTrainerToneVendor.Api;
+const Tone: PianoTrainerToneVendor.Api;
+
+}
+export {};

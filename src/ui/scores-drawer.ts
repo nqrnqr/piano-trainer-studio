@@ -1,5 +1,10 @@
+import {PianoTrainerLibraryView} from '../domain/library-view';
+import {PianoTrainerScoreLibrary} from '../score/score-library';
+import {PianoTrainerLibraryActions} from './library-actions';
+import {PianoTrainerLibraryControlsState} from './library-controls-state';
+import {PianoTrainerLibraryList} from './library-list';
 // Existing score-library UI; native DOM and commands are isolated from practice.
-namespace PianoTrainerScoresDrawer {
+export namespace PianoTrainerScoresDrawer {
     export interface Toolbar {
         closeToolbarPanel(panel: HTMLElement): void;
         showToolbarPanel(panel: HTMLElement): void;
@@ -18,6 +23,7 @@ namespace PianoTrainerScoresDrawer {
         reportWarning(message: string, error: unknown): void;
         actions: PianoTrainerLibraryActions.Service;
         positionScoresPanel(): void;
+        openScoreFilePicker(): void;
     }
     export function create(ports: Ports) {
         const document = ports.document;
@@ -299,10 +305,7 @@ namespace PianoTrainerScoresDrawer {
             initialized = true;
             const btnOpen = optional('btn-scores-open-file', HTMLButtonElement), btnImport = optional('btn-scores-import-files', HTMLButtonElement), btnSave = optional('btn-scores-save-current', HTMLButtonElement), btnExport = optional('btn-scores-export-library', HTMLButtonElement), btnBackup = optional('btn-scores-import-library', HTMLButtonElement), input = optional('score-import-input', HTMLInputElement), backup = optional('library-backup-input', HTMLInputElement);
             bind(btnOpen, 'click', 'boundScoresOpen', () => {
-                if (typeof ports.window.openScoreFilePicker === 'function')
-                    ports.window.openScoreFilePicker();
-                else
-                    ports.reportError('openScoreFilePicker is not available');
+                ports.openScoreFilePicker();
             });
             if (input)
                 bind(btnImport, 'click', 'boundScoresImport', openScoresImportPicker);

@@ -1,5 +1,6 @@
+import {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
 // The original render lifecycle. Call order is part of the visual contract.
-namespace PianoTrainerScoreRenderer {
+export namespace PianoTrainerScoreRenderer {
     export interface Ports {
         score: Pick<PianoTrainerOsmdAdapter.Service, 'isReady' | 'render'>;
         invalidateGeometry(): void;

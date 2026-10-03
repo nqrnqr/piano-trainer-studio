@@ -1,4 +1,13 @@
-# 经典脚本依赖与启动副作用
+# 模块入口与历史经典脚本依赖
+
+P9e（2026-10-04）：当前生产代码由 94 个实际 ES 模块组成，`main.ts` →
+`app/bootstrap.ts` → `app/services.ts` 显式创建并初始化服务。HTML 仅加载两个 optional LED
+工厂和一个 `js/generated/app.js`；不再加载经典 compatibility 或 trainer-core。
+`GLOBAL_SYMBOLS.json` 记录当前 imports/exports、三个应用槽位及四个运行时发布候选，
+没有重复函数定义。vendor、版本信息与 optional 工厂之外没有业务 Window 接口。
+测试 API 只在独立测试 bundle 中。当前开发说明见 [DEVELOPMENT.md](DEVELOPMENT.md)。
+
+以下为 P0–P9d 迁移期的历史记录，旧槽位与旧全局名不描述当前运行结构。
 
 记录日期：2026-10-02。P0 基线为 `be6d51c`；P1 仅替换 timing 槽位。
 

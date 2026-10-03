@@ -1,5 +1,6 @@
+import {PREFERENCE_STORAGE_KEYS} from './preference-keys';
 // Unknown JSON boundary and synchronous storage commands; no startup work on import.
-namespace PianoTrainerSettingsBackup {
+export namespace PianoTrainerSettingsBackup {
     export interface Ports {
         storage: Pick<Storage, 'getItem' | 'setItem'>;
         session: Pick<Storage, 'setItem'>;

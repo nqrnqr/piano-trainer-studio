@@ -5,20 +5,32 @@ const vm = require('node:vm');
 const root = path.resolve(__dirname, '../..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
+const modules = new WeakMap();
+function loadModule(context, file) {
+    let cache = modules.get(context);
+    if (!cache) { cache = new Map(); modules.set(context, cache); }
+    const absolute = path.resolve(file);
+    if (cache.has(absolute)) return cache.get(absolute).exports;
+    const module = {exports: {}};
+    cache.set(absolute, module);
+    const requireModule = name => {
+        if (!name.startsWith('.')) throw new Error(`Unexpected unit module dependency: ${name}`);
+        const dependency = path.resolve(path.dirname(absolute), name);
+        return loadModule(context, dependency.endsWith('.js') ? dependency : dependency + '.js');
+    };
+    const execute = vm.compileFunction(fs.readFileSync(absolute, 'utf8'), ['require', 'module', 'exports'], {
+        parsingContext: context, filename: path.relative(root, absolute)
+    });
+    execute(requireModule, module, module.exports);
+    return module.exports;
+}
 function runScript(context, file) {
-    vm.runInContext(read(file), context, { filename: file });
+    if (!file.startsWith('js/generated/')) return vm.runInContext(read(file), context, {filename: file});
+    let modulePath = file.slice('js/generated/'.length);
+    if (['domain/practice.js', 'domain/score.js', 'domain/library.js'].includes(modulePath)) modulePath = 'domain/model.js';
+    const exports = loadModule(context, path.join(root, '.cache/test-modules', modulePath));
+    Object.assign(context, exports);
+    return exports;
 }
 
-// These legacy declarations and their closing braces start at column zero.
-// Include only the original body, excluding subsequent startup side effects.
-function runFunction(context, file, name) {
-    const source = read(file);
-    const start = source.search(new RegExp(`^(?:async )?function ${name}\\(`, 'm'));
-    if (start < 0) throw new Error(`Missing ${name} in ${file}`);
-    const rest = source.slice(start);
-    const end = rest.search(/^}/m);
-    if (end < 0) throw new Error(`Missing closing brace for ${name} in ${file}`);
-    vm.runInContext(rest.slice(0, end + 1), context, { filename: `${file}#${name}` });
-}
-
-module.exports = { root, read, runScript, runFunction };
+module.exports = { root, read, runScript, loadModule };

@@ -1,5 +1,6 @@
+import {LegacyAppState} from '../state/model';
 // Loading coordinates score metadata and UI commands in the original order.
-namespace PianoTrainerScoreUiController {
+export namespace PianoTrainerScoreUiController {
     export interface Ports {
         state: Pick<LegacyAppState, 'baseBpm' | 'speedPercent' | 'score'>;
         rebuildStaffIdentity(): void;

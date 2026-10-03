@@ -1,5 +1,6 @@
+
 // Original pre-render MusicXML pitch/key transform; timing and engraving fields stay untouched.
-namespace PianoTrainerTransposeEngine {
+export namespace PianoTrainerTransposeEngine {
     export type Bias = 'sharp' | 'flat';
     export type KeyMode = 'major' | 'minor';
     interface Spelling {step: string; alter: number;}

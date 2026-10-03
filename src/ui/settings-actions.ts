@@ -1,5 +1,6 @@
+import {PianoTrainerControlDom} from './controls-dom';
 // Native settings buttons retain the existing file-command and confirmation flow.
-namespace PianoTrainerSettingsActions {
+export namespace PianoTrainerSettingsActions {
     export interface Ports {
         document: Document;
         downloadSettingsBackup(): void;

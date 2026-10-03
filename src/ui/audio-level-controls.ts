@@ -1,5 +1,7 @@
+import {LegacyAppState} from '../state/model';
+import {PianoTrainerControlDom} from './controls-dom';
 // User level/boost edits stay at the DOM/storage boundary; audio/MIDI receive numbers.
-namespace PianoTrainerAudioLevelControls {
+export namespace PianoTrainerAudioLevelControls {
     export type Preference='pianoVolume'|'midiOutVolume'|'midiInBoost'|'metroVolume';
     export interface Ports {
         document: Document;

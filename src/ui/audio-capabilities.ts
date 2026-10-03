@@ -1,5 +1,6 @@
+
 // Codec detection is a browser capability, outside the audio service.
-function getPreferredPianoSampleExtension() {
+export function getPreferredPianoSampleExtension() {
     try {
         const probe = document.createElement('audio');
         const oggSupport: string = typeof probe.canPlayType === 'function'

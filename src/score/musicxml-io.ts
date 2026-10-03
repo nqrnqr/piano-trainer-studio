@@ -1,5 +1,6 @@
+import {PianoTrainerDomain} from '../domain/model';
 // Original XML/MXL bytes and ZIP selection; normalization is only a transpose source.
-namespace PianoTrainerMusicXmlIO {
+export namespace PianoTrainerMusicXmlIO {
     export interface ZipEntry {fileName: string; compressionMethod: number; compressedSize: number; uncompressedSize: number; localHeaderOffset: number;}
     export interface Ports {
         getNormalizer(): ((rawData: PianoTrainerDomain.ScoreRawData, options: PianoTrainerDomain.ScoreLoadOptions) => Promise<string>) | null;

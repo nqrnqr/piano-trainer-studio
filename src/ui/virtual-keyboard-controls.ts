@@ -1,5 +1,6 @@
+import {PianoTrainerControlDom} from './controls-dom';
 // Pointer/mouse/touch input and browser audio activation share one owned lifetime.
-namespace PianoTrainerVirtualKeyboardControls {
+export namespace PianoTrainerVirtualKeyboardControls {
     export interface Ports {
         document: Document;
         window: Window;

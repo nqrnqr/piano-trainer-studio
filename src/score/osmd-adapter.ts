@@ -1,6 +1,8 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerScoreTraversal} from './score-traversal';
 // OSMD object identity, revision-scoped note references and painted cursor state.
 // Preserve the existing prototype/shallow-array snapshot and repeat state.
-namespace PianoTrainerOsmdAdapter {
+export namespace PianoTrainerOsmdAdapter {
     export interface LayoutDefaults { maximumWidth: number; options: PianoTrainerOsmdVendor.LayoutOptions; }
     export interface Ports {
         getRenderer(): PianoTrainerOsmdVendor.Renderer;

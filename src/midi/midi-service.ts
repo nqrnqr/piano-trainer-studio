@@ -1,5 +1,7 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {PianoTrainerMidiInput} from './midi-input';
 // Web MIDI is confined to this device boundary. UI and practice receive ports.
-namespace PianoTrainerMidiService {
+export namespace PianoTrainerMidiService {
     export interface Device { id: string; name: string | null; state: MIDIPortDeviceState; }
     export type Output = Pick<MIDIOutput, 'id' | 'name' | 'state' | 'send'>;
     export interface Ports {

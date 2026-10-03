@@ -1,5 +1,6 @@
+import {PianoTrainerScoreTraversal} from './score-traversal';
 // Moved from 1ec34ee without changing traversal, timing or cancellation rules.
-namespace PianoTrainerMeasureTiming {
+export namespace PianoTrainerMeasureTiming {
     export interface MeasureInfo {
         numerator: number; denominator: number; beatLengthWhole: number;
         nominalMeasureLengthWhole: number; actualLengthWhole: number; startTimestamp: number;

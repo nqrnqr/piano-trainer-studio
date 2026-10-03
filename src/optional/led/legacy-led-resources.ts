@@ -1,5 +1,6 @@
+
 // Native resources owned by one optional legacy LED instance.
-namespace PianoTrainerLegacyLedResources {
+export namespace PianoTrainerLegacyLedResources {
     export interface Ports {
         setTimer(callback: () => void, delayMs: number): number;
         clearTimer(id: number): void;

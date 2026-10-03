@@ -1,5 +1,7 @@
+
+declare global {
 // Used surface of bundled webmscore 0.21.0-a; export values cross as unknown.
-declare namespace PianoTrainerWebmscoreVendor {
+namespace PianoTrainerWebmscoreVendor {
     interface Score {
         saveXml?(): Promise<unknown>; saveMusicXml?(): Promise<unknown>;
         saveMxml?(): Promise<unknown>; saveMusicXML?(): Promise<unknown>;
@@ -8,3 +10,6 @@ declare namespace PianoTrainerWebmscoreVendor {
     interface Engine {ready?: Promise<unknown>; load(format: string, bytes: Uint8Array): Promise<Score | null>;}
 }
 interface Window {WebMscore?: PianoTrainerWebmscoreVendor.Engine;}
+
+}
+export {};

@@ -1,5 +1,8 @@
+import {PianoTrainerUpdateController} from '../app/update-controller';
+import {LegacyAppState} from '../state/model';
+import {PianoTrainerControlDom} from './controls-dom';
 // Native update UI owns its button; async requests/navigation belong to the controller.
-namespace PianoTrainerUpdateControls {
+export namespace PianoTrainerUpdateControls {
     export interface Ports {
         document: Document;
         state: Pick<LegacyAppState, 'updateStatus' | 'updateManifestUrl' | 'updateInfo'>;

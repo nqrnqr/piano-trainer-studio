@@ -1,5 +1,6 @@
+
 // Native key presentation consumes classes; matching and traversal stay outside.
-namespace PianoTrainerVirtualKeyboardView {
+export namespace PianoTrainerVirtualKeyboardView {
     const classes = ['expected-l', 'expected-r', 'pressed-l', 'pressed-r', 'wrong', 'active', 'future1-l', 'future1-r'];
     export interface Ports {
         document: Document;

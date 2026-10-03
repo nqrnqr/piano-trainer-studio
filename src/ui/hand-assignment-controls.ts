@@ -1,4 +1,6 @@
-namespace PianoTrainerHandAssignmentControls {
+import {PianoTrainerHandRouting} from '../domain/hand-routing';
+import {PianoTrainerControlDom} from './controls-dom';
+export namespace PianoTrainerHandAssignmentControls {
     export interface Ports {
         document: Document;
         commit(left: number | null, right: number | null, refreshCurrentFrame: boolean): void;

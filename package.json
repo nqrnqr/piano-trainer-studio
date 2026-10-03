@@ -8,14 +8,18 @@
   },
   "scripts": {
     "start": "node local-web-server.js",
-    "typecheck": "tsc -p tsconfig.legacy.json --noEmit",
-    "build": "node scripts/build-legacy.cjs",
-    "build:check": "node scripts/build-legacy.cjs --check",
-    "test": "node --test tests/unit/*.test.cjs",
+    "serve": "node local-web-server.js",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json",
+    "build": "node scripts/build-app.cjs",
+    "build:check": "node scripts/build-app.cjs --check",
+    "watch": "node scripts/build-app.cjs --watch",
+    "test": "npm run test:unit",
+    "test:unit": "node scripts/build-test-modules.cjs && node --test tests/unit/*.test.cjs",
     "check": "npm run typecheck && npm run build:check && npm test",
     "inventory:globals": "node scripts/inventory-legacy-globals.cjs"
   },
   "devDependencies": {
+    "esbuild": "0.28.2",
     "typescript": "5.9.3"
   }
 }

@@ -1,5 +1,7 @@
+import {PianoTrainerDomain} from '../domain/model';
+import {LegacyAppState} from '../state/model';
 // Preserve the P5 input contract and side-effect order; all external effects use ports.
-namespace PianoTrainerFeedbackState {
+export namespace PianoTrainerFeedbackState {
     export interface Ports {
         state: Pick<LegacyAppState, 'currentExpectedContext' | 'feedbackEnabled' | 'activeHeldIncorrectFeedback' | 'releasedIncorrectFeedback' | 'correctFeedbackHistory' | 'realtimeWrongPressInCurrentContext'>;
         getTraversalPosition(): PianoTrainerDomain.TraversalPosition | null;

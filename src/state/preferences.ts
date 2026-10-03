@@ -1,5 +1,8 @@
+import {PianoTrainerPreferenceValues} from '../domain/preference-values';
+import {LegacyAppState} from './model';
+import {PREFERENCE_STORAGE_KEYS} from './preference-keys';
 // Storage and startup writes are explicit commands on an application-owned service.
-namespace PianoTrainerPreferences {
+export namespace PianoTrainerPreferences {
     // Preference parsing and first-run defaults, without UI effects.
     export const DEFAULT_PREFERENCES = Object.freeze({
         playerPianoType: 88,

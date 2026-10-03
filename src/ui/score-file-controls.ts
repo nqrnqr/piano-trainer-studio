@@ -1,5 +1,6 @@
+import {PianoTrainerDomain} from '../domain/model';
 // Required file input and native target guards; import effects go through commands.
-namespace PianoTrainerScoreFileControls {
+export namespace PianoTrainerScoreFileControls {
     export interface Ports {
         input: HTMLInputElement; resumeAudio(): void;
         readFile(file: File): Promise<PianoTrainerDomain.ScoreFile>;

@@ -1,5 +1,7 @@
+import {PianoTrainerFeedbackState} from './feedback-state';
+import {LegacyAppState} from '../state/model';
 // Score changes retain the original per-note feedback and batched UI ordering.
-namespace PianoTrainerScoring {
+export namespace PianoTrainerScoring {
     export interface Ports {
         state: Pick<LegacyAppState, 'score' | 'expectedNotes' | 'mode' | 'realtimeWrongPressInCurrentContext'>;
         feedback: Pick<PianoTrainerFeedbackState.Service, 'drawFeedbackNote'>;

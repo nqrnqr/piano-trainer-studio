@@ -1,5 +1,6 @@
+import {PianoTrainerDomain} from './model';
 // Presentation priority shared by the keyboard and optional preview output.
-namespace PianoTrainerKeyboardState {
+export namespace PianoTrainerKeyboardState {
     export function priority(state: string | null | undefined) {
         if (!state) return 0;
         if (state === 'expected-l' || state === 'expected-r') return 5;

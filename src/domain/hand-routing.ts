@@ -1,5 +1,7 @@
+import {PianoTrainerDomain} from './model';
+import {LegacyAppState} from '../state/model';
 // Hand routing rules use domain state only; renderer and controls stay outside.
-namespace PianoTrainerHandRouting {
+export namespace PianoTrainerHandRouting {
     export type State = Pick<LegacyAppState, 'mode' | 'hands' | 'modeSettings' | 'practice' | 'playback'>;
     export function defaultAssignment(stavesCount: number) {
         return {left: (stavesCount || 2) > 1 ? 2 : null, right: 1};
