@@ -252,6 +252,7 @@ var PianoTrainerOsmdAdapter;
             // Transitional UI wrapper consumes the captured entries only at this boundary.
             legacyEntriesForPlayback: (event) => playbackEntries.get(event),
             hasCursor: () => !!ports.getRenderer().cursor,
+            load: (rawData) => ports.getRenderer().load(rawData),
             isEndReached: () => ports.getRenderer().cursor.Iterator.EndReached,
             getCurrentTimestamp: () => ports.getRenderer().cursor.Iterator.currentTimeStamp.RealValue,
             getPlaybackTempo: (index) => ports.getRenderer().Sheet.SourceMeasures[index]?.TempoInBPM,

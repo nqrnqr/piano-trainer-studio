@@ -83,6 +83,11 @@ P7b 的 mode-policy 不拥有可写 AppState、timer 或 vendor 引用。coordin
 边界调用策略，所有 busy/playing/anchor/followInfo/pendingAudio 写入仍归 coordinator；guard
 按回调当下状态判断。displayed/prefetched 为只读数值观察，不能取代 adapter 的 iterator snapshot。
 
+P8 loader 第一步：currentScore/currentScoreOriginal 元数据与 shared timeline dirty/reset
+写入归 score-loader 的窄 state alias，时机仍在 render/cursor 初始化之后、library markOpened
+之前。失败不回滚原已完成 writes。musicxml-io 无 AppState，FileReader private pending set
+仅在显式 dispose abort；file-controls 只拥有一个 input change listener。
+
 设置 key 单一来源是 `src/state/preference-keys.ts` 的 `PREFERENCE_STORAGE_KEYS`，旧常量为别名。
 Reset / backup 白名单顺序及排除项不变，包含 `pt_scoreLayout`，不包含 update override / 其他应用的键。
 首次默认值与 input velocity / live low latency 强制开启规则保留。

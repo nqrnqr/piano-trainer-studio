@@ -169,3 +169,10 @@ OSMD adapter 捕获 entry array，惰性投影领域 PlaybackEvent；旧 keyboar
 P7b：新增 `PianoTrainerModePolicy` classic namespace，加载在唯一 coordinator 前；纯策略
 不调用全局服务或写 AppState。原 Follow comfort 常量归此模块，coordinator 只调用策略。
 旧名和输入推进仍只有 compatibility/playback 一份转发，P9 再改为源码 import/export。
+
+P8 loader 第一步：core 的 score IO/load/file-input block 迁出，旧实现已删除。
+`musicxml-io` 保留 ZIP/原始 payload，`score-loader` 通过 adapter/typed commands 保持返回和
+副作用顺序，`ui/score-file-*` 持有 native file 与 DOM listener。`compatibility/score-data`
+提供 ScoresUI/ScoreLibrary/Transpose/MidiImport 仍需的旧名，显式 window forwards 仅 picker/load。
+所有 factory 创建时不读文件/加载乐谱/创建 listener；原 init 槽位只初始化 input。
+converter/transpose/library/其余 UI 仍是后续 P8 迁移范围；不把该检查点视为全 P8 完成。

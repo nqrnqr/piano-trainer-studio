@@ -108,7 +108,10 @@ including after sustain/audio effects and inside pending callbacks. Displayed an
 positions are separate observations; only the OSMD adapter retains full iterator/repeat state.
 Existing flags, real repeat traversal and native clock behavior are preserved. Metronome and count-in own their separate
 clock resources, but handoff remains a coordinator command. No independent cursor clock or tempo
-scheduler has been added. Remaining loader and UI bindings in core move at P8; classic assembly
+scheduler has been added. XML/MXL IO and score loading now live in `src/score/musicxml-io.ts`
+and `score-loader.ts`; OSMD receives original MXL bytes, while extracted XML belongs to transpose.
+Native file reads and the required input binding live in `src/ui/score-file-*.ts`; core initializes
+the input at the original point. Conversion, transpose, library and remaining UI move in later P8 checkpoints; classic assembly
 and forwards are temporary until the P9 bootstrap and module bundle.
 
 ## Fragile systems

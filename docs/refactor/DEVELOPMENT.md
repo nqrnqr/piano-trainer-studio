@@ -48,6 +48,7 @@ npm run build:check
 - P6 的输入/匹配/提前预留/期望/计分/反馈状态/延音位于 `src/practice/*.ts`；只依赖领域数据与端口。OSMD 适配器提供惰性数据和 tie 长度，`src/compatibility/practice.ts` 暂作组装与旧名转发。副作用契约与 state aliases 见 P6_INPUT_CONTRACT.md。
 - P7a 的 count-in/节拍器在 `src/audio/metronome.ts`，原时钟的资源所有权在 playback-clock，MembraneSynth 在 metronome-output，pulse DOM 在 `src/ui/tempo-pulse.ts`；小节缓存位于 `src/score/measure-timing.ts`。compatibility/metronome 暂组装，core 在原节点位置 init。Pause 不等同 dispose，取消差异和旧迟到回调语义见 P7_SCHEDULING_CONTRACT.md。
 - Play/Pause/Reset、checkWaitModeAdvance/playbackLoop 与 Loop 边界已迁至 `src/practice/playback-coordinator.ts`，原 transient/visual cleanup 在 playback-state。Tone.Transport 通过 audio/tone-transport 唯一端口调用；Loop/metro DOM 读取在 ui/playback-controls，旧 UI binding 暂留 core。compatibility/playback 仅无资源组装/转发。`practice/mode-policy.ts` 只返回模式决策，不拥有时钟/资源/状态写入；coordinator 在原读取位置解析模式，仍保持唯一循环。
+- P8 loader 第一步：XML/MXL ZIP 与 payload 在 `score/musicxml-io.ts`，loaded reset/render/cursor/state/library notification 顺序在 `score/score-loader.ts`，native FileReader 与 input listener 在 `ui/score-file-{reader,controls}.ts`。`compatibility/score-data.ts` 无资源组装，core 在旧槽位 init；reader dispose 只 abort owned pending reads，UI dispose 只移除自己的 listener。converter/transpose/library/其余 UI 仍待后续子步骤，契约见 P8_DATA_CONTRACT.md。
 - `npm run build` 先在 `.cache` 新目录编译，成功才替换 compiler 专属的 `js/generated`；失败保留现有输出。
 - 不手改生成文件。构建清理只作用于校验过的生成／临时目录，拒绝向工作区外解析的路径和符号链接。
 - 输出与 TS 源使用 LF，保证 Windows / Unix 重建时 source map 字节稳定。
@@ -72,6 +73,8 @@ P1 仅有初始化空 namespace 的局部类型断言，以及 `Number.isFinite`
 - `/docs/testing/input-baseline.html`：默认与 `?led=off` 各 40 项，实际 OSMD 的跨谱表同音、部分和弦、same-staff 去重、grace/hidden/cue、tie sustain、非练习手和键域；真实 virtual key 的 mouse/pointercancel DOM 事件与 MIDI domain bridge 进入同一 typed controller。仅测试 iframe 暂以已完成 promise 替换 audio unlock，音频输出静音；真实 Tone 另用 audio-baseline 验证。这不是触屏设备或实体 MIDI 检查。
 - `/docs/testing/metronome-baseline.html`：默认与 `?led=off` 各 28 项。当前入口创建真实 Tone MembraneSynth，测试包装端口记录实际调用并静音；原生 timer 验证同步首拍、4 拍节奏、末拍完整等待、Wait 连续 tick/stop、Follow immediate target、模拟 MIDI Channel 10 attack/release、pause/dispose/reinit 与 pulse DOM。三模式实际 coordinator startup 还记录 routed piano/metronome target 和末拍后的完整 handoff；Wait 的 Tone.now/lookAhead 偏移保留，Follow/Realtime window 使用 immediate。各 native 场景先显式 dispose，避免已记录的旧 pending timer 影响下一场景。实际 OSMD repeat cache 保留零长度边界；Node 假时钟另验证精确 delay/顺序及 rapid Pause/Resume 旧回调。该页暂改 MIDI/LED 偏好并恢复，需串行；不证明可听音质或实体同步。
 - `/docs/testing/playback-baseline.html`：默认与 `?led=off` 各 127 项。实际 toolbar DOM、OSMD、输入判定和 repeat/endings；仅测试 composition 注入受控 coordinator clock、audio-ready promise 与 count-in handoff，不修改生产源码。三模式×两布局覆盖 Play/Pause/Resume/rapid/reset、viewport preserve、速度取整、正确/错误/漏音、Loop/count-in、UI min、歌曲结束、播放中换谱与旧 callback gate，输出完整 28 事件快照。与 metronome native page 分开报告；本页不改保存的模式/布局/路由偏好。
+
+- `/docs/testing/loader-baseline.html`：默认与 `?led=off` 各 24 项，原生 FileReader/file input change、压缩 MXL、实际 OSMD/SVG、transpose apply/reset、无效 XML rejection、MIDI → MusicXML 的真实 local webmscore/WASM。WASM worker 的 timing 不在 frame performance 列表，单独 HEAD 检查相对资源返回 200，并验证实际转换结果。测试不写用户库、不持久化设置；library repository/backup 的完整验收属于后续 P8 检查点。
 
 修改／恢复同一 origin 偏好的测试页需依次运行并关闭，再打开下一页；并发运行 MIDI／audio 等
 fixture 会互相改写启动期间读取的 saved channel/device。显示与 practice 的声音路由关闭不证明实体音频表现。

@@ -24,6 +24,12 @@ test('static entry loads exactly one timing implementation before its core consu
     for (const name of ['playbackLoop', 'checkWaitModeAdvance', 'startPlaybackFromToolbar']) {
         assert.equal([...runtime.matchAll(new RegExp(`function ${name}\\(`, 'g'))].length, 1, `${name} has one runtime implementation`);
     }
+    for (const file of ['score/musicxml-io', 'score/score-loader', 'ui/score-file-reader', 'ui/score-file-controls', 'compatibility/score-data']) {
+        assert.equal(scripts.filter(script => script === `js/generated/${file}.js`).length, 1);
+    }
+    for (const name of ['loadScoreIntoApp', 'extractMusicXmlFromMxl', 'readScoreFile', 'handleDirectScoreFileSelection']) {
+        assert.equal([...runtime.matchAll(new RegExp(`function ${name}\\(`, 'g'))].length, 1, `${name} has one runtime implementation`);
+    }
 });
 
 test('served source map embeds the unique TS source and maps both timing calculations', () => {

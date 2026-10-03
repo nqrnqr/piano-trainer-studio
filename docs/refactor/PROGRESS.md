@@ -179,6 +179,18 @@
 - 清单：613 global candidates/64 classic slots、同名函数覆盖为零；229 直接 AppState 写入。纯策略无状态/资源写入；偏好、库 schema/格式、vendor/helper/启动器未改。映射与读取契约已更新。
 - 回退：revert 本 P7b 提交恢复整个 P7a coordinator 与 HTML slot。无需同时运行旧/新循环，无数据迁移。P7a 的调度/时钟端口保留。
 
-## P8–P9
+## P8a：XML/MXL IO 与 loader 检查点
 
-下一入口：先记录 core loader、XML/MXL/ZIP/转换/移调的数据与返回契约，迁移独立 score 数据流程；随后 library repository/backup、UI controllers。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。
+- 状态：第一子步骤完成（2026-10-03）；P8 仍进行中，converter/transpose engine、library/backup、其余 UI 控制器尚待迁移。
+- 映射：core score IO/ZIP/payload → `score/musicxml-io.ts`；load/reset/render/cursor/currentScore/library/transpose notification → `score/score-loader.ts`；native FileReader 与 file input → `ui/score-file-{reader,controls}.ts`。增加 domain ScoreFile/ScoreLoadOptions，OSMD load 仅由 adapter 调用。旧 block 删除，compatibility/score-data 提供仍需的少量旧名，core 在原位置 init。
+- 数据与返回：MXL 原始内容与中性 MIME 用于 render，container-selected XML 仅用于 transpose；原 canonical fallback、byteOffset slice、metadata/source identity、load Promise 完成时机及异常 rethrow 均保持。失败不回滚此前 reset/state。先记录 P8_DATA_CONTRACT.md，再迁移；没有新增 load epoch、用户 schema 或 converter 逻辑。
+- 生命周期：input init 去重/dispose 移除自己的 listener；reader 显式 dispose abort 私有 pending reads 并以 AbortError 拒绝，完成/error 已移除。普通换谱/加载不会调用 dispose。native event target 收窄；binary slice assertion 与 reader.result loaded assertion 的条件在契约记录，无 any/忽略检查。
+- Node：206/206（新增 14 项 stored/deflated MXL、container/fallback、原始 payload/MIME、async completion、error state/order、native reader/DOM command/dispose）；strict typecheck 与 122 文件干净生成一致，见 validation/P8a-loader-check.txt。静态入口验证唯一 loader/ZIP/read/direct-selection 实现。
+- 对照：基线 `8d48051`，500 组加载与 500 组 ZIP/view 对照，含 binary/Blob/view、normalized fallback、skip/reset、library/render/load 失败；状态、副作用、错误、原始和 render bytes、directory selection 完全一致。命令 `.cache/score-data-parity.cjs`。
+- 浏览器：649/649；default/no-op 各 loader 24、playback 127、input 40、practice 53、display 30、render 19，traversal 30/33。真实 FileReader/file input change、XML/MXL、SVG、transpose +2/reset 与 source/speed、无效 XML alert/rejection、actual MIDI → MusicXML、local WASM 路径 200；同时回归播放换谱、输入、练习、display/render 与 shared traversal。最终记录见 validation/P8a-loader-browser.txt。WASM 在 worker 内加载，frame performance 不能代替资源验证；检查实际转换与相对 HEAD 响应。
+- 清单：610 global candidates/70 classic slots、同名函数覆盖为零；217 直接 AppState 写入，loader aliases 在 STATE_OWNERSHIP 说明。vendor/helper、用户偏好、库格式/数据和启动器未改。
+- 回退：revert 本 score IO/loader 提交，恢复原 core block 与 HTML slots；不变更或清空用户库，P7 保留。完整 P8 数据/UI、P9 module/bootstrap 验收尚未完成。
+
+## P8 其余步骤与 P9
+
+下一入口：迁移现有 converter 与 transpose engine，再处理 library repository/backup、UI controllers。P9 再完成显式 bootstrap、源码 import/export、单 bundle、窄测试 facade 与 init/dispose 验收。整个重构尚未完成。

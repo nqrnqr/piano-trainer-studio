@@ -1,0 +1,61 @@
+(async()=>{
+ const results=parent.document.getElementById('results');results.textContent='';
+ const check=(ok,label)=>{results.textContent+=`${ok?'PASS':'FAIL'} ${label}\n`;if(!ok)throw Error(label);};
+ const oldAlert=window.alert,alerts=[];window.alert=message=>alerts.push(String(message));
+ const pitch=()=>osmd.cursor.Iterator.CurrentVoiceEntries[0].Notes[0].Pitch.getHalfTone()+12;
+ try {
+  pausePlaybackFromToolbar();trainerPlayback.dispose();
+  const xml=await(await fetch('/docs/testing/fixtures/simple-repeat.musicxml')).text();
+  const file=new File([xml],'Reader.musicxml');const read=await readScoreFile(file);
+  check(typeof read.rawData==='string'&&read.rawData===xml&&read.fileType==='musicxml','native FileReader preserves MusicXML text');
+  await handleDirectScoreFileSelection(file);
+  check(AppState.currentScoreFileName==='Reader.musicxml'&&AppState.currentScoreTitle==='Reader','direct XML selection installs original metadata');
+  check(osmd.cursor.Iterator.CurrentMeasureIndex===0&&pitch()===60,'XML load paints the actual first OSMD event');
+  check(document.querySelector('#osmd-container svg')!==null,'XML render creates actual SVG');
+  check(AppState.currentScoreOriginalData===xml&&AppState.transpose.available,'XML keeps original transpose source');
+  const selected=new DataTransfer();selected.items.add(new File([xml],'Event.musicxml'));
+  const input=document.getElementById('file-input');input.files=selected.files;input.dispatchEvent(new Event('change'));
+  const deadline=performance.now()+5000;
+  while((AppState.currentScoreFileName!=='Event.musicxml'||input.value!=='')&&performance.now()<deadline)await new Promise(resolve=>setTimeout(resolve,20));
+  check(AppState.currentScoreFileName==='Event.musicxml'&&input.value==='','native file input change loads and clears its selected value');
+  const mxlBytes=await(await fetch('/docs/testing/fixtures/loader-packed.mxl')).arrayBuffer();
+  const mxlFile=new File([mxlBytes],'Packed.mxl');const mxlRead=await readScoreFile(mxlFile);
+  check(mxlRead.rawData instanceof ArrayBuffer&&mxlRead.fileType==='mxl','native FileReader keeps MXL binary');
+  const beforeConverter=!!window.WebMscore;
+  await handleDirectScoreFileSelection(mxlFile);
+  check(AppState.currentScoreData instanceof ArrayBuffer&&AppState.currentScoreData.byteLength===mxlBytes.byteLength,'MXL render keeps original compressed bytes');
+  check(typeof AppState.currentScoreOriginalData==='string'&&AppState.currentScoreOriginalData===xml,'deflated MXL extracts container-selected XML only for transpose');
+  check(!!window.WebMscore===beforeConverter,'valid MXL extraction does not initialize the converter');
+  check(osmd.cursor.Iterator.CurrentMeasureIndex===0&&pitch()===60,'original MXL renders the same first event');
+  const source=AppState.currentScoreOriginalData;
+  const mode=document.getElementById('transpose-mode');mode.value='semitone';mode.dispatchEvent(new Event('change'));
+  const delta=document.getElementById('transpose-semitones');delta.value='2';delta.dispatchEvent(new Event('input'));
+  updateTempo('percent',75);
+  await window.TransposeUI.applyTranspose();
+  check(pitch()===62&&AppState.transpose.active,'actual transpose controller reloads a two-semitone score');
+  check(AppState.currentScoreOriginalData===source&&AppState.currentScoreOriginalFileName==='Packed.mxl','transpose preserves its original MXL source metadata');
+  check(AppState.speedPercent===.75,'transpose reload preserves existing speed');
+  await window.TransposeUI.resetTranspose();
+  check(pitch()===60&&!AppState.transpose.active,'transpose reset restores the original pitches');
+  check(AppState.currentScoreOriginalData===source&&AppState.speedPercent===.75,'transpose reset preserves original source and speed');
+  const oldData=AppState.currentScoreData;
+  let failure;try {await loadScoreIntoApp('<not-a-score/>',{fileName:'invalid.xml'});}catch(error){failure=error;}
+  check(!!failure&&alerts.length===1,'invalid XML alerts once and rejects the load promise');
+  check(AppState.currentScoreData===oldData&&!AppState.isPlaying,'failed import preserves old metadata after stopping playback');
+  const midiBytes=await(await fetch('/docs/testing/fixtures/loader-convert.mid')).arrayBuffer();
+  await handleDirectScoreFileSelection(new File([midiBytes],'Convert.mid'));
+  check(typeof AppState.currentScoreData==='string'&&AppState.currentScoreFileType==='musicxml','actual MIDI converter dispatch loads exported MusicXML');
+  check(AppState.currentScoreFileName==='Convert.musicxml'&&AppState.currentScoreTitle==='Convert','converter metadata retains original base title');
+  check(osmd.cursor&&document.querySelector('#osmd-container svg')&&AppState.transpose.available,'converted score renders and enables transpose');
+  const resources=performance.getEntriesByType('resource').filter(entry=>/webmscore|libmscore/.test(entry.name));
+  // Worker resource timing is separate from this frame's performance list.
+  const wasm=await fetch('assets/vendor/webmscore/webmscore.lib.wasm',{method:'HEAD'});
+  check(wasm.ok&&wasm.url.endsWith('/assets/vendor/webmscore/webmscore.lib.wasm'),'local WASM relative path responds after actual successful conversion');
+  results.textContent+='RESOURCES '+JSON.stringify({wasm:{url:wasm.url,status:wasm.status},frame:resources.map(entry=>({name:entry.name,duration:entry.duration}))})+'\n';
+  scoreFileControls.init();scoreFileControls.init();scoreFileControls.dispose();scoreFileControls.dispose();scoreFileControls.init();
+  check(document.getElementById('file-input') instanceof HTMLInputElement,'file controls dispose and reinitialize their actual input');
+  check(optionalLedOutput.enabled===(new URLSearchParams(parent.location.search).get('led')!=='off'),'loader completes with default/no-op LED composition');
+  results.textContent+='DONE\n';
+ }catch(error){results.textContent+='ERROR '+error.stack+'\n';}
+ finally {window.alert=oldAlert;pausePlaybackFromToolbar();}
+})();

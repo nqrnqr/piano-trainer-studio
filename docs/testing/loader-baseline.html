@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Score data and loader regression checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1200px;height:440px;border:1px solid #ccc}pre{white-space:pre-wrap;max-height:420px;overflow:auto}</style>
+<h1>Score data and loader regression checks</h1>
+<p>Actual FileReader, stored/compressed score data, OSMD, transpose controls and local webmscore conversion. No library writes or physical output.</p>
+<button id="run" disabled>Run checks</button><pre id="results">Loading</pre><iframe title="App under test"></iframe>
+<script>
+const frame=document.querySelector('iframe');
+frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/loader-baseline.integration.js';frame.contentDocument.body.append(script);};
+(async()=>{
+ let html=await(await fetch('/index.html')).text();
+ const boot=new URLSearchParams(location.search).get('led')==='off'?'<script>window.__PT_BOOT_OPTIONS__={ledEnabled:false};<'+'/script>':'';
+ frame.srcdoc=html.replace('<head>','<head><base href="/">'+boot);
+})();
+</script>
