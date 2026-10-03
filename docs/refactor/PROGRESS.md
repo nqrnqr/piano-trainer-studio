@@ -471,3 +471,13 @@
 - 浏览器：debug/settings/bootstrap/preferences/render/loader两配置共12页308/308，累计38页1384项；validation/P9r-settings-debug-facade-browser.txt。终态在所有owner关闭和自己DB cleanup之后发布，所有自建标签关闭。
 - 验证：两套final strict、四文件cleancomparison、338/338 Node，validation/P9r-settings-debug-facade-check.txt。生产bundle/vendor/assets/schema/backup/launcher不改。
 - 回退：revert本检查点恢复P9q测试入口、页面与fixture，无数据迁移；继续library-ui/legacy-led与最终全量。当前1384项不替代剩余套件，实体硬件/可听/Mac/LAN客户端限制保持。只有本地Git提交，无push。
+
+## P9s：完整原生曲库抽屉与管理工作流 facade
+
+- 状态：原library-ui suite 迁移检查点完成（2026-10-04）；P9 legacy-led与最终全集/门槛复验尚未完成，完整目标活跃。
+- 映射：旧ScoresUI/ScoreLibrary globals与AppState/OSMD → testing/library-ui-checks.ts 的init/dispose/refresh/close/dialog/late query命令，复制view/folder/manage/selectedIds；实际ScoreLibrary CRUD从已有narrow facade取得复制记录，当前rendered XML文本明确复制而非用original source替代。
+- 观察：原Window picker monkeypatch → fixture观察actual file-input native click一次，保留production file-picker command；late folders query在私有实际repo端口controlled promise上观察，原method与callback统一清理恢复。drawer rAF按actual source map计数，其余native DOM listeners和dialog capture规则保持。
+- 原断言：每配置44项完整保留，wide split/systemfolders/disabledsave/native6+2bindings、folder prompts、XML/MXL/MIDI sequentialimport与原compressed bytes/actualconverter、ordinary close保留pendingpicker、actualrowload/Loadedbadge、rename/move/manage/select/cancel/bulkdelete/cascade原loadedtitle差异、Escape/overlay、600/900px threshold、actualbackup Blob/MIME/URL revocation/invalidrestore/newIDs、SaveCurrent/deletepreservesdisplayeddata、latequery/generation/init/dispose资源归零。
+- 浏览器：library-ui/library/loader/native-controls/bootstrap两配置共10页372/372，累计40页1472项，validation/P9s-library-ui-facade-browser.txt。真实OSMD/nativeIndexedDB/webmscore/events，终态在full dispose/worker与自己DB cleanup之后，所有自建标签关闭。
+- 验证：两套final strict、四文件cleancomparison、338/338 Node，validation/P9s-library-ui-facade-check.txt。production bundle/vendor/数据schema/prefs/backup格式/资源/启动器不改。
+- 回退：revert本检查点恢复P9r测试入口/页面与fixture，无数据迁移。下一步legacy-led原套件、全量matrix和最终clean/launch/static audit；当前1472项不替代剩余suite，实体硬件/可听/Mac/LAN客户端限制保持。只有本地Git提交，无push。

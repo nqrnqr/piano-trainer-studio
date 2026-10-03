@@ -15,6 +15,7 @@ export function createScoreChecks(getServices:() => Services) {
             libraryId:state.currentScoreLibraryId,originalFileName:state.currentScoreOriginalFileName,
             originalText:typeof state.currentScoreOriginalData==='string'?state.currentScoreOriginalData:null,
             dataKind:typeof data==='string'?'string':data instanceof ArrayBuffer?'arraybuffer':'other',
+            dataText:typeof data==='string'?data:null,
             dataByteLength:data instanceof ArrayBuffer?data.byteLength:null,speed:state.speedPercent,playing:state.isPlaying,
             transpose:{...state.transpose},dataSameAsCapture:!!capture&&capture.data===data,
             transposeSameAsCapture:!!capture&&capture.transpose===state.transpose,loads,

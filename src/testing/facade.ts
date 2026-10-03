@@ -16,6 +16,7 @@ import {createKeyboardChecks} from './keyboard-checks';
 import {createDeviceChecks} from './device-checks';
 import {createDebugChecks} from './debug-checks';
 import {createSettingsChecks} from './settings-checks';
+import {createLibraryUiChecks} from './library-ui-checks';
 
 // Separate test entry: commands and copied observations, with no state/vendor object.
 export function createTestFacade(options: {controlledPlayback?:boolean} = {}, injectedPorts:ServicePorts = {}, libraryFixture?:LibraryFixturePorts) {
@@ -32,6 +33,7 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
     const preferenceChecks = createPreferenceChecks(() => services);
     const keyboardChecks = createKeyboardChecks(() => services);
     const deviceChecks = createDeviceChecks(() => services);
+    const libraryUiChecks = createLibraryUiChecks(() => services);
     return Object.freeze({
         loadScore: (raw:PianoTrainerDomain.ScoreRawData,options:PianoTrainerDomain.ScoreLoadOptions={})=>services.scoreLoader.loadScoreIntoApp(raw,options),
         dispatchInput: (note:number,down:boolean)=>services.practiceInput.handle({kind:down?'note-on':'note-off',note,velocity:100,
@@ -51,6 +53,7 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
         devices:deviceChecks.commands,
         debug:createDebugChecks(() => services),
         settings:createSettingsChecks(() => services),
+        libraryUi:libraryUiChecks.commands,
         dispatchNote:(input:PianoTrainerDomain.TrainerNoteInput)=>services.practiceInput.handle({...input}),
         readViewportSnapshot:()=>({layout:services.ScoreDisplay.isHorizontal()?'horizontal':'traditional',
             ...services.osmdAdapter.readPositions(),measureCount:services.osmdAdapter.getMeasureCount(),
@@ -70,8 +73,8 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
             services.trainerPlayback.playbackLoop();
         },
         pause:()=>services.trainerPlayback.pausePlaybackFromToolbar(),
-        init:()=>services.init(),dispose:()=>{services.dispose();renderChecks.clear();scoreChecks.clear();libraryChecks.clear();controlsChecks.clear();preferenceChecks.clear();keyboardChecks.clear();deviceChecks.clear();playbackChecks?.dispose();},
-        recreate:()=>{services.dispose();renderChecks.clear();scoreChecks.clear();libraryChecks.clear();controlsChecks.clear();preferenceChecks.clear();keyboardChecks.clear();deviceChecks.clear();playbackChecks?.dispose();services=createServices(servicePorts);
+        init:()=>services.init(),dispose:()=>{services.dispose();renderChecks.clear();scoreChecks.clear();libraryChecks.clear();controlsChecks.clear();preferenceChecks.clear();keyboardChecks.clear();deviceChecks.clear();libraryUiChecks.clear();playbackChecks?.dispose();},
+        recreate:()=>{services.dispose();renderChecks.clear();scoreChecks.clear();libraryChecks.clear();controlsChecks.clear();preferenceChecks.clear();keyboardChecks.clear();deviceChecks.clear();libraryUiChecks.clear();playbackChecks?.dispose();services=createServices(servicePorts);
             playbackChecks?.attach(() => services);services.init();checks.observe();}
     });
 }

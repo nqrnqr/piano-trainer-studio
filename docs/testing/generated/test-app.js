@@ -12504,6 +12504,7 @@
         originalFileName: state.currentScoreOriginalFileName,
         originalText: typeof state.currentScoreOriginalData === "string" ? state.currentScoreOriginalData : null,
         dataKind: typeof data === "string" ? "string" : data instanceof ArrayBuffer ? "arraybuffer" : "other",
+        dataText: typeof data === "string" ? data : null,
         dataByteLength: data instanceof ArrayBuffer ? data.byteLength : null,
         speed: state.speedPercent,
         playing: state.isPlaying,
@@ -13002,6 +13003,63 @@
     });
   }
 
+  // src/testing/library-ui-checks.ts
+  function createLibraryUiChecks(getServices) {
+    let repository = null, originalFolders = null;
+    let finishFolders = null;
+    function restoreFolders() {
+      if (repository && originalFolders) repository.getAllFolders = originalFolders;
+      repository = null;
+      originalFolders = null;
+    }
+    const commands = Object.freeze({
+      init: () => {
+        const s = getServices();
+        s.libraryUiLifetime.init();
+        s.scoresDrawer.init();
+      },
+      dispose: () => {
+        const s = getServices();
+        s.libraryUiLifetime.dispose();
+        s.libraryDialogs.dispose();
+        s.libraryRows.dispose();
+        s.scoresDrawer.dispose();
+      },
+      refresh: () => getServices().scoresDrawer.refreshScoresDrawer(),
+      close: () => getServices().scoresDrawer.closeScoresDrawer(),
+      chooseFolder: (options) => getServices().libraryDialogs.promptForLibraryFolderChoice(options),
+      readSnapshot: () => {
+        const state = getServices().AppState;
+        return {
+          view: state.scoreLibraryView,
+          folderId: state.scoreLibrarySelectedFolderId,
+          manage: state.scoreLibraryManageMode,
+          folderManage: state.scoreLibraryFolderManageMode,
+          selectedScoreIds: [...state.scoreLibrarySelectedScoreIds]
+        };
+      },
+      holdFolders: () => {
+        if (originalFolders) throw Error("Folder query already held");
+        repository = getServices().ScoreLibrary;
+        originalFolders = repository.getAllFolders;
+        repository.getAllFolders = () => new Promise((resolve) => {
+          finishFolders = resolve;
+        });
+      },
+      finishFolders: () => {
+        if (!finishFolders) throw Error("No pending folder query");
+        finishFolders([]);
+        finishFolders = null;
+      },
+      restoreFolders
+    });
+    return { commands, clear: () => {
+      restoreFolders();
+      finishFolders?.([]);
+      finishFolders = null;
+    } };
+  }
+
   // src/testing/facade.ts
   function createTestFacade(options = {}, injectedPorts = {}, libraryFixture) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
@@ -13017,6 +13075,7 @@
     const preferenceChecks = createPreferenceChecks(() => services);
     const keyboardChecks = createKeyboardChecks(() => services);
     const deviceChecks = createDeviceChecks(() => services);
+    const libraryUiChecks = createLibraryUiChecks(() => services);
     return Object.freeze({
       loadScore: (raw, options2 = {}) => services.scoreLoader.loadScoreIntoApp(raw, options2),
       dispatchInput: (note, down) => services.practiceInput.handle({
@@ -13042,6 +13101,7 @@
       devices: deviceChecks.commands,
       debug: createDebugChecks(() => services),
       settings: createSettingsChecks(() => services),
+      libraryUi: libraryUiChecks.commands,
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",
@@ -13083,6 +13143,7 @@
         preferenceChecks.clear();
         keyboardChecks.clear();
         deviceChecks.clear();
+        libraryUiChecks.clear();
         playbackChecks?.dispose();
       },
       recreate: () => {
@@ -13094,6 +13155,7 @@
         preferenceChecks.clear();
         keyboardChecks.clear();
         deviceChecks.clear();
+        libraryUiChecks.clear();
         playbackChecks?.dispose();
         services = createServices(servicePorts);
         playbackChecks?.attach(() => services);

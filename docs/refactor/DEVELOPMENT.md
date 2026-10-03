@@ -106,8 +106,8 @@ readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命�
 以及 `loader-baseline`、`transpose-baseline`、`library-baseline`、`native-controls-baseline`
 以及 `preference-controls-baseline`、`keyboard-controls-baseline`、`device-controls-baseline`
 以及 `settings-debug-baseline`、`settings-baseline` 已迁移到窄 facade；
-default/no-op 连同 bootstrap 共 38 页 1384 项通过。
-原 53/40/30或33/19/30/127/20或21/23/28/28/52/38/39/39/36/19/20/11 项行为断言保留，playback 每配置新增
+`library-ui-baseline` 也已迁移到窄 facade；default/no-op 连同 bootstrap 共 40 页 1472 项通过。
+原 53/40/30或33/19/30/127/20或21/23/28/28/52/38/39/39/36/19/20/11/44 项行为断言保留，playback 每配置新增
 一项受控时钟销毁检查；几何与反复基线未替换。
 `module-test-frame.js` 加载原生产 HTML/vendors 与独立测试 bundle，使用内存偏好和随机库。
 测试完成先 dispose/清理库，再发布通过终态。身份捕获保留在测试实例内，返回 token/布尔观察；
@@ -161,7 +161,12 @@ settings facade 执行实际 FileReader 和备份服务。`settings-reload-fixtu
 前后保留随机 DB 命名空间与内存 local/session preferences，每次 pagehide dispose 旧应用，
 最终统一删除自己的库。两次真实 reload、强制 monitoring/布局/通道与原值恢复保留原 11 项。
 
-其余曲库抽屉/legacy LED 浏览器页面和原断言保留，
+曲库抽屉通过 `testing/library-ui-checks.ts` 执行实际 shell/lifetime/dialog owners，
+只复制导航与选择信息；late folder query 的 promise/原方法保留私有并在清理时恢复。
+原生 file-input click 观察替代 Window picker monkeypatch，实际 command 仍执行。
+完整 XML/MXL/MIDI 导入、管理、备份、900px 布局与资源释放保留原 44 项。
+
+剩余 legacy LED 浏览器页面和原断言保留，
 仍引用已经移除的经典全局接口，**尚未完成剩余窄 facade 迁移及模块入口的全量浏览器回归**。
 新的 37 项启动检查不能代替这些行为矩阵；后续必须逐页迁移并保留原验证范围。
 原生权限、实体 MIDI/WLED、可听同步、Mac 启动器不由静音模拟证明。
