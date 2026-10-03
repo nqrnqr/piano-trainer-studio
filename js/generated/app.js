@@ -11296,7 +11296,7 @@
     });
     const collectFutureLedPreviewEvents = sharedScoreTraversal.collectFuturePreviewEvents;
     const audioOutput = PianoTrainerAudioOutput.create({
-      tone: Tone,
+      tone: ports.audioTone ?? Tone,
       state: AppState,
       sampleExtension: () => getPreferredPianoSampleExtension(),
       setTimer: (callback, delayMs) => window.setTimeout(callback, delayMs),
@@ -11336,7 +11336,7 @@
       requestFrame: (callback) => window.requestAnimationFrame(callback),
       cancelFrame: (id) => window.cancelAnimationFrame(id)
     });
-    const metronomeOutput = PianoTrainerMetronomeOutput.create({ tone: Tone });
+    const metronomeOutput = PianoTrainerMetronomeOutput.create({ tone: ports.metronomeTone ?? Tone });
     const tempoPulseUi = PianoTrainerTempoPulse.create(() => document.getElementById("btn-tempo"));
     const trainerMetronome = PianoTrainerMetronome.create({
       state: AppState,

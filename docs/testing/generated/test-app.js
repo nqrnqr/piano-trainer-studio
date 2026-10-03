@@ -11296,7 +11296,7 @@
     });
     const collectFutureLedPreviewEvents = sharedScoreTraversal.collectFuturePreviewEvents;
     const audioOutput = PianoTrainerAudioOutput.create({
-      tone: Tone,
+      tone: ports.audioTone ?? Tone,
       state: AppState,
       sampleExtension: () => getPreferredPianoSampleExtension(),
       setTimer: (callback, delayMs) => window.setTimeout(callback, delayMs),
@@ -11336,7 +11336,7 @@
       requestFrame: (callback) => window.requestAnimationFrame(callback),
       cancelFrame: (id) => window.cancelAnimationFrame(id)
     });
-    const metronomeOutput = PianoTrainerMetronomeOutput.create({ tone: Tone });
+    const metronomeOutput = PianoTrainerMetronomeOutput.create({ tone: ports.metronomeTone ?? Tone });
     const tempoPulseUi = PianoTrainerTempoPulse.create(() => document.getElementById("btn-tempo"));
     const trainerMetronome = PianoTrainerMetronome.create({
       state: AppState,
@@ -12379,10 +12379,113 @@
     });
   }
 
+  // src/testing/audio-checks.ts
+  function createAudioChecks(getServices) {
+    return Object.freeze({
+      hidePanels: () => {
+        getServices().toolbarUi.hideToolbarPanels();
+        document.getElementById("help-modal")?.classList.add("hidden");
+      },
+      initOutput: () => getServices().audioOutput.init(),
+      disposeOutput: () => getServices().audioOutput.dispose(),
+      disposeRouting: () => getServices().audioRouting.dispose(),
+      ensureReady: () => getServices().audioOutput.ensureLiveAudioReady(),
+      loadSampler: () => getServices().audioOutput.ensurePianoSamplerLoaded(),
+      isReady: () => getServices().audioOutput.isReady(),
+      sampleExtension: getPreferredPianoSampleExtension,
+      applyLatency: (mode) => getServices().audioOutput.applyToneLatencyProfileForMode(mode),
+      pianoVolume: (value) => getServices().audioLevelControls.updatePianoVolume(value, { save: false }),
+      metroVolume: (value) => getServices().audioLevelControls.updateMetroVolume(value, { save: false }),
+      setPianoVolume: (value) => getServices().audioOutput.setPianoVolume(value),
+      setRouting: (audio, midi) => {
+        const state = getServices().AppState;
+        Object.assign(state.audioEnabled, audio);
+        Object.assign(state.midiOutEnabled, midi);
+      },
+      setInputVelocity: (boost, enabled) => {
+        const state = getServices().AppState;
+        state.midiInBoost = boost;
+        state.inputVelocityEnabled = enabled;
+      },
+      selectMode: (mode, lowLatency) => {
+        const state = getServices().AppState;
+        state.mode = mode;
+        state.lowLatencyPlaybackEnabled = lowLatency;
+      },
+      schedule: (note, duration, velocity, destinations) => getServices().audioRouting.schedulePlaybackForDestinations(note, duration, velocity, destinations),
+      silence: () => {
+        const services = getServices();
+        services.audioOutput.silence();
+        services.midiOutput.silence();
+      }
+    });
+  }
+
+  // src/testing/metronome-checks.ts
+  function createMetronomeChecks(getServices) {
+    let handoffs = 0;
+    return Object.freeze({
+      initOutput: () => getServices().metronomeOutput.init(),
+      disposeOutput: () => getServices().metronomeOutput.dispose(),
+      muteOutput: () => getServices().metronomeOutput.setVolumeDecibels(-Infinity),
+      dispose: () => getServices().trainerMetronome.dispose(),
+      disposeCoordinator: () => getServices().trainerPlayback.dispose(),
+      clearVisuals: () => getServices().playbackState.clearVisuals(),
+      prepare: () => {
+        const services = getServices(), state = services.AppState;
+        services.osmdAdapter.reset();
+        state.mode = "wait";
+        state.baseBpm = 240;
+        state.speedPercent = 1;
+        state.isPlaying = true;
+        state.ledOutputMode = "none";
+        state.visualPulseEnabled = true;
+        state.metronomeMidiOutEnabled = false;
+      },
+      prepareCoordinator: (mode) => {
+        const state = getServices().AppState;
+        state.mode = mode;
+        state.practice.left = state.practice.right = false;
+        state.playback.left = state.playback.right = true;
+        state.audioEnabled.hands = true;
+        state.midiOutEnabled.hands = state.midiOutEnabled.other = false;
+        state.lowLatencyPlaybackEnabled = true;
+        state.fullscreenOnPlay = false;
+        state.metronomeMidiOutEnabled = false;
+      },
+      selectMode: (mode) => {
+        getServices().AppState.mode = mode;
+      },
+      setPlaying: (value) => {
+        getServices().AppState.isPlaying = value;
+      },
+      setMidiOutput: (value) => {
+        getServices().AppState.metronomeMidiOutEnabled = value;
+      },
+      updateTempo: (percent) => getServices().tempoControls.updateTempo("percent", percent),
+      readTiming: (index) => ({ ...getServices().scoreMeasureTiming.getInfo(index) }),
+      readCacheCount: () => getServices().scoreMeasureTiming.getCachedMeasureCount(),
+      readSnapshot: () => ({
+        countIn: getServices().AppState.countInActive,
+        handoffs,
+        clock: { ...getServices().metronomeClock.readResources() }
+      }),
+      startCountIn: () => getServices().trainerMetronome.doCountInAndStart(() => {
+        handoffs++;
+      }),
+      startWait: (measure) => getServices().trainerMetronome.startWaitModeMetronome(measure),
+      stopWait: () => getServices().trainerMetronome.stopWaitModeMetronome(),
+      scheduleWindow: (start, measure, timestamp, end, length) => getServices().trainerMetronome.scheduleMetronomeForPlaybackWindow(start, measure, timestamp, end, length),
+      click: (downbeat, time) => getServices().trainerMetronome.playMetronomeClick(downbeat, time),
+      startPlayback: () => getServices().trainerPlayback.startPlaybackFromToolbar()
+    });
+  }
+
   // src/testing/facade.ts
-  function createTestFacade(options = {}) {
+  function createTestFacade(options = {}, injectedPorts = {}) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
-    let services = createServices(playbackChecks?.ports);
+    const servicePorts = { ...injectedPorts, ...playbackChecks?.ports };
+    let services = createServices(servicePorts);
     playbackChecks?.attach(() => services);
     services.init();
     const checks = createPracticeChecks(() => services);
@@ -12402,6 +12505,8 @@
       render: renderChecks.commands,
       playback: playbackChecks?.commands,
       midi: createMidiChecks(() => services),
+      audio: createAudioChecks(() => services),
+      metronome: createMetronomeChecks(() => services),
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",
@@ -12443,7 +12548,7 @@
         services.dispose();
         renderChecks.clear();
         playbackChecks?.dispose();
-        services = createServices(playbackChecks?.ports);
+        services = createServices(servicePorts);
         playbackChecks?.attach(() => services);
         services.init();
         checks.observe();
@@ -12452,6 +12557,9 @@
   }
 
   // src/testing/main.ts
-  window.PianoTrainerTest = createTestFacade(window.__PT_TEST_OPTIONS__);
+  window.PianoTrainerTest = createTestFacade(window.__PT_TEST_OPTIONS__, {
+    ...window.AudioFixture ? { audioTone: window.AudioFixture.tone } : {},
+    ...window.MetronomeFixture ? { metronomeTone: window.MetronomeFixture.tone } : {}
+  });
 })();
 //# sourceMappingURL=test-app.js.map

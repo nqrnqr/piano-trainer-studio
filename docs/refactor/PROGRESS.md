@@ -388,3 +388,15 @@
 - 浏览器：受影响 MIDI/bootstrap/input/playback 两种配置共8页451/451；此前其余已迁移套件结果保持，累计16页718项。`validation/P9j-midi-facade-browser.txt`，自建标签均关闭。
 - 静态/Node：生产与测试最终严格配置、四文件 clean comparison、336/336 Node；`validation/P9j-midi-facade-check.txt`。只新增测试命令与构建后的 test bundle，生产 bundle/vendor/数据结构/设置/资源/启动器不改。
 - 下一步：audio/metronome fixture 改为显式 Tone port 注入，保留实际节点、资源加载和原生计时；之后迁移数据/UI 与资源归属断言。当前718项不替代全量；实体硬件、可听、Mac与LAN客户端限制保持。回退本检查点恢复P9i测试入口/页面，无需清库，只有本地提交。
+
+## P9k：真实 Tone 音频与原生节拍器 facade
+
+- 状态：audio/metronome 原套件迁移检查点完成（2026-10-04）；P9 数据/UI suites 尚未完成，完整目标活跃。
+- 映射：旧 Window audio/metronome factory monkeypatch → ServicePorts.audioTone/metronomeTone 明确类型化 vendor 端口。原 fixture 保留实际 Volume/PolySynth/Sampler/MembraneSynth 与所有原参数、方法、日志；只观察测试端口分配的节点，不暴露业务状态。默认生产继续用原 Tone，未增加时钟/调度算法。
+- 测试入口：独立 main 接入 fixture 所有的端口，facade 提供音量/路由/音色/采样与 metronome 场景命令、复制 timing/count-in/resource 观察。共用 frame lateFixtures 在实际 vendor 后、唯一 app slot 前安装，保留原入口顺序。HTML memory preferences/random DB，不写真实设置。
+- 音频：每配置原23项保留，实际30个选定格式本地采样请求/解码、真实 context 解锁、Follow/Wait latency profile、UI固定力度/MIDI monitoring boost与输出力度、低延迟选择、40ms MIDI释放、原silence CC序列、decibel/UI和实际节点 dispose/reinit。
+- 节拍器：每配置原28项保留，真实 OSMD repeat timing cache、同步首拍/四次250ms原生count-in及1000ms handoff、Wait stop/Follow immediate、Ch10 note75 velocity59/80ms release、Pause/Dispose gating与pulse清除；三模式真实coordinator+muted piano/click节点的原time-offset/handoff容差和NATIVE_SYNC记录保持。
+- 浏览器：audio/metronome/bootstrap/playback/MIDI/input两种配置共12页553/553；已迁移范围累计20页820项。`validation/P9k-audio-metronome-facade-browser.txt`，通过终态在dispose与自己的DB cleanup之后发布，自建标签全关闭。
+- 验证：生产与测试最终严格类型、四文件clean comparison、336/336 Node；`validation/P9k-audio-metronome-facade-check.txt`。库存仍94 production ES modules/3slots/4runtime candidates/52 direct state writes。原vendor/资源/版本/DB schema/备份/设置/启动器不改。
+- 边界：静音测试证明实际context/节点/时钟计算与资源加载，实体音响可听质量/硬件延迟、MIDI/WLED、Mac/LAN客户端仍需手工验证。数据/UI剩余全局测试不能由820项替代。
+- 回退：revert本检查点恢复P9j测试入口与组成端口，用户数据无需改动。下一步数据loader/library/transpose和UI资源归属迁移；只有本地Git提交，不推送。

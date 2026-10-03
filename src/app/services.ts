@@ -86,6 +86,8 @@ import {PianoTrainerVirtualKeyboardControls} from '../ui/virtual-keyboard-contro
 export interface ServicePorts {
     playbackClock?: PianoTrainerPlaybackClock.Ports;
     ensurePlaybackReady?: () => Promise<void>;
+    audioTone?: PianoTrainerAudioOutput.Ports['tone'];
+    metronomeTone?: PianoTrainerMetronomeOutput.Ports['tone'];
 }
 export function createServices(ports: ServicePorts = {}) {
 const permissionHelp = createPermissionHelp(document);
@@ -560,7 +562,7 @@ const collectFutureLedPreviewEvents = sharedScoreTraversal.collectFuturePreviewE
 
 // audio.ts composition
 const audioOutput = PianoTrainerAudioOutput.create({
-    tone: Tone, state: AppState,
+    tone: ports.audioTone ?? Tone, state: AppState,
     sampleExtension: () => getPreferredPianoSampleExtension(),
     setTimer: (callback, delayMs) => window.setTimeout(callback, delayMs),
     clearTimer: id => window.clearTimeout(id),
@@ -589,7 +591,7 @@ const metronomeClock = PianoTrainerPlaybackClock.create({
     setTimer: (callback, delay) => window.setTimeout(callback, delay), clearTimer: id => window.clearTimeout(id),
     requestFrame: callback => window.requestAnimationFrame(callback), cancelFrame: id => window.cancelAnimationFrame(id)
 });
-const metronomeOutput = PianoTrainerMetronomeOutput.create({tone: Tone});
+const metronomeOutput = PianoTrainerMetronomeOutput.create({tone: ports.metronomeTone ?? Tone});
 const tempoPulseUi = PianoTrainerTempoPulse.create(() => document.getElementById('btn-tempo'));
 const trainerMetronome = PianoTrainerMetronome.create({
     state: AppState, clock: metronomeClock, audio: metronomeOutput,
