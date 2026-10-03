@@ -144,3 +144,13 @@ practice、staff select、settings actions 各自拥有 22/2/4 个原生监听�
 dispose 只移除自己的 listeners/markers，generation 使旧 handler 在 reinit 后仍失效；外部 marker 保留。
 偏好 apply/reset 是同步命令，不拥有异步资源；settings FileReader 下载/导入仍是 P2 UI 边界，生命周期
 统一归后续 P9，不因按钮 dispose 改变普通正在进行的设置导入行为。
+
+P8f 当前直接 AppState 写入为 90（原 97）。keyboard-controller 仅协调原 sustain/preview、
+last preview array 和同一 hardwareLEDState Map；预览只覆盖 display map，hardware cache 使用
+原 base map。score-ui-controller 保留 base BPM/tempo、assignments/reset score/loop render 顺序，
+score-status 每次读取当前 score 对象；没有冻结 loader 会替换的 score 引用。staff identity map
+成为 OSMD adapter 私有资源，不进入 AppState 或 Window。
+virtual-keyboard-controls 私有持有 active MIDI/token、所有 connected/detached keys/监听与 capture；
+12 activation + 88×10 key listeners，score-seek-controls 自己持有一个 canvas click。普通 rebuild
+保持 pending old-key attack 和 detached handlers；explicit dispose 才释放全部自己的资源、失效
+pending audio unlock。不会释放 MIDI 等外部 pressed notes，不借普通 Pause/keyup 改变延迟回调。

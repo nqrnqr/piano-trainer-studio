@@ -2,7 +2,7 @@
 // functions lazily; the shared service has no hardware, DOM or vendor globals.
 const sharedScoreTraversal = PianoTrainerScoreTraversal.create({
     state: AppState,
-    getCursor: () => getLegacyTraversalCursor(),
+    getCursor: () => osmdAdapter.getTraversalCursor(),
     resolveStaffId: note => getResolvedStaffAssignmentIdFromNote(note),
     isPracticeHandEnabled: staffId => isPracticeHandEnabledForStaff(staffId),
     getHandRole: staffId => getAssignedHandRoleForStaff(staffId),

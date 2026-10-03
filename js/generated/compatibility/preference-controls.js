@@ -41,7 +41,6 @@ const handAssignmentController = PianoTrainerHandAssignment.create({ state: AppS
     }, renderKeyboard: () => renderVirtualKeyboard() });
 const handAssignmentControls = PianoTrainerHandAssignmentControls.create({ document, commit: handAssignmentController.commit });
 const syncHandAssignmentFromControls = handAssignmentControls.syncHandAssignmentFromControls;
-const bindHandAssignmentControls = handAssignmentControls.init;
 const preferenceControls = PianoTrainerPreferenceControls.create({ document, state: AppState, storage: localStorage,
     keys: PREFERENCE_STORAGE_KEYS, getStoredBool, getClampedNumber, setStoredBool, clearSavedPreferences,
     syncActiveHandStateFromMode, syncMidiInBoostUi, updatePianoVolume, updateMidiOutVolume, updateMidiInBoost,

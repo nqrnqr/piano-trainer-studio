@@ -14,7 +14,7 @@ namespace PianoTrainerHandRouting {
         return parsed == null ? '' : String(parsed);
     }
     export function create(state: State) {
-        function getAssignedHandRoleForStaff(staffId: number | null): PianoTrainerDomain.HandRole | null {
+        function getAssignedHandRoleForStaff(staffId: number | null | undefined): PianoTrainerDomain.HandRole | null {
             const sid = Number(staffId);
             if (!Number.isFinite(sid)) return null;
             if (sid === Number(state.hands.right)) return 'right';
@@ -53,7 +53,11 @@ namespace PianoTrainerHandRouting {
             follow.playback.right = useLeft;
             if (state.mode === 'follow') syncActiveHandStateFromMode();
         }
-        return {getAssignedHandRoleForStaff, getCurrentModeSettings, syncActiveHandStateFromMode, setFollowPracticeHand};
+        function isPracticeHandEnabledForStaff(staffId: number | null) {
+            const role = getAssignedHandRoleForStaff(staffId);
+            return (role === 'right' && state.practice.right) || (role === 'left' && state.practice.left);
+        }
+        return {getAssignedHandRoleForStaff, getCurrentModeSettings, syncActiveHandStateFromMode, setFollowPracticeHand, isPracticeHandEnabledForStaff};
     }
     export type Service = ReturnType<typeof create>;
 }

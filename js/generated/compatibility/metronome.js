@@ -3,7 +3,7 @@
 const scoreMeasureTiming = PianoTrainerMeasureTiming.create({
     getMeasure: index => osmdAdapter.getSourceMeasure(index),
     getMeasureCount: () => osmdAdapter.getSourceMeasureCount(),
-    getCursor: () => getLegacyTraversalCursor(),
+    getCursor: () => osmdAdapter.getTraversalCursor(),
     restoreToPosition: (measure, timestamp) => sharedScoreTraversal.restoreToMeasureAndTimestamp(measure, timestamp)
 });
 const metronomeClock = PianoTrainerPlaybackClock.create({

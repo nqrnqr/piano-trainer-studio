@@ -214,3 +214,12 @@ core 的 fullscreen/Play/Reset/zoom/resize、tempo/metronome options、audio lev
 校验。compatibility/native-controls 无资源组装；core 在原绑定位置调用各段 init，剩余 preferences、
 practice routing、keyboard/score seek/settings 外壳仍待迁移。OSMD zoom/optional measure 只经 adapter。
 空 legacy-playback.d.ts 与无消费者的 toolbar/native helpers forwards 删除；90 classic slots、524 global candidates、重复函数零。
+
+P8e/P8f 收尾：core 只保留原启动顺序，hand/practice/preferences/settings bindings、keyboard、
+score seek/status/loaded UI 全在类型化 factories。keyboard priority/render/DOM input 分属 domain/app/
+render/UI；真实迭代器与私有 staff identity map 归 OSMD adapter，UI 只收取 typed commands。
+compatibility/keyboard-and-score-controls 仅组装与转发，保留 LED 消费的三个 Window staff helpers。
+旧 core 的 staff map、dead resume flag/visibility callback、inline visual helper、无消费者的
+staff format/bind/traversal cursor forwards 删除；actual cursor provider 直接由 adapter 提供。
+当前 107 classic slots、511 global candidates、重复函数定义零。P9 再统一 imports/bootstrap、
+optional LED 参数化初始化及窄测试 facade，不把 classic composition 当作最终模块化。

@@ -59,6 +59,10 @@ test('static entry loads exactly one timing implementation before its core consu
         'ui/hand-assignment-controls','ui/practice-controls','ui/preference-controls','ui/settings-actions','compatibility/preference-controls']) {
         assert.equal(scripts.filter(file=>file===`js/generated/${name}.js`).length,1);
     }
+    for (const name of ['domain/keyboard-state','render/virtual-keyboard','app/keyboard-controller','ui/virtual-keyboard-controls',
+        'app/score-seek-controller','ui/score-seek-controls','ui/score-status','app/score-ui-controller','compatibility/keyboard-and-score-controls']) {
+        assert.equal(scripts.filter(file=>file===`js/generated/${name}.js`).length,1);
+    }
     for (const name of ['applyZoom','updateTempo','syncLooper','requestAppFullscreen','showToolbarPanel']) {
         assert.equal([...runtime.matchAll(new RegExp(`function ${name}\\(`,'g'))].length,1,`${name} has one runtime implementation`);
     }

@@ -96,10 +96,3 @@
 | js/feedback-debug.js:343 | AppState.debugEventFlow | = |
 | js/feedback-debug.js:348 | AppState.debugMatchLogs | = |
 | js/feedback-debug.js:353 | AppState.debugAnchorResolution | = |
-| js/trainer-core.js:121 | AppState.baseBpm | = |
-| js/trainer-core.js:123 | AppState.baseBpm | = |
-| js/trainer-core.js:147 | AppState.score.correct | = |
-| js/trainer-core.js:148 | AppState.score.wrong | = |
-| js/trainer-core.js:277 | AppState.lastLedPreviewEvents | = |
-| js/trainer-core.js:358 | AppState.hardwareLEDState | set |
-| js/trainer-core.js:360 | AppState.hardwareLEDState | delete |

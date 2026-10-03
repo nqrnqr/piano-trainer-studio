@@ -95,6 +95,15 @@ fixture 会互相改写启动期间读取的 saved channel/device。显示与 pr
 恢复完整应用状态。显示页用受控 rAF；硬件和音频路由关闭。不要据此声称实体 MIDI 或音频延迟已验证。
 最终输出含真实反复事件快照，保存于 [P1-browser.txt](validation/P1-browser.txt)。
 
+- `/docs/testing/keyboard-controls-baseline.html`：默认与 `?led=off` 各 36 项。实际 88 key DOM、
+  native PointerEvent/MouseEvent/TouchEvent、global release、pending unlock/ordinary rebuild、
+  explicit dispose/reinit、真实 OSMD repeat seek/loop/panel guards、两个 instrument 的 staff identity、
+  loaded assignments/status、sustain/pending/future/held/calibration 优先级。native resources 为
+  keyboard 892 + seek 1；普通 rebuild owned 1772/connected 892，显式销毁连 detached handlers 都归零。
+  测试偏好在内存，结束关闭并删除自己的随机 DB；保持前台至 DONE，报告 P8f-keyboard-browser.txt。
+- P8f 30 页/1,138 项浏览器、297 项 Node、11,000 次命令和12个 staff alias/coercion 对照通过。
+  core 现在只保留原启动顺序；源码模块、single bundle、统一 bootstrap 和有限 test facade 归 P9。
+
 `timing.js` 的 sourceMappingURL 指向同目录 map，含完整 TS 源；无需开放 `/src`。
 自动测试确认两项算法的生成行映射到 TS 对应行，HTTP 确认 map 可访问。
 手工调试：F12 → Sources → `src/domain/timing.ts`，在等待计算处下断点后 Play；本轮未进行 F12 交互断点验证。

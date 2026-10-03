@@ -6,6 +6,8 @@ const osmdAdapter = PianoTrainerOsmdAdapter.create({
     debugLog: (name, detail) => debugLogAnchorResolution(name, detail),
     reportError: (message, error) => console.error(message, error)
 });
+const getResolvedStaffAssignmentIdFromNote = osmdAdapter.resolveStaffIdFromNote;
+const getResolvedStaffAssignmentIdFromEntry = osmdAdapter.resolveStaffIdFromEntry;
 function requireScoreDisplayElement<T extends HTMLElement>(id: string, type: {new(): T}): T {
     const element = document.getElementById(id);
     if (!(element instanceof type)) throw new Error(`Missing required score display element: ${id}`);

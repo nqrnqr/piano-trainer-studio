@@ -1,7 +1,7 @@
 // DOM types and listener ownership shared by native trainer controls.
 namespace PianoTrainerControlDom {
     export function create(document: Document) {
-        const listeners: {target: EventTarget; event: string; handler: EventListener}[] = [];
+        const listeners: {target: EventTarget; event: string; handler: EventListener; options?: boolean | AddEventListenerOptions}[] = [];
         function typed<T extends HTMLElement>(id: string, type: {new(): T}, required: boolean): T | null {
             const element = document.getElementById(id);
             if (element && !(element instanceof type)) throw Error('Invalid trainer control: ' + id);
@@ -15,15 +15,15 @@ namespace PianoTrainerControlDom {
         function select(id: string) { return typed(id, HTMLSelectElement, true)!; }
         function optionalSelect(id: string) { return typed(id, HTMLSelectElement, false); }
         function element(id: string) { return typed(id, HTMLElement, false); }
-        function on(target: EventTarget | null, event: string, handler: EventListener) {
+        function on(target: EventTarget | null, event: string, handler: EventListener, options?: boolean | AddEventListenerOptions) {
             if (!target) return;
-            target.addEventListener(event, handler); listeners.push({target, event, handler});
+            target.addEventListener(event, handler, options); listeners.push({target, event, handler, options});
         }
         function onInput(target: HTMLInputElement | null, event: string, handler: (input: HTMLInputElement) => void) {
             on(target, event, event => {if (event.target instanceof HTMLInputElement) handler(event.target);});
         }
         function dispose() {
-            for (const {target,event,handler} of listeners) target.removeEventListener(event,handler);
+            for (const {target,event,handler,options} of listeners) target.removeEventListener(event,handler,options);
             listeners.length = 0;
         }
         return {input, optionalInput, button, optionalButton, select, optionalSelect, element, on, onInput, dispose};

@@ -1,0 +1,10 @@
+P8f keyboard / score controls parity, 2026-10-03
+Baseline: cff8434; original functions extracted with the TypeScript AST into ignored .cache only.
+Command: node .cache/keyboard-and-score-parity.cjs
+PASS 5000 keyboard presentation/preview/hardware commands match cff8434
+PASS 3000 pointer/mouse/touch/audio readiness/rebuild commands match cff8434
+PASS 12 staff identity aliases/coercions match cff8434
+PASS 3000 native score seek guards/bounds/iterator commands match cff8434
+Every command compares state/Map/Set, DOM classes/datasets/styles/pointer captures, exact effect order and listener counts.
+Original dead unused visibility callback excluded from resource counts after confirming no callers. Ordinary delayed attack/rebuild behavior preserved; explicit disposal tested separately.
+No permanent second implementation added. Scope excludes physical devices/audible timing.

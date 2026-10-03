@@ -1,5 +1,4 @@
 // Temporary declarations for JS consumers; P8 migrates them before P9 bootstrap.
-declare function initSongUI(): void;
 interface Window {
     MidiImport?: PianoTrainerScoreConversion.Service;
     ScoreLibrary?: PianoTrainerScoreLibrary.Service;

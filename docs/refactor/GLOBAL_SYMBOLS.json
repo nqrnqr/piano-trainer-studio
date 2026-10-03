@@ -98,6 +98,15 @@
     "js/generated/ui/preference-controls.js",
     "js/generated/ui/settings-actions.js",
     "js/generated/compatibility/preference-controls.js",
+    "js/generated/domain/keyboard-state.js",
+    "js/generated/render/virtual-keyboard.js",
+    "js/generated/app/keyboard-controller.js",
+    "js/generated/ui/virtual-keyboard-controls.js",
+    "js/generated/app/score-seek-controller.js",
+    "js/generated/ui/score-seek-controls.js",
+    "js/generated/ui/score-status.js",
+    "js/generated/app/score-ui-controller.js",
+    "js/generated/compatibility/keyboard-and-score-controls.js",
     "js/trainer-core.js"
   ],
   "symbols": [
@@ -213,7 +222,7 @@
         "js/generated/compatibility/score-data.js",
         "js/generated/compatibility/native-controls.js",
         "js/generated/compatibility/preference-controls.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/settings-baseline.integration.js",
@@ -317,21 +326,7 @@
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/preference-controls.js",
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "KEY_STATE_CLASSES",
-      "definitions": [
-        {
-          "symbol": "KEY_STATE_CLASSES",
-          "kind": "const",
-          "file": "js/trainer-core.js",
-          "line": 211
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -793,7 +788,10 @@
         "js/generated/ui/hand-assignment-controls.js",
         "js/generated/ui/practice-controls.js",
         "js/generated/ui/preference-controls.js",
-        "js/generated/ui/settings-actions.js"
+        "js/generated/ui/settings-actions.js",
+        "js/generated/ui/virtual-keyboard-controls.js",
+        "js/generated/ui/score-seek-controls.js",
+        "js/generated/ui/score-status.js"
       ]
     },
     {
@@ -962,6 +960,36 @@
       "referenceFiles": [
         "js/generated/practice/input-matching.js",
         "js/generated/compatibility/practice.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerKeyboardController",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerKeyboardController",
+          "kind": "var",
+          "file": "js/generated/app/keyboard-controller.js",
+          "line": 4
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/app/keyboard-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerKeyboardState",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerKeyboardState",
+          "kind": "var",
+          "file": "js/generated/domain/keyboard-state.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/domain/keyboard-state.js",
+        "js/generated/app/keyboard-controller.js"
       ]
     },
     {
@@ -1436,6 +1464,51 @@
       ]
     },
     {
+      "symbol": "PianoTrainerScoreSeek",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoreSeek",
+          "kind": "var",
+          "file": "js/generated/app/score-seek-controller.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/app/score-seek-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerScoreSeekControls",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoreSeekControls",
+          "kind": "var",
+          "file": "js/generated/ui/score-seek-controls.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/score-seek-controls.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerScoreStatus",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoreStatus",
+          "kind": "var",
+          "file": "js/generated/ui/score-status.js",
+          "line": 2
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/score-status.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerScoreTraversal",
       "definitions": [
         {
@@ -1450,6 +1523,21 @@
         "js/generated/score/score-traversal.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerScoreUiController",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerScoreUiController",
+          "kind": "var",
+          "file": "js/generated/app/score-ui-controller.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/app/score-ui-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -1650,6 +1738,36 @@
       ]
     },
     {
+      "symbol": "PianoTrainerVirtualKeyboardControls",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerVirtualKeyboardControls",
+          "kind": "var",
+          "file": "js/generated/ui/virtual-keyboard-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/ui/virtual-keyboard-controls.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
+      ]
+    },
+    {
+      "symbol": "PianoTrainerVirtualKeyboardView",
+      "definitions": [
+        {
+          "symbol": "PianoTrainerVirtualKeyboardView",
+          "kind": "var",
+          "file": "js/generated/render/virtual-keyboard.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/render/virtual-keyboard.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
+      ]
+    },
+    {
       "symbol": "PianoTrainerWebmscoreAdapter",
       "definitions": [
         {
@@ -1720,7 +1838,7 @@
           "symbol": "ScoreDisplay",
           "kind": "const",
           "file": "js/generated/compatibility/score-rendering.js",
-          "line": 16
+          "line": 18
         }
       ],
       "referenceFiles": [
@@ -2403,48 +2521,6 @@
       ]
     },
     {
-      "symbol": "activeVirtualPointerId",
-      "definitions": [
-        {
-          "symbol": "activeVirtualPointerId",
-          "kind": "let",
-          "file": "js/trainer-core.js",
-          "line": 375
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "activeVirtualPointerMidi",
-      "definitions": [
-        {
-          "symbol": "activeVirtualPointerMidi",
-          "kind": "let",
-          "file": "js/trainer-core.js",
-          "line": 376
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "applyInlineKeyVisual",
-      "definitions": [
-        {
-          "symbol": "applyInlineKeyVisual",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 221
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "applyLedBrightnessSettings",
       "definitions": [
         {
@@ -2456,20 +2532,6 @@
       ],
       "referenceFiles": [
         "js/led.js"
-      ]
-    },
-    {
-      "symbol": "applyLedFuturePreviewStates",
-      "definitions": [
-        {
-          "symbol": "applyLedFuturePreviewStates",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 190
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
       ]
     },
     {
@@ -2496,7 +2558,7 @@
           "symbol": "applyPersistedTrainerAndSettingsPreferences",
           "kind": "const",
           "file": "js/generated/compatibility/preference-controls.js",
-          "line": 55
+          "line": 54
         }
       ],
       "referenceFiles": [
@@ -2609,21 +2671,6 @@
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
         "docs/testing/audio-baseline.integration.js"
-      ]
-    },
-    {
-      "symbol": "bindHandAssignmentControls",
-      "definitions": [
-        {
-          "symbol": "bindHandAssignmentControls",
-          "kind": "const",
-          "file": "js/generated/compatibility/preference-controls.js",
-          "line": 44
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/compatibility/preference-controls.js",
-        "js/trainer-core.js"
       ]
     },
     {
@@ -2749,20 +2796,6 @@
       ]
     },
     {
-      "symbol": "chooseHigherPriorityLedState",
-      "definitions": [
-        {
-          "symbol": "chooseHigherPriorityLedState",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 184
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "clearAssetVersionOverrideIfCurrent",
       "definitions": [
         {
@@ -2781,16 +2814,16 @@
       "definitions": [
         {
           "symbol": "clearFeedbackVisualStatePreserveScoring",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 367
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 19
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-rendering.js",
         "js/generated/ui/display-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -2894,7 +2927,8 @@
         "js/generated/practice/playback-state.js",
         "js/generated/practice/playback-coordinator.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js",
+        "js/generated/app/score-seek-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
@@ -2949,7 +2983,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-traversal.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -2996,20 +3030,6 @@
       ]
     },
     {
-      "symbol": "consumeImmediateResumeStartFlag",
-      "definitions": [
-        {
-          "symbol": "consumeImmediateResumeStartFlag",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 511
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "consumePendingFirstRunNotice",
       "definitions": [
         {
@@ -3043,12 +3063,14 @@
       "definitions": [
         {
           "symbol": "createKeyboard",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 387
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 16
         }
       ],
       "referenceFiles": [
+        "js/generated/ui/virtual-keyboard-controls.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -3304,7 +3326,8 @@
         "js/generated/audio/tone-adapter.js",
         "js/generated/compatibility/audio.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js",
+        "js/generated/ui/virtual-keyboard-controls.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/audio-baseline.integration.js",
         "docs/testing/input-baseline.integration.js",
         "docs/testing/metronome-baseline.integration.js"
@@ -3448,21 +3471,6 @@
       ]
     },
     {
-      "symbol": "formatStaffAssignmentValue",
-      "definitions": [
-        {
-          "symbol": "formatStaffAssignmentValue",
-          "kind": "const",
-          "file": "js/generated/compatibility/hand-routing.js",
-          "line": 6
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/compatibility/hand-routing.js",
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "geometryEngine",
       "definitions": [
         {
@@ -3506,7 +3514,7 @@
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -3643,7 +3651,7 @@
       "referenceFiles": [
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -3659,34 +3667,6 @@
       "referenceFiles": [
         "js/generated/practice/feedback-state.js",
         "js/generated/compatibility/practice.js"
-      ]
-    },
-    {
-      "symbol": "getFuturePreviewDepth",
-      "definitions": [
-        {
-          "symbol": "getFuturePreviewDepth",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 170
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
-      "symbol": "getKeyInlineVisual",
-      "definitions": [
-        {
-          "symbol": "getKeyInlineVisual",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 213
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
       ]
     },
     {
@@ -3718,20 +3698,6 @@
       ]
     },
     {
-      "symbol": "getLedStatePriority",
-      "definitions": [
-        {
-          "symbol": "getLedStatePriority",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 175
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "getLegacyMidiOutput",
       "definitions": [
         {
@@ -3760,22 +3726,6 @@
       "referenceFiles": [
         "js/generated/ui/connection-status.js",
         "js/generated/compatibility/midi.js"
-      ]
-    },
-    {
-      "symbol": "getLegacyTraversalCursor",
-      "definitions": [
-        {
-          "symbol": "getLegacyTraversalCursor",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 159
-        }
-      ],
-      "referenceFiles": [
-        "js/generated/compatibility/score-traversal.js",
-        "js/generated/compatibility/metronome.js",
-        "js/trainer-core.js"
       ]
     },
     {
@@ -4075,15 +4025,16 @@
       "definitions": [
         {
           "symbol": "getResolvedStaffAssignmentIdFromEntry",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 104
+          "kind": "const",
+          "file": "js/generated/compatibility/score-rendering.js",
+          "line": 11
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -4091,14 +4042,15 @@
       "definitions": [
         {
           "symbol": "getResolvedStaffAssignmentIdFromNote",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 84
+          "kind": "const",
+          "file": "js/generated/compatibility/score-rendering.js",
+          "line": 10
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/score-traversal.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -4171,7 +4123,7 @@
           "symbol": "getScoreNoteRef",
           "kind": "function",
           "file": "js/generated/compatibility/score-rendering.js",
-          "line": 42
+          "line": 44
         }
       ],
       "referenceFiles": [
@@ -4406,20 +4358,6 @@
       ]
     },
     {
-      "symbol": "globalStaffIdentityMap",
-      "definitions": [
-        {
-          "symbol": "globalStaffIdentityMap",
-          "kind": "let",
-          "file": "js/trainer-core.js",
-          "line": 66
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "handAssignmentController",
       "definitions": [
         {
@@ -4444,7 +4382,8 @@
         }
       ],
       "referenceFiles": [
-        "js/generated/compatibility/preference-controls.js"
+        "js/generated/compatibility/preference-controls.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -4469,14 +4408,14 @@
           "symbol": "handleAutoScroll",
           "kind": "function",
           "file": "js/generated/compatibility/score-rendering.js",
-          "line": 44
+          "line": 46
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/score-data.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/score-display.integration.js"
       ]
     },
@@ -4706,15 +4645,16 @@
       "definitions": [
         {
           "symbol": "initSongUI",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 113
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 27
         }
       ],
       "referenceFiles": [
         "js/generated/score/score-loader.js",
         "js/generated/compatibility/score-data.js",
-        "js/trainer-core.js"
+        "js/generated/app/score-ui-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -4746,7 +4686,8 @@
       "referenceFiles": [
         "js/generated/ui/toolbar.js",
         "js/generated/compatibility/toolbar.js",
-        "js/trainer-core.js"
+        "js/generated/app/score-seek-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -4853,7 +4794,7 @@
         "js/generated/ui/player-range-controls.js",
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js",
-        "js/trainer-core.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/traversal-baseline.integration.js",
         "docs/testing/input-baseline.integration.js"
       ]
@@ -4877,15 +4818,16 @@
       "definitions": [
         {
           "symbol": "isPracticeHandEnabledForStaff",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 164
+          "kind": "const",
+          "file": "js/generated/compatibility/hand-routing.js",
+          "line": 5
         }
       ],
       "referenceFiles": [
+        "js/generated/domain/hand-routing.js",
+        "js/generated/compatibility/hand-routing.js",
         "js/generated/compatibility/score-traversal.js",
-        "js/generated/compatibility/practice.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/practice.js"
       ]
     },
     {
@@ -4929,6 +4871,20 @@
       ],
       "referenceFiles": [
         "js/led.js"
+      ]
+    },
+    {
+      "symbol": "keyboardController",
+      "definitions": [
+        {
+          "symbol": "keyboardController",
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 4
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -5113,6 +5069,7 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/native-controls.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "js/trainer-core.js"
       ]
     },
@@ -5425,6 +5382,7 @@
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/native-controls.js",
         "js/generated/compatibility/preference-controls.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "js/trainer-core.js",
         "docs/testing/settings-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
@@ -5456,7 +5414,7 @@
           "symbol": "osmd",
           "kind": "let",
           "file": "js/trainer-core.js",
-          "line": 30
+          "line": 8
         }
       ],
       "referenceFiles": [
@@ -5488,12 +5446,14 @@
       "referenceFiles": [
         "js/generated/compatibility/geometry.js",
         "js/generated/compatibility/score-rendering.js",
+        "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/metronome.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/score-data.js",
         "js/generated/compatibility/native-controls.js",
         "js/generated/compatibility/preference-controls.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/render-baseline.integration.js"
       ]
     },
@@ -5578,7 +5538,8 @@
         }
       ],
       "referenceFiles": [
-        "js/generated/compatibility/playback.js"
+        "js/generated/compatibility/playback.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -5625,7 +5586,7 @@
       "referenceFiles": [
         "js/generated/compatibility/playback.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -5750,7 +5711,7 @@
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -5812,7 +5773,7 @@
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -5822,7 +5783,7 @@
           "symbol": "preferenceControls",
           "kind": "const",
           "file": "js/generated/compatibility/preference-controls.js",
-          "line": 45
+          "line": 44
         }
       ],
       "referenceFiles": [
@@ -5863,20 +5824,6 @@
       ]
     },
     {
-      "symbol": "ptNeedsImmediateResumeStart",
-      "definitions": [
-        {
-          "symbol": "ptNeedsImmediateResumeStart",
-          "kind": "let",
-          "file": "js/trainer-core.js",
-          "line": 503
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "readScoreFile",
       "definitions": [
         {
@@ -5894,20 +5841,6 @@
       ]
     },
     {
-      "symbol": "rebuildGlobalStaffIdentityMap",
-      "definitions": [
-        {
-          "symbol": "rebuildGlobalStaffIdentityMap",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 68
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "rebuildMeasureTimingCache",
       "definitions": [
         {
@@ -5919,7 +5852,8 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/metronome.js",
-        "js/trainer-core.js"
+        "js/generated/app/score-ui-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -6005,20 +5939,6 @@
       ]
     },
     {
-      "symbol": "releaseActiveVirtualPointer",
-      "definitions": [
-        {
-          "symbol": "releaseActiveVirtualPointer",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 379
-        }
-      ],
-      "referenceFiles": [
-        "js/trainer-core.js"
-      ]
-    },
-    {
       "symbol": "releaseHeldIncorrectFeedback",
       "definitions": [
         {
@@ -6087,7 +6007,8 @@
         "js/generated/compatibility/native-controls.js",
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js",
-        "js/trainer-core.js",
+        "js/generated/app/score-ui-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/render-baseline.integration.js"
       ]
     },
@@ -6098,7 +6019,7 @@
           "symbol": "renderScoreAndRefreshGeometry",
           "kind": "function",
           "file": "js/generated/compatibility/score-rendering.js",
-          "line": 43
+          "line": 45
         }
       ],
       "referenceFiles": [
@@ -6117,8 +6038,8 @@
         {
           "symbol": "renderVirtualKeyboard",
           "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 229
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 7
         }
       ],
       "referenceFiles": [
@@ -6131,7 +6052,7 @@
         "js/generated/compatibility/playback.js",
         "js/generated/ui/preference-controls.js",
         "js/generated/compatibility/preference-controls.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -6157,7 +6078,7 @@
           "symbol": "requireScoreDisplayElement",
           "kind": "function",
           "file": "js/generated/compatibility/score-rendering.js",
-          "line": 10
+          "line": 12
         }
       ],
       "referenceFiles": [
@@ -6262,7 +6183,7 @@
           "symbol": "restoreDefaultPreferences",
           "kind": "const",
           "file": "js/generated/compatibility/preference-controls.js",
-          "line": 56
+          "line": 55
         }
       ],
       "referenceFiles": [
@@ -6456,11 +6377,68 @@
           "symbol": "scoreRenderer",
           "kind": "const",
           "file": "js/generated/compatibility/score-rendering.js",
-          "line": 36
+          "line": 38
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/score-rendering.js"
+      ]
+    },
+    {
+      "symbol": "scoreSeekController",
+      "definitions": [
+        {
+          "symbol": "scoreSeekController",
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 28
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/keyboard-and-score-controls.js"
+      ]
+    },
+    {
+      "symbol": "scoreSeekControls",
+      "definitions": [
+        {
+          "symbol": "scoreSeekControls",
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 34
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/keyboard-and-score-controls.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "scoreStatus",
+      "definitions": [
+        {
+          "symbol": "scoreStatus",
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 17
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/keyboard-and-score-controls.js"
+      ]
+    },
+    {
+      "symbol": "scoreUiController",
+      "definitions": [
+        {
+          "symbol": "scoreUiController",
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 20
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -6816,7 +6794,7 @@
           "symbol": "settingsActions",
           "kind": "const",
           "file": "js/generated/compatibility/preference-controls.js",
-          "line": 57
+          "line": 56
         }
       ],
       "referenceFiles": [
@@ -7017,7 +6995,7 @@
           "symbol": "syncActiveHandStateFromMode",
           "kind": "const",
           "file": "js/generated/compatibility/hand-routing.js",
-          "line": 5
+          "line": 6
         }
       ],
       "referenceFiles": [
@@ -7077,8 +7055,7 @@
       "referenceFiles": [
         "js/generated/ui/hand-assignment-controls.js",
         "js/generated/ui/preference-controls.js",
-        "js/generated/compatibility/preference-controls.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/preference-controls.js"
       ]
     },
     {
@@ -7462,7 +7439,8 @@
       ],
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
-        "js/trainer-core.js",
+        "js/generated/ui/virtual-keyboard-controls.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/score-display.integration.js",
         "docs/testing/practice-baseline.integration.js",
         "docs/testing/traversal-baseline.integration.js",
@@ -7643,15 +7621,16 @@
       "definitions": [
         {
           "symbol": "updateScoreDisplay",
-          "kind": "function",
-          "file": "js/trainer-core.js",
-          "line": 48
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 18
         }
       ],
       "referenceFiles": [
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js"
+        "js/generated/app/score-ui-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -7669,9 +7648,39 @@
         "js/generated/compatibility/score-data.js",
         "js/generated/ui/tempo-controls.js",
         "js/generated/compatibility/native-controls.js",
-        "js/trainer-core.js",
+        "js/generated/app/score-ui-controller.js",
+        "js/generated/compatibility/keyboard-and-score-controls.js",
         "docs/testing/metronome-baseline.integration.js",
         "docs/testing/playback-baseline.integration.js"
+      ]
+    },
+    {
+      "symbol": "virtualKeyboardControls",
+      "definitions": [
+        {
+          "symbol": "virtualKeyboardControls",
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 13
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/keyboard-and-score-controls.js",
+        "js/trainer-core.js"
+      ]
+    },
+    {
+      "symbol": "virtualKeyboardView",
+      "definitions": [
+        {
+          "symbol": "virtualKeyboardView",
+          "kind": "const",
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 3
+        }
+      ],
+      "referenceFiles": [
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -7914,7 +7923,7 @@
           "symbol": "window.__PT_DEBUG_BOOT__",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 3
+          "line": 5
         }
       ],
       "referenceFiles": [
@@ -8015,8 +8024,8 @@
         {
           "symbol": "window.getAssignedHandRoleForStaff",
           "kind": "window assignment",
-          "file": "js/trainer-core.js",
-          "line": 111
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 37
         }
       ],
       "referenceFiles": [
@@ -8025,7 +8034,7 @@
         "js/generated/compatibility/score-traversal.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -8034,14 +8043,15 @@
         {
           "symbol": "window.getResolvedStaffAssignmentIdFromEntry",
           "kind": "window assignment",
-          "file": "js/trainer-core.js",
-          "line": 110
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 36
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/practice.js",
         "js/generated/compatibility/playback.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -8050,13 +8060,14 @@
         {
           "symbol": "window.getResolvedStaffAssignmentIdFromNote",
           "kind": "window assignment",
-          "file": "js/trainer-core.js",
-          "line": 108
+          "file": "js/generated/compatibility/keyboard-and-score-controls.js",
+          "line": 35
         }
       ],
       "referenceFiles": [
+        "js/generated/compatibility/score-rendering.js",
         "js/generated/compatibility/score-traversal.js",
-        "js/trainer-core.js"
+        "js/generated/compatibility/keyboard-and-score-controls.js"
       ]
     },
     {
@@ -8171,7 +8182,7 @@
           "symbol": "window.syncTrainerRoutingUiState",
           "kind": "window assignment",
           "file": "js/trainer-core.js",
-          "line": 644
+          "line": 53
         }
       ],
       "referenceFiles": [

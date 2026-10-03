@@ -19,19 +19,19 @@ var PianoTrainerControlDom;
         function select(id) { return typed(id, HTMLSelectElement, true); }
         function optionalSelect(id) { return typed(id, HTMLSelectElement, false); }
         function element(id) { return typed(id, HTMLElement, false); }
-        function on(target, event, handler) {
+        function on(target, event, handler, options) {
             if (!target)
                 return;
-            target.addEventListener(event, handler);
-            listeners.push({ target, event, handler });
+            target.addEventListener(event, handler, options);
+            listeners.push({ target, event, handler, options });
         }
         function onInput(target, event, handler) {
             on(target, event, event => { if (event.target instanceof HTMLInputElement)
                 handler(event.target); });
         }
         function dispose() {
-            for (const { target, event, handler } of listeners)
-                target.removeEventListener(event, handler);
+            for (const { target, event, handler, options } of listeners)
+                target.removeEventListener(event, handler, options);
             listeners.length = 0;
         }
         return { input, optionalInput, button, optionalButton, select, optionalSelect, element, on, onInput, dispose };

@@ -78,3 +78,26 @@ IndexedDB `pianoTrainerLibrary` v1、stores/indexes、transaction completion、b
 - reset 先 clear preferences，再 mode/feedback/hands/routing/levels/layout/zoom/keyboard/metronome/debug/range/optional LED；按 midi-in、midi-out、midi-out-channel、midi-lights、midi-lights-channel 顺序赋值并 dispatch native change；staff defaults→mode→LED UI→loop/keyboard/position→optional reload devices。Web MIDI 失败时 channel select 空 options 原生赋值可 sanitize 为空，未更改生产行为。
 - settings actions 原 download 命令、不 stopPropagation，import button clear→click，change 读取 File|null|undefined→启动原 FileReader→立即清 input，reset confirmation 文本/取消/同步 reset 保持。普通交互不取消已有文件读取；统一 file command lifecycle 留后续 P9。
 - 新控制器重复 init/dispose 去重；dispose 只释放 own listeners/markers 并失效旧 callbacks，外部 marker 保留。hand-routing 是纯 state/domain 规则，hand-assignment app 命令不依赖 DOM/vendor；preference apply/reset 为无资源同步流程。无新增 any、忽略检查或大范围断言。
+
+## Virtual keyboard、staff identity、score UI/seek 基线 cff8434
+
+- 颜色优先级 expected 5、future1/future2 4、pressed 2、wrong/active 1，相同优先级保留先者。
+  原 sustain 再 pending 的覆盖顺序保持，同 MIDI 不同 staff 的 pending 可以覆盖 sustain。
+  current frame 即使 depth=0 也 collect/commit；无 frame 使用 last preview。hardware cache 用 base
+  states，display/optional LED 用 preview merged states，保持同一 Map 身份与 changed-only commands。
+- held early carry 保留 expected，held correct 只有 active sustain/pending/expected 时才 highlight；
+  visual 生命周期结束后仍物理按住的 note 不改成 wrong。normal DOM 只替换首个 recognized class，
+  calibration 清原八类，未识别的 future2 class 保留；inline style 清空、键域 class 与原规则相同。
+- 88 key DOM/black pattern、pointer/mouse/touch token、preventDefault/passive/capture/leave、全局
+  blur/visibility/page/focus/gesture 与 audio activation 顺序保持。global release 不清 per-key down
+  marker，自己的 end handler 才清；pointer 后 compatibility mouse 不重复攻击。普通 keyup 或 rebuild
+  不取消 await unlock 的迟到 attack，也不移除 detached key handlers；explicit dispose 才失效旧 awaits、
+  清自己的 connected/detached listeners/key DOM/capture 并释放自己 active MIDI，保留外部 pressed notes。
+- staff aliases 的大小写/truthiness/Number fallback 与按 Instruments.Staves 顺序的 global identity
+  保持；只 adapter 持有 map，普通 load 的 rebuild 时点不提前。raw entries 只在 compatibility/adapter。
+- native score seek 先 graphic/playing/panel/SVG guards，inclusive box 首个匹配；匹配后才检查 Loop。
+  stop/reset→沿实际 repeat iterator 首次达到 target→update/scroll/clear，不新增 traversal 展开或步数上限。
+- loaded UI 保留 identity/timing→loop range→truthy first tempo 的第二次读取或120→live speed→staff
+  options/defaults/bind/sync→score fields 0→status→loop render；status 读取当前 score 对象并原样 round/innerText。
+- factories 无资源创建副作用；core 原位置 init。keyboard 892 和 seek 1 listeners，普通 rebuild own
+  handlers 增至1772但 connected 仍892，explicit dispose 两者归零，fresh init 不复活旧 callbacks。

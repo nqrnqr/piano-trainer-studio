@@ -63,7 +63,11 @@ var PianoTrainerHandRouting;
             if (state.mode === 'follow')
                 syncActiveHandStateFromMode();
         }
-        return { getAssignedHandRoleForStaff, getCurrentModeSettings, syncActiveHandStateFromMode, setFollowPracticeHand };
+        function isPracticeHandEnabledForStaff(staffId) {
+            const role = getAssignedHandRoleForStaff(staffId);
+            return (role === 'right' && state.practice.right) || (role === 'left' && state.practice.left);
+        }
+        return { getAssignedHandRoleForStaff, getCurrentModeSettings, syncActiveHandStateFromMode, setFollowPracticeHand, isPracticeHandEnabledForStaff };
     }
     PianoTrainerHandRouting.create = create;
 })(PianoTrainerHandRouting || (PianoTrainerHandRouting = {}));

@@ -22,7 +22,11 @@ declare function updateLedKeyMapping(): void;
 declare function positionLedCalibrationPanel(): void;
 declare function legacyUpdateLEDHardware(midi: number, next: string | null, previous: string | null): void;
 declare function legacyWipeHardwareLEDs(): void;
-declare function renderVirtualKeyboard(entries?: PianoTrainerScoreTraversal.VoiceEntry[], measureIndex?: number | null, timestamp?: number | null): void;
+interface Window {
+    getResolvedStaffAssignmentIdFromNote?: typeof getResolvedStaffAssignmentIdFromNote;
+    getResolvedStaffAssignmentIdFromEntry?: typeof getResolvedStaffAssignmentIdFromEntry;
+    getAssignedHandRoleForStaff?: typeof getAssignedHandRoleForStaff;
+}
 declare function setLedCount(value: number): void;
 declare function setLedMasterBrightness(value: number): void;
 declare function setLedFuture1BrightnessPct(value: number): void;

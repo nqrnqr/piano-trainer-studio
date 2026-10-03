@@ -7,6 +7,7 @@ var PianoTrainerOsmdAdapter;
         let currentSheet, scoreRevision = 0, noteSequence = 0;
         let noteRefs = new WeakMap();
         const sourceNotes = new Map();
+        let globalStaffIdentityMap = new Map();
         let displayedIterator = null;
         let displayedSheet;
         let ownedHook = null;
@@ -227,6 +228,34 @@ var PianoTrainerOsmdAdapter;
             }
         }
         const playbackEntries = new WeakMap();
+        function rebuildStaffIdentity() {
+            globalStaffIdentityMap = new Map();
+            const instruments = ports.getRenderer()?.Sheet?.Instruments || ports.getRenderer()?.Sheet?.instruments || [];
+            let nextId = 1;
+            instruments.forEach(instrument => {
+                const staves = instrument?.Staves || instrument?.staves || instrument?.Staffs || instrument?.staffs || [];
+                staves.forEach(staff => {
+                    if (staff && !globalStaffIdentityMap.has(staff))
+                        globalStaffIdentityMap.set(staff, nextId++);
+                });
+            });
+        }
+        function resolveStaffIdFromNote(note) {
+            const candidates = [note?.ParentStaff, note?.parentStaff,
+                note?.ParentVoiceEntry?.ParentSourceStaffEntry?.ParentStaff,
+                note?.parentVoiceEntry?.parentSourceStaffEntry?.parentStaff,
+                note?.SourceStaff, note?.sourceStaff].filter((staff) => Boolean(staff));
+            for (const staff of candidates) {
+                if (globalStaffIdentityMap.has(staff))
+                    return globalStaffIdentityMap.get(staff);
+            }
+            const fallback = Number(candidates[0]?.id ?? note?.ParentStaff?.id ?? note?.parentStaff?.id);
+            return Number.isFinite(fallback) ? fallback : null;
+        }
+        function resolveStaffIdFromEntry(entry) {
+            const first = entry?.Notes?.[0] || entry?.notes?.[0] || null;
+            return resolveStaffIdFromNote(first);
+        }
         function readPlaybackEvent(resolveStaffId) {
             const entries = ports.getRenderer().cursor.Iterator.CurrentVoiceEntries;
             const event = {
@@ -247,8 +276,18 @@ var PianoTrainerOsmdAdapter;
             noteRefs = new WeakMap();
             sourceNotes.clear();
             scoreRevision++;
+            globalStaffIdentityMap = new Map();
         }
         return { getCombinedTieLength, readPracticeEntries, readPlaybackEvent, noteRef, resolveNote, afterRender, getDefaults, setLayout, getGraphicalNote, getMeasureBox, readPositions, dispose,
+            rebuildStaffIdentity, resolveStaffIdFromNote, resolveStaffIdFromEntry,
+            getTraversalCursor: () => ports.getRenderer()?.cursor,
+            hasGraphicSheet: () => !!ports.getRenderer().GraphicSheet,
+            getGraphicalMeasureCount: () => ports.getRenderer().GraphicSheet.MeasureList.length,
+            getLoadedStaffCount: () => ports.getRenderer().GraphicSheet.MeasureList[0].length,
+            getFirstScoreTempo: () => {
+                const measures = ports.getRenderer().Sheet.SourceMeasures;
+                return measures.length > 0 ? measures[0].TempoInBPM : undefined;
+            },
             setZoom: (value) => { ports.getRenderer().zoom = value; },
             // Transitional UI wrapper consumes the captured entries only at this boundary.
             legacyEntriesForPlayback: (event) => playbackEntries.get(event),

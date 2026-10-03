@@ -4,8 +4,15 @@
 declare namespace PianoTrainerOsmdVendor {
     interface Fraction { RealValue: number; }
     interface Note extends PianoTrainerScoreTraversal.Note {
-        ParentVoiceEntry?: {Timestamp?: Fraction};
+        ParentVoiceEntry?: {Timestamp?: Fraction; ParentSourceStaffEntry?: {ParentStaff?: Staff}};
+        parentStaff?: Staff;
+        parentVoiceEntry?: {parentSourceStaffEntry?: {parentStaff?: Staff}};
+        SourceStaff?: Staff;
+        sourceStaff?: Staff;
     }
+    interface Staff {id?: number;}
+    interface Instrument {Staves?: Staff[]; staves?: Staff[]; Staffs?: Staff[]; staffs?: Staff[];}
+    interface IdentityVoiceEntry {Notes?: Note[]; notes?: Note[];}
     interface Shape { AbsolutePosition: PianoTrainerDomain.SvgPoint; Size?: {width: number; height: number}; }
     interface ShapeContainer { PositionAndShape?: Shape; }
     interface GraphicalNote extends ShapeContainer {
@@ -43,7 +50,7 @@ declare namespace PianoTrainerOsmdVendor {
         followCursor: boolean;
     }
     interface SourceMeasure {TempoInBPM?: number; ActiveTimeSignature?: {Numerator: number; Denominator: number};}
-    interface Sheet {SourceMeasures?: SourceMeasure[];}
+    interface Sheet {SourceMeasures?: SourceMeasure[]; Instruments?: Instrument[]; instruments?: Instrument[];}
     interface Renderer {
         zoom: number;
         load(rawData: PianoTrainerDomain.ScoreRawData): Promise<unknown>;

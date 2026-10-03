@@ -5,7 +5,7 @@
 - `/assets/audio` = static audio assets such as Salamander samples
 - `/js` = extracted app modules with focused ownership
 - `/src` = migrated TypeScript source; `/js/generated` = committed classic-script output and embedded source maps
-- `trainer-core.js` = remaining UI bindings and compatibility integration; typed factories own score data, input, render and playback coordination
+- `trainer-core.js` = original startup order only; typed factories own score data, input, render and playback coordination
 - `/docs` = architecture notes and development notes
 
 ## Current modules
@@ -29,7 +29,10 @@
 - `src/audio/metronome.ts`, `metronome-output.ts`, `playback-clock.ts`, `tone-transport.ts` = count-in/beat decisions, actual Tone node, native clock resource ownership and unchanged Transport commands
 - `src/score/measure-timing.ts`, `src/ui/tempo-pulse.ts`, `playback-controls.ts` = actual traversal cache, DOM pulse and playback control reads
 - `js/feedback-debug.js` = developer-only feedback diagnostics and sticky debug labels
-- `trainer-core.js` = remaining trainer core and orchestration
+- `src/domain/keyboard-state.ts`, `src/app/keyboard-controller.ts`, `src/render/virtual-keyboard.ts` = key-state priority, sustain/preview/output coordination and native key presentation
+- `src/ui/virtual-keyboard-controls.ts`, `score-seek-controls.ts`, `score-status.ts` = owned pointer/mouse/touch/activation events, native score clicks and score percentage
+- `src/app/score-seek-controller.ts`, `score-ui-controller.ts` = real-iterator seeking and loaded-score metadata/UI commands; staff identity stays inside the OSMD adapter
+- `trainer-core.js` = remaining startup sequence; classic composition moves into bootstrap at P9
 
 
 ## Timing module boundary
@@ -129,8 +132,13 @@ captured frame through typed commands. Practice, preference and settings button 
 live in their respective UI factories. They preserve mode-specific objects, saved routing
 choices, reset change-event order and the existing file commands. Only explicit disposal
 removes their listeners and invalidates old handlers; repeated initialization is deduplicated.
-Core still owns keyboard/score seek and score UI assembly. Classic composition and forwards
-remain temporary until the P9 bootstrap and module bundle.
+Keyboard presentation consumes domain states; its controller coordinates existing sustains,
+preview and optional outputs without accessing vendor objects or DOM. Pointer, mouse and touch
+handlers preserve ordinary delayed attacks and keyboard rebuild behavior. Explicit disposal
+removes connected and detached owned handlers and prevents old unlock continuations from firing.
+Score seeking delegates to the existing real iterator; loaded-score UI uses typed metadata commands.
+Core now retains the original startup sequence. Classic composition and forwards remain temporary
+until the P9 bootstrap and module bundle.
 
 ## Fragile systems
 - Feedback-note anchor positioning and resize stability

@@ -22,6 +22,19 @@ namespace PianoTrainerHandAssignmentControls {
             const change = () => {if (token === generation) syncHandAssignmentFromControls({refreshCurrentFrame: true});};
             dom.on(left, 'change', change); dom.on(right, 'change', change);
         }
+        function resetForScore(stavesCount: number, getDefaults: () => {left: number | null; right: number}) {
+            const left = dom.select('assign-lh'), right = dom.select('assign-rh');
+            left.innerHTML = ''; right.innerHTML = '';
+            left.innerHTML = '<option value="">-</option>'; right.innerHTML = '';
+            for (let i = 1; i <= stavesCount; i++) {
+                left.innerHTML += `<option value="${i}">${i}</option>`;
+                right.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+            const defaults = getDefaults();
+            left.value = PianoTrainerHandRouting.formatAssignment(defaults.left);
+            right.value = PianoTrainerHandRouting.formatAssignment(defaults.right);
+            init(); syncHandAssignmentFromControls();
+        }
         function dispose() {
             generation++; dom.dispose();
             for (const pair of owned) {
@@ -30,6 +43,6 @@ namespace PianoTrainerHandAssignmentControls {
             }
             owned.length = 0;
         }
-        return {init, dispose, syncHandAssignmentFromControls};
+        return {init, dispose, resetForScore, syncHandAssignmentFromControls};
     }
 }
