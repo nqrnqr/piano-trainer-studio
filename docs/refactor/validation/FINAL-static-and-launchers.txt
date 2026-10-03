@@ -1,0 +1,166 @@
+{
+  "sourceRevision": "8375f79",
+  "date": "2026-10-04",
+  "cleanSource": ".cache/final-clean-source",
+  "resources": [
+    {
+      "path": "assets/icons/favicon.ico",
+      "status": 200,
+      "type": "image/x-icon"
+    },
+    {
+      "path": "assets/icons/favicon-32x32.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "path": "assets/icons/favicon-16x16.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "path": "assets/icons/apple-touch-icon.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "path": "js/led.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "js/optional/midi-led-test.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "js/generated/app.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "version.json",
+      "status": 200,
+      "type": "application/json; charset=utf-8"
+    },
+    {
+      "path": "js/generated/app.js.map",
+      "status": 200,
+      "type": "application/octet-stream"
+    },
+    {
+      "path": "style.css",
+      "status": 200,
+      "type": "text/css; charset=utf-8"
+    },
+    {
+      "path": "assets/js/Tone.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/js/opensheetmusicdisplay.min.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/Starter_Scores.json",
+      "status": 200,
+      "type": "application/json; charset=utf-8"
+    },
+    {
+      "path": "assets/audio/salamander/A0.mp3",
+      "status": 200,
+      "type": "audio/mpeg"
+    },
+    {
+      "path": "assets/audio/salamander/A0.ogg",
+      "status": 200,
+      "type": "audio/ogg"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.lib.js",
+      "status": 200,
+      "type": "application/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.lib.data",
+      "status": 200,
+      "type": "application/octet-stream"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.lib.wasm",
+      "status": 200,
+      "type": "application/wasm"
+    },
+    {
+      "path": "assets/vendor/webmscore/webmscore.lib.mem.wasm",
+      "status": 200,
+      "type": "application/wasm"
+    }
+  ],
+  "outputs": [
+    {
+      "file": "js/generated/app.js",
+      "sha256": "11feb342c5f1a3a71a7c6181d4853b06b4497d07bd33f0103893f1e815a2cf03"
+    },
+    {
+      "file": "js/generated/app.js.map",
+      "sha256": "3791dd51d0dcb075874469b075a7b0f4a22078742d0c30f8eae85802f27d5cff"
+    },
+    {
+      "file": "docs/testing/generated/test-app.js",
+      "sha256": "ef15eb8b788acb024086d3c031b93e236b445894417665531767d9e9e3c1a160"
+    },
+    {
+      "file": "docs/testing/generated/test-app.js.map",
+      "sha256": "f41eab91e8527c4e1e9b9f07a22e1af34f0d9d65376087fb1c266d748d506291"
+    }
+  ],
+  "vendor": [
+    {
+      "file": "assets/js/opensheetmusicdisplay.min.js",
+      "sha256": "9ab640955523a62944793a4560c78ebfe2852b8ee896c3e94b6895022b9f39ed"
+    },
+    {
+      "file": "assets/js/Tone.js",
+      "sha256": "5b27d5f0ff5abda3ec2535df4b21e090c26552f95ef64e61bf3cad8f3415f6e8"
+    },
+    {
+      "file": "assets/vendor/webmscore/webmscore.js",
+      "sha256": "afdfd201b2e941fb2b4e3558c788f7daffa1c023e52c7fc128f88c1f634e4af9"
+    },
+    {
+      "file": "assets/vendor/webmscore/webmscore.cdn.mjs",
+      "sha256": "ccf2785c6eb45af4bd4fbeb82f9a9a0ac004e915b0e730df742311b39448c6e3"
+    },
+    {
+      "file": "assets/vendor/webmscore/webmscore.lib.wasm",
+      "sha256": "7b304a1ebd92bedd7c00185da6f3941b288927ab4aaa09fb870dbf4739518237"
+    },
+    {
+      "file": "assets/vendor/webmscore/webmscore.lib.mem.wasm",
+      "sha256": "00fe23709a2e6eb5fe0dae037aa6807e739ef1bc31c27a220f42fedfa6e47999"
+    }
+  ],
+  "productionTestApi": false,
+  "desktop": "Original BAT: 127.0.0.1:8084",
+  "wifi": "Original BAT: 0.0.0.0:8085; local homepage and connection-info HTTP 200",
+  "macSyntax": [
+    "Piano Trainer - Desktop.command",
+    "Piano Trainer - iPad (Wi-Fi).command",
+    "WLED Helper - Low Latency (DDP).command",
+    "Future Use\\WLED Helper - iPad-Tablet via This Computer (Low Latency).command"
+  ],
+  "limits": [
+    "No actual macOS execution",
+    "No LAN client connection",
+    "No audible/hardware verification",
+    "No external publishing"
+  ]
+}

@@ -3,7 +3,8 @@
 核心源码现在使用实际 ES 模块，生产入口为 `src/main.ts`，输出为单个 IIFE
 `js/generated/app.js`。`src/app/services.ts` 显式创建应用实例与服务，
 `bootstrap.ts` 只提供应用生命周期和加载/输入命令；业务对象不发布到 Window。
-P9 仍进行中：旧浏览器基线需要迁移到窄测试入口，完整矩阵、剩余严格选项及最终启动器验收尚未完成。
+P0–P9 已完成；最终验收为 338 项 Node 测试和 42 页、1,497 项浏览器断言。
+干净安装、构建/watch、Windows 启动器与静态资源已复验，范围和手工限制见 [FINAL_ACCEPTANCE.md](FINAL_ACCEPTANCE.md)。
 阶段证据见 [PROGRESS.md](PROGRESS.md)，历史经典脚本说明保留于 [CLASSIC_DEVELOPMENT.md](CLASSIC_DEVELOPMENT.md)。
 
 ## 运行应用
@@ -50,8 +51,9 @@ npm run check
 实际失败/恢复验证确认保留最后成功输出，修复后两套 map 更新，恢复源码可重建相同字节。
 `test:unit` 在 fresh checkout 自动创建自己的 `.cache`，替换前检查目录与嵌套链接。
 
-P9h 在 Git archive 中使用 `npm ci --offline --cache <已验证的包缓存>` 干净安装三个固定
-开发包，两套类型检查、四文件比较与 336 项测试通过；没有依赖工作区 node_modules 或临时源码。
+最终在 `8375f79` 的 Git archive 中使用 `npm ci --offline --cache <已验证的包缓存>`
+干净安装三个固定开发包，两套类型检查、四文件比较与 338 项测试通过；
+没有依赖工作区 node_modules 或临时源码。证据见 `validation/FINAL-clean-install-and-check.txt`。
 Windows 原 Desktop / Wi-Fi BAT 直接运行成功，原生产页面从初始曲库加载真实 OSMD SVG，
 20 个静态路径含 vendor、两种音频、初始库和 WASM/data 返回 HTTP 200。
 Mac 四个 launcher 仅 shell syntax 检查通过，实际 macOS、LAN 客户端/实体硬件/可听仍未验证。
@@ -90,7 +92,7 @@ LED 默认启用；`?led=off` 或业务入口前的 `window.__PT_BOOT_OPTIONS__=
 `node scripts/inventory-state-writes.cjs` 重建直接写入位置。别名与私有资源的人工说明见
 [STATE_OWNERSHIP.md](STATE_OWNERSHIP.md)。
 
-## 当前浏览器验证与剩余迁移
+## 浏览器验证
 
 在 `/docs/testing/bootstrap-baseline.html` 点击 **Run checks**，并重复 `?led=off`。
 每种配置 37 项：真实 OSMD/XML、三模式/两布局、输入/暂停、复制快照、全局隔离、
@@ -101,14 +103,34 @@ LED 默认启用；`?led=off` 或业务入口前的 `window.__PT_BOOT_OPTIONS__=
 readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命令。
 不返回整个 AppState 或 OSMD；生产构建与测试构建入口分开。
 
-`practice-baseline`、`input-baseline`、`traversal-baseline`、`render-baseline`、
-`score-display`、`playback-baseline`、`midi-baseline`、`audio-baseline` 和 `metronome-baseline`
-以及 `loader-baseline`、`transpose-baseline`、`library-baseline`、`native-controls-baseline`
-以及 `preference-controls-baseline`、`keyboard-controls-baseline`、`device-controls-baseline`
-以及 `settings-debug-baseline`、`settings-baseline` 已迁移到窄 facade；
-`library-ui-baseline` 也已迁移到窄 facade；default/no-op 连同 bootstrap 共 40 页 1472 项通过。
-原 53/40/30或33/19/30/127/20或21/23/28/28/52/38/39/39/36/19/20/11/44 项行为断言保留，playback 每配置新增
-一项受控时钟销毁检查；几何与反复基线未替换。
+全部 21 组原套件均通过窄 facade 执行；每组运行默认配置和 `?led=off`，
+共 42 页 1,497 项。完整输出见 [FINAL-browser-matrix.txt](validation/FINAL-browser-matrix.txt)。
+原行为断言保留，playback 每配置新增一项受控时钟销毁检查。
+
+| 浏览器套件 | LED 默认 | LED 关闭 |
+| --- | ---: | ---: |
+| [bootstrap-baseline](../testing/bootstrap-baseline.html) | 37 | 37 |
+| [practice-baseline](../testing/practice-baseline.html) | 53 | 53 |
+| [input-baseline](../testing/input-baseline.html) | 40 | 40 |
+| [traversal-baseline](../testing/traversal-baseline.html) | 30 | 33 |
+| [render-baseline](../testing/render-baseline.html) | 19 | 19 |
+| [score-display](../testing/score-display.html) | 30 | 30 |
+| [playback-baseline](../testing/playback-baseline.html) | 128 | 128 |
+| [midi-baseline](../testing/midi-baseline.html) | 20 | 21 |
+| [audio-baseline](../testing/audio-baseline.html) | 23 | 23 |
+| [metronome-baseline](../testing/metronome-baseline.html) | 28 | 28 |
+| [loader-baseline](../testing/loader-baseline.html) | 28 | 28 |
+| [transpose-baseline](../testing/transpose-baseline.html) | 52 | 52 |
+| [library-baseline](../testing/library-baseline.html) | 38 | 38 |
+| [native-controls-baseline](../testing/native-controls-baseline.html) | 39 | 39 |
+| [preference-controls-baseline](../testing/preference-controls-baseline.html) | 39 | 39 |
+| [keyboard-controls-baseline](../testing/keyboard-controls-baseline.html) | 36 | 36 |
+| [device-controls-baseline](../testing/device-controls-baseline.html) | 19 | 19 |
+| [settings-debug-baseline](../testing/settings-debug-baseline.html) | 20 | 20 |
+| [settings-baseline](../testing/settings-baseline.html) | 11 | 11 |
+| [library-ui-baseline](../testing/library-ui-baseline.html) | 44 | 44 |
+| [legacy-led-baseline](../testing/legacy-led-baseline.html) | 19 | 6 |
+
 `module-test-frame.js` 加载原生产 HTML/vendors 与独立测试 bundle，使用内存偏好和随机库。
 测试完成先 dispose/清理库，再发布通过终态。身份捕获保留在测试实例内，返回 token/布尔观察；
 销毁清空捕获引用。练习快照只复制所需字段、note ID、marker ID 与数值锚点。
@@ -166,13 +188,13 @@ settings facade 执行实际 FileReader 和备份服务。`settings-reload-fixtu
 原生 file-input click 观察替代 Window picker monkeypatch，实际 command 仍执行。
 完整 XML/MXL/MIDI 导入、管理、备份、900px 布局与资源释放保留原 44 项。
 
-剩余 legacy LED 浏览器页面和原断言保留，
-仍引用已经移除的经典全局接口，**尚未完成剩余窄 facade 迁移及模块入口的全量浏览器回归**。
-新的 37 项启动检查不能代替这些行为矩阵；后续必须逐页迁移并保留原验证范围。
-原生权限、实体 MIDI/WLED、可听同步、Mac 启动器不由静音模拟证明。
-生产与测试入口已开启 noUncheckedIndexedAccess、exactOptionalPropertyTypes 和
+Legacy LED 通过 `testing/led-checks.ts` 的实际工厂命令和复制资源计数观察，
+保留原生长按、FileReader、AbortSignal 与跨生命周期迟到回调断言。
+
+生产与测试入口均开启 noUncheckedIndexedAccess、exactOptionalPropertyTypes 和
 verbatimModuleSyntax，局部不变量/原错误路径见 [STRICT_MODULE_CONTRACT.md](STRICT_MODULE_CONTRACT.md)。
-干净安装/重建、Windows 原启动器和静态资源门槛已验证；全量浏览器迁移仍归 P9。
+原生前台 rAF、真实 Tone 节点及静音计时已验证；实体 MIDI/WLED、可听同步、
+触屏硬件、实际 macOS 和 LAN 客户端仍需对应设备手工验证。
 
 ## 调试与回退
 

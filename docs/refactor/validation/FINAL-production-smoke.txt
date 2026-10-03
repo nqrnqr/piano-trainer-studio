@@ -1,0 +1,28 @@
+{
+  "sourceRevision": "8375f79",
+  "url": "http://127.0.0.1:8084/?led=off",
+  "launcher": "Original Windows Desktop BAT from final Git archive",
+  "starterScoreCount": 16,
+  "score": "Hot Cross Buns",
+  "observation": {
+    "loaded": true,
+    "privateStatePresent": false,
+    "scripts": [
+      "http://127.0.0.1:8084/assets/js/Tone.js?v=1.2.4",
+      "http://127.0.0.1:8084/assets/js/opensheetmusicdisplay.min.js?v=1.2.4",
+      "http://127.0.0.1:8084/js/led.js?v=1.2.4",
+      "http://127.0.0.1:8084/js/optional/midi-led-test.js?v=1.2.4",
+      "http://127.0.0.1:8084/js/generated/app.js?v=1.2.4"
+    ],
+    "svgCount": 1,
+    "testApiPresent": false
+  },
+  "logs": [
+    {
+      "level": "error",
+      "message": "File loaded successfully.",
+      "timestamp": "2026-10-03T21:38:43.740Z",
+      "url": "http://127.0.0.1:8084/js/generated/app.js?v=1.2.4"
+    }
+  ]
+}

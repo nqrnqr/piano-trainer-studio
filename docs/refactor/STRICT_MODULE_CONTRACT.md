@@ -23,6 +23,12 @@ P9g（2026-10-04）生产与独立测试入口均启用 `strict`、
 late callback 隔离仍受 TypeScript 检查；详见 [P9_LED_CONTRACT.md](P9_LED_CONTRACT.md)。
 根 package 保持 CommonJS，本地服务器/启动器的执行契约保持。
 
-验证：335 个 Node cases；补充现有 MIDI case 的空洞/undefined/NaN bytes 与短系统消息
+P9g 阶段验证：335 个 Node cases；补充现有 MIDI case 的空洞/undefined/NaN bytes 与短系统消息
 echo expiry 断言。12 个已迁移浏览器页面 421 项通过，保留几何 golden 与真实反复。
-这些检查不代替尚未迁移的浏览器 suites、实体硬件、可听同步与最终启动器/静态验收。
+上述为 P9g 当时范围。最终两套 strict、338 个 Node cases、42 页 1,497 项浏览器断言、
+干净安装/构建/watch、Windows 启动器与静态资源均通过，见 [FINAL_ACCEPTANCE.md](FINAL_ACCEPTANCE.md)。
+实体硬件、可听同步与实际 macOS 等限制仍保留。
+
+IndexedDB transaction 的 `Object.fromEntries` 转换限于 typed StoreName 列表构造的
+`Pick<StoreMap,K>`；原生 v1 schema/keyPath 定义结果类型，不将任意 JSON 或第三方对象
+整体转换为业务状态。相关事务、schema、abort/rollback 和错误行为均有单测及真实 IndexedDB 验证。

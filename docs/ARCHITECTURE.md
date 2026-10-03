@@ -35,7 +35,7 @@
 - `src/ui/virtual-keyboard-controls.ts`, `score-seek-controls.ts`, `score-status.ts` = owned pointer/mouse/touch/activation events, native score clicks and score percentage
 - `src/app/score-seek-controller.ts`, `score-ui-controller.ts` = real-iterator seeking and loaded-score metadata/UI commands; staff identity stays inside the OSMD adapter
 - Former `trainer-core.js`, classic compatibility modules and ambient business globals have been removed. Only vendor/version boundaries and two parameterized optional LED factories remain public.
-- `src/testing/main.ts` builds a separate test bundle with copied observations and narrow commands. Production does not contain this facade. Original browser suites still require migration; P9 is not complete.
+- `src/testing/main.ts` builds a separate test bundle with copied observations and narrow commands. Production does not contain this facade. All 21 browser suites use this facade; the final default/no-op matrix passes 1,497 assertions across 42 pages. See `docs/refactor/FINAL_ACCEPTANCE.md` for evidence and hardware/platform limits.
 
 
 ## Timing module boundary

@@ -1,6 +1,6 @@
 # 模块入口与历史经典脚本依赖
 
-P9e（2026-10-04）：当前生产代码由 94 个实际 ES 模块组成，`main.ts` →
+P9 最终验收（2026-10-04）：当前生产代码由 94 个实际 ES 模块组成，`main.ts` →
 `app/bootstrap.ts` → `app/services.ts` 显式创建并初始化服务。HTML 仅加载两个 optional LED
 工厂和一个 `js/generated/app.js`；不再加载经典 compatibility 或 trainer-core。
 `GLOBAL_SYMBOLS.json` 记录当前 imports/exports、三个应用槽位及四个运行时发布候选，

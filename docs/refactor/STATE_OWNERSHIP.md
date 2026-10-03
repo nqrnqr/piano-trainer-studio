@@ -3,7 +3,7 @@
 P9e（2026-10-04）：`state/model.ts` 定义状态端口，`state/app-state.ts` 分配每个应用的
 fresh state。`AppState` 是 `app/services.ts` 内部实例变量，服务只接收各自窄端口；
 没有词法全局或 Window 状态。旧 ambient state 声明已删除，模块与测试入口分别严格检查。
-以下阶段说明保留迁移历史，当前唯一组成与生命周期入口见 [DEVELOPMENT.md](DEVELOPMENT.md)。
+当前唯一组成与生命周期入口见 [DEVELOPMENT.md](DEVELOPMENT.md)，最终验证见 [FINAL_ACCEPTANCE.md](FINAL_ACCEPTANCE.md)。
 
 最终 dispose 先使 score-loader 的 pending canonical/vendor/library awaits 失效，再释放
 各自服务资源；普通换谱/并发完成顺序保持。sustain-state 独立拥有 native timers，
@@ -12,18 +12,23 @@ fresh state。`AppState` 是 `app/services.ts` 内部实例变量，服务只接
 直接写入清单见 [STATE_WRITES.md](STATE_WRITES.md)。生成脚本使用 TypeScript AST 收集赋值、
 增减、Map/Set 与数组变更；经由别名的变更需人工审阅，主要如下。
 
-| 组 | 当前写入者和别名 | 计划最终所有者 |
-| --- | --- | --- |
-| modeSettings、practice、playback | domain/hand-routing 规范化 Follow、返回当前 mode settings 并复制 active booleans；practice-controls 仅更新用户选择，preference-controls 恢复三个原默认 settings entries | settings commands / practice coordinator |
-| expectedNotes / hit、score、提前预留 | src/practice 的 expected-notes、input-controller、early-grace、scoring；`expectedMatch.hit` 和 `expected.hit` 通过局部引用变更；playback-state/coordinator 负责原 reset | expected-notes / input-matching / scoring / coordinator |
-| 当前谱与移调源 | core loader、ScoresUI、TransposeUI 的 `state = ensureTransposeState()`；同一个 transpose 对象 | score-loader / transpose commands |
-| 真实遍历、当前期望、预览 timeline | playback coordinator 与 shared traversal；OSMD adapter 提供惰性 PlaybackEvent 与推进命令，core 仍有未迁 UI/loader 查询 | traversal / practice coordinator |
-| feedback / debug 历史与几何锚点 | practice/feedback-state、FeedbackDebug，ScoreDisplay 通过 `expected` 引用重写 anchor | practice 记录、geometry / overlays 绘制 |
-| played / held / pending / timers | practice 输入／延音、playback-state 的原总清理、coordinator 的 pendingAudio/flags，LED 键域刷新 | practice / coordinator / audio scheduler |
-| 音频与 MIDI 路由、通道、回声 | preferences 初始化、core UI、midi listeners | audio / midi services；偏好命令更新 |
-| LED / WLED 状态 | led.js、core 虚拟键盘、midi LED test | optional adapter |
-| 共享键域 | src/domain/playable-range.ts 纯计算；src/state/player-range.ts 缓存，旧键盘／判定消费者转发 | domain / explicit controller |
-| library 抽屉、选中项、管理模式 | ScoresUI 和 toolbar | UI controllers |
+| 状态组 | 当前主要写入者与私有所有权 |
+| --- | --- |
+| modeSettings、practice、playback、偏好 | domain/hand-routing；ui/practice-controls、preference-controls；state/preferences 的显式 startup |
+| expected/hit、score、提前输入 | practice/expected-notes、input-controller、early-grace、scoring、feedback-state；reset 归 playback-state/coordinator |
+| 当前谱、原始文件、移调来源 | score/score-loader、transpose-commands 与 ui/library-actions，使用同一 typed metadata/transpose 端口 |
+| 真实位置、预览时间线、已画光标 | score/shared-traversal 与 practice/playback-coordinator；vendor iterator、revision refs 与 painted snapshot 私有归 osmd-adapter |
+| 反馈/debug 历史与几何 | practice/feedback-state；ui/feedback-debug；render/score-viewport 刷新 numeric anchors，geometry/overlay 不判对错 |
+| pressed/held/pending/sustained/timers | practice/input-controller、sustain-state、playback-state/coordinator；app/keyboard-controller 协调原 preview/visual 规则 |
+| 音频、MIDI、路由与回声 | audio/midi 服务私有节点、设备、timer 与 echo；偏好由 UI 命令更新，audio routing 只读配置 |
+| LED/WLED | 两个参数化 optional JS 工厂；optional/led 端口与资源 owner，hardwareLEDState 仍保留同一 Map |
+| 共享键域 | domain/playable-range 纯计算、state/player-range 缓存、ui/player-range-controls 规范化/prune 与偏好更新 |
+| 曲库抽屉/选中项/管理草稿 | ui/library-controls-state、library-*、scores-drawer、toolbar；repository 独立拥有 native DB/transactions |
+| 控件、更新请求与最终销毁 | 各 UI owner 自己的 native handlers/markers；app/update-controller owns requests；app/services 统一 dispose |
+
+最终库存：94 个生产模块、52 处直接 AppState 写入；别名写入由上述端口及后续历史契约解释。
+
+## 历史迁移记录（P3–P9d）
 
 P3/P4a 后，共享 timeline 的 cache 写入通过 `score-traversal` 注入的 `state` 端口进行；
 键域过滤由 `player-range-controls` 使用同一 AppState。MIDI echo 的 push／slice／filter

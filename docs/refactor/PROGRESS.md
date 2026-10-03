@@ -1,6 +1,8 @@
 # TypeScript 重构进度
 
-执行日期：2026-10-02。首轮完成 P0、P1；用户随后授权继续完成 P2–P9，完整目标保持进行中。
+执行日期：2026-10-02 至 2026-10-04。P0–P9 已完成；下方保留各检查点的当时状态。
+最终结果：338/338 Node、42 页 1,497/1,497 浏览器断言、干净安装/构建/watch、原 Windows 启动器与静态资源通过。
+当前完整结论与未验证手工项见 [FINAL_ACCEPTANCE.md](FINAL_ACCEPTANCE.md)。
 
 ## P0
 
@@ -489,3 +491,14 @@
 - 浏览器：default 19、no-op 6，原断言全部保留；native FileReader 20MiB pending read 的 abort、旧 onload gating、校准长按原 320/150ms、native local fetch AbortSignal、dispose/reinit 后旧请求不能改 status 或重启 timers、全部资源归零，清理后共享谱面仍加载。报告 validation/P9t-led-facade-browser.txt。
 - 验证：两套 final strict、四文件 clean comparison、338/338 Node，validation/P9t-led-facade-check.txt。生产输出字节未变，仅独立测试 bundle 更新；已有用户设置/数据库/helper/vendor 不变。
 - 回退：revert 此检查点恢复 P9s 的测试页面与 facade，无数据迁移。下一步完整 42 页矩阵与最终验收审计；硬件/可听/macOS/LAN 客户端限制继续明确记录。只有本地提交，无 push。
+
+## P9 最终验收：模块重构完成
+
+- 状态：完成（2026-10-04）。P0–P9 全部核心迁移与工具链/测试收尾完成；本文之前的“剩余/活跃”描述为各检查点当时状态。最终实现为 `8375f79`，后续此提交只更新验收文档与原始报告。
+- 交付：94 个实际 ES 模块；一个生产 IIFE、独立窄测试 bundle；统一 init/dispose、private state/vendor、最终严格配置；旧 trainer-core、业务 ambient/compatibility 和重复实现移除。当前职责映射、开发/调试/回退命令见 DEVELOPMENT，逐条计划核对见 FINAL_ACCEPTANCE。
+- 全量浏览器：21 套件 × default/no-op = 42 页，1,497/1,497；原断言完整保留，playback 每配置多一项 clock cleanup。实际 OSMD/SVG、真实重复/结尾、三模式×两布局、native events/readers/IndexedDB/requests/Tone、真实设置两次 reload、pending callback gates 与资源归零全部通过。原生前台 rAF visible/move/33% settle/dispose 通过；所有自建标签关闭。证据 FINAL-browser-matrix。
+- 干净副本：Git archive `8375f79`，离线 npm ci 安装三个固定开发包（0 vulnerabilities），npm build/check 两套 strict、338/338 Node 和四产物 clean comparison 通过；不依赖主工作区 node_modules。真实 build/watch 的错误保留、修复恢复和恢复原字节五项通过。证据 FINAL-clean-install-and-check、FINAL-build-watch。
+- 原入口：未改 Windows Desktop/Wi-Fi BAT 直接启动 archive；Desktop 127.0.0.1、Wi-Fi 0.0.0.0 与首页/connection-info 正常。生产初始库16谱，Hot Cross Buns Loaded 与真实1个SVG；没有测试 API/公开业务 state，日志仅原成功 console.error。20 个静态资源含两编码采样/WASM/data全部HTTP200；4个Mac command仅bash syntax通过。证据 FINAL-production-smoke、FINAL-static-and-launchers。
+- 库存/兼容：重建94 modules/3slots/4lexical candidates，无同名覆盖；52direct state writes及alias所有权已更新。生产无测试源码，四outputs与archive重建逐字节一致；全生产模块无any/nocheck/ignore。assets/helper/server/launchers/version.json与`be6d51c`基线diff为空，vendor哈希相同。IndexedDB v1、prefs key/default/backup/native资源格式保留。证据 FINAL-source-audit 与 settings/library矩阵。
+- 未验证：实体 MIDI/WLED/helper、可听质量/硬件同步、触屏设备、macOS执行、LAN客户端、交互F12断点。按计划保留手工清单；真实节点/模拟设备结果不代替这些结论。复杂重复/D.C./D.S.、原普通pending操作与vendor失败前worker公开释放限制继续记录，没有借类型重构改算法。
+- 回退与 Git：各阶段独立本地提交；稳定经典入口`7fe81d0`。revert对应阶段无需清用户配置/数据库，不同时保留两份生效实现。未push、未发布站点、未版本提升；版本约定留待用户授权push时执行。无剩余核心迁移任务。

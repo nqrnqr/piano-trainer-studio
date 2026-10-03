@@ -1,0 +1,5 @@
+PASS regular build type error returns 1 and preserves all four bundles/maps
+PASS actual --watch starts with a checked successful build
+PASS native watch detects invalid edit and preserves all four outputs
+PASS native watch recovers after a valid edit and updates both embedded source maps
+PASS restoring original source recreates byte-identical outputs
