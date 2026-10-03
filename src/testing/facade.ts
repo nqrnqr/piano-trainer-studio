@@ -17,6 +17,7 @@ import {createDeviceChecks} from './device-checks';
 import {createDebugChecks} from './debug-checks';
 import {createSettingsChecks} from './settings-checks';
 import {createLibraryUiChecks} from './library-ui-checks';
+import {createLedChecks} from './led-checks';
 
 // Separate test entry: commands and copied observations, with no state/vendor object.
 export function createTestFacade(options: {controlledPlayback?:boolean} = {}, injectedPorts:ServicePorts = {}, libraryFixture?:LibraryFixturePorts) {
@@ -54,6 +55,7 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
         debug:createDebugChecks(() => services),
         settings:createSettingsChecks(() => services),
         libraryUi:libraryUiChecks.commands,
+        led:createLedChecks(() => services),
         dispatchNote:(input:PianoTrainerDomain.TrainerNoteInput)=>services.practiceInput.handle({...input}),
         readViewportSnapshot:()=>({layout:services.ScoreDisplay.isHorizontal()?'horizontal':'traditional',
             ...services.osmdAdapter.readPositions(),measureCount:services.osmdAdapter.getMeasureCount(),

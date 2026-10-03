@@ -13060,6 +13060,48 @@
     } };
   }
 
+  // src/testing/led-checks.ts
+  function createLedChecks(getServices) {
+    return Object.freeze({
+      init: () => {
+        const output = getServices().optionalLedOutput;
+        output.initControls();
+        output.initOutput();
+        output.start();
+      },
+      initControls: () => getServices().optionalLedOutput.initControls(),
+      dispose: () => getServices().optionalLedOutput.dispose(),
+      selectKey: (midi) => getServices().legacyLed.selectLedCalibrationMidi(midi),
+      readOffset: (midi) => getServices().legacyLed.getLedCalibrationOffsetForMidi(midi),
+      importCalibration: (file) => getServices().legacyLed.handleLedCalibrationImportFile(file),
+      setCalibration: (enabled) => {
+        getServices().AppState.ledCalibrationMode = enabled;
+      },
+      setTarget: (mode, ip) => {
+        const state = getServices().AppState;
+        state.ledOutputMode = mode;
+        state.wledIp = ip;
+      },
+      ensureSolidMode: () => getServices().legacyLed.WLEDController.ensureSolidMode(),
+      readSnapshot: () => {
+        const services = getServices(), controller = services.legacyLed.WLEDController;
+        return {
+          enabled: services.optionalLedOutput.enabled,
+          calibration: services.AppState.ledCalibrationMode,
+          frameLength: services.legacyLed.LedEngine.frame.length,
+          status: services.AppState.wledStatus,
+          reconnectStopped: controller.reconnectTimer === null,
+          healthCheckStopped: controller.healthCheckTimer === null,
+          sourceMeasures: services.osmdAdapter.getSourceMeasureCount()
+        };
+      },
+      readResources: () => {
+        const services = getServices();
+        return { led: services.legacyLedResources.snapshot(), midi: services.legacyMidiLedTestResources.snapshot() };
+      }
+    });
+  }
+
   // src/testing/facade.ts
   function createTestFacade(options = {}, injectedPorts = {}, libraryFixture) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
@@ -13102,6 +13144,7 @@
       debug: createDebugChecks(() => services),
       settings: createSettingsChecks(() => services),
       libraryUi: libraryUiChecks.commands,
+      led: createLedChecks(() => services),
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",

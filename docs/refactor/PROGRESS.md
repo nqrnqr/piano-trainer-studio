@@ -481,3 +481,11 @@
 - 浏览器：library-ui/library/loader/native-controls/bootstrap两配置共10页372/372，累计40页1472项，validation/P9s-library-ui-facade-browser.txt。真实OSMD/nativeIndexedDB/webmscore/events，终态在full dispose/worker与自己DB cleanup之后，所有自建标签关闭。
 - 验证：两套final strict、四文件cleancomparison、338/338 Node，validation/P9s-library-ui-facade-check.txt。production bundle/vendor/数据schema/prefs/backup格式/资源/启动器不改。
 - 回退：revert本检查点恢复P9r测试入口/页面与fixture，无数据迁移。下一步legacy-led原套件、全量matrix和最终clean/launch/static audit；当前1472项不替代剩余suite，实体硬件/可听/Mac/LAN客户端限制保持。只有本地Git提交，无push。
+
+## P9t：保留 LED 的最后一组浏览器 facade
+
+- 状态：legacy-led 原套件迁移完成（2026-10-04）。21 组测试已全部迁移；最终全集与干净构建/启动器验收正在执行，完整目标仍活跃。
+- 映射：旧 AppState/LED 引用改为 testing/led-checks.ts 的明确命令、复制状态/资源计数；硬件工厂继续只通过已有类型化参数边界调用。最小声明补齐实际已有 framebuffer、校准导入/offset、WLED 请求与两个 timer 字段，无新生产测试 API。
+- 浏览器：default 19、no-op 6，原断言全部保留；native FileReader 20MiB pending read 的 abort、旧 onload gating、校准长按原 320/150ms、native local fetch AbortSignal、dispose/reinit 后旧请求不能改 status 或重启 timers、全部资源归零，清理后共享谱面仍加载。报告 validation/P9t-led-facade-browser.txt。
+- 验证：两套 final strict、四文件 clean comparison、338/338 Node，validation/P9t-led-facade-check.txt。生产输出字节未变，仅独立测试 bundle 更新；已有用户设置/数据库/helper/vendor 不变。
+- 回退：revert 此检查点恢复 P9s 的测试页面与 facade，无数据迁移。下一步完整 42 页矩阵与最终验收审计；硬件/可听/macOS/LAN 客户端限制继续明确记录。只有本地提交，无 push。

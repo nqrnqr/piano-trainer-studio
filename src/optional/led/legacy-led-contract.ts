@@ -13,12 +13,16 @@ export namespace PianoTrainerLegacyLed {
         'wledDdpLastSendAt' | 'wledDdpLastSendOk' | 'wledHelperAvailable' | 'wledHelperStatus' | 'wledIp' | 'wledStatus' | 'wledTransport'>;
     export interface Engine {
         config: {futurePreview: number};
+        readonly frame: readonly unknown[];
         init(): void;
         renderFromStates(states: Map<number, string>): void;
         renderOutputs(): void;
         getMidiVelocityForState(state: string): number;
     }
     export interface Controller {
+        readonly reconnectTimer: number | null;
+        readonly healthCheckTimer: number | null;
+        ensureSolidMode(): Promise<boolean | undefined>;
         clearLastSignature(): void;
         forceClear(): Promise<unknown>;
         cancelReconnect(): void;
@@ -49,6 +53,8 @@ export namespace PianoTrainerLegacyLed {
         syncWledTransportControls(): void;
         syncWledStatus(): void;
         selectLedCalibrationMidi(midi: number): void;
+        getLedCalibrationOffsetForMidi(midi: number): number;
+        handleLedCalibrationImportFile(file: File | null): void;
         buildChromaticTestNotes(): number[];
     }
     export interface Ports {
