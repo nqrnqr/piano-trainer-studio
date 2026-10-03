@@ -432,3 +432,12 @@
 - 验证：两套final strict、四文件clean comparison、338/338 Node（新增source map两个case），validation/P9n-native-controls-facade-check.txt。清单仍94 production ES modules/3slots/4runtime candidates/52directwrites。source map与TS对应，所有自建标签关闭与自己库cleanup完成。
 - 边界：其余native fixture尚待逐页接入maphelper与narrow facade，不能把旧regex失效造成0计数当成通过；当前1134项不替代全量。vendor/schema/backup/userdata/设置/启动器不变，实体硬件/可听/Mac/LAN客户端限制保持。
 - 回退：revert本检查点恢复P9m测试入口、adapter观察和原fixture，无数据迁移。下一步剩余preferences/keyboard/device/debug/settings/library-ui/legacy-led，只有本地提交，不推送。
+
+## P9o：练习、staff assignment 与设置偏好控件 facade
+
+- 状态：原 preference-controls suite 迁移检查点完成（2026-10-04）；剩余keyboard/device/debug/settings/library-ui/legacy-led与最终全集尚未完成，完整目标活跃。
+- 映射：原三UI controllers/globals/AppState → testing/preference-checks.ts 明确场景命令/复制mode与hands/routing/preferences/expected staff roles。Realtime settings对象与pressed Set/reservations Map仅private capture比较，dispose/recreate清引用。MIDI只补正常populate channel select命令；没有Window状态或vendor引用。
+- 资源：原最近UI creator规则从actual bundle source map识别，不删除原practice/hand/settings native listeners计数。两种配置每页原39项完整保留，真实mode radio/hand选择/音频MIDI独立routing、low-latency/fullscreen/scroll/preview/highlight/keyboard、实际OSMD staff assignment、invalid saved mode/clampedlevels/forcedmonitoring、五个MIDI reset原order、defaultUI与identity、confirm cancel/accept、实际FileReader invalid alert、dispose无写入/reinit markers均通过。
+- 浏览器：preferences/native-controls/MIDI/input/bootstrap两配置共10页351/351，累计30页1212项；validation/P9o-preference-controls-facade-browser.txt。内存偏好/随机DB不影响用户数据，通过终态在完整dispose与cleanup之后，所有自建标签关闭。
+- 验证：两套final strict、四文件clean comparison、338/338 Node，validation/P9o-preference-controls-facade-check.txt。生产bundle不改；vendor/schema/backup格式/用户设置/资源/启动器不变。
+- 回退：revert本检查点恢复P9n测试入口/页面与fixture，无数据迁移。继续剩余原套件；当前1212项不替代全集，实体硬件/可听/Mac/LAN客户端限制保持。只有本地Git提交，无push。

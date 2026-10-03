@@ -12374,6 +12374,7 @@
       initControls: () => getServices().midiControls.init(),
       disposeControls: () => getServices().midiControls.dispose(),
       populateDevices: () => getServices().midiControls.populateMIDIDevices(),
+      populateChannels: (id) => getServices().midiControls.populateMidiChannelSelect(id, 1),
       noteOn: (note, velocity = 100) => getServices().midiOutput.noteOn(note, velocity),
       noteOff: (note) => getServices().midiOutput.noteOff(note),
       readChannels: () => ({ input: getServices().AppState.midiInChannel, output: getServices().AppState.midiOutChannel })
@@ -12728,6 +12729,68 @@
     } };
   }
 
+  // src/testing/preference-checks.ts
+  function createPreferenceChecks(getServices) {
+    let realtime = null;
+    let inputs = null;
+    const controllers = () => {
+      const s = getServices();
+      return [s.practiceControls, s.handAssignmentControls, s.settingsActions];
+    };
+    return { clear: () => {
+      realtime = null;
+      inputs = null;
+    }, commands: Object.freeze({
+      init: () => {
+        for (const controller of controllers()) controller.init();
+      },
+      dispose: () => {
+        for (const controller of controllers()) controller.dispose();
+      },
+      applySaved: () => getServices().preferenceControls.applyPersistedTrainerAndSettingsPreferences(),
+      restoreDefaults: () => getServices().preferenceControls.restoreDefaultPreferences({ reloadDevices: false }),
+      setFeedback: (value) => {
+        getServices().AppState.feedbackEnabled = value;
+      },
+      captureRealtime: () => {
+        realtime = getServices().AppState.modeSettings.realtime;
+      },
+      captureInputs: () => {
+        const state = getServices().AppState;
+        inputs = { pressed: state.pressedKeys, reservations: state.earlyGraceReservations };
+      },
+      readSnapshot: () => {
+        const s = getServices(), state = s.AppState;
+        return {
+          mode: state.mode,
+          practice: { ...state.practice },
+          playback: { ...state.playback },
+          audio: { ...state.audioEnabled },
+          midi: { ...state.midiOutEnabled },
+          lowLatency: state.lowLatencyPlaybackEnabled,
+          fullscreenOnPlay: state.fullscreenOnPlay,
+          futurePreview: state.futurePreviewEnabled,
+          futureDepth: state.futurePreviewDepth,
+          previewEvents: state.lastLedPreviewEvents.length,
+          correctHighlight: state.correctHighlightEnabled,
+          feedback: state.feedbackEnabled,
+          hands: { ...state.hands },
+          timelineDirty: state.ledPreviewTimelineDirty,
+          expectedRoles: state.expectedNotes.map((note) => s.handRouting.getAssignedHandRoleForStaff(note.staffId)),
+          midiOutVolume: state.midiOutVolume,
+          midiInBoost: state.midiInBoost,
+          inputVelocity: state.inputVelocityEnabled,
+          liveLowLatency: state.liveLowLatencyMonitoringEnabled,
+          horizontal: s.ScoreDisplay.isHorizontal(),
+          zoom: state.zoom,
+          realtimeSame: !!realtime && realtime === state.modeSettings.realtime,
+          pressedSame: !!inputs && inputs.pressed === state.pressedKeys,
+          reservationsSame: !!inputs && inputs.reservations === state.earlyGraceReservations
+        };
+      }
+    }) };
+  }
+
   // src/testing/facade.ts
   function createTestFacade(options = {}, injectedPorts = {}, libraryFixture) {
     const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
@@ -12740,6 +12803,7 @@
     const scoreChecks = createScoreChecks(() => services);
     const libraryChecks = createLibraryChecks(() => services, libraryFixture);
     const controlsChecks = createControlsChecks(() => services);
+    const preferenceChecks = createPreferenceChecks(() => services);
     return Object.freeze({
       loadScore: (raw, options2 = {}) => services.scoreLoader.loadScoreIntoApp(raw, options2),
       dispatchInput: (note, down) => services.practiceInput.handle({
@@ -12760,6 +12824,7 @@
       score: scoreChecks.commands,
       library: libraryChecks.commands,
       controls: controlsChecks.commands,
+      preferences: preferenceChecks.commands,
       dispatchNote: (input) => services.practiceInput.handle({ ...input }),
       readViewportSnapshot: () => ({
         layout: services.ScoreDisplay.isHorizontal() ? "horizontal" : "traditional",
@@ -12798,6 +12863,7 @@
         scoreChecks.clear();
         libraryChecks.clear();
         controlsChecks.clear();
+        preferenceChecks.clear();
         playbackChecks?.dispose();
       },
       recreate: () => {
@@ -12806,6 +12872,7 @@
         scoreChecks.clear();
         libraryChecks.clear();
         controlsChecks.clear();
+        preferenceChecks.clear();
         playbackChecks?.dispose();
         services = createServices(servicePorts);
         playbackChecks?.attach(() => services);
