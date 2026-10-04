@@ -1,0 +1,13 @@
+PRIOR b1235dc original render PASS
+PRIOR horizontal ERROR TypeError: Cannot read properties of undefined (reading 'hasMetronomeMark')
+    at N.createMetronomeMark (http://127.0.0.1:8080/assets/js/opensheetmusicdisplay.min.js?v=1.2.4:2:449852)
+    at N.calculateTempoExpressionsForMultiTempoExpression (http://127.0.0.1:8080/assets/js/opensheetmusicdisplay.min.js?v=1.2.4:2:266882)
+    at N.calculateTempoExpressions (http://127.0.0.1:8080/assets/js/opensheetmusicdisplay.min.js?v=1.2.4:2:305643)
+    at N.calculateMusicSystems (http://127.0.0.1:8080/assets/js/opensheetmusicdisplay.min.js?v=1.2.4:2:248784)
+    at N.calculate (http://127.0.0.1:8080/assets/js/opensheetmusicdisplay.min.js?v=1.2.4:2:238412)
+    at e.GraphicalMusicSheet.reCalculate (http://127.0.0.1:8080/assets/js/opensheetmusicdisplay.min.js?v=1.2.4:2:196100)
+    at w.render (http://127.0.0.1:8080/assets/js/opensheetmusicdisplay.min.js?v=1.2.4:2:778858)
+    at Object.load (http://127.0.0.1:8080/docs/testing/generated/traditional-prior-test-app.js?v=1.2.4:4621:18)
+    at async Object.load (http://127.0.0.1:8080/docs/testing/generated/traditional-prior-test-app.js?v=1.2.4:4953:9)
+    at async http://127.0.0.1:8080/docs/testing/generated/traditional-prior-test-app.js?v=1.2.4:5132:28
+DONE

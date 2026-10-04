@@ -1,6 +1,7 @@
 import type {PianoTrainerDomain} from '../domain/model';
 import type {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
 import type {LegacyAppState} from '../state/model';
+import {PianoTrainerTraditionalScroll as Traditional} from './traditional-scroll-policy';
 // Display layout and scrolling only. Musical advancement belongs to practice.
 export namespace PianoTrainerScoreViewport {
     export interface Elements {
@@ -8,6 +9,13 @@ export namespace PianoTrainerScoreViewport {
         layout: HTMLSelectElement; autoScroll: HTMLInputElement;
     }
     export interface Ports {
+        traditional?: {
+            read(): {position: Traditional.Position; system: Traditional.SystemBounds | null; cursor: Traditional.Bounds;
+                mode: PianoTrainerDomain.PracticeMode; topObstruction: number} | null;
+            estimateSeconds(system: Traditional.SystemBounds, position: Traditional.Position): number | null;
+            lifecycle?: Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'>;
+            isPlaying(): boolean;
+        };
         refreshPresentation?(): void;
         elements: Elements;
         score: Pick<PianoTrainerOsmdAdapter.Service, 'getDefaults' | 'setLayout' | 'isReady' | 'afterRender' | 'getCursorElement'>;
@@ -27,13 +35,88 @@ export namespace PianoTrainerScoreViewport {
         let mode: PianoTrainerDomain.ScoreLayout = 'traditional';
         let defaults: PianoTrainerOsmdAdapter.LayoutDefaults | null = null;
         let frame: number | null = null, targetLeft = 0, previousTime = 0;
-        let changingLayout = false, initialized = false;
+        let initialized = false;
+        let verticalFrame: number | null = null, generation = 0, dirty = false;
+        let previous: Traditional.Position | null = null, recheck: 'align' | 'visibility' | null = null;
+        let resume = false, nativeScroll = false, framesRun = 0, framesRequested = 0;
+        type Animation = {from: number; target: number; started: number; durationMs: number; lineSeconds: number | null; systemId: number | null};
+        let vertical: Animation | null = null, lastAnimation: Animation | null = null;
+        let measuredSystem: Traditional.SystemBounds | null = null;
+        let lastKind: Traditional.Kind | null = null;
+        let renderedTop: number | null = null;
         const area = () => elements.area;
         const isHorizontal = () => mode === 'horizontal';
         const follows = () => elements.autoScroll.checked !== false;
+        function stopNativeScroll() {
+            if (nativeScroll) area().scrollTo({top:area().scrollTop, behavior:'instant'});
+            nativeScroll = false;
+        }
         function cancel() {
             if (frame !== null) ports.cancelFrame(frame);
             frame = null; previousTime = 0;
+            generation++;
+            if (verticalFrame !== null) ports.cancelFrame(verticalFrame);
+            verticalFrame = null; vertical = null; dirty = false; recheck = null; resume = true;
+            stopNativeScroll();
+        }
+        function scheduleVertical() {
+            if (verticalFrame !== null || !initialized || !follows() || isHorizontal()) return;
+            if (ports.traditional?.lifecycle?.visibilityState === 'hidden') return;
+            const epoch = generation;
+            framesRequested++;
+            verticalFrame = ports.requestFrame(time => {if (epoch === generation) animateVertical(time);});
+        }
+        function legacyPosition(cursor: Traditional.Bounds) {
+            vertical = null; stopNativeScroll();
+            const viewport = area(), height = viewport.getBoundingClientRect().height;
+            const screenY = cursor.top - viewport.scrollTop;
+            if (screenY > height * .6 || screenY < 0) {
+                const target = Math.max(0, Math.min(viewport.scrollHeight - viewport.clientHeight, cursor.top - height * .1));
+                if (ports.prefersReducedMotion()) viewport.scrollTop = target;
+                else {viewport.scrollTo({top:target, behavior:'smooth'}); nativeScroll = true;}
+            }
+        }
+        function animateVertical(time: number) {
+            verticalFrame = null; framesRun++;
+            if (!follows() || isHorizontal()) return;
+            if (dirty) {
+                dirty = false;
+                const snapshot = ports.traditional?.read();
+                if (snapshot) {
+                    const classification = Traditional.classify(previous, snapshot.position);
+                    const unchanged = previous && previous.scoreRevision === snapshot.position.scoreRevision
+                        && previous.layoutRevision === snapshot.position.layoutRevision && previous.traceStepIndex === snapshot.position.traceStepIndex
+                        && previous.eventId === snapshot.position.eventId && previous.runId === snapshot.position.runId;
+                    const kind = recheck === 'align' ? 'align' : classification === 'navigation' ? classification : recheck || (resume ? 'align' : classification);
+                    lastKind = kind;
+                    const reevaluate = !!recheck || resume;
+                    recheck = null; resume = false;
+                    previous = {...snapshot.position}; measuredSystem = snapshot.system;
+                    if (!unchanged || reevaluate) {
+                        if (kind === 'navigation') legacyPosition(snapshot.cursor);
+                        else if (!(kind === 'same' && vertical)) {
+                            if (kind !== 'same') stopNativeScroll();
+                            const lineSeconds = snapshot.system && (kind === 'adjacent' || kind === 'align')
+                                ? ports.traditional!.estimateSeconds(snapshot.system, snapshot.position) : null;
+                            const decision = Traditional.decide({kind, height:area().clientHeight, scrollTop:area().scrollTop,
+                                maxScroll:area().scrollHeight-area().clientHeight, system:snapshot.system, cursor:snapshot.cursor,
+                                topObstruction:snapshot.topObstruction, mode:snapshot.mode, lineSeconds});
+                            if (decision.kind === 'animate') {
+                                stopNativeScroll();
+                                vertical = {from:area().scrollTop, target:decision.target, started:time, durationMs:decision.durationMs,
+                                    lineSeconds, systemId:snapshot.position.systemId};
+                                lastAnimation = {...vertical};
+                                if (ports.prefersReducedMotion()) {area().scrollTop = vertical.target; vertical = null;}
+                            } else if (kind !== 'same') vertical = null;
+                        }
+                    }
+                } else vertical = null;
+            }
+            if (vertical) {
+                area().scrollTop = Traditional.interpolate(vertical.from, vertical.target, time-vertical.started, vertical.durationMs);
+                if (time-vertical.started >= vertical.durationMs) {area().scrollTop = vertical.target; vertical = null;}
+            }
+            if (dirty || vertical) scheduleVertical();
         }
         function animate(time: number) {
             frame = null;
@@ -58,20 +141,27 @@ export namespace PianoTrainerScoreViewport {
             return Math.max(0, Math.min(contentX - viewport.clientWidth * 0.33, viewport.scrollWidth - viewport.clientWidth));
         }
         function follow({immediate = false} = {}) {
-            if (!isHorizontal() || !follows()) { cancel(); return; }
+            if (!isHorizontal()) return;
+            if (!follows()) { cancel(); return; }
             const viewport = area(); targetLeft = getTargetLeft(viewport);
             if (immediate || ports.prefersReducedMotion()) { cancel(); viewport.scrollLeft = targetLeft; }
             else if (frame === null) frame = ports.requestFrame(animate);
         }
+        function beforeRender() {
+            cancel();
+            renderedTop = isHorizontal() ? null : area().scrollTop;
+        }
         function afterRender() {
+            cancel();
             ports.refreshPresentation?.();
-            if (isHorizontal() || changingLayout) {
-                for (const expected of state.expectedNotes) {
-                    if (expected.noteRef) expected.anchor = ports.getAnchor(expected.noteRef, expected.mIdx, Number(expected.staffId) - 1);
-                }
+            for (const expected of state.expectedNotes) {
+                if (expected.noteRef) expected.anchor = ports.getAnchor(expected.noteRef, expected.mIdx, Number(expected.staffId) - 1);
             }
-            score.afterRender(isHorizontal() || changingLayout);
-            if (!isHorizontal()) return;
+            score.afterRender(true);
+            if (!isHorizontal()) {
+                if (renderedTop !== null) area().scrollTop = Math.max(0,Math.min(renderedTop,area().scrollHeight-area().clientHeight));
+                renderedTop = null; resume = false; recheck = 'visibility'; autoScroll(); return;
+            }
             const width = ports.getSvg()?.getBoundingClientRect().width || 0;
             elements.wrapper.style.width = `${Math.max(area().clientWidth, width)}px`;
             score.getCursorElement()?.classList.add('horizontal-score-cursor');
@@ -80,6 +170,7 @@ export namespace PianoTrainerScoreViewport {
         function autoScroll() {
             if (isHorizontal()) { follow(); return; }
             if (!follows()) return;
+            if (ports.traditional) {dirty = true; scheduleVertical(); return;}
             const cursor = score.getCursorElement();
             if (!cursor) return;
             const viewport = area(), bounds = viewport.getBoundingClientRect(), rect = cursor.getBoundingClientRect();
@@ -104,15 +195,21 @@ export namespace PianoTrainerScoreViewport {
                 const wrongPress = state.realtimeWrongPressInCurrentContext;
                 if (!ports.refreshPresentation) ports.clearFeedbackPreserveScoring();
                 state.realtimeWrongPressInCurrentContext = wrongPress;
-                changingLayout = true;
-                try { ports.renderScoreAndRefreshGeometry(); } finally { changingLayout = false; }
+                ports.renderScoreAndRefreshGeometry();
                 autoScroll();
             }
         }
         const onLayoutChange = (event: Event) => {
             if (event.target instanceof HTMLSelectElement) setMode(event.target.value);
         };
-        const onAutoScrollChange = () => { ports.refreshPresentation?.(); if (follows()) follow(); else cancel(); };
+        const onAutoScrollChange = () => { ports.refreshPresentation?.(); if (follows()) {
+            if (isHorizontal()) follow(); else {recheck = 'align'; autoScroll();}
+        } else cancel(); };
+        const onManualScroll = () => {cancel(); resume = false;};
+        const onVisibility = () => {
+            if (ports.traditional?.lifecycle?.visibilityState !== 'visible') cancel();
+            else if (ports.traditional.isPlaying()) autoScroll();
+        };
         function init() {
             if (initialized) return;
             defaults ??= score.getDefaults();
@@ -121,18 +218,23 @@ export namespace PianoTrainerScoreViewport {
             setMode(saved, {save: false});
             elements.layout.addEventListener('change', onLayoutChange);
             elements.autoScroll.addEventListener('change', onAutoScrollChange);
-            area().addEventListener('wheel', cancel, {passive: true});
-            area().addEventListener('touchstart', cancel, {passive: true});
+            area().addEventListener('wheel', onManualScroll, {passive: true});
+            area().addEventListener('touchstart', onManualScroll, {passive: true});
+            ports.traditional?.lifecycle?.addEventListener('visibilitychange', onVisibility);
             initialized = true;
         }
         function dispose() {
             cancel();
             elements.layout.removeEventListener('change', onLayoutChange);
             elements.autoScroll.removeEventListener('change', onAutoScrollChange);
-            area().removeEventListener('wheel', cancel);
-            area().removeEventListener('touchstart', cancel);
+            area().removeEventListener('wheel', onManualScroll);
+            area().removeEventListener('touchstart', onManualScroll);
+            ports.traditional?.lifecycle?.removeEventListener('visibilitychange', onVisibility);
             initialized = false;
         }
-        return {init, dispose, setMode, isHorizontal, follow, afterRender, autoScroll, cancel};
+        return {init, dispose, setMode, isHorizontal, follow, beforeRender, afterRender, autoScroll, cancel,
+            readTraditionalState: () => ({framePending:verticalFrame !== null, active:vertical !== null, framesRun, framesRequested,
+                position:previous ? {...previous} : null, system:measuredSystem ? {...measuredSystem} : null,
+                animation:lastAnimation ? {...lastAnimation} : null, lastKind})};
     }
 }

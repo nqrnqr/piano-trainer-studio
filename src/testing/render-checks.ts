@@ -10,6 +10,10 @@ export function createRenderChecks(getServices: () => Services) {
     }>();
     let nextCapture = 0;
     const commands = Object.freeze({
+        traditionalState:() => getServices().ScoreDisplay.readTraditionalState(),
+        systemBounds:() => getServices().osmdAdapter.getSystemBounds(),
+        autoScroll:() => getServices().ScoreDisplay.autoScroll(),
+        cancelScroll:() => getServices().ScoreDisplay.cancel(),
         seekMeasure:(index:number,follow = true) => {
             const services = getServices(), adapter = services.osmdAdapter;
             adapter.reset(); let steps = 0;

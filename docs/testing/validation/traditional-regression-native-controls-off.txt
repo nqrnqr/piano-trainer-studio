@@ -1,0 +1,45 @@
+INITIAL {"toolbar":{"listeners":15,"frames":0,"timers":0,"intervals":0},"display-controls":{"listeners":8,"frames":0,"timers":0,"intervals":0},"tempo-controls":{"listeners":8,"frames":0,"timers":0,"intervals":0},"audio-level-controls":{"listeners":8,"frames":0,"timers":0,"intervals":0},"loop-controls":{"listeners":45,"frames":0,"timers":0,"intervals":0}}
+PASS repeated init owns one native listener set for all five controllers
+PASS native toolbar click opens its panel and button state on the next frame
+PASS opening another toolbar panel immediately closes its predecessor
+PASS click inside a popup retains the open panel
+PASS native library picker overlay is excluded from outside-click closing
+PASS outside click starts the original closing transition
+PASS transition/fallback completes with a collapsed toolbar button
+PASS native More launcher replaces its menu with the target panel
+PASS Scores button refreshes the folders view before opening its drawer
+PASS drawer positioning retains native navbar rounding and bottom inset
+PASS first-run string false still opens the original intro
+PASS native Got It stores first-run seen immediately
+PASS loader installs the original actual measure range through typed loop controls
+PASS native zoom input previews without rendering or committing state
+PASS native zoom change commits, renders and preserves practice/scoring identity
+PASS native speed input previews BPM without changing playback speed
+PASS native speed change commits to the single transport
+PASS BPM edit retains the original unbounded percent and native range sanitization
+PASS native volume/boost controls preserve saved numeric levels and local boost
+PASS native metronome off disables its dependent controls
+PASS native MIDI metronome option updates its level label and preference
+PASS native Loop toggle enables count-in controls
+PASS native loop count-in edit persists independently
+PASS empty native loop input retains its current bound while editing
+PASS empty committed loop input returns to the original minimum
+PASS crossed native loop range moves the other bound and keeps sliders aligned
+PASS native loop stepper click advances exactly one measure
+PASS pointer hold starts one native 320ms delay without immediate stepping
+PASS hold begins its 170ms repeat after the original delay
+PASS document pointer release clears the native interval and hold style
+PASS native fullscreen command preserves denied-request fallback and accessibility label
+PASS fullscreen exit clears its fallback and native button state
+PASS fullscreen-on-play scroll wrapper preserves callback return and native scroll offsets
+PASS native toolbar frame and retargeted display resize timer are independently owned
+RELEASED {"resources":{"toolbar":{"listeners":0,"frames":0,"timers":0,"intervals":0},"display-controls":{"listeners":0,"frames":0,"timers":0,"intervals":0},"tempo-controls":{"listeners":0,"frames":0,"timers":0,"intervals":0},"audio-level-controls":{"listeners":0,"frames":0,"timers":0,"intervals":0},"loop-controls":{"listeners":0,"frames":0,"timers":0,"intervals":0}},"play":true,"reset":true}
+PASS explicit dispose releases all owned native listeners/frames/timers/hold and onclick slots
+PASS disposed control events cannot mutate loop/tempo state
+PASS fresh init restores exactly the original owned listener counts
+PASS late Scores refresh cannot reopen a disposed/reinitialized toolbar
+PASS native controls run with default/no-op LED
+REINIT {"toolbar":{"listeners":0,"frames":0,"timers":0,"intervals":0},"display-controls":{"listeners":8,"frames":0,"timers":0,"intervals":0},"tempo-controls":{"listeners":8,"frames":0,"timers":0,"intervals":0},"audio-level-controls":{"listeners":8,"frames":0,"timers":0,"intervals":0},"loop-controls":{"listeners":45,"frames":0,"timers":0,"intervals":0}}
+RESOURCES {"toolbar":{"listeners":0,"frames":0,"timers":0,"intervals":0},"display-controls":{"listeners":0,"frames":0,"timers":0,"intervals":0},"tempo-controls":{"listeners":0,"frames":0,"timers":0,"intervals":0},"audio-level-controls":{"listeners":0,"frames":0,"timers":0,"intervals":0},"loop-controls":{"listeners":0,"frames":0,"timers":0,"intervals":0}}
+CLEANUP 1 disposable databases
+DONE

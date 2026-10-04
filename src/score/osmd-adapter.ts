@@ -6,6 +6,12 @@ import type {PianoTrainerPerformance} from '../domain/performance-position';
 // OSMD object identity, revision-scoped note references and painted cursor state.
 // Preserve the existing prototype/shallow-array snapshot and repeat state.
 export namespace PianoTrainerOsmdAdapter {
+    // Page-local SVG units, before the viewBox/zoom/page-to-container transform.
+    export interface SvgSystemBounds {
+        systemId: number; layoutRevision: number; pageIndex: number;
+        firstMeasureIndex: number; lastMeasureIndex: number;
+        left: number; right: number; top: number; bottom: number;
+    }
     export interface LayoutDefaults { maximumWidth: number; options: PianoTrainerOsmdVendor.LayoutOptions; }
     export interface Ports {
         getRenderer(): PianoTrainerOsmdVendor.Renderer;
@@ -23,6 +29,10 @@ export namespace PianoTrainerOsmdAdapter {
         let displayedSheet: object | null | undefined;
         let trace: PianoTrainerPerformance.Trace | null = null;
         let traceStepIndex = 0;
+        let paintedTraceStepIndex = 0, restoringPainted = false, layoutRevision = 0;
+        let systemBounds: SvgSystemBounds[] | null = null;
+        let measureSystems = new Map<number, SvgSystemBounds>();
+        function invalidateSystems() {layoutRevision++; systemBounds = null; measureSystems.clear();}
         let ownedHook: {cursor: PianoTrainerOsmdVendor.Cursor; original: () => void; wrapper: () => void} | null = null;
         function syncSheet() {
             const sheet = ports.getRenderer().Sheet;
@@ -33,6 +43,7 @@ export namespace PianoTrainerOsmdAdapter {
                 noteRefs = new WeakMap();
                 sourceNotes.clear();
                 trace = null; traceStepIndex = 0;
+                invalidateSystems();
             }
             return sheet;
         }
@@ -105,6 +116,7 @@ export namespace PianoTrainerOsmdAdapter {
                     if (Array.isArray(value)) Reflect.set(displayedIterator, key, value.slice());
                 }
                 displayedSheet = syncSheet();
+                if (!restoringPainted) paintedTraceStepIndex = traceStepIndex;
                 return update();
             };
             cursor.update = wrapper;
@@ -116,7 +128,8 @@ export namespace PianoTrainerOsmdAdapter {
             if (preservePaintedPosition && displayedIterator && displayedSheet === sheet) {
                 const playbackIterator = cursor.Iterator;
                 cursor.iterator = displayedIterator;
-                try { cursor.update(); } finally { cursor.iterator = playbackIterator; }
+                restoringPainted = true;
+                try { cursor.update(); } finally { cursor.iterator = playbackIterator; restoringPainted = false; }
             }
             attachHook(cursor);
         }
@@ -185,6 +198,51 @@ export namespace PianoTrainerOsmdAdapter {
                 iterator ? {measureIndex: iterator.CurrentMeasureIndex, timestampWhole: iterator.currentTimeStamp?.RealValue ?? null} : null;
             return {scoreRevision, traversal: position(cursor?.Iterator),
                 painted: displayedSheet === sheet ? position(displayedIterator) : null};
+        }
+        function getSystemBounds() {
+            syncSheet();
+            if (systemBounds) return systemBounds.map(bounds => ({...bounds}));
+            const graphic = ports.getRenderer().GraphicSheet;
+            const index = new Map<PianoTrainerOsmdVendor.MusicSystem, SvgSystemBounds>();
+            const pages = graphic?.MusicPages || [];
+            for (const [measureIndex, row] of (graphic?.MeasureList || []).entries()) {
+                for (const measure of row) {
+                    const system = measure.ParentStaffLine?.ParentMusicSystem;
+                    if (!system) continue;
+                    let bounds = index.get(system);
+                    if (!bounds) {
+                        const pageIndex = pages.findIndex(page => page.MusicSystems.includes(system));
+                        if (pageIndex < 0) continue;
+                        const pagePosition = pages[pageIndex]?.PositionAndShape?.AbsolutePosition || {x:0,y:0};
+                        const shape = system.PositionAndShape, origin = shape.AbsolutePosition;
+                        let top = origin.y + (shape.BorderTop ?? 0), bottom = origin.y + (shape.BorderBottom ?? shape.Size.height);
+                        for (const staff of system.StaffLines || []) {
+                            const box = staff.PositionAndShape;
+                            top = Math.min(top, box.AbsolutePosition.y + Math.min(0, box.BorderTop ?? 0));
+                            bottom = Math.max(bottom, box.AbsolutePosition.y + Math.max(4, box.BorderBottom ?? 4));
+                        }
+                        bounds = {systemId: index.size, layoutRevision, pageIndex, firstMeasureIndex:measureIndex, lastMeasureIndex:measureIndex,
+                            left:(origin.x + (shape.BorderLeft ?? 0) - pagePosition.x)*10,
+                            right:(origin.x + (shape.BorderRight ?? shape.Size.width) - pagePosition.x)*10,
+                            top:(top-pagePosition.y)*10, bottom:(bottom-pagePosition.y)*10};
+                        index.set(system,bounds);
+                    }
+                    bounds.lastMeasureIndex = measureIndex;
+                    measureSystems.set(measureIndex,bounds);
+                }
+            }
+            systemBounds = [...index.values()];
+            return systemBounds.map(bounds => ({...bounds}));
+        }
+        function getSystemForMeasure(index: number) {
+            syncSheet();
+            if (!systemBounds) getSystemBounds();
+            const bounds = measureSystems.get(index);
+            return bounds ? {...bounds} : null;
+        }
+        function readPaintedPosition() {
+            const positions = readPositions();
+            return positions.painted ? {...positions.painted, scoreRevision:positions.scoreRevision, layoutRevision, traceStepIndex:paintedTraceStepIndex} : null;
         }
         function getMeasureBox(measureIndex: number, staffIndex: number, unitsToPx: number) {
             const measure = ports.getRenderer().GraphicSheet?.MeasureList?.[measureIndex]?.[staffIndex];
@@ -271,6 +329,7 @@ export namespace PianoTrainerOsmdAdapter {
         function rebuildStaffIdentity() {
             globalStaffIdentityMap = new Map();
             trace = null;
+            invalidateSystems();
             const instruments = ports.getRenderer()?.Sheet?.Instruments || ports.getRenderer()?.Sheet?.instruments || [];
             let nextId = 1;
             instruments.forEach(instrument => {
@@ -310,13 +369,14 @@ export namespace PianoTrainerOsmdAdapter {
         }
         function dispose() {
             detachHook();
+            invalidateSystems();
             displayedIterator = null; displayedSheet = undefined;
             noteRefs = new WeakMap(); sourceNotes.clear(); scoreRevision++;
             globalStaffIdentityMap = new Map();
             trace = null;
         }
         return {getCombinedTieLength, readPracticeEntries, readPlaybackEvent, noteRef, resolveNote, afterRender, getDefaults, setLayout, getGraphicalNote, getMeasureBox, readPositions, dispose,
-            getIndependentIterator, getPerformanceTrace, seekTraceStep,
+            getIndependentIterator, getPerformanceTrace, seekTraceStep, getSystemBounds, getSystemForMeasure, readPaintedPosition,
             getTraceStepIndex: () => { syncSheet(); return traceStepIndex; },
             getScoreRevision: () => { syncSheet(); return scoreRevision; },
             rebuildStaffIdentity, resolveStaffIdFromNote, resolveStaffIdFromEntry,
@@ -328,7 +388,7 @@ export namespace PianoTrainerOsmdAdapter {
                 const measures = ports.getRenderer().Sheet!.SourceMeasures!;
                 return measures.length > 0 ? measures[0]!.TempoInBPM : undefined;
             },
-            setZoom: (value: number) => { ports.getRenderer().zoom = value; },
+            setZoom: (value: number) => { ports.getRenderer().zoom = value; invalidateSystems(); },
             getZoom: () => ports.getRenderer().zoom,
             getHorizontalMetrics: () => {
                 let gap = 0, top = 80, bottom = 80, staffCount = 1;
@@ -389,7 +449,7 @@ export namespace PianoTrainerOsmdAdapter {
                 return measure.PositionAndShape.AbsolutePosition.y * 10;
             },
             isReady: () => ports.getRenderer().IsReadyToRender(),
-            render: () => ports.getRenderer().render(),
+            render: () => {invalidateSystems(); ports.getRenderer().render();},
             getCursorElement: () => ports.getRenderer().cursor?.cursorElement || null};
     }
     export type Service = ReturnType<typeof create>;

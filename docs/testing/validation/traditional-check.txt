@@ -1,0 +1,2348 @@
+
+> piano-trainer-studio@1.2.4 check
+> npm run typecheck && npm run build:check && npm test
+
+
+> piano-trainer-studio@1.2.4 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.test.json
+
+npm notice
+npm notice New major version of npm available! 10.9.4 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+> piano-trainer-studio@1.2.4 build:check
+> node scripts/build-app.cjs --check
+
+Browser bundles match a clean build (4 files).
+npm notice
+npm notice New major version of npm available! 10.9.4 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+> piano-trainer-studio@1.2.4 test
+> npm run test:unit
+
+
+> piano-trainer-studio@1.2.4 test:unit
+> node scripts/build-test-modules.cjs && node --test tests/unit/*.test.cjs
+
+TAP version 13
+# Subtest: sampler maps both codecs to the original local assets; explicit init shares one destination and disposes each node
+ok 1 - sampler maps both codecs to the original local assets; explicit init shares one destination and disposes each node
+  ---
+  duration_ms: 11.8626
+  type: 'test'
+  ...
+# Subtest: codec probe preserves probably/maybe, empty/no, unsupported and exception fallback
+ok 2 - codec probe preserves probably/maybe, empty/no, unsupported and exception fallback
+  ---
+  duration_ms: 8.0931
+  type: 'test'
+  ...
+# Subtest: Follow latency profile restores captured context values for Wait and Realtime without changing the playback clock
+ok 3 - Follow latency profile restores captured context values for Wait and Realtime without changing the playback clock
+  ---
+  duration_ms: 9.8293
+  type: 'test'
+  ...
+# Subtest: unlock waits for shared sampler loading before start/resume; running context skips unlocking
+ok 4 - unlock waits for shared sampler loading before start/resume; running context skips unlocking
+  ---
+  duration_ms: 2.7037
+  type: 'test'
+  ...
+# Subtest: failed sampler promise remains cached, warns once, and unlock still runs; failed resume is contained
+ok 5 - failed sampler promise remains cached, warns once, and unlock still runs; failed resume is contained
+  ---
+  duration_ms: 5.7225
+  type: 'test'
+  ...
+# Subtest: loading defers attacks; old global fallback guard intentionally excludes hands and reads live routing on completion
+ok 6 - loading defers attacks; old global fallback guard intentionally excludes hands and reads live routing on completion
+  ---
+  duration_ms: 4.8697
+  type: 'test'
+  ...
+# Subtest: live input retriggers sampler at immediate time, preserves gain floor and releases using a fresh time
+ok 7 - live input retriggers sampler at immediate time, preserves gain floor and releases using a fresh time
+  ---
+  duration_ms: 2.8546
+  type: 'test'
+  ...
+# Subtest: scheduled Follow/Realtime use synth only when enabled; Wait uses sampler and preserves duration minimum
+ok 8 - scheduled Follow/Realtime use synth only when enabled; Wait uses sampler and preserves duration minimum
+  ---
+  duration_ms: 3.7384
+  type: 'test'
+  ...
+# Subtest: UI and MIDI monitor routes are independent; input boost changes local gain while MIDI preserves input velocity
+ok 9 - UI and MIDI monitor routes are independent; input boost changes local gain while MIDI preserves input velocity
+  ---
+  duration_ms: 3.3041
+  type: 'test'
+  ...
+# Subtest: playback routing orders local before MIDI, does not release failed MIDI sends, and retains timers across silence
+ok 10 - playback routing orders local before MIDI, does not release failed MIDI sends, and retains timers across silence
+  ---
+  duration_ms: 3.4936
+  type: 'test'
+  ...
+# Subtest: volume uses decibels including zero silence; file-picker resume keeps its non-waiting behavior
+ok 11 - volume uses decibels including zero silence; file-picker resume keeps its non-waiting behavior
+  ---
+  duration_ms: 2.4857
+  type: 'test'
+  ...
+# Subtest: dispose invalidates pending sample/unlock work, queued releases and timers across reinitialization
+ok 12 - dispose invalidates pending sample/unlock work, queued releases and timers across reinitialization
+  ---
+  duration_ms: 2.8682
+  type: 'test'
+  ...
+# Subtest: shared velocity keeps legacy coercions, fractions, non-finite fallback and local gain floor
+ok 13 - shared velocity keeps legacy coercions, fractions, non-finite fallback and local gain floor
+  ---
+  duration_ms: 2.2537
+  type: 'test'
+  ...
+# Subtest: cached-page suspension retains sampler loading/nodes but cancels the pre-cache deferred attack
+ok 14 - cached-page suspension retains sampler loading/nodes but cancels the pre-cache deferred attack
+  ---
+  duration_ms: 7.6652
+  type: 'test'
+  ...
+# Subtest: cached-page suspension cancels release timers and a captured old release cannot silence a fresh attack
+ok 15 - cached-page suspension cancels release timers and a captured old release cannot silence a fresh attack
+  ---
+  duration_ms: 4.2788
+  type: 'test'
+  ...
+# Subtest: state modules load without Window, storage or an application instance
+ok 16 - state modules load without Window, storage or an application instance
+  ---
+  duration_ms: 15.5925
+  type: 'test'
+  ...
+# Subtest: fresh applications isolate nested routing, note collections and range caches
+ok 17 - fresh applications isolate nested routing, note collections and range caches
+  ---
+  duration_ms: 4.9451
+  type: 'test'
+  ...
+# Subtest: explicit init preserves seed and forced-write order and deduplicates until dispose
+ok 18 - explicit init preserves seed and forced-write order and deduplicates until dispose
+  ---
+  duration_ms: 6.4826
+  type: 'test'
+  ...
+# Subtest: first-run notices belong to their instance and imports cancel only the owning notice
+ok 19 - first-run notices belong to their instance and imports cancel only the owning notice
+  ---
+  duration_ms: 6.155
+  type: 'test'
+  ...
+# Subtest: boot metadata retains precedence, trimming and one explicit storage read
+ok 20 - boot metadata retains precedence, trimming and one explicit storage read
+  ---
+  duration_ms: 4.0439
+  type: 'test'
+  ...
+# Subtest: range factory is cold; persisted init/filtering preserves Map identity and optional output order
+ok 21 - range factory is cold; persisted init/filtering preserves Map identity and optional output order
+  ---
+  duration_ms: 20.7474
+  type: 'test'
+  ...
+# Subtest: range native target validation, ordinary set options and explicit listener disposal/fresh lifetime
+ok 22 - range native target validation, ordinary set options and explicit listener disposal/fresh lifetime
+  ---
+  duration_ms: 6.7782
+  type: 'test'
+  ...
+# Subtest: connection presentation keeps native port state, label fallback and no-op LED observations
+ok 23 - connection presentation keeps native port state, label fallback and no-op LED observations
+  ---
+  duration_ms: 5.0809
+  type: 'test'
+  ...
+# Subtest: repeated update UI init preserves ordinary saved-state/automatic checks while deduplicating its button
+ok 24 - repeated update UI init preserves ordinary saved-state/automatic checks while deduplicating its button
+  ---
+  duration_ms: 14.7996
+  type: 'test'
+  ...
+# Subtest: update disposal aborts only its pending requests and old fetch completion cannot change fresh UI/state/navigation
+ok 25 - update disposal aborts only its pending requests and old fetch completion cannot change fresh UI/state/navigation
+  ---
+  duration_ms: 5.8552
+  type: 'test'
+  ...
+# Subtest: update disposal during pending JSON prevents auto-reload and does not run old finally UI sync
+ok 26 - update disposal during pending JSON prevents auto-reload and does not run old finally UI sync
+  ---
+  duration_ms: 9.8987
+  type: 'test'
+  ...
+# Subtest: update button preserves local download vs remote confirmation and only explicit disposal invalidates captured handlers
+ok 27 - update button preserves local download vs remote confirmation and only explicit disposal invalidates captured handlers
+  ---
+  duration_ms: 6.605
+  type: 'test'
+  ...
+# Subtest: update URL cleanup, malformed version/error/coercion and unconfigured requests retain original state
+ok 28 - update URL cleanup, malformed version/error/coercion and unconfigured requests retain original state
+  ---
+  duration_ms: 5.4623
+  type: 'test'
+  ...
+# Subtest: MIDI connection indicators and access failure messages work without any LED implementation
+ok 29 - MIDI connection indicators and access failure messages work without any LED implementation
+  ---
+  duration_ms: 20.8674
+  type: 'test'
+  ...
+# Subtest: manual local update checks preserve external JSON coercion, availability and button state
+ok 30 - manual local update checks preserve external JSON coercion, availability and button state
+  ---
+  duration_ms: 8.6045
+  type: 'test'
+  ...
+# Subtest: remote automatic update keeps URL settings while adding cache version; local runtime does not reload
+ok 31 - remote automatic update keeps URL settings while adding cache version; local runtime does not reload
+  ---
+  duration_ms: 6.3399
+  type: 'test'
+  ...
+# Subtest: SVG selection rejects right, vertical and diagonal dots without preferring annotation or oversized ornament glyphs
+ok 32 - SVG selection rejects right, vertical and diagonal dots without preferring annotation or oversized ornament glyphs
+  ---
+  duration_ms: 7.548
+  type: 'test'
+  ...
+# Subtest: same-stem shifted notehead cluster keeps Y precedence before broader X-neighborhood choice
+ok 33 - same-stem shifted notehead cluster keeps Y precedence before broader X-neighborhood choice
+  ---
+  duration_ms: 4.5803
+  type: 'test'
+  ...
+# Subtest: fallback search ignores fingering/technical/lyrics, stops cycles and retains original direct-notehead precedence
+ok 34 - fallback search ignores fingering/technical/lyrics, stops cycles and retains original direct-notehead precedence
+  ---
+  duration_ms: 4.4189
+  type: 'test'
+  ...
+# Subtest: note/measure cache preserves identities until render invalidation, then recomputes fresh anchors and boxes
+ok 35 - note/measure cache preserves identities until render invalidation, then recomputes fresh anchors and boxes
+  ---
+  duration_ms: 3.1487
+  type: 'test'
+  ...
+# Subtest: SVG conversion and wrong-note fallback preserve viewBox scale, staff/pitch rules and explicit anchors
+ok 36 - SVG conversion and wrong-note fallback preserve viewBox scale, staff/pitch rules and explicit anchors
+  ---
+  duration_ms: 2.6637
+  type: 'test'
+  ...
+# Subtest: feedback overlay keeps correct/released/held ordering and context filtering without changing stored state
+ok 37 - feedback overlay keeps correct/released/held ordering and context filtering without changing stored state
+  ---
+  duration_ms: 4.2601
+  type: 'test'
+  ...
+# Subtest: loop overlay shades outside inclusive range and draws the exact left/right boundary widths
+ok 38 - loop overlay shades outside inclusive range and draws the exact left/right boundary widths
+  ---
+  duration_ms: 2.6595
+  type: 'test'
+  ...
+# Subtest: finite long scores split into eight-measure blocks with exact right-hand offsets
+ok 39 - finite long scores split into eight-measure blocks with exact right-hand offsets
+  ---
+  duration_ms: 2.5352
+  type: 'test'
+  ...
+# Subtest: Loop retains vendor repeats inside the selected range and addresses a million rounds arithmetically
+ok 40 - Loop retains vendor repeats inside the selected range and addresses a million rounds arithmetically
+  ---
+  duration_ms: 2.4834
+  type: 'test'
+  ...
+# Subtest: partial range matches coordinator reset-to-min and first-outside-max stopping semantics
+ok 41 - partial range matches coordinator reset-to-min and first-outside-max stopping semantics
+  ---
+  duration_ms: 0.4605
+  type: 'test'
+  ...
+# Subtest: local-origin compensation preserves the screen coordinate across both forward recycling and history reconstruction
+ok 42 - local-origin compensation preserves the screen coordinate across both forward recycling and history reconstruction
+  ---
+  duration_ms: 0.3047
+  type: 'test'
+  ...
+# Subtest: preview priority keeps ties, expected over future over pressed; view replaces only the first recognized class
+ok 43 - preview priority keeps ties, expected over future over pressed; view replaces only the first recognized class
+  ---
+  duration_ms: 40.6037
+  type: 'test'
+  ...
+# Subtest: calibration renders the optional map first, skips sustain effects, and preserves outside-range active key presentation
+ok 44 - calibration renders the optional map first, skips sustain effects, and preserves outside-range active key presentation
+  ---
+  duration_ms: 14.4122
+  type: 'test'
+  ...
+# Subtest: keyboard controller distinguishes preview display from base hardware and updates only changed hardware cache entries
+ok 45 - keyboard controller distinguishes preview display from base hardware and updates only changed hardware cache entries
+  ---
+  duration_ms: 16.6665
+  type: 'test'
+  ...
+# Subtest: held carry keeps expected color, correct highlight follows hand, expired held notes do not become red
+ok 46 - held carry keeps expected color, correct highlight follows hand, expired held notes do not become red
+  ---
+  duration_ms: 13.1346
+  type: 'test'
+  ...
+# Subtest: explicit current frame still collects depth zero after sustain pruning and commits the exact returned preview array
+ok 47 - explicit current frame still collects depth zero after sustain pruning and commits the exact returned preview array
+  ---
+  duration_ms: 9.6087
+  type: 'test'
+  ...
+# Subtest: keyboard init builds 52 white/36 black keys, one listener lifetime and passive touch semantics
+ok 48 - keyboard init builds 52 white/36 black keys, one listener lifetime and passive touch semantics
+  ---
+  duration_ms: 12.8724
+  type: 'test'
+  ...
+# Subtest: pointer and compatibility mouse events deduplicate a down key; mismatched release preserves active input
+ok 49 - pointer and compatibility mouse events deduplicate a down key; mismatched release preserves active input
+  ---
+  duration_ms: 11.3963
+  type: 'test'
+  ...
+# Subtest: touch tokens and fallback cancel release correctly, switching pitches releases the former active note first
+ok 50 - touch tokens and fallback cancel release correctly, switching pitches releases the former active note first
+  ---
+  duration_ms: 17.8844
+  type: 'test'
+  ...
+# Subtest: mouse leave, blur and hidden visibility release input; visible/focus/pageshow/gesture events preserve unlock commands
+ok 51 - mouse leave, blur and hidden visibility release input; visible/focus/pageshow/gesture events preserve unlock commands
+  ---
+  duration_ms: 12.8418
+  type: 'test'
+  ...
+# Subtest: ordinary release and keyboard rebuild preserve delayed attack; explicit disposal invalidates it across reinit
+ok 52 - ordinary release and keyboard rebuild preserve delayed attack; explicit disposal invalidates it across reinit
+  ---
+  duration_ms: 18.6488
+  type: 'test'
+  ...
+# Subtest: cached-page suspension releases pointer/capture and delayed unlock while retaining the same key bindings
+ok 53 - cached-page suspension releases pointer/capture and delayed unlock while retaining the same key bindings
+  ---
+  duration_ms: 11.3842
+  type: 'test'
+  ...
+# Subtest: dispose removes owned keys/capture/listeners and releases its active note without clearing other pressed notes
+ok 54 - dispose removes owned keys/capture/listeners and releases its active note without clearing other pressed notes
+  ---
+  duration_ms: 13.6949
+  type: 'test'
+  ...
+# Subtest: staff identity uses exact objects across instruments, all aliases, right first-note fallback and fresh rebuild
+ok 55 - staff identity uses exact objects across instruments, all aliases, right first-note fallback and fresh rebuild
+  ---
+  duration_ms: 9.9147
+  type: 'test'
+  ...
+# Subtest: score seek keeps inclusive first-box precedence, loop bounds and real duplicate measure traversal
+ok 56 - score seek keeps inclusive first-box precedence, loop bounds and real duplicate measure traversal
+  ---
+  duration_ms: 11.5299
+  type: 'test'
+  ...
+# Subtest: score seek guards absent sheet/playing/panels/coordinate failures and owns exactly one native click handler
+ok 57 - score seek guards absent sheet/playing/panels/coordinate failures and owns exactly one native click handler
+  ---
+  duration_ms: 10.5451
+  type: 'test'
+  ...
+# Subtest: score status reads live score state and song UI retains metadata, defaults, score reset and command order
+ok 58 - score status reads live score state and song UI retains metadata, defaults, score reset and command order
+  ---
+  duration_ms: 9.9589
+  type: 'test'
+  ...
+# Subtest: retained hardware JS has no unresolved application identifier outside its supplied ports
+ok 59 - retained hardware JS has no unresolved application identifier outside its supplied ports
+  ---
+  duration_ms: 1624.4996
+  type: 'test'
+  ...
+# Subtest: retained JS factories have explicit ports, create no native resources, and bind once at original init commands
+ok 60 - retained JS factories have explicit ports, create no native resources, and bind once at original init commands
+  ---
+  duration_ms: 29.2997
+  type: 'test'
+  ...
+# Subtest: native calibration holds preserve delays and dispose cancels owned repeat/capture/listeners; old callbacks cannot revive
+ok 61 - native calibration holds preserve delays and dispose cancels owned repeat/capture/listeners; old callbacks cannot revive
+  ---
+  duration_ms: 6.6085
+  type: 'test'
+  ...
+# Subtest: calibration file resources abort only pending owned readers and old onload stays invalid after fresh init
+ok 62 - calibration file resources abort only pending owned readers and old onload stays invalid after fresh init
+  ---
+  duration_ms: 3.7789
+  type: 'test'
+  ...
+# Subtest: download keeps filename/effect order and disposal releases resources left by an ordinary click error
+ok 63 - download keeps filename/effect order and disposal releases resources left by an ordinary click error
+  ---
+  duration_ms: 4.7674
+  type: 'test'
+  ...
+# Subtest: owned fetch disposal prevents reconnect/status/permission fallback after rejection or resolution across reinit
+ok 64 - owned fetch disposal prevents reconnect/status/permission fallback after rejection or resolution across reinit
+  ---
+  duration_ms: 11.3754
+  type: 'test'
+  ...
+# Subtest: helper JSON continuation and scheduled transport promises cannot commit after disposal/reinit
+ok 65 - helper JSON continuation and scheduled transport promises cannot commit after disposal/reinit
+  ---
+  duration_ms: 4.1995
+  type: 'test'
+  ...
+# Subtest: WLED test and flush waits settle on disposal, without restoring an old frame or scheduling retry
+ok 66 - WLED test and flush waits settle on disposal, without restoring an old frame or scheduling retry
+  ---
+  duration_ms: 8.2745
+  type: 'test'
+  ...
+# Subtest: MIDI LED sweep retains channel/note/velocity and releases own active note once; disposed waits cannot restart
+ok 67 - MIDI LED sweep retains channel/note/velocity and releases own active note once; disposed waits cannot restart
+  ---
+  duration_ms: 3.7941
+  type: 'test'
+  ...
+# Subtest: a failed hardware note-off cannot prevent explicit native resource cleanup
+ok 68 - a failed hardware note-off cannot prevent explicit native resource cleanup
+  ---
+  duration_ms: 3.5338
+  type: 'test'
+  ...
+# Subtest: name metadata preserves original prefix/extension/ASCII rules, and unfiled filtering uses falsy folder IDs
+ok 69 - name metadata preserves original prefix/extension/ASCII rules, and unfiled filtering uses falsy folder IDs
+  ---
+  duration_ms: 10.0275
+  type: 'test'
+  ...
+# Subtest: folder and score selections own independent arrays; returned Sets are copies and leaving manage clears only that selection
+ok 70 - folder and score selections own independent arrays; returned Sets are copies and leaving manage clears only that selection
+  ---
+  duration_ms: 3.4556
+  type: 'test'
+  ...
+# Subtest: UI lifetime changes only on explicit dispose and old callbacks stay invalid after reinitialization
+ok 71 - UI lifetime changes only on explicit dispose and old callbacks stay invalid after reinitialization
+  ---
+  duration_ms: 2.6654
+  type: 'test'
+  ...
+# Subtest: file import waits for folder selection and cancellation performs no reads, conversion or save
+ok 72 - file import waits for folder selection and cancellation performs no reads, conversion or save
+  ---
+  duration_ms: 3.2872
+  type: 'test'
+  ...
+# Subtest: file import reads/converts/saves in sequence and updates selection only after the last save and refresh
+ok 73 - file import reads/converts/saves in sequence and updates selection only after the last save and refresh
+  ---
+  duration_ms: 12.1133
+  type: 'test'
+  ...
+# Subtest: file failure preserves existing UI state, stops the remaining files, and keeps original error/alert text
+ok 74 - file failure preserves existing UI state, stops the remaining files, and keeps original error/alert text
+  ---
+  duration_ms: 11.6027
+  type: 'test'
+  ...
+# Subtest: save current retains the original live-state read after awaiting folder choice
+ok 75 - save current retains the original live-state read after awaiting folder choice
+  ---
+  duration_ms: 3.7986
+  type: 'test'
+  ...
+# Subtest: backup export preserves content, MIME, filename and append/click/remove/revoke ordering
+ok 76 - backup export preserves content, MIME, filename and append/click/remove/revoke ordering
+  ---
+  duration_ms: 3.1542
+  type: 'test'
+  ...
+# Subtest: backup JSON failure does not reach repository and uses the original fixed alert
+ok 77 - backup JSON failure does not reach repository and uses the original fixed alert
+  ---
+  duration_ms: 2.7976
+  type: 'test'
+  ...
+# Subtest: backup import waits for refresh, accepts unknown version, and restores the folder view without new schema validation
+ok 78 - backup import waits for refresh, accepts unknown version, and restores the folder view without new schema validation
+  ---
+  duration_ms: 6.0536
+  type: 'test'
+  ...
+# Subtest: explicit disposal during a read suppresses late save/status work and errors across a fresh init
+ok 79 - explicit disposal during a read suppresses late save/status work and errors across a fresh init
+  ---
+  duration_ms: 4.5063
+  type: 'test'
+  ...
+# Subtest: explicit disposal after export readiness creates no download URL or DOM work
+ok 80 - explicit disposal after export readiness creates no download URL or DOM work
+  ---
+  duration_ms: 2.3793
+  type: 'test'
+  ...
+# Subtest: real production entry preserves one application through repeated cached hides/shows and disposes only on final leave
+ok 81 - real production entry preserves one application through repeated cached hides/shows and disposes only on final leave
+  ---
+  duration_ms: 5.3492
+  type: 'test'
+  ...
+# Subtest: first ordinary pagehide disposes instead of retaining an unloaded application
+ok 82 - first ordinary pagehide disposes instead of retaining an unloaded application
+  ---
+  duration_ms: 1.7689
+  type: 'test'
+  ...
+# Subtest: measure cache follows actual repeat occurrences then restores the original first-match position
+ok 83 - measure cache follows actual repeat occurrences then restores the original first-match position
+  ---
+  duration_ms: 10.5798
+  type: 'test'
+  ...
+# Subtest: time signatures and pickup lengths keep cached actual length versus nominal beat grid
+ok 84 - time signatures and pickup lengths keep cached actual length versus nominal beat grid
+  ---
+  duration_ms: 4.937
+  type: 'test'
+  ...
+# Subtest: missing measure falls back to first time signature and undefined index retains the same defaults
+ok 85 - missing measure falls back to first time signature and undefined index retains the same defaults
+  ---
+  duration_ms: 14.4805
+  type: 'test'
+  ...
+# Subtest: missing cursor resets cache and stuck iterator retains 100000 safety limit
+ok 86 - missing cursor resets cache and stuck iterator retains 100000 safety limit
+  ---
+  duration_ms: 9.0042
+  type: 'test'
+  ...
+# Subtest: clock preserves values and delays, owns timers/frames, and invalidates disposed callbacks without blocking reuse
+ok 87 - clock preserves values and delays, owns timers/frames, and invalidates disposed callbacks without blocking reuse
+  ---
+  duration_ms: 17.3284
+  type: 'test'
+  ...
+# Subtest: metronome keeps downbeat accent and minimum MIDI velocity, including silent volume
+ok 88 - metronome keeps downbeat accent and minimum MIDI velocity, including silent volume
+  ---
+  duration_ms: 3.2628
+  type: 'test'
+  ...
+# Subtest: local click uses exact Tone timestamp while pulse schedules eight milliseconds early
+ok 89 - local click uses exact Tone timestamp while pulse schedules eight milliseconds early
+  ---
+  duration_ms: 3.4703
+  type: 'test'
+  ...
+# Subtest: MIDI click schedules two milliseconds early, rechecks checkbox and keeps pulse independent
+ok 90 - MIDI click schedules two milliseconds early, rechecks checkbox and keeps pulse independent
+  ---
+  duration_ms: 3.1567
+  type: 'test'
+  ...
+# Subtest: MIDI attack callback retains original pause behavior and quantized volume
+ok 91 - MIDI attack callback retains original pause behavior and quantized volume
+  ---
+  duration_ms: 3.8424
+  type: 'test'
+  ...
+# Subtest: visual pulse retains 120ms deduplication and 170ms clear; disabled/missing targets schedule nothing
+ok 92 - visual pulse retains 120ms deduplication and 170ms clear; disabled/missing targets schedule nothing
+  ---
+  duration_ms: 2.3847
+  type: 'test'
+  ...
+# Subtest: visual future pulse retarget clears only prior pending pulse and preserves the captured target
+ok 93 - visual future pulse retarget clears only prior pending pulse and preserves the captured target
+  ---
+  duration_ms: 2.4537
+  type: 'test'
+  ...
+# Subtest: count-in emits the first beat synchronously and hands off one full beat after the last click
+ok 94 - count-in emits the first beat synchronously and hands off one full beat after the last click
+  ---
+  duration_ms: 2.9735
+  type: 'test'
+  ...
+# Subtest: count-in pause gates tick and handoff; original raw zero numerator still creates one click
+ok 95 - count-in pause gates tick and handoff; original raw zero numerator still creates one click
+  ---
+  duration_ms: 2.9016
+  type: 'test'
+  ...
+# Subtest: rapid pause/resume preserves legacy count-in callback behavior until a separate behavioral fix
+ok 96 - rapid pause/resume preserves legacy count-in callback behavior until a separate behavioral fix
+  ---
+  duration_ms: 2.8299
+  type: 'test'
+  ...
+# Subtest: Wait metronome runs independently of note advancement and keeps time-signature modulo
+ok 97 - Wait metronome runs independently of note advancement and keeps time-signature modulo
+  ---
+  duration_ms: 2.7489
+  type: 'test'
+  ...
+# Subtest: Wait metronome tempo rebuild resets beat grid and never runs during count-in or unchecked state
+ok 98 - Wait metronome tempo rebuild resets beat grid and never runs during count-in or unchecked state
+  ---
+  duration_ms: 2.3466
+  type: 'test'
+  ...
+# Subtest: Follow window retains original beat-offset formula and explicit cancellation of the preceding window
+ok 99 - Follow window retains original beat-offset formula and explicit cancellation of the preceding window
+  ---
+  duration_ms: 3.2333
+  type: 'test'
+  ...
+# Subtest: Wait scheduling window reuses its own metronome and Follow defers to checkbox/playing gates
+ok 100 - Wait scheduling window reuses its own metronome and Follow defers to checkbox/playing gates
+  ---
+  duration_ms: 1.9147
+  type: 'test'
+  ...
+# Subtest: explicit metronome dispose owns all delayed count-in/MIDI/pulse work and rejects late callback execution
+ok 101 - explicit metronome dispose owns all delayed count-in/MIDI/pulse work and rejects late callback execution
+  ---
+  duration_ms: 3.0461
+  type: 'test'
+  ...
+# Subtest: MembraneSynth allocation remains explicit, idempotent and uses original options and dB volume
+ok 102 - MembraneSynth allocation remains explicit, idempotent and uses original options and dB volume
+  ---
+  duration_ms: 2.3245
+  type: 'test'
+  ...
+# Subtest: raw MIDI Note On, Note Off and zero-velocity Note On use the production input callback
+ok 103 - raw MIDI Note On, Note Off and zero-velocity Note On use the production input callback
+  ---
+  duration_ms: 10.4284
+  type: 'test'
+  ...
+# Subtest: Any accepts all channels; selected input channel rejects other channels and non-note messages
+ok 104 - Any accepts all channels; selected input channel rejects other channels and non-note messages
+  ---
+  duration_ms: 3.9447
+  type: 'test'
+  ...
+# Subtest: exact outgoing echoes are suppressed for 120ms; different velocity and expired echoes pass
+ok 105 - exact outgoing echoes are suppressed for 120ms; different velocity and expired echoes pass
+  ---
+  duration_ms: 9.1636
+  type: 'test'
+  ...
+# Subtest: switching and selecting None releases the previous device callback
+ok 106 - switching and selecting None releases the previous device callback
+  ---
+  duration_ms: 3.2316
+  type: 'test'
+  ...
+# Subtest: sole output implementation preserves effective core velocity and uses state over stale DOM channel
+ok 107 - sole output implementation preserves effective core velocity and uses state over stale DOM channel
+  ---
+  duration_ms: 4.871
+  type: 'test'
+  ...
+# Subtest: metronome percussion fixes channel 10 and captures the output for its delayed release
+ok 108 - metronome percussion fixes channel 10 and captures the output for its delayed release
+  ---
+  duration_ms: 2.7538
+  type: 'test'
+  ...
+# Subtest: metronome release belongs to output disposal and rejects a captured late callback
+ok 109 - metronome release belongs to output disposal and rejects a captured late callback
+  ---
+  duration_ms: 2.9584
+  type: 'test'
+  ...
+# Subtest: decoded domain input carries channel/source/time, two-byte release and rejects malformed notes
+ok 110 - decoded domain input carries channel/source/time, two-byte release and rejects malformed notes
+  ---
+  duration_ms: 13.6669
+  type: 'test'
+  ...
+# Subtest: service init is idempotent; state/input listeners detach on dispose and can bind after reinit
+ok 111 - service init is idempotent; state/input listeners detach on dispose and can bind after reinit
+  ---
+  duration_ms: 3.9439
+  type: 'test'
+  ...
+# Subtest: hotplug clears removed input callbacks and rebinds a replacement object with the same device ID
+ok 112 - hotplug clears removed input callbacks and rebinds a replacement object with the same device ID
+  ---
+  duration_ms: 2.8584
+  type: 'test'
+  ...
+# Subtest: pending access requests share work; dispose invalidates late success and stale failure
+ok 113 - pending access requests share work; dispose invalidates late success and stale failure
+  ---
+  duration_ms: 3.1938
+  type: 'test'
+  ...
+# Subtest: access denial reports once; unavailable API stays quiet; disposal preserves handlers owned elsewhere
+ok 114 - access denial reports once; unavailable API stays quiet; disposal preserves handlers owned elsewhere
+  ---
+  duration_ms: 4.4714
+  type: 'test'
+  ...
+# Subtest: echo window uses strict expiry and preserves bounded replacement/pruning on non-note messages
+ok 115 - echo window uses strict expiry and preserves bounded replacement/pruning on non-note messages
+  ---
+  duration_ms: 3.0075
+  type: 'test'
+  ...
+# Subtest: output expression/silence preserve CC order; scheduled release chooses current output and disposal cancels timer
+ok 116 - output expression/silence preserve CC order; scheduled release chooses current output and disposal cancels timer
+  ---
+  duration_ms: 3.6071
+  type: 'test'
+  ...
+# Subtest: Follow comfort boundary keeps exactly 60 percent, resets shorter or late waits, and preserves an early anchor
+ok 117 - Follow comfort boundary keeps exactly 60 percent, resets shorter or late waits, and preserves an early anchor
+  ---
+  duration_ms: 19.5517
+  type: 'test'
+  ...
+# Subtest: Realtime never inspects hit flags, while input policies hold a partial chord without mutating it
+ok 118 - Realtime never inspects hit flags, while input policies hold a partial chord without mutating it
+  ---
+  duration_ms: 5.6719
+  type: 'test'
+  ...
+# Subtest: Follow hit scheduling uses the displayed event after the actual iterator has prefetched
+ok 119 - Follow hit scheduling uses the displayed event after the actual iterator has prefetched
+  ---
+  duration_ms: 7.5757
+  type: 'test'
+  ...
+# Subtest: missing or nonfinite Follow info keeps the original Wait-only fallback callback
+ok 120 - missing or nonfinite Follow info keeps the original Wait-only fallback callback
+  ---
+  duration_ms: 14.4983
+  type: 'test'
+  ...
+# Subtest: an empty Wait group observes mode changes made by sustain effects before choosing its delay
+ok 121 - an empty Wait group observes mode changes made by sustain effects before choosing its delay
+  ---
+  duration_ms: 4.913
+  type: 'test'
+  ...
+# Subtest: a hit observes mode changes made by sustain effects before selecting Follow scheduling
+ok 122 - a hit observes mode changes made by sustain effects before selecting Follow scheduling
+  ---
+  duration_ms: 3.8151
+  type: 'test'
+  ...
+# Subtest: Wait hit callback reads the current mode and stays gated after a switch to Follow
+ok 123 - Wait hit callback reads the current mode and stays gated after a switch to Follow
+  ---
+  duration_ms: 3.7548
+  type: 'test'
+  ...
+# Subtest: input-gap callback allows a Wait to Follow switch and still grades before the next event
+ok 124 - input-gap callback allows a Wait to Follow switch and still grades before the next event
+  ---
+  duration_ms: 3.7621
+  type: 'test'
+  ...
+# Subtest: Realtime callback keeps its playing-only guard after a switch to Follow
+ok 125 - Realtime callback keeps its playing-only guard after a switch to Follow
+  ---
+  duration_ms: 6.1634
+  type: 'test'
+  ...
+# Subtest: an invalid saved mode retains the timed branch and accumulated anchor
+ok 126 - an invalid saved mode retains the timed branch and accumulated anchor
+  ---
+  duration_ms: 5.4375
+  type: 'test'
+  ...
+# Subtest: unit module preparation works in a fresh checkout and replaces its stale output
+ok 127 - unit module preparation works in a fresh checkout and replaces its stale output
+  ---
+  duration_ms: 759.7068
+  type: 'test'
+  ...
+# Subtest: resource attribution resolves actual test bundle positions against Node SourceMap
+ok 128 - resource attribution resolves actual test bundle positions against Node SourceMap
+  ---
+  duration_ms: 209.9891
+  type: 'test'
+  ...
+# Subtest: unmapped segments and malformed mappings do not silently attribute native resources
+ok 129 - unmapped segments and malformed mappings do not silently attribute native resources
+  ---
+  duration_ms: 7.8406
+  type: 'test'
+  ...
+# Subtest: toolbar keeps ordinary queued opens and closing transition/220ms fallback behavior
+ok 130 - toolbar keeps ordinary queued opens and closing transition/220ms fallback behavior
+  ---
+  duration_ms: 15.3812
+  type: 'test'
+  ...
+# Subtest: toolbar owns one binding set and explicit disposal cancels frames/timers/transition handlers without reviving old callbacks
+ok 131 - toolbar owns one binding set and explicit disposal cancels frames/timers/transition handlers without reviving old callbacks
+  ---
+  duration_ms: 6.3214
+  type: 'test'
+  ...
+# Subtest: pending Scores refresh cannot toggle the drawer after explicit toolbar disposal/reinit
+ok 132 - pending Scores refresh cannot toggle the drawer after explicit toolbar disposal/reinit
+  ---
+  duration_ms: 11.9664
+  type: 'test'
+  ...
+# Subtest: intro preserves storage truthiness and marks seen when an active intro is closed
+ok 133 - intro preserves storage truthiness and marks seen when an active intro is closed
+  ---
+  duration_ms: 12.9266
+  type: 'test'
+  ...
+# Subtest: fullscreen failure falls back after hiding panels; explicit disposal suppresses late native fullscreen UI commits
+ok 134 - fullscreen failure falls back after hiding panels; explicit disposal suppresses late native fullscreen UI commits
+  ---
+  duration_ms: 5.2934
+  type: 'test'
+  ...
+# Subtest: zoom input only previews while change commits/render clears in order; resize debounce is owned and disposed
+ok 135 - zoom input only previews while change commits/render clears in order; resize debounce is owned and disposed
+  ---
+  duration_ms: 4.8001
+  type: 'test'
+  ...
+# Subtest: tempo preview keeps base/state; commit preserves differing radix/BPM rules and Wait-only rebuild after setting transport
+ok 136 - tempo preview keeps base/state; commit preserves differing radix/BPM rules and Wait-only rebuild after setting transport
+  ---
+  duration_ms: 3.8548
+  type: 'test'
+  ...
+# Subtest: metronome disable clears beats/wait/pulse in order and disabled optional controls retain UI state
+ok 137 - metronome disable clears beats/wait/pulse in order and disabled optional controls retain UI state
+  ---
+  duration_ms: 3.1913
+  type: 'test'
+  ...
+# Subtest: audio levels clamp/parse and save before numeric outputs; boost is local and optional DOM can be absent
+ok 138 - audio levels clamp/parse and save before numeric outputs; boost is local and optional DOM can be absent
+  ---
+  duration_ms: 3.7288
+  type: 'test'
+  ...
+# Subtest: loop editing distinguishes empty preview/commit and moves the other bound when crossed
+ok 139 - loop editing distinguishes empty preview/commit and moves the other bound when crossed
+  ---
+  duration_ms: 4.2577
+  type: 'test'
+  ...
+# Subtest: loop hold waits 320ms then repeats at 170ms and pointer release/dispose clears capture, styling and both resources
+ok 140 - loop hold waits 320ms then repeats at 170ms and pointer release/dispose clears capture, styling and both resources
+  ---
+  duration_ms: 5.9017
+  type: 'test'
+  ...
+# Subtest: typed DOM rejects missing required/wrong optional controls and ignores unrelated event targets
+ok 141 - typed DOM rejects missing required/wrong optional controls and ignores unrelated event targets
+  ---
+  duration_ms: 3.414
+  type: 'test'
+  ...
+# Subtest: no-op permits complete output lifecycle without browser frames or hardware ports
+ok 142 - no-op permits complete output lifecycle without browser frames or hardware ports
+  ---
+  duration_ms: 6.5968
+  type: 'test'
+  ...
+# Subtest: legacy adapter preserves per-frame output/calibration behavior and releases its own frame
+ok 143 - legacy adapter preserves per-frame output/calibration behavior and releases its own frame
+  ---
+  duration_ms: 3.799
+  type: 'test'
+  ...
+# Subtest: a captured old LED frame cannot create a second loop after fresh start
+ok 144 - a captured old LED frame cannot create a second loop after fresh start
+  ---
+  duration_ms: 2.1772
+  type: 'test'
+  ...
+# Subtest: single-event repeated measure has separate occurrences, structural identities and exact ordinals
+ok 145 - single-event repeated measure has separate occurrences, structural identities and exact ordinals
+  ---
+  duration_ms: 3.6758
+  type: 'test'
+  ...
+# Subtest: floating-point enrolled timestamps do not split a triplet measure; same-time structural events remain distinct
+ok 146 - floating-point enrolled timestamps do not split a triplet measure; same-time structural events remain distinct
+  ---
+  duration_ms: 0.6501
+  type: 'test'
+  ...
+# Subtest: a stuck path raises an explicit error instead of returning a truncated complete score
+ok 147 - a stuck path raises an explicit error instead of returning a truncated complete score
+  ---
+  duration_ms: 1.2784
+  type: 'test'
+  ...
+# Subtest: presentation identities advance only for official source steps or Loop; redraw/pause do not consume event IDs
+ok 148 - presentation identities advance only for official source steps or Loop; redraw/pause do not consume event IDs
+  ---
+  duration_ms: 13.8041
+  type: 'test'
+  ...
+# Subtest: 88-key range preserves asymmetric trim, bounds and normalized positions
+ok 149 - 88-key range preserves asymmetric trim, bounds and normalized positions
+  ---
+  duration_ms: 2.4033
+  type: 'test'
+  ...
+# Subtest: 76-key range preserves asymmetric trim, bounds and normalized positions
+ok 150 - 76-key range preserves asymmetric trim, bounds and normalized positions
+  ---
+  duration_ms: 0.3431
+  type: 'test'
+  ...
+# Subtest: 73-key range preserves asymmetric trim, bounds and normalized positions
+ok 151 - 73-key range preserves asymmetric trim, bounds and normalized positions
+  ---
+  duration_ms: 1.3703
+  type: 'test'
+  ...
+# Subtest: 61-key range preserves asymmetric trim, bounds and normalized positions
+ok 152 - 61-key range preserves asymmetric trim, bounds and normalized positions
+  ---
+  duration_ms: 0.2182
+  type: 'test'
+  ...
+# Subtest: 49-key range preserves asymmetric trim, bounds and normalized positions
+ok 153 - 49-key range preserves asymmetric trim, bounds and normalized positions
+  ---
+  duration_ms: 0.3647
+  type: 'test'
+  ...
+# Subtest: 37-key range preserves asymmetric trim, bounds and normalized positions
+ok 154 - 37-key range preserves asymmetric trim, bounds and normalized positions
+  ---
+  duration_ms: 0.68
+  type: 'test'
+  ...
+# Subtest: 32-key range preserves asymmetric trim, bounds and normalized positions
+ok 155 - 32-key range preserves asymmetric trim, bounds and normalized positions
+  ---
+  duration_ms: 0.3211
+  type: 'test'
+  ...
+# Subtest: 25-key range preserves asymmetric trim, bounds and normalized positions
+ok 156 - 25-key range preserves asymmetric trim, bounds and normalized positions
+  ---
+  duration_ms: 0.1917
+  type: 'test'
+  ...
+# Subtest: range normalization keeps legacy coercion and unsupported sizes default to 88
+ok 157 - range normalization keeps legacy coercion and unsupported sizes default to 88
+  ---
+  duration_ms: 0.7115
+  type: 'test'
+  ...
+# Subtest: shared cache works with LED off, reuses identity and refreshes on keyboard change
+ok 158 - shared cache works with LED off, reuses identity and refreshes on keyboard change
+  ---
+  duration_ms: 14.94
+  type: 'test'
+  ...
+# Subtest: out-of-range score-note forwarding retains note coercion and no state mutation
+ok 159 - out-of-range score-note forwarding retains note coercion and no state mutation
+  ---
+  duration_ms: 7.8971
+  type: 'test'
+  ...
+# Subtest: cached-page suspension cancels old advances, preserves score/position and permits a fresh Play
+ok 160 - cached-page suspension cancels old advances, preserves score/position and permits a fresh Play
+  ---
+  duration_ms: 35.0489
+  type: 'test'
+  ...
+# Subtest: cached-page suspension invalidates pending unlock and a captured count-in handoff
+ok 161 - cached-page suspension invalidates pending unlock and a captured count-in handoff
+  ---
+  duration_ms: 7.579
+  type: 'test'
+  ...
+# Subtest: cached-page suspension invalidates a captured Loop count-in restart without resetting scoring on return
+ok 162 - cached-page suspension invalidates a captured Loop count-in restart without resetting scoring on return
+  ---
+  duration_ms: 4.4765
+  type: 'test'
+  ...
+# Subtest: one coordinator paints current event before real iterator prefetch and gates Wait input
+ok 163 - one coordinator paints current event before real iterator prefetch and gates Wait input
+  ---
+  duration_ms: 8.3968
+  type: 'test'
+  ...
+# Subtest: accompaniment routes independently, postpones inactive-hand playback, and skips rest/tie continuation
+ok 164 - accompaniment routes independently, postpones inactive-hand playback, and skips rest/tie continuation
+  ---
+  duration_ms: 7.6811
+  type: 'test'
+  ...
+# Subtest: Realtime uses accumulated anchor and counts misses before paint/scroll/next event
+ok 165 - Realtime uses accumulated anchor and counts misses before paint/scroll/next event
+  ---
+  duration_ms: 7.6655
+  type: 'test'
+  ...
+# Subtest: Follow expected event defers metronome until input, using the original comfort window
+ok 166 - Follow expected event defers metronome until input, using the original comfort window
+  ---
+  duration_ms: 6.4154
+  type: 'test'
+  ...
+# Subtest: wait rest/inactive event keeps original delay and window call count
+ok 167 - wait rest/inactive event keeps original delay and window call count
+  ---
+  duration_ms: 4.9247
+  type: 'test'
+  ...
+# Subtest: follow rest/inactive event keeps original delay and window call count
+ok 168 - follow rest/inactive event keeps original delay and window call count
+  ---
+  duration_ms: 4.7703
+  type: 'test'
+  ...
+# Subtest: realtime rest/inactive event keeps original delay and window call count
+ok 169 - realtime rest/inactive event keeps original delay and window call count
+  ---
+  duration_ms: 9.0462
+  type: 'test'
+  ...
+# Subtest: already satisfied Wait group queues zero-delay check before the unchanged 10ms advance
+ok 170 - already satisfied Wait group queues zero-delay check before the unchanged 10ms advance
+  ---
+  duration_ms: 4.414
+  type: 'test'
+  ...
+# Subtest: empty voice entry advances and paints once via owned rAF, with no auto-scroll
+ok 171 - empty voice entry advances and paints once via owned rAF, with no auto-scroll
+  ---
+  duration_ms: 7.6529
+  type: 'test'
+  ...
+# Subtest: measure tempo is applied before note duration and beat scheduling
+ok 172 - measure tempo is applied before note duration and beat scheduling
+  ---
+  duration_ms: 4.3023
+  type: 'test'
+  ...
+# Subtest: Pause preserves old event timers and sustain resources while clearing transient input
+ok 173 - Pause preserves old event timers and sustain resources while clearing transient input
+  ---
+  duration_ms: 3.8068
+  type: 'test'
+  ...
+# Subtest: original pending Realtime callback can advance after rapid Pause/Resume
+ok 174 - original pending Realtime callback can advance after rapid Pause/Resume
+  ---
+  duration_ms: 3.6001
+  type: 'test'
+  ...
+# Subtest: Reset seeks UI Loop minimum, zeros score, clears visuals and preserves pressed Map/Set identities
+ok 175 - Reset seeks UI Loop minimum, zeros score, clears visuals and preserves pressed Map/Set identities
+  ---
+  duration_ms: 3.8139
+  type: 'test'
+  ...
+# Subtest: loaded-score reset stops transport, keeps cursor position, resets score then visual state
+ok 176 - loaded-score reset stops transport, keeps cursor position, resets score then visual state
+  ---
+  duration_ms: 3.7968
+  type: 'test'
+  ...
+# Subtest: Loop boundary waits full duration rather than anchor adjustment, grades before seek/restart
+ok 177 - Loop boundary waits full duration rather than anchor adjustment, grades before seek/restart
+  ---
+  duration_ms: 5.0451
+  type: 'test'
+  ...
+# Subtest: Loop restart count-in delays score reset and transport handoff
+ok 178 - Loop restart count-in delays score reset and transport handoff
+  ---
+  duration_ms: 5.8651
+  type: 'test'
+  ...
+# Subtest: song end pauses then paints final cursor; enabled Loop end keeps original early return
+ok 179 - song end pauses then paints final cursor; enabled Loop end keeps original early return
+  ---
+  duration_ms: 6.7469
+  type: 'test'
+  ...
+# Subtest: Loop bound enforcement uses state bounds and real traversal rather than UI values
+ok 180 - Loop bound enforcement uses state bounds and real traversal rather than UI values
+  ---
+  duration_ms: 3.3776
+  type: 'test'
+  ...
+# Subtest: Play waits for fullscreen/unlock, preserves viewport around timeline, then starts count-in
+ok 181 - Play waits for fullscreen/unlock, preserves viewport around timeline, then starts count-in
+  ---
+  duration_ms: 27.093
+  type: 'test'
+  ...
+# Subtest: two Play requests while unlock is pending retain the original double count-in handoff
+ok 182 - two Play requests while unlock is pending retain the original double count-in handoff
+  ---
+  duration_ms: 3.4701
+  type: 'test'
+  ...
+# Subtest: Pause during pending unlock keeps the original eventual start, while dispose invalidates it
+ok 183 - Pause during pending unlock keeps the original eventual start, while dispose invalidates it
+  ---
+  duration_ms: 6.8393
+  type: 'test'
+  ...
+# Subtest: explicit dispose cancels owned event timers/frames, suppresses captured callbacks, and is idempotent
+ok 184 - explicit dispose cancels owned event timers/frames, suppresses captured callbacks, and is idempotent
+  ---
+  duration_ms: 13.275
+  type: 'test'
+  ...
+# Subtest: OSMD event projection retains captured entries after prefetch and keeps raw fallback distinct from tie length
+ok 185 - OSMD event projection retains captured entries after prefetch and keeps raw fallback distinct from tie length
+  ---
+  duration_ms: 3.9327
+  type: 'test'
+  ...
+# Subtest: same staff pitch dedup retains first identity and longest duration; a missing anchor adopts the later source ref
+ok 186 - same staff pitch dedup retains first identity and longest duration; a missing anchor adopts the later source ref
+  ---
+  duration_ms: 24.1231
+  type: 'test'
+  ...
+# Subtest: hidden/cue/rest/tie continuations and non-practice staves are excluded before geometry; range entries dedup per staff
+ok 187 - hidden/cue/rest/tie continuations and non-practice staves are excluded before geometry; range entries dedup per staff
+  ---
+  duration_ms: 7.6239
+  type: 'test'
+  ...
+# Subtest: source projection skips array holes and preserves nullable staff assignment
+ok 188 - source projection skips array holes and preserves nullable staff assignment
+  ---
+  duration_ms: 4.3995
+  type: 'test'
+  ...
+# Subtest: tie traversal preserves explicit next links, Notes preference, same-pitch check and cycle termination
+ok 189 - tie traversal preserves explicit next links, Notes preference, same-pitch check and cycle termination
+  ---
+  duration_ms: 6.622
+  type: 'test'
+  ...
+# Subtest: duration units and Wait-only score expiry retain BPM/speed scaling and nullable timestamp semantics
+ok 190 - duration units and Wait-only score expiry retain BPM/speed scaling and nullable timestamp semantics
+  ---
+  duration_ms: 9.3604
+  type: 'test'
+  ...
+# Subtest: reservation consumption preserves cross-staff grading, per-note feedback then one display update
+ok 191 - reservation consumption preserves cross-staff grading, per-note feedback then one display update
+  ---
+  duration_ms: 4.8195
+  type: 'test'
+  ...
+# Subtest: past and absent-target reservations clear while unreleased-only and future reservations follow original retention
+ok 192 - past and absent-target reservations clear while unreleased-only and future reservations follow original retention
+  ---
+  duration_ms: 8.231
+  type: 'test'
+  ...
+# Subtest: misses grade every unhit staff separately and suppress only visuals after a realtime wrong press
+ok 193 - misses grade every unhit staff separately and suppress only visuals after a realtime wrong press
+  ---
+  duration_ms: 5.7694
+  type: 'test'
+  ...
+# Subtest: feedback retains explicit measure key versus current context key, history identity and offscreen release data
+ok 194 - feedback retains explicit measure key versus current context key, history identity and offscreen release data
+  ---
+  duration_ms: 5.9541
+  type: 'test'
+  ...
+# Subtest: feedback cleanup clears geometry before histories and debug while preserving score and expected identities
+ok 195 - feedback cleanup clears geometry before histories and debug while preserving score and expected identities
+  ---
+  duration_ms: 7.261
+  type: 'test'
+  ...
+# Subtest: sustain same-measure duplicate suppression keeps cross-staff instances and timer cancellation ownership
+ok 196 - sustain same-measure duplicate suppression keeps cross-staff instances and timer cancellation ownership
+  ---
+  duration_ms: 5.1335
+  type: 'test'
+  ...
+# Subtest: cross-measure retrigger removes only the matching staff and restarts after the original 35ms gap
+ok 197 - cross-measure retrigger removes only the matching staff and restarts after the original 35ms gap
+  ---
+  duration_ms: 5.0132
+  type: 'test'
+  ...
+# Subtest: score-position sustain expiry uses strict boundary; Follow null expiry still uses wall-clock timer
+ok 198 - score-position sustain expiry uses strict boundary; Follow null expiry still uses wall-clock timer
+  ---
+  duration_ms: 6.5914
+  type: 'test'
+  ...
+# Subtest: explicit sustain dispose releases only owned timers and rejects captured callbacks across a fresh init
+ok 199 - explicit sustain dispose releases only owned timers and rejects captured callbacks across a fresh init
+  ---
+  duration_ms: 5.3185
+  type: 'test'
+  ...
+# Subtest: held preview marking retains existing physical input and no longer requires keyboard DOM
+ok 200 - held preview marking retains existing physical input and no longer requires keyboard DOM
+  ---
+  duration_ms: 4.5043
+  type: 'test'
+  ...
+# Subtest: partial chord grades before marking hit and advances only through the existing coordinator port
+ok 201 - partial chord grades before marking hit and advances only through the existing coordinator port
+  ---
+  duration_ms: 25.3265
+  type: 'test'
+  ...
+# Subtest: same pitch across staves consumes distinct identities by cursor distance and stable ties
+ok 202 - same pitch across staves consumes distinct identities by cursor distance and stable ties
+  ---
+  duration_ms: 9.6625
+  type: 'test'
+  ...
+# Subtest: unanchored candidate uses cursor X and matching preserves diagnostics without mutating expectations
+ok 203 - unanchored candidate uses cursor X and matching preserves diagnostics without mutating expectations
+  ---
+  duration_ms: 7.7935
+  type: 'test'
+  ...
+# Subtest: wrong press records held feedback; release transfers history before audio off and clears held state
+ok 204 - wrong press records held feedback; release transfers history before audio off and clears held state
+  ---
+  duration_ms: 6.5237
+  type: 'test'
+  ...
+# Subtest: feedback disabled still grades and releases; idle and no-practice input still monitor without grading
+ok 205 - feedback disabled still grades and releases; idle and no-practice input still monitor without grading
+  ---
+  duration_ms: 10.3553
+  type: 'test'
+  ...
+# Subtest: calibration returns after audio and key selection; release still clears input and monitors off
+ok 206 - calibration returns after audio and key selection; release still clears input and monitors off
+  ---
+  duration_ms: 4.9885
+  type: 'test'
+  ...
+# Subtest: unified MIDI input and virtual input produce identical matching and score transitions
+ok 207 - unified MIDI input and virtual input produce identical matching and score transitions
+  ---
+  duration_ms: 13.5786
+  type: 'test'
+  ...
+# Subtest: Follow released early tap survives intervening accompaniment events and scores only at its target
+ok 208 - Follow released early tap survives intervening accompaniment events and scores only at its target
+  ---
+  duration_ms: 8.13
+  type: 'test'
+  ...
+# Subtest: Realtime upcoming held note reserves despite an incomplete chord and is discarded on release
+ok 209 - Realtime upcoming held note reserves despite an incomplete chord and is discarded on release
+  ---
+  duration_ms: 8.3863
+  type: 'test'
+  ...
+# Subtest: holding an early realtime note through the next event consumes reservation and retains held membership
+ok 210 - holding an early realtime note through the next event consumes reservation and retains held membership
+  ---
+  duration_ms: 9.2911
+  type: 'test'
+  ...
+# Subtest: single-hand tap threshold and realtime lookahead keep their original beat boundaries
+ok 211 - single-hand tap threshold and realtime lookahead keep their original beat boundaries
+  ---
+  duration_ms: 7.4997
+  type: 'test'
+  ...
+# Subtest: nullable timeline timestamps retain legacy timing coercion through the early-grace port
+ok 212 - nullable timeline timestamps retain legacy timing coercion through the early-grace port
+  ---
+  duration_ms: 4.2073
+  type: 'test'
+  ...
+# Subtest: single-hand grace requires all current expectations hit; realtime respects practiced staff and repeated occurrence index
+ok 213 - single-hand grace requires all current expectations hit; realtime respects practiced staff and repeated occurrence index
+  ---
+  duration_ms: 6.9739
+  type: 'test'
+  ...
+# Subtest: already-hit re-press carries a Follow reservation while sustain-only input remains ungraded
+ok 214 - already-hit re-press carries a Follow reservation while sustain-only input remains ungraded
+  ---
+  duration_ms: 10.9446
+  type: 'test'
+  ...
+# Subtest: Wait holds partial chords without accompaniment or advancement
+ok 215 - Wait holds partial chords without accompaniment or advancement
+  ---
+  duration_ms: 22.3012
+  type: 'test'
+  ...
+# Subtest: Wait flushes accompaniment, starts sustain, and advances after 10ms in order
+ok 216 - Wait flushes accompaniment, starts sustain, and advances after 10ms in order
+  ---
+  duration_ms: 8.9949
+  type: 'test'
+  ...
+# Subtest: Follow on-time input uses remaining beat
+ok 217 - Follow on-time input uses remaining beat
+  ---
+  duration_ms: 7.4377
+  type: 'test'
+  ...
+# Subtest: Follow late input uses full wait
+ok 218 - Follow late input uses full wait
+  ---
+  duration_ms: 6.3261
+  type: 'test'
+  ...
+# Subtest: Follow near-boundary input uses comfort fallback
+ok 219 - Follow near-boundary input uses comfort fallback
+  ---
+  duration_ms: 5.5299
+  type: 'test'
+  ...
+# Subtest: wait pending advancement is suppressed after pause
+ok 220 - wait pending advancement is suppressed after pause
+  ---
+  duration_ms: 7.4664
+  type: 'test'
+  ...
+# Subtest: follow pending advancement is suppressed after pause
+ok 221 - follow pending advancement is suppressed after pause
+  ---
+  duration_ms: 5.7915
+  type: 'test'
+  ...
+# Subtest: Realtime never enters Wait input advancement
+ok 222 - Realtime never enters Wait input advancement
+  ---
+  duration_ms: 4.1748
+  type: 'test'
+  ...
+# Subtest: staff parsing keeps decimal prefix and null behavior, right-hand precedence and empty staff fallback
+ok 223 - staff parsing keeps decimal prefix and null behavior, right-hand precedence and empty staff fallback
+  ---
+  duration_ms: 29.036
+  type: 'test'
+  ...
+# Subtest: Follow normalizes ambiguous practice pairs while invalid modes and missing mode settings retain fallback
+ok 224 - Follow normalizes ambiguous practice pairs while invalid modes and missing mode settings retain fallback
+  ---
+  duration_ms: 13.9996
+  type: 'test'
+  ...
+# Subtest: mode event preserves pause/clear/latency/read-level ordering and ignores unchecked or invalid targets
+ok 225 - mode event preserves pause/clear/latency/read-level ordering and ignores unchecked or invalid targets
+  ---
+  duration_ms: 15.0327
+  type: 'test'
+  ...
+# Subtest: Follow cannot uncheck its selected practice hand; Wait playback rejects edits without rewriting audio preferences
+ok 226 - Follow cannot uncheck its selected practice hand; Wait playback rejects edits without rewriting audio preferences
+  ---
+  duration_ms: 10.9874
+  type: 'test'
+  ...
+# Subtest: routing summary strips Disconnected suffix and keeps the final routing sync override in Wait
+ok 227 - routing summary strips Disconnected suffix and keeps the final routing sync override in Wait
+  ---
+  duration_ms: 12.3931
+  type: 'test'
+  ...
+# Subtest: future/feedback/keyboard and routing changes retain state, storage and command order
+ok 228 - future/feedback/keyboard and routing changes retain state, storage and command order
+  ---
+  duration_ms: 12.3342
+  type: 'test'
+  ...
+# Subtest: practice controls init once and disposal invalidates saved callbacks across reinit without erasing external markers
+ok 229 - practice controls init once and disposal invalidates saved callbacks across reinit without erasing external markers
+  ---
+  duration_ms: 19.3939
+  type: 'test'
+  ...
+# Subtest: staff commit preserves note arrays for invalid/no-refresh inputs and builds one captured frame in order
+ok 230 - staff commit preserves note arrays for invalid/no-refresh inputs and builds one captured frame in order
+  ---
+  duration_ms: 8.505
+  type: 'test'
+  ...
+# Subtest: staff select bindings deduplicate and dispose only owned markers, wrong select type fails clearly
+ok 231 - staff select bindings deduplicate and dispose only owned markers, wrong select type fails clearly
+  ---
+  duration_ms: 9.0706
+  type: 'test'
+  ...
+# Subtest: persisted apply retains invalid mode, clamped values, forced preferences and original level/zoom/debug sequence
+ok 232 - persisted apply retains invalid mode, clamped values, forced preferences and original level/zoom/debug sequence
+  ---
+  duration_ms: 8.0987
+  type: 'test'
+  ...
+# Subtest: reset defaults preserves native MIDI change order, staff defaults and optional device reload command
+ok 233 - reset defaults preserves native MIDI change order, staff defaults and optional device reload command
+  ---
+  duration_ms: 7.5682
+  type: 'test'
+  ...
+# Subtest: settings actions keep clear/click/import/clear ordering, reset confirmation and owned lifecycle
+ok 234 - settings actions keep clear/click/import/clear ordering, reset confirmation and owned lifecycle
+  ---
+  duration_ms: 7.2442
+  type: 'test'
+  ...
+# Subtest: painted snapshot preserves prototype and repeat arrays while prefetched traversal retains its own identity
+ok 235 - painted snapshot preserves prototype and repeat arrays while prefetched traversal retains its own identity
+  ---
+  duration_ms: 10.3789
+  type: 'test'
+  ...
+# Subtest: temporary cursor restoration uses finally on update errors, and new sheet never paints an old snapshot
+ok 236 - temporary cursor restoration uses finally on update errors, and new sheet never paints an old snapshot
+  ---
+  duration_ms: 3.7958
+  type: 'test'
+  ...
+# Subtest: NoteRef maps exact object identity, keeps same-pitch voices separate, survives relayout and invalidates on sheet/dispose
+ok 237 - NoteRef maps exact object identity, keeps same-pitch voices separate, survives relayout and invalidates on sheet/dispose
+  ---
+  duration_ms: 4.4008
+  type: 'test'
+  ...
+# Subtest: repeated afterRender owns one update hook; replacement cursor detaches its predecessor and dispose preserves external owners
+ok 238 - repeated afterRender owns one update hook; replacement cursor detaches its predecessor and dispose preserves external owners
+  ---
+  duration_ms: 2.8911
+  type: 'test'
+  ...
+# Subtest: system index groups actual identities, includes both staves and graphic borders, invalidates only with layout/sheet changes
+ok 239 - system index groups actual identities, includes both staves and graphic borders, invalidates only with layout/sheet changes
+  ---
+  duration_ms: 6.4994
+  type: 'test'
+  ...
+# Subtest: painted trace index stays on the displayed event through prefetch and reflow
+ok 240 - painted trace index stays on the displayed event through prefetch and reflow
+  ---
+  duration_ms: 2.5766
+  type: 'test'
+  ...
+# Subtest: graphical lookup keeps exact source object over same pitch/time candidates, missing staff rows and diagnostic order
+ok 241 - graphical lookup keeps exact source object over same pitch/time candidates, missing staff rows and diagnostic order
+  ---
+  duration_ms: 3.0267
+  type: 'test'
+  ...
+# Subtest: renderer preserves render → invalidate → display → feedback → loop → debug and never invokes them when unready
+ok 242 - renderer preserves render → invalidate → display → feedback → loop → debug and never invokes them when unready
+  ---
+  duration_ms: 2.2581
+  type: 'test'
+  ...
+# Subtest: viewport retargets one frame sequence, honors reduced motion and cancels owned listeners/frames on disposal
+ok 243 - viewport retargets one frame sequence, honors reduced motion and cancels owned listeners/frames on disposal
+  ---
+  duration_ms: 5.6325
+  type: 'test'
+  ...
+# Subtest: converter chooses original suffixes, excludes MXL, and reads after readiness before load/export/soft destroy
+ok 244 - converter chooses original suffixes, excludes MXL, and reads after readiness before load/export/soft destroy
+  ---
+  duration_ms: 13.7875
+  type: 'test'
+  ...
+# Subtest: export fallback variants preserve method receiver and precedence
+ok 245 - export fallback variants preserve method receiver and precedence
+  ---
+  duration_ms: 16.0189
+  type: 'test'
+  ...
+# Subtest: vendor decoder accepts original text/buffer/view shapes and retains zero-length fallback and offset errors
+ok 246 - vendor decoder accepts original text/buffer/view shapes and retains zero-length fallback and offset errors
+  ---
+  duration_ms: 4.1579
+  type: 'test'
+  ...
+# Subtest: XML normalization avoids converter readiness and preserves decoding errors
+ok 247 - XML normalization avoids converter readiness and preserves decoding errors
+  ---
+  duration_ms: 3.7868
+  type: 'test'
+  ...
+# Subtest: MXL normalization passes existing bytes without extra read and retains original error/finally behavior
+ok 248 - MXL normalization passes existing bytes without extra read and retains original error/finally behavior
+  ---
+  duration_ms: 10.2816
+  type: 'test'
+  ...
+# Subtest: converter readiness/read failures remain outside the generic conversion catch
+ok 249 - converter readiness/read failures remain outside the generic conversion catch
+  ---
+  duration_ms: 7.2192
+  type: 'test'
+  ...
+# Subtest: conversion load/export errors are logged then wrapped, with destroy errors ignored
+ok 250 - conversion load/export errors are logged then wrapped, with destroy errors ignored
+  ---
+  duration_ms: 9.4731
+  type: 'test'
+  ...
+# Subtest: explicit dispose releases completed soft-destroyed worker handles once
+ok 251 - explicit dispose releases completed soft-destroyed worker handles once
+  ---
+  duration_ms: 5.2854
+  type: 'test'
+  ...
+# Subtest: explicit dispose during export hard-destroys once and suppresses the late conversion result
+ok 252 - explicit dispose during export hard-destroys once and suppresses the late conversion result
+  ---
+  duration_ms: 35.0242
+  type: 'test'
+  ...
+# Subtest: a score returned after disposal is hard-destroyed without export
+ok 253 - a score returned after disposal is hard-destroyed without export
+  ---
+  duration_ms: 4.366
+  type: 'test'
+  ...
+# Subtest: convert-and-load waits for conversion cleanup and returns metadata only after app load completes
+ok 254 - convert-and-load waits for conversion cleanup and returns metadata only after app load completes
+  ---
+  duration_ms: 4.0296
+  type: 'test'
+  ...
+# Subtest: concurrent script requests share one script and wait for native vendor ready before returning
+ok 255 - concurrent script requests share one script and wait for native vendor ready before returning
+  ---
+  duration_ms: 4.0147
+  type: 'test'
+  ...
+# Subtest: script failure remains cached until explicit dispose, while external markers remain untouched
+ok 256 - script failure remains cached until explicit dispose, while external markers remain untouched
+  ---
+  duration_ms: 6.0526
+  type: 'test'
+  ...
+# Subtest: disposing a pending script rejects it and ignores the captured load callback
+ok 257 - disposing a pending script rejects it and ignores the captured load callback
+  ---
+  duration_ms: 2.3907
+  type: 'test'
+  ...
+# Subtest: a captured old script callback cannot erase a later lifecycle rejection handler
+ok 258 - a captured old script callback cannot erase a later lifecycle rejection handler
+  ---
+  duration_ms: 3.3572
+  type: 'test'
+  ...
+# Subtest: ZIP container chooses its declared score over root and nested fallbacks, for stored and deflated MXL
+ok 259 - ZIP container chooses its declared score over root and nested fallbacks, for stored and deflated MXL
+  ---
+  duration_ms: 120.5186
+  type: 'test'
+  ...
+# Subtest: ZIP fallback preserves depth/name ordering and ignores malformed container contents
+ok 260 - ZIP fallback preserves depth/name ordering and ignores malformed container contents
+  ---
+  duration_ms: 23.3349
+  type: 'test'
+  ...
+# Subtest: invalid MXL falls back only for transpose normalization and keeps warning order on double failure
+ok 261 - invalid MXL falls back only for transpose normalization and keeps warning order on double failure
+  ---
+  duration_ms: 6.3318
+  type: 'test'
+  ...
+# Subtest: canonical XML survives MXL original metadata and XML Blob loading without converter fallback
+ok 262 - canonical XML survives MXL original metadata and XML Blob loading without converter fallback
+  ---
+  duration_ms: 2.8721
+  type: 'test'
+  ...
+# Subtest: unsupported ZIP methods and missing embedded XML retain their specific errors
+ok 263 - unsupported ZIP methods and missing embedded XML retain their specific errors
+  ---
+  duration_ms: 3.9335
+  type: 'test'
+  ...
+# Subtest: binary copies respect view offsets and MXL payload preserves neutral MIME and File identity
+ok 264 - binary copies respect view offsets and MXL payload preserves neutral MIME and File identity
+  ---
+  duration_ms: 3.1519
+  type: 'test'
+  ...
+# Subtest: loader factory is cold; render/state/notify wait for OSMD and library completion
+ok 265 - loader factory is cold; render/state/notify wait for OSMD and library completion
+  ---
+  duration_ms: 8.8264
+  type: 'test'
+  ...
+# Subtest: MXL render receives original bytes while normalized XML only becomes the transpose source
+ok 266 - MXL render receives original bytes while normalized XML only becomes the transpose source
+  ---
+  duration_ms: 4.2425
+  type: 'test'
+  ...
+# Subtest: skipTransposeReset preserves original metadata and speed while loading the current transposition
+ok 267 - skipTransposeReset preserves original metadata and speed while loading the current transposition
+  ---
+  duration_ms: 4.1117
+  type: 'test'
+  ...
+# Subtest: OSMD failure reports then rethrows the same error without rolling back playback reset
+ok 268 - OSMD failure reports then rethrows the same error without rolling back playback reset
+  ---
+  duration_ms: 3.8357
+  type: 'test'
+  ...
+# Subtest: concurrent loads serialize the shared vendor and only the newest score commits
+ok 269 - concurrent loads serialize the shared vendor and only the newest score commits
+  ---
+  duration_ms: 7.04
+  type: 'test'
+  ...
+# Subtest: a superseded async presentation receives an invalid generation and cannot notify success
+ok 270 - a superseded async presentation receives an invalid generation and cannot notify success
+  ---
+  duration_ms: 6.5299
+  type: 'test'
+  ...
+# Subtest: library failure occurs after new score state writes and does not notify successful load
+ok 271 - library failure occurs after new score state writes and does not notify successful load
+  ---
+  duration_ms: 2.9008
+  type: 'test'
+  ...
+# Subtest: application dispose prevents pending canonical source from rendering or committing late effects
+ok 272 - application dispose prevents pending canonical source from rendering or committing late effects
+  ---
+  duration_ms: 8.6984
+  type: 'test'
+  ...
+# Subtest: application dispose prevents pending vendor load from rendering or committing late effects
+ok 273 - application dispose prevents pending vendor load from rendering or committing late effects
+  ---
+  duration_ms: 5.5686
+  type: 'test'
+  ...
+# Subtest: application dispose prevents pending library refresh from rendering or committing late effects
+ok 274 - application dispose prevents pending library refresh from rendering or committing late effects
+  ---
+  duration_ms: 5.6248
+  type: 'test'
+  ...
+# Subtest: FileReader chooses text/binary by original extension and propagates reader error
+ok 275 - FileReader chooses text/binary by original extension and propagates reader error
+  ---
+  duration_ms: 4.3373
+  type: 'test'
+  ...
+# Subtest: explicit reader dispose rejects only pending reads and is idempotent
+ok 276 - explicit reader dispose rejects only pending reads and is idempotent
+  ---
+  duration_ms: 2.8775
+  type: 'test'
+  ...
+# Subtest: file controls bind once, convert supported files before load, and close the drawer only on success
+ok 277 - file controls bind once, convert supported files before load, and close the drawer only on success
+  ---
+  duration_ms: 3.2972
+  type: 'test'
+  ...
+# Subtest: file change clears input in finally, propagates load failure, and ignores non-input targets
+ok 278 - file change clears input in finally, propagates load failure, and ignores non-input targets
+  ---
+  duration_ms: 3.729
+  type: 'test'
+  ...
+# Subtest: library factory is cold, missing IndexedDB rejects, and open/failed promises remain cached until disposal
+ok 279 - library factory is cold, missing IndexedDB rejects, and open/failed promises remain cached until disposal
+  ---
+  duration_ms: 10.8268
+  type: 'test'
+  ...
+# Subtest: schema creates only missing v1 stores with the original nonunique indexes
+ok 280 - schema creates only missing v1 stores with the original nonunique indexes
+  ---
+  duration_ms: 4.0834
+  type: 'test'
+  ...
+# Subtest: read request success does not settle a library command before native transaction completion
+ok 281 - read request success does not settle a library command before native transaction completion
+  ---
+  duration_ms: 49.1232
+  type: 'test'
+  ...
+# Subtest: executor throw rejects the original error before abort; native transaction error/abort fallbacks stay distinct
+ok 282 - executor throw rejects the original error before abort; native transaction error/abort fallbacks stay distinct
+  ---
+  duration_ms: 3.6357
+  type: 'test'
+  ...
+# Subtest: CRUD write resolves after complete and preserves folder versus score timestamp reads
+ok 283 - CRUD write resolves after complete and preserves folder versus score timestamp reads
+  ---
+  duration_ms: 5.1476
+  type: 'test'
+  ...
+# Subtest: backup codec retains original ArrayBuffer-only serialization and byte coercion
+ok 284 - backup codec retains original ArrayBuffer-only serialization and byte coercion
+  ---
+  duration_ms: 2.2613
+  type: 'test'
+  ...
+# Subtest: backup import preserves permissive array checks, generated IDs, remapping, default/coercion and atomic transaction
+ok 285 - backup import preserves permissive array checks, generated IDs, remapping, default/coercion and atomic transaction
+  ---
+  duration_ms: 5.138
+  type: 'test'
+  ...
+# Subtest: bulk move queues put in request success inside the original transaction and returns requested unique count
+ok 286 - bulk move queues put in request success inside the original transaction and returns requested unique count
+  ---
+  duration_ms: 9.7745
+  type: 'test'
+  ...
+# Subtest: starter flag skips fetch, and an existing library marks seeded without importing
+ok 287 - starter flag skips fetch, and an existing library marks seeded without importing
+  ---
+  duration_ms: 7.5311
+  type: 'test'
+  ...
+# Subtest: starter fetch uses original URL/cache, sets flag only after import completion, and preserves HTTP failure
+ok 288 - starter fetch uses original URL/cache, sets flag only after import completion, and preserves HTTP failure
+  ---
+  duration_ms: 6.3944
+  type: 'test'
+  ...
+# Subtest: explicit disposal closes an opened database once, aborts only owned transactions, and permits new init
+ok 289 - explicit disposal closes an opened database once, aborts only owned transactions, and permits new init
+  ---
+  duration_ms: 10.2926
+  type: 'test'
+  ...
+# Subtest: disposal rejects pending opens and closes late connections without replacing a fresh lifecycle
+ok 290 - disposal rejects pending opens and closes late connections without replacing a fresh lifecycle
+  ---
+  duration_ms: 4.4738
+  type: 'test'
+  ...
+# Subtest: disposal during starter fetch suppresses import and seeded flag after a late response
+ok 291 - disposal during starter fetch suppresses import and seeded flag after a late response
+  ---
+  duration_ms: 3.6709
+  type: 'test'
+  ...
+# Subtest: disposal after a pending read prevents a rename from reopening a new database or writing
+ok 292 - disposal after a pending read prevents a rename from reopening a new database or writing
+  ---
+  duration_ms: 3.0276
+  type: 'test'
+  ...
+# Subtest: disposal between backup reads suppresses the next query and late export metadata
+ok 293 - disposal between backup reads suppresses the next query and late export metadata
+  ---
+  duration_ms: 2.6136
+  type: 'test'
+  ...
+# Subtest: timeline follows repeated OSMD events, skips empty voice entries and restores actual prefetch position
+ok 294 - timeline follows repeated OSMD events, skips empty voice entries and restores actual prefetch position
+  ---
+  duration_ms: 13.8239
+  type: 'test'
+  ...
+# Subtest: preview filters hidden, cue, rest, tie continuation, hand and range without collapsing same pitch across staves
+ok 295 - preview filters hidden, cue, rest, tie continuation, hand and range without collapsing same pitch across staves
+  ---
+  duration_ms: 4.8761
+  type: 'test'
+  ...
+# Subtest: signature retains rest/tie/length/staff data, sort order and duplicate notes
+ok 296 - signature retains rest/tie/length/staff data, sort order and duplicate notes
+  ---
+  duration_ms: 1.8787
+  type: 'test'
+  ...
+# Subtest: index resolution reuses current occurrence, searches forward then restarts; lookahead skips nonattacks
+ok 297 - index resolution reuses current occurrence, searches forward then restarts; lookahead skips nonattacks
+  ---
+  duration_ms: 2.9591
+  type: 'test'
+  ...
+# Subtest: absent cursor leaves timeline dirty and empty; stuck iterator preserves traversal safety limit
+ok 298 - absent cursor leaves timeline dirty and empty; stuck iterator preserves traversal safety limit
+  ---
+  duration_ms: 11.5855
+  type: 'test'
+  ...
+# Subtest: single-hand early input uses shared timeline with no LED globals or output
+ok 299 - single-hand early input uses shared timeline with no LED globals or output
+  ---
+  duration_ms: 8.4004
+  type: 'test'
+  ...
+# Subtest: settings file factory is cold; initialized export retains payload, filename, DOM and revoke order
+ok 300 - settings file factory is cold; initialized export retains payload, filename, DOM and revoke order
+  ---
+  duration_ms: 20.6288
+  type: 'test'
+  ...
+# Subtest: settings concurrent imports retain completion order and ordinary null/parse/import failures
+ok 301 - settings concurrent imports retain completion order and ordinary null/parse/import failures
+  ---
+  duration_ms: 6.7837
+  type: 'test'
+  ...
+# Subtest: explicit settings dispose aborts only owned pending readers and suppresses captured callbacks after reinit
+ok 302 - explicit settings dispose aborts only owned pending readers and suppresses captured callbacks after reinit
+  ---
+  duration_ms: 4.6916
+  type: 'test'
+  ...
+# Subtest: settings native read errors/abort remain silent; synchronous read throw still escapes and is not disposed later
+ok 303 - settings native read errors/abort remain silent; synchronous read throw still escapes and is not disposed later
+  ---
+  duration_ms: 9.5842
+  type: 'test'
+  ...
+# Subtest: failed settings export retains original warning/alert and explicit dispose cleans its residual link and URL
+ok 304 - failed settings export retains original warning/alert and explicit dispose cleans its residual link and URL
+  ---
+  duration_ms: 13.7537
+  type: 'test'
+  ...
+# Subtest: debug factory is cold, startup retains two preference reads, native toggle binds once and heartbeat observes live state
+ok 305 - debug factory is cold, startup retains two preference reads, native toggle binds once and heartbeat observes live state
+  ---
+  duration_ms: 5.4591
+  type: 'test'
+  ...
+# Subtest: sticky frames filter invalid coordinates, snapshot anchor values, trim history and render separate SVG rings/labels
+ok 306 - sticky frames filter invalid coordinates, snapshot anchor values, trim history and render separate SVG rings/labels
+  ---
+  duration_ms: 5.3952
+  type: 'test'
+  ...
+# Subtest: debug explicit disposal removes only owned checkbox/heartbeat/SVG resources and old handlers stay invalid after reinit
+ok 307 - debug explicit disposal removes only owned checkbox/heartbeat/SVG resources and old handlers stay invalid after reinit
+  ---
+  duration_ms: 4.5894
+  type: 'test'
+  ...
+# Subtest: debug external binding/group ownership and invalid native event targets stay at the DOM boundary
+ok 308 - debug external binding/group ownership and invalid native event targets stay at the DOM boundary
+  ---
+  duration_ms: 5.0868
+  type: 'test'
+  ...
+# Subtest: vendor debug observations retain null/defaults and snapshot fields without mutating notes
+ok 309 - vendor debug observations retain null/defaults and snapshot fields without mutating notes
+  ---
+  duration_ms: 9.5806
+  type: 'test'
+  ...
+# Subtest: first run seeds the same defaults and consumes the notice only once
+ok 310 - first run seeds the same defaults and consumes the notice only once
+  ---
+  duration_ms: 16.8447
+  type: 'test'
+  ...
+# Subtest: existing settings persist, including layout, while monitoring flags remain forced
+ok 311 - existing settings persist, including layout, while monitoring flags remain forced
+  ---
+  duration_ms: 4.4514
+  type: 'test'
+  ...
+# Subtest: preference normalization preserves legacy missing-number and malformed-value behavior
+ok 312 - preference normalization preserves legacy missing-number and malformed-value behavior
+  ---
+  duration_ms: 5.5767
+  type: 'test'
+  ...
+# Subtest: backup round trip preserves string values and layout; reload skip keeps imported defaults
+ok 313 - backup round trip preserves string values and layout; reload skip keeps imported defaults
+  ---
+  duration_ms: 15.2811
+  type: 'test'
+  ...
+# Subtest: flat backups retain legacy coercion and ignore unsupported / null values
+ok 314 - flat backups retain legacy coercion and ignore unsupported / null values
+  ---
+  duration_ms: 4.1034
+  type: 'test'
+  ...
+# Subtest: invalid backup rejects before changing storage
+ok 315 - invalid backup rejects before changing storage
+  ---
+  duration_ms: 6.2987
+  type: 'test'
+  ...
+# Subtest: reset removes supported settings and first-run flags but preserves unrelated / update values
+ok 316 - reset removes supported settings and first-run flags but preserves unrelated / update values
+  ---
+  duration_ms: 4.4328
+  type: 'test'
+  ...
+# Subtest: settings do not replace the shared state, Map or Set identities
+ok 317 - settings do not replace the shared state, Map or Set identities
+  ---
+  duration_ms: 4.39
+  type: 'test'
+  ...
+# Subtest: mode-specific routing keeps independent objects and Follow chooses exactly one practice hand
+ok 318 - mode-specific routing keeps independent objects and Follow chooses exactly one practice hand
+  ---
+  duration_ms: 6.3182
+  type: 'test'
+  ...
+# Subtest: persisted display layout restores after recreating the display module
+ok 319 - persisted display layout restores after recreating the display module
+  ---
+  duration_ms: 18.6604
+  type: 'test'
+  ...
+# Subtest: static entry loads one private production bundle after the optional hardware factories
+ok 320 - static entry loads one private production bundle after the optional hardware factories
+  ---
+  duration_ms: 22.758
+  type: 'test'
+  ...
+# Subtest: the production source map embeds its modules and maps the preserved timing expressions
+ok 321 - the production source map embeds its modules and maps the preserved timing expressions
+  ---
+  duration_ms: 72.3045
+  type: 'test'
+  ...
+# Subtest: forward quarter note
+ok 322 - forward quarter note
+  ---
+  duration_ms: 3.9103
+  type: 'test'
+  ...
+# Subtest: adjacent measure
+ok 323 - adjacent measure
+  ---
+  duration_ms: 0.3924
+  type: 'test'
+  ...
+# Subtest: backward repeat uses remainder, not negative delta
+ok 324 - backward repeat uses remainder, not negative delta
+  ---
+  duration_ms: 0.1976
+  type: 'test'
+  ...
+# Subtest: ending skip uses remainder, not skipped measures
+ok 325 - ending skip uses remainder, not skipped measures
+  ---
+  duration_ms: 0.3015
+  type: 'test'
+  ...
+# Subtest: zero interval stays zero
+ok 326 - zero interval stays zero
+  ---
+  duration_ms: 0.2373
+  type: 'test'
+  ...
+# Subtest: backward timestamp within a measure uses remainder
+ok 327 - backward timestamp within a measure uses remainder
+  ---
+  duration_ms: 0.2078
+  type: 'test'
+  ...
+# Subtest: actual pickup length wins over nominal meter
+ok 328 - actual pickup length wins over nominal meter
+  ---
+  duration_ms: 0.3041
+  type: 'test'
+  ...
+# Subtest: zero actual length falls back to nominal
+ok 329 - zero actual length falls back to nominal
+  ---
+  duration_ms: 0.1933
+  type: 'test'
+  ...
+# Subtest: negative actual length falls back to nominal
+ok 330 - negative actual length falls back to nominal
+  ---
+  duration_ms: 0.5949
+  type: 'test'
+  ...
+# Subtest: nonfinite actual length falls back to nominal
+ok 331 - nonfinite actual length falls back to nominal
+  ---
+  duration_ms: 0.6975
+  type: 'test'
+  ...
+# Subtest: missing callback uses note length
+ok 332 - missing callback uses note length
+  ---
+  duration_ms: 0.2776
+  type: 'test'
+  ...
+# Subtest: missing timing uses note length
+ok 333 - missing timing uses note length
+  ---
+  duration_ms: 0.1695
+  type: 'test'
+  ...
+# Subtest: missing measure start uses note length
+ok 334 - missing measure start uses note length
+  ---
+  duration_ms: 0.1517
+  type: 'test'
+  ...
+# Subtest: nonfinite start uses note length
+ok 335 - nonfinite start uses note length
+  ---
+  duration_ms: 0.1556
+  type: 'test'
+  ...
+# Subtest: invalid actual and nominal lengths use note length
+ok 336 - invalid actual and nominal lengths use note length
+  ---
+  duration_ms: 0.1591
+  type: 'test'
+  ...
+# Subtest: nonfinite current timestamp uses note length
+ok 337 - nonfinite current timestamp uses note length
+  ---
+  duration_ms: 0.1066
+  type: 'test'
+  ...
+# Subtest: at measure end uses note length
+ok 338 - at measure end uses note length
+  ---
+  duration_ms: 0.1009
+  type: 'test'
+  ...
+# Subtest: beyond measure end uses note length
+ok 339 - beyond measure end uses note length
+  ---
+  duration_ms: 0.1478
+  type: 'test'
+  ...
+# Subtest: epsilon remainder uses note length
+ok 340 - epsilon remainder uses note length
+  ---
+  duration_ms: 0.1061
+  type: 'test'
+  ...
+# Subtest: larger remainder is preserved
+ok 341 - larger remainder is preserved
+  ---
+  duration_ms: 2.3248
+  type: 'test'
+  ...
+# Subtest: zero fallback becomes a quarter whole-note unit
+ok 342 - zero fallback becomes a quarter whole-note unit
+  ---
+  duration_ms: 0.1654
+  type: 'test'
+  ...
+# Subtest: negative fallback becomes a quarter whole-note unit
+ok 343 - negative fallback becomes a quarter whole-note unit
+  ---
+  duration_ms: 0.1431
+  type: 'test'
+  ...
+# Subtest: infinite fallback becomes a quarter whole-note unit
+ok 344 - infinite fallback becomes a quarter whole-note unit
+  ---
+  duration_ms: 0.104
+  type: 'test'
+  ...
+# Subtest: NaN fallback becomes a quarter whole-note unit
+ok 345 - NaN fallback becomes a quarter whole-note unit
+  ---
+  duration_ms: 0.103
+  type: 'test'
+  ...
+# Subtest: omitted fallback remains one whole note
+ok 346 - omitted fallback remains one whole note
+  ---
+  duration_ms: 0.1064
+  type: 'test'
+  ...
+# Subtest: legacy omitted-options semantics remain unchanged
+ok 347 - legacy omitted-options semantics remain unchanged
+  ---
+  duration_ms: 0.3092
+  type: 'test'
+  ...
+# Subtest: callback receives current measure index, including omitted index
+ok 348 - callback receives current measure index, including omitted index
+  ---
+  duration_ms: 1.3726
+  type: 'test'
+  ...
+# Subtest: timing module does not publish or overwrite a Window namespace
+ok 349 - timing module does not publish or overwrite a Window namespace
+  ---
+  duration_ms: 1.5833
+  type: 'test'
+  ...
+# Subtest: a fully visible new piano system below the reading band settles to 30%
+ok 350 - a fully visible new piano system below the reading band settles to 30%
+  ---
+  duration_ms: 2.6602
+  type: 'test'
+  ...
+# Subtest: reading band and safe content above it hold without backward centering
+ok 351 - reading band and safe content above it hold without backward centering
+  ---
+  duration_ms: 0.4411
+  type: 'test'
+  ...
+# Subtest: full-system safety wins over band center, first and last page clamp to legal range
+ok 352 - full-system safety wins over band center, first and last page clamp to legal range
+  ---
+  duration_ms: 0.3418
+  type: 'test'
+  ...
+# Subtest: missing and oversized system geometry use minimum cursor movement without oscillation
+ok 353 - missing and oversized system geometry use minimum cursor movement without oscillation
+  ---
+  duration_ms: 0.5164
+  type: 'test'
+  ...
+# Subtest: three pixel hysteresis avoids jitter near the band, safe edges and target
+ok 354 - three pixel hysteresis avoids jitter near the band, safe edges and target
+  ---
+  duration_ms: 0.2505
+  type: 'test'
+  ...
+# Subtest: measured overlay obstruction raises the top safety limit
+ok 355 - measured overlay obstruction raises the top safety limit
+  ---
+  duration_ms: 0.2815
+  type: 'test'
+  ...
+# Subtest: Wait and invalid estimates use 650ms, other modes use 20% bounded to 400–1200ms
+ok 356 - Wait and invalid estimates use 650ms, other modes use 20% bounded to 400–1200ms
+  ---
+  duration_ms: 0.4116
+  type: 'test'
+  ...
+# Subtest: classification recognizes adjacent rows independently of leftward cursor resets
+ok 357 - classification recognizes adjacent rows independently of leftward cursor resets
+  ---
+  duration_ms: 0.3645
+  type: 'test'
+  ...
+# Subtest: same-system and cross-system repeats, explicit seek/reset and early Loop resets keep navigation semantics
+ok 358 - same-system and cross-system repeats, explicit seek/reset and early Loop resets keep navigation semantics
+  ---
+  duration_ms: 0.8035
+  type: 'test'
+  ...
+# Subtest: duration counts simultaneous voices once and applies the speed multiplier once
+ok 359 - duration counts simultaneous voices once and applies the speed multiplier once
+  ---
+  duration_ms: 3.0521
+  type: 'test'
+  ...
+# Subtest: weak upbeat, rests, dotted/tuplet offsets and cross-line long duration follow actual timestamps
+ok 360 - weak upbeat, rests, dotted/tuplet offsets and cross-line long duration follow actual timestamps
+  ---
+  duration_ms: 0.6536
+  type: 'test'
+  ...
+# Subtest: tempo changes and Loop boundary use only this occurrence before it leaves the system
+ok 361 - tempo changes and Loop boundary use only this occurrence before it leaves the system
+  ---
+  duration_ms: 0.3769
+  type: 'test'
+  ...
+# Subtest: duration rejects unusable data and never mutates the independent trace
+ok 362 - duration rejects unusable data and never mutates the independent trace
+  ---
+  duration_ms: 1.8914
+  type: 'test'
+  ...
+# Subtest: CSS conversion includes page offsets, borders, zoom and scroll exactly once
+ok 363 - CSS conversion includes page offsets, borders, zoom and scroll exactly once
+  ---
+  duration_ms: 0.5251
+  type: 'test'
+  ...
+# Subtest: finite smoothstep is monotonic, bounded and independent of refresh rate
+ok 364 - finite smoothstep is monotonic, bounded and independent of refresh rate
+  ---
+  duration_ms: 0.2831
+  type: 'test'
+  ...
+# Subtest: one vertical sequence keeps its deadline through duplicate notifications and same-system notes
+ok 365 - one vertical sequence keeps its deadline through duplicate notifications and same-system notes
+  ---
+  duration_ms: 3.6332
+  type: 'test'
+  ...
+# Subtest: a faster new row retargets from actual current position without queueing old goals
+ok 366 - a faster new row retargets from actual current position without queueing old goals
+  ---
+  duration_ms: 0.7248
+  type: 'test'
+  ...
+# Subtest: pause cancellation gates stale callbacks, resume checks current row, user wheel does not reclaim same event
+ok 367 - pause cancellation gates stale callbacks, resume checks current row, user wheel does not reclaim same event
+  ---
+  duration_ms: 0.6089
+  type: 'test'
+  ...
+# Subtest: reduced motion uses same target without animation, and dispose/visibility own no late writes
+ok 368 - reduced motion uses same target without animation, and dispose/visibility own no late writes
+  ---
+  duration_ms: 0.6122
+  type: 'test'
+  ...
+# Subtest: reflow preserves a safely visible system and cancels the old geometry animation
+ok 369 - reflow preserves a safely visible system and cancels the old geometry animation
+  ---
+  duration_ms: 0.7714
+  type: 'test'
+  ...
+# Subtest: rendering an empty intermediate SVG does not lose the previous traditional scroll
+ok 370 - rendering an empty intermediate SVG does not lose the previous traditional scroll
+  ---
+  duration_ms: 0.9673
+  type: 'test'
+  ...
+# Subtest: explicit seek retains old navigation, while enabling follow after a disabled seek deliberately aligns
+ok 371 - explicit seek retains old navigation, while enabling follow after a disabled seek deliberately aligns
+  ---
+  duration_ms: 1.5123
+  type: 'test'
+  ...
+# Subtest: losing the painted cursor stops the owned animation instead of writing a stale target
+ok 372 - losing the painted cursor stops the owned animation instead of writing a stale target
+  ---
+  duration_ms: 0.5856
+  type: 'test'
+  ...
+# Subtest: transpose commands are cold and apply preserves original metadata until async load completes
+ok 373 - transpose commands are cold and apply preserves original metadata until async load completes
+  ---
+  duration_ms: 22.5824
+  type: 'test'
+  ...
+# Subtest: repeated transpose uses original source and post-load mode reads remain live
+ok 374 - repeated transpose uses original source and post-load mode reads remain live
+  ---
+  duration_ms: 10.6685
+  type: 'test'
+  ...
+# Subtest: same-signature key request stops before transform/load and preserves the original status
+ok 375 - same-signature key request stops before transform/load and preserves the original status
+  ---
+  duration_ms: 2.7476
+  type: 'test'
+  ...
+# Subtest: availability fallback does not replace the original-data argument used by apply
+ok 376 - availability fallback does not replace the original-data argument used by apply
+  ---
+  duration_ms: 3.7451
+  type: 'test'
+  ...
+# Subtest: missing engine disables transpose without reading or loading a score
+ok 377 - missing engine disables transpose without reading or loading a score
+  ---
+  duration_ms: 2.6528
+  type: 'test'
+  ...
+# Subtest: load errors are reported as status without rethrow or marking a successful transposition
+ok 378 - load errors are reported as status without rethrow or marking a successful transposition
+  ---
+  duration_ms: 2.9334
+  type: 'test'
+  ...
+# Subtest: reset loads original source, preserves metadata/speed command option, then resets active state and inferred target
+ok 379 - reset loads original source, preserves metadata/speed command option, then resets active state and inferred target
+  ---
+  duration_ms: 3.6907
+  type: 'test'
+  ...
+# Subtest: handle-score-loaded preserves transpose object identity while restoring its defaults
+ok 380 - handle-score-loaded preserves transpose object identity while restoring its defaults
+  ---
+  duration_ms: 5.0417
+  type: 'test'
+  ...
+# Subtest: explicit dispose suppresses a pending apply UI commit, while init permits a new command
+ok 381 - explicit dispose suppresses a pending apply UI commit, while init permits a new command
+  ---
+  duration_ms: 8.283
+  type: 'test'
+  ...
+# Subtest: transpose controls bind once, parse values in their boundary and remove all owned listeners
+ok 382 - transpose controls bind once, parse values in their boundary and remove all owned listeners
+  ---
+  duration_ms: 5.7339
+  type: 'test'
+  ...
+1..382
+# tests 382
+# suites 0
+# pass 382
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1897.8931
+npm notice
+npm notice New major version of npm available! 10.9.4 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+npm notice
+npm notice New major version of npm available! 10.9.4 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+npm notice
+npm notice New major version of npm available! 10.9.4 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

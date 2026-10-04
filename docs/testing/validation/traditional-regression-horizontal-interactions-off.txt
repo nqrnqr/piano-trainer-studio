@@ -1,0 +1,19 @@
+PASS first-pass correct history stays on the first displayed copy
+PASS held wrong input paints the second-pass copy
+PASS rapid 50/150/100% reflow preserves event, NoteRef, hit state and grading
+PASS debug frame reprojects to the current occurrence after reflow
+PASS rapid layout changes discard stale rendering and retain the second pass
+PASS fullscreen or its supported fallback preserves event and score
+FULLSCREEN {"native":true,"pseudo":false}
+PASS reduced-motion policy positions the same right-hand copy immediately
+PASS async display commit positions the latest formal event rather than its preparation snapshot
+PASS superseded XML normalization is rejected
+PASS only the latest score owns metadata, source and display
+PASS live Loop range change uses explicit source-measure navigation
+PASS turning Loop off rebuilds finite presentation without an extra formal event
+PASS dispose releases a pending render and prevents late DOM commits
+PASS upper staff baseline stays identical across independently rendered blocks
+PASS lower staff baseline stays identical at chunk seams
+PASS high and low ledger notes fit the shared vertical crop
+INTERACTIONS {"resources":{"generation":4,"pending":false,"instances":0,"models":2,"callbacks":0,"templateNodes":611,"mountedNodes":613,"mappedNotes":33,"chunks":2,"maxChunks":7,"maxModels":16,"origin":0,"windowStart":0,"windowEnd":1,"definitions":2,"lastRebase":null},"ledgerAnchors":[{"midi":108,"staffIndex":0,"measureOccurrenceId":3,"point":{"x":365.7411804199219,"y":60.014037771348}},{"midi":24,"staffIndex":1,"measureOccurrenceId":7,"point":{"x":709.8372192382812,"y":346.01404158604527}}],"frame":1200}
+READY_FOR_CAPTURE

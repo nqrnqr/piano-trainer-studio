@@ -3568,6 +3568,7 @@
     function create(ports) {
       function renderScoreAndRefreshGeometry() {
         if (!ports.score.isReady()) return;
+        ports.beforeRender?.();
         ports.score.render();
         ports.invalidateGeometry();
         ports.afterRender();
@@ -3580,6 +3581,61 @@
     PianoTrainerScoreRenderer2.create = create;
   })(PianoTrainerScoreRenderer || (PianoTrainerScoreRenderer = {}));
 
+  // src/render/traditional-scroll-policy.ts
+  var PianoTrainerTraditionalScroll;
+  ((PianoTrainerTraditionalScroll2) => {
+    function classify(previous, current) {
+      if (!previous || previous.scoreRevision !== current.scoreRevision) return "navigation";
+      const freshEvent = current.eventId !== previous.eventId || current.runId !== previous.runId;
+      if (freshEvent && current.reason && current.reason !== "advance" || current.runId !== null && previous.runId !== null && current.runId !== previous.runId || current.loopIteration !== null && previous.loopIteration !== null && current.loopIteration !== previous.loopIteration || current.traceStepIndex < previous.traceStepIndex || current.measureIndex < previous.measureIndex || current.measureIndex === previous.measureIndex && (current.timestampWhole !== null && previous.timestampWhole !== null && current.timestampWhole < previous.timestampWhole || current.occurrenceId !== null && previous.occurrenceId !== null && current.occurrenceId !== previous.occurrenceId)) return "navigation";
+      if (current.layoutRevision !== previous.layoutRevision) return "visibility";
+      if (current.systemId === previous.systemId) return "same";
+      return current.systemId !== null && previous.systemId !== null && current.systemId === previous.systemId + 1 ? "adjacent" : "visibility";
+    }
+    PianoTrainerTraditionalScroll2.classify = classify;
+    function duration(mode, lineSeconds) {
+      return mode === "wait" || lineSeconds === null || !Number.isFinite(lineSeconds) || lineSeconds <= 0 ? 650 : Math.min(1200, Math.max(400, lineSeconds * 200));
+    }
+    PianoTrainerTraditionalScroll2.duration = duration;
+    const clamp = (value, low, high) => Math.max(low, Math.min(value, high));
+    function decide(input) {
+      const { kind, height: h, cursor, system, mode, lineSeconds } = input;
+      const s = input.scrollTop, max = Math.max(0, input.maxScroll);
+      const margin = clamp(h * 0.04, 12, 32), pt = Math.max(margin, input.topObstruction || 0), pb = margin;
+      const hold = { kind: "hold", target: s, durationMs: 0, lineSeconds };
+      if (!Number.isFinite(h) || h <= 0 || ![s, max, cursor.top, cursor.bottom].every(Number.isFinite)) return hold;
+      if (kind === "navigation") return { kind: "legacy", target: s, durationMs: 0, lineSeconds };
+      const safe = (box) => box.top - s >= pt - 3 && box.bottom - s <= h - pb + 3;
+      let target = s;
+      const valid = system && [system.top, system.bottom].every(Number.isFinite) && system.bottom > system.top;
+      const low = valid ? Math.max(0, system.bottom - h + pb) : Infinity;
+      const high = valid ? Math.min(max, system.top - pt) : -Infinity;
+      if (valid && low <= high) {
+        if (safe(system)) {
+          if (kind === "same" || kind === "visibility" || system.top - s <= h * 0.35 + 3) return hold;
+        }
+        target = clamp(system.top - h * 0.3, low, high);
+      } else {
+        if (cursor.bottom - cursor.top > h - pt - pb) {
+          if (cursor.top - s >= pt - 3 && cursor.top - s <= h - pb + 3) return hold;
+          target = cursor.top - pt;
+        } else if (safe(cursor)) return hold;
+        else if (cursor.top - s < pt) target = cursor.top - pt;
+        else if (cursor.bottom - s > h - pb) target = cursor.bottom - h + pb;
+      }
+      target = clamp(target, 0, max);
+      if (Math.abs(target - s) <= 3) return hold;
+      const correction = !safe(cursor);
+      return { kind: "animate", target, durationMs: correction ? Math.min(400, duration(mode, lineSeconds)) : duration(mode, lineSeconds), lineSeconds };
+    }
+    PianoTrainerTraditionalScroll2.decide = decide;
+    function interpolate(from, to, elapsed, durationMs) {
+      const t = Math.min(1, Math.max(0, elapsed / durationMs));
+      return from + (to - from) * t * t * (3 - 2 * t);
+    }
+    PianoTrainerTraditionalScroll2.interpolate = interpolate;
+  })(PianoTrainerTraditionalScroll || (PianoTrainerTraditionalScroll = {}));
+
   // src/render/score-viewport.ts
   var PianoTrainerScoreViewport;
   ((PianoTrainerScoreViewport2) => {
@@ -3588,14 +3644,118 @@
       let mode = "traditional";
       let defaults = null;
       let frame = null, targetLeft = 0, previousTime = 0;
-      let changingLayout = false, initialized = false;
+      let initialized = false;
+      let verticalFrame = null, generation = 0, dirty = false;
+      let previous = null, recheck = null;
+      let resume = false, nativeScroll = false, framesRun = 0, framesRequested = 0;
+      let vertical = null, lastAnimation = null;
+      let measuredSystem = null;
+      let lastKind = null;
+      let renderedTop = null;
       const area = () => elements.area;
       const isHorizontal = () => mode === "horizontal";
       const follows = () => elements.autoScroll.checked !== false;
+      function stopNativeScroll() {
+        if (nativeScroll) area().scrollTo({ top: area().scrollTop, behavior: "instant" });
+        nativeScroll = false;
+      }
       function cancel() {
         if (frame !== null) ports.cancelFrame(frame);
         frame = null;
         previousTime = 0;
+        generation++;
+        if (verticalFrame !== null) ports.cancelFrame(verticalFrame);
+        verticalFrame = null;
+        vertical = null;
+        dirty = false;
+        recheck = null;
+        resume = true;
+        stopNativeScroll();
+      }
+      function scheduleVertical() {
+        if (verticalFrame !== null || !initialized || !follows() || isHorizontal()) return;
+        if (ports.traditional?.lifecycle?.visibilityState === "hidden") return;
+        const epoch = generation;
+        framesRequested++;
+        verticalFrame = ports.requestFrame((time) => {
+          if (epoch === generation) animateVertical(time);
+        });
+      }
+      function legacyPosition(cursor) {
+        vertical = null;
+        stopNativeScroll();
+        const viewport = area(), height = viewport.getBoundingClientRect().height;
+        const screenY = cursor.top - viewport.scrollTop;
+        if (screenY > height * 0.6 || screenY < 0) {
+          const target = Math.max(0, Math.min(viewport.scrollHeight - viewport.clientHeight, cursor.top - height * 0.1));
+          if (ports.prefersReducedMotion()) viewport.scrollTop = target;
+          else {
+            viewport.scrollTo({ top: target, behavior: "smooth" });
+            nativeScroll = true;
+          }
+        }
+      }
+      function animateVertical(time) {
+        verticalFrame = null;
+        framesRun++;
+        if (!follows() || isHorizontal()) return;
+        if (dirty) {
+          dirty = false;
+          const snapshot = ports.traditional?.read();
+          if (snapshot) {
+            const classification = PianoTrainerTraditionalScroll.classify(previous, snapshot.position);
+            const unchanged = previous && previous.scoreRevision === snapshot.position.scoreRevision && previous.layoutRevision === snapshot.position.layoutRevision && previous.traceStepIndex === snapshot.position.traceStepIndex && previous.eventId === snapshot.position.eventId && previous.runId === snapshot.position.runId;
+            const kind = recheck === "align" ? "align" : classification === "navigation" ? classification : recheck || (resume ? "align" : classification);
+            lastKind = kind;
+            const reevaluate = !!recheck || resume;
+            recheck = null;
+            resume = false;
+            previous = { ...snapshot.position };
+            measuredSystem = snapshot.system;
+            if (!unchanged || reevaluate) {
+              if (kind === "navigation") legacyPosition(snapshot.cursor);
+              else if (!(kind === "same" && vertical)) {
+                if (kind !== "same") stopNativeScroll();
+                const lineSeconds = snapshot.system && (kind === "adjacent" || kind === "align") ? ports.traditional.estimateSeconds(snapshot.system, snapshot.position) : null;
+                const decision = PianoTrainerTraditionalScroll.decide({
+                  kind,
+                  height: area().clientHeight,
+                  scrollTop: area().scrollTop,
+                  maxScroll: area().scrollHeight - area().clientHeight,
+                  system: snapshot.system,
+                  cursor: snapshot.cursor,
+                  topObstruction: snapshot.topObstruction,
+                  mode: snapshot.mode,
+                  lineSeconds
+                });
+                if (decision.kind === "animate") {
+                  stopNativeScroll();
+                  vertical = {
+                    from: area().scrollTop,
+                    target: decision.target,
+                    started: time,
+                    durationMs: decision.durationMs,
+                    lineSeconds,
+                    systemId: snapshot.position.systemId
+                  };
+                  lastAnimation = { ...vertical };
+                  if (ports.prefersReducedMotion()) {
+                    area().scrollTop = vertical.target;
+                    vertical = null;
+                  }
+                } else if (kind !== "same") vertical = null;
+              }
+            }
+          } else vertical = null;
+        }
+        if (vertical) {
+          area().scrollTop = PianoTrainerTraditionalScroll.interpolate(vertical.from, vertical.target, time - vertical.started, vertical.durationMs);
+          if (time - vertical.started >= vertical.durationMs) {
+            area().scrollTop = vertical.target;
+            vertical = null;
+          }
+        }
+        if (dirty || vertical) scheduleVertical();
       }
       function animate(time) {
         frame = null;
@@ -3622,7 +3782,8 @@
         return Math.max(0, Math.min(contentX - viewport.clientWidth * 0.33, viewport.scrollWidth - viewport.clientWidth));
       }
       function follow({ immediate = false } = {}) {
-        if (!isHorizontal() || !follows()) {
+        if (!isHorizontal()) return;
+        if (!follows()) {
           cancel();
           return;
         }
@@ -3633,15 +3794,25 @@
           viewport.scrollLeft = targetLeft;
         } else if (frame === null) frame = ports.requestFrame(animate);
       }
+      function beforeRender() {
+        cancel();
+        renderedTop = isHorizontal() ? null : area().scrollTop;
+      }
       function afterRender() {
+        cancel();
         ports.refreshPresentation?.();
-        if (isHorizontal() || changingLayout) {
-          for (const expected of state.expectedNotes) {
-            if (expected.noteRef) expected.anchor = ports.getAnchor(expected.noteRef, expected.mIdx, Number(expected.staffId) - 1);
-          }
+        for (const expected of state.expectedNotes) {
+          if (expected.noteRef) expected.anchor = ports.getAnchor(expected.noteRef, expected.mIdx, Number(expected.staffId) - 1);
         }
-        score.afterRender(isHorizontal() || changingLayout);
-        if (!isHorizontal()) return;
+        score.afterRender(true);
+        if (!isHorizontal()) {
+          if (renderedTop !== null) area().scrollTop = Math.max(0, Math.min(renderedTop, area().scrollHeight - area().clientHeight));
+          renderedTop = null;
+          resume = false;
+          recheck = "visibility";
+          autoScroll();
+          return;
+        }
         const width = ports.getSvg()?.getBoundingClientRect().width || 0;
         elements.wrapper.style.width = `${Math.max(area().clientWidth, width)}px`;
         score.getCursorElement()?.classList.add("horizontal-score-cursor");
@@ -3653,6 +3824,11 @@
           return;
         }
         if (!follows()) return;
+        if (ports.traditional) {
+          dirty = true;
+          scheduleVertical();
+          return;
+        }
         const cursor = score.getCursorElement();
         if (!cursor) return;
         const viewport = area(), bounds = viewport.getBoundingClientRect(), rect = cursor.getBoundingClientRect();
@@ -3684,12 +3860,7 @@
           const wrongPress = state.realtimeWrongPressInCurrentContext;
           if (!ports.refreshPresentation) ports.clearFeedbackPreserveScoring();
           state.realtimeWrongPressInCurrentContext = wrongPress;
-          changingLayout = true;
-          try {
-            ports.renderScoreAndRefreshGeometry();
-          } finally {
-            changingLayout = false;
-          }
+          ports.renderScoreAndRefreshGeometry();
           autoScroll();
         }
       }
@@ -3698,8 +3869,21 @@
       };
       const onAutoScrollChange = () => {
         ports.refreshPresentation?.();
-        if (follows()) follow();
-        else cancel();
+        if (follows()) {
+          if (isHorizontal()) follow();
+          else {
+            recheck = "align";
+            autoScroll();
+          }
+        } else cancel();
+      };
+      const onManualScroll = () => {
+        cancel();
+        resume = false;
+      };
+      const onVisibility = () => {
+        if (ports.traditional?.lifecycle?.visibilityState !== "visible") cancel();
+        else if (ports.traditional.isPlaying()) autoScroll();
       };
       function init() {
         if (initialized) return;
@@ -3712,22 +3896,98 @@
         setMode(saved, { save: false });
         elements.layout.addEventListener("change", onLayoutChange);
         elements.autoScroll.addEventListener("change", onAutoScrollChange);
-        area().addEventListener("wheel", cancel, { passive: true });
-        area().addEventListener("touchstart", cancel, { passive: true });
+        area().addEventListener("wheel", onManualScroll, { passive: true });
+        area().addEventListener("touchstart", onManualScroll, { passive: true });
+        ports.traditional?.lifecycle?.addEventListener("visibilitychange", onVisibility);
         initialized = true;
       }
       function dispose() {
         cancel();
         elements.layout.removeEventListener("change", onLayoutChange);
         elements.autoScroll.removeEventListener("change", onAutoScrollChange);
-        area().removeEventListener("wheel", cancel);
-        area().removeEventListener("touchstart", cancel);
+        area().removeEventListener("wheel", onManualScroll);
+        area().removeEventListener("touchstart", onManualScroll);
+        ports.traditional?.lifecycle?.removeEventListener("visibilitychange", onVisibility);
         initialized = false;
       }
-      return { init, dispose, setMode, isHorizontal, follow, afterRender, autoScroll, cancel };
+      return {
+        init,
+        dispose,
+        setMode,
+        isHorizontal,
+        follow,
+        beforeRender,
+        afterRender,
+        autoScroll,
+        cancel,
+        readTraditionalState: () => ({
+          framePending: verticalFrame !== null,
+          active: vertical !== null,
+          framesRun,
+          framesRequested,
+          position: previous ? { ...previous } : null,
+          system: measuredSystem ? { ...measuredSystem } : null,
+          animation: lastAnimation ? { ...lastAnimation } : null,
+          lastKind
+        })
+      };
     }
     PianoTrainerScoreViewport2.create = create;
   })(PianoTrainerScoreViewport || (PianoTrainerScoreViewport = {}));
+
+  // src/render/traditional-scroll-geometry.ts
+  function systemBoundsInContent(bounds, svg, area) {
+    const matrix = svg.getScreenCTM();
+    if (!matrix) return null;
+    const rect = area.getBoundingClientRect();
+    const point = (x, y) => ({
+      x: matrix.a * x + matrix.c * y + matrix.e - rect.left - area.clientLeft + area.scrollLeft,
+      y: matrix.b * x + matrix.d * y + matrix.f - rect.top - area.clientTop + area.scrollTop
+    });
+    const corners = [point(bounds.left, bounds.top), point(bounds.right, bounds.top), point(bounds.left, bounds.bottom), point(bounds.right, bounds.bottom)];
+    return {
+      ...bounds,
+      left: Math.min(...corners.map((p) => p.x)),
+      right: Math.max(...corners.map((p) => p.x)),
+      top: Math.min(...corners.map((p) => p.y)),
+      bottom: Math.max(...corners.map((p) => p.y))
+    };
+  }
+
+  // src/score/system-duration.ts
+  function estimateSystemSeconds(input) {
+    const { steps } = input.trace;
+    let bpm = input.baseBpm, seconds = 0, count = 0;
+    if (!Number.isFinite(input.speed) || input.speed <= 0 || !steps[input.traceStepIndex]) return null;
+    for (let index = input.traceStepIndex; index < steps.length; index++) {
+      if (++count > 1e5) return null;
+      const step = steps[index], next = steps[index + 1], measure = step.source.sourceMeasureIndex;
+      if (measure < input.firstMeasureIndex || measure > input.lastMeasureIndex || input.loopMax !== null && measure > input.loopMax) break;
+      const previous = steps[index - 1];
+      if (index === input.traceStepIndex || previous?.source.sourceMeasureIndex !== measure) {
+        const tempo = input.getTempo(measure);
+        if (tempo) bpm = tempo;
+      }
+      const effective = bpm * input.speed;
+      if (!Number.isFinite(effective) || effective <= 0) return null;
+      const fallbackLength = step.notes[0]?.lengthWhole ?? 1;
+      const options = {
+        currentMeasureIdx: measure,
+        currentTimestamp: step.source.timestampWhole,
+        fallbackLength,
+        getMeasureTimingInfo: input.getMeasureTimingInfo
+      };
+      const beats = next ? PianoTrainerTiming.getTraversalBeatsToWait({
+        ...options,
+        nextMeasureIdx: next.source.sourceMeasureIndex,
+        nextTimestamp: next.source.timestampWhole
+      }) : PianoTrainerTiming.getRemainingMeasureWaitWhole(options) * 4;
+      if (!Number.isFinite(beats) || beats < 0) return null;
+      seconds += beats * 60 / effective;
+      if (!next || next.source.sourceMeasureIndex < measure || next.source.timestampWhole < step.source.timestampWhole || next.source.sourceMeasureIndex === measure && next.measureOccurrenceId !== step.measureOccurrenceId) break;
+    }
+    return Number.isFinite(seconds) && seconds > 0 ? seconds : null;
+  }
 
   // src/render/horizontal-chunks.ts
   var PianoTrainerHorizontalChunks;
@@ -4117,6 +4377,14 @@
       let displayedSheet;
       let trace = null;
       let traceStepIndex = 0;
+      let paintedTraceStepIndex = 0, restoringPainted = false, layoutRevision = 0;
+      let systemBounds = null;
+      let measureSystems = /* @__PURE__ */ new Map();
+      function invalidateSystems() {
+        layoutRevision++;
+        systemBounds = null;
+        measureSystems.clear();
+      }
       let ownedHook = null;
       function syncSheet() {
         const sheet = ports.getRenderer().Sheet;
@@ -4128,6 +4396,7 @@
           sourceNotes.clear();
           trace = null;
           traceStepIndex = 0;
+          invalidateSystems();
         }
         return sheet;
       }
@@ -4210,6 +4479,7 @@
             if (Array.isArray(value)) Reflect.set(displayedIterator, key, value.slice());
           }
           displayedSheet = syncSheet();
+          if (!restoringPainted) paintedTraceStepIndex = traceStepIndex;
           return update();
         };
         cursor.update = wrapper;
@@ -4221,10 +4491,12 @@
         if (preservePaintedPosition && displayedIterator && displayedSheet === sheet) {
           const playbackIterator = cursor.Iterator;
           cursor.iterator = displayedIterator;
+          restoringPainted = true;
           try {
             cursor.update();
           } finally {
             cursor.iterator = playbackIterator;
+            restoringPainted = false;
           }
         }
         attachHook(cursor);
@@ -4302,6 +4574,58 @@
           traversal: position(cursor?.Iterator),
           painted: displayedSheet === sheet ? position(displayedIterator) : null
         };
+      }
+      function getSystemBounds() {
+        syncSheet();
+        if (systemBounds) return systemBounds.map((bounds) => ({ ...bounds }));
+        const graphic = ports.getRenderer().GraphicSheet;
+        const index = /* @__PURE__ */ new Map();
+        const pages = graphic?.MusicPages || [];
+        for (const [measureIndex, row] of (graphic?.MeasureList || []).entries()) {
+          for (const measure of row) {
+            const system = measure.ParentStaffLine?.ParentMusicSystem;
+            if (!system) continue;
+            let bounds = index.get(system);
+            if (!bounds) {
+              const pageIndex = pages.findIndex((page) => page.MusicSystems.includes(system));
+              if (pageIndex < 0) continue;
+              const pagePosition = pages[pageIndex]?.PositionAndShape?.AbsolutePosition || { x: 0, y: 0 };
+              const shape = system.PositionAndShape, origin = shape.AbsolutePosition;
+              let top = origin.y + (shape.BorderTop ?? 0), bottom = origin.y + (shape.BorderBottom ?? shape.Size.height);
+              for (const staff of system.StaffLines || []) {
+                const box = staff.PositionAndShape;
+                top = Math.min(top, box.AbsolutePosition.y + Math.min(0, box.BorderTop ?? 0));
+                bottom = Math.max(bottom, box.AbsolutePosition.y + Math.max(4, box.BorderBottom ?? 4));
+              }
+              bounds = {
+                systemId: index.size,
+                layoutRevision,
+                pageIndex,
+                firstMeasureIndex: measureIndex,
+                lastMeasureIndex: measureIndex,
+                left: (origin.x + (shape.BorderLeft ?? 0) - pagePosition.x) * 10,
+                right: (origin.x + (shape.BorderRight ?? shape.Size.width) - pagePosition.x) * 10,
+                top: (top - pagePosition.y) * 10,
+                bottom: (bottom - pagePosition.y) * 10
+              };
+              index.set(system, bounds);
+            }
+            bounds.lastMeasureIndex = measureIndex;
+            measureSystems.set(measureIndex, bounds);
+          }
+        }
+        systemBounds = [...index.values()];
+        return systemBounds.map((bounds) => ({ ...bounds }));
+      }
+      function getSystemForMeasure(index) {
+        syncSheet();
+        if (!systemBounds) getSystemBounds();
+        const bounds = measureSystems.get(index);
+        return bounds ? { ...bounds } : null;
+      }
+      function readPaintedPosition() {
+        const positions = readPositions();
+        return positions.painted ? { ...positions.painted, scoreRevision: positions.scoreRevision, layoutRevision, traceStepIndex: paintedTraceStepIndex } : null;
       }
       function getMeasureBox(measureIndex, staffIndex, unitsToPx) {
         const measure = ports.getRenderer().GraphicSheet?.MeasureList?.[measureIndex]?.[staffIndex];
@@ -4388,6 +4712,7 @@
       function rebuildStaffIdentity() {
         globalStaffIdentityMap = /* @__PURE__ */ new Map();
         trace = null;
+        invalidateSystems();
         const instruments = ports.getRenderer()?.Sheet?.Instruments || ports.getRenderer()?.Sheet?.instruments || [];
         let nextId = 1;
         instruments.forEach((instrument) => {
@@ -4437,6 +4762,7 @@
       }
       function dispose() {
         detachHook();
+        invalidateSystems();
         displayedIterator = null;
         displayedSheet = void 0;
         noteRefs = /* @__PURE__ */ new WeakMap();
@@ -4461,6 +4787,9 @@
         getIndependentIterator,
         getPerformanceTrace,
         seekTraceStep,
+        getSystemBounds,
+        getSystemForMeasure,
+        readPaintedPosition,
         getTraceStepIndex: () => {
           syncSheet();
           return traceStepIndex;
@@ -4482,6 +4811,7 @@
         },
         setZoom: (value) => {
           ports.getRenderer().zoom = value;
+          invalidateSystems();
         },
         getZoom: () => ports.getRenderer().zoom,
         getHorizontalMetrics: () => {
@@ -4555,7 +4885,10 @@
           return measure.PositionAndShape.AbsolutePosition.y * 10;
         },
         isReady: () => ports.getRenderer().IsReadyToRender(),
-        render: () => ports.getRenderer().render(),
+        render: () => {
+          invalidateSystems();
+          ports.getRenderer().render();
+        },
         getCursorElement: () => ports.getRenderer().cursor?.cursorElement || null
       };
     }
@@ -12537,6 +12870,53 @@ ${xml}`;
       return element;
     }
     const ScoreDisplay = PianoTrainerScoreViewport.create({
+      traditional: {
+        read: () => {
+          const painted = osmdAdapter.readPaintedPosition(), cursor = osmdAdapter.getCursorElement();
+          if (!painted || !cursor || cursor.style.display === "none") return null;
+          const area = requireScoreDisplayElement("music-area", HTMLElement), rect = area.getBoundingClientRect(), cursorRect = cursor.getBoundingClientRect();
+          const raw = osmdAdapter.getSystemForMeasure(painted.measureIndex);
+          const svg = raw ? requireScoreDisplayElement("source-score", HTMLElement).querySelectorAll("svg")[raw.pageIndex] : null;
+          const system = raw && svg ? systemBoundsInContent(raw, svg, area) : null;
+          const event = performancePosition.current();
+          const matching = event && event.scoreRevision === painted.scoreRevision && event.traceStepIndex === painted.traceStepIndex && event.source.sourceMeasureIndex === painted.measureIndex && event.source.timestampWhole === painted.timestampWhole ? event : null;
+          const controls = area.querySelector(".score-overlay-controls")?.getBoundingClientRect();
+          return {
+            position: {
+              ...painted,
+              systemId: system?.systemId ?? null,
+              occurrenceId: matching?.measureOccurrenceId ?? null,
+              eventId: matching?.eventId ?? null,
+              runId: matching?.runId ?? null,
+              loopIteration: matching?.loopIteration ?? null,
+              reason: matching?.reason ?? null
+            },
+            system,
+            cursor: { top: cursorRect.top - rect.top - area.clientTop + area.scrollTop, bottom: cursorRect.bottom - rect.top - area.clientTop + area.scrollTop },
+            mode: AppState.mode === "wait" ? "wait" : AppState.mode === "follow" ? "follow" : "realtime",
+            topObstruction: controls ? Math.max(0, controls.bottom - rect.top - area.clientTop + 4) : 0
+          };
+        },
+        estimateSeconds: (system, position) => {
+          try {
+            return estimateSystemSeconds({
+              trace: osmdAdapter.getPerformanceTrace(),
+              traceStepIndex: position.traceStepIndex,
+              firstMeasureIndex: system.firstMeasureIndex,
+              lastMeasureIndex: system.lastMeasureIndex,
+              loopMax: playbackControls.isLoopEnabled() ? playbackControls.readLoopMax() - 1 : null,
+              baseBpm: AppState.baseBpm,
+              speed: AppState.speedPercent,
+              getTempo: osmdAdapter.getPlaybackTempo,
+              getMeasureTimingInfo: scoreMeasureTiming.getInfo
+            });
+          } catch (_) {
+            return null;
+          }
+        },
+        lifecycle: document,
+        isPlaying: () => AppState.isPlaying
+      },
       elements: {
         area: requireScoreDisplayElement("music-area", HTMLElement),
         wrapper: requireScoreDisplayElement("canvas-wrapper", HTMLElement),
@@ -12568,6 +12948,7 @@ ${xml}`;
       prefersReducedMotion: () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
     });
     const scoreRenderer = PianoTrainerScoreRenderer.create({
+      beforeRender: ScoreDisplay.beforeRender,
       score: osmdAdapter,
       invalidateGeometry: () => GeometryEngine.invalidate(),
       afterRender: () => ScoreDisplay.afterRender(),

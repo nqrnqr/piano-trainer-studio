@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>Traditional score scroll checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1100px;height:900px;border:1px solid #ccc}pre{white-space:pre-wrap;height:120px;overflow:auto}</style>
+<h1>Traditional score scroll checks</h1><p>Real OSMD, original complete score, controlled musical clock and native foreground scroll frames.</p>
+<button id="run" disabled>Run checks</button><button id="dispose" disabled>Dispose after capture</button><pre id="results">Ready</pre><iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script><script>
+const frame=document.querySelector('iframe');frame.onload=()=>{document.getElementById('run').disabled=false;};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/traditional-scroll.integration.js';frame.contentDocument.body.append(script);};
+document.getElementById('dispose').onclick=()=>frame.contentWindow.TraditionalScrollCleanup();
+mountModuleTestFrame(frame,{ports:{controlledPlayback:true},preferences:{pt_ledOutputMode:'none'}});
+</script>

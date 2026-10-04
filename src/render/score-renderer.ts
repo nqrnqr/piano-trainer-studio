@@ -2,6 +2,7 @@ import type {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
 // The original render lifecycle. Call order is part of the visual contract.
 export namespace PianoTrainerScoreRenderer {
     export interface Ports {
+        beforeRender?(): void;
         score: Pick<PianoTrainerOsmdAdapter.Service, 'isReady' | 'render'>;
         invalidateGeometry(): void;
         afterRender(): void;
@@ -12,6 +13,7 @@ export namespace PianoTrainerScoreRenderer {
     export function create(ports: Ports) {
         function renderScoreAndRefreshGeometry() {
             if (!ports.score.isReady()) return;
+            ports.beforeRender?.();
             ports.score.render();
             ports.invalidateGeometry();
             ports.afterRender();

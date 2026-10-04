@@ -63,6 +63,29 @@ test('repeated afterRender owns one update hook; replacement cursor detaches its
     assert.equal(h.renderer.cursor.update,external);
 });
 
+test('system index groups actual identities, includes both staves and graphic borders, invalidates only with layout/sheet changes',()=>{
+    const h=adapterHarness();
+    const shape=(x,y,top,bottom)=>({AbsolutePosition:{x,y},Size:{width:90,height:bottom-top},BorderTop:top,BorderBottom:bottom,BorderLeft:0,BorderRight:90});
+    const first={PositionAndShape:shape(5,20,-9,14),StaffLines:[{PositionAndShape:shape(5,20,-10,6)},{PositionAndShape:shape(5,30,-1,8)}]};
+    const second={PositionAndShape:shape(5,20,-9,14),StaffLines:[{PositionAndShape:shape(5,20,0,4)}]};
+    const measure=sys=>({ParentStaffLine:{ParentMusicSystem:sys}});
+    h.renderer.GraphicSheet={MeasureList:[[measure(first),measure(first)],[measure(first)],[measure(second)]],MusicPages:[{MusicSystems:[first],PositionAndShape:shape(0,0,0,0)},{MusicSystems:[second],PositionAndShape:shape(0,10,0,0)}]};
+    const bounds=h.adapter.getSystemBounds();assert.equal(bounds.length,2);
+    assert.equal(bounds[0].top,100);assert.equal(bounds[0].bottom,380);assert.equal(bounds[0].lastMeasureIndex,1);
+    assert.equal(bounds[1].systemId,1);assert.equal(bounds[1].pageIndex,1);assert.equal(bounds[1].top,10);
+    bounds[0].top=-100;assert.equal(h.adapter.getSystemForMeasure(0).top,100);
+    const revision=bounds[0].layoutRevision;h.adapter.updateCursor();assert.equal(h.adapter.getSystemBounds()[0].layoutRevision,revision);
+    h.adapter.render();assert.ok(h.adapter.getSystemBounds()[0].layoutRevision>revision);
+    h.renderer.Sheet={id:'new'};assert.ok(h.adapter.getSystemBounds()[0].layoutRevision>revision+1);
+});
+
+test('painted trace index stays on the displayed event through prefetch and reflow',()=>{
+    const h=adapterHarness();h.adapter.afterRender(false);h.adapter.updateCursor();h.adapter.advance();
+    assert.equal(h.adapter.readPaintedPosition().traceStepIndex,0);assert.equal(h.adapter.getTraceStepIndex(),1);
+    h.adapter.afterRender(true);assert.equal(h.adapter.readPaintedPosition().traceStepIndex,0);
+    h.adapter.updateCursor();assert.equal(h.adapter.readPaintedPosition().traceStepIndex,1);
+});
+
 test('graphical lookup keeps exact source object over same pitch/time candidates, missing staff rows and diagnostic order',()=>{
     const h=adapterHarness(),first={halfTone:48},target={halfTone:48};
     const wrong={sourceNote:first},right={sourceNote:target};

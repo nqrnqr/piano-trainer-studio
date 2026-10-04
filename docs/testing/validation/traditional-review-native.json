@@ -1,0 +1,453 @@
+{
+  "url": "http://127.0.0.1:8080/docs/testing/traditional-scroll.html?led=off",
+  "checks": [
+    "PASS complete original piano score has at least four systems",
+    "PASS system assignments and visual borders match the pre-change OSMD baseline",
+    "PASS system geometry includes extreme ledger notes, lyric and dynamic extents",
+    "PASS live iterator has prefetched the next system while the painted cursor remains in the first",
+    "PASS no preview scrolling before the actual system entry",
+    "PASS new system was already fully visible below the reading band",
+    "PASS finite native animation converges and releases its frame",
+    "PASS second system settles in the 25–35% reading band",
+    "PASS both piano staves and visual extents remain safely visible",
+    "PASS foreground native rAF records intermediate motion across many frames",
+    "PASS normal settling is monotonic and never overshoots",
+    "PASS native convergence duration agrees with the chosen D",
+    "PASS later notes in the same system keep the target and deadline unchanged",
+    "PASS no idle viewport frame loop after same-system checks",
+    "PASS 200% speed uses the same actual beats and a shorter bounded duration",
+    "PASS editing speed within a system does not restart its animation",
+    "PASS Wait finishes one 650ms animation without another note",
+    "PASS Wait remains still for a further second",
+    "PASS Wait uses the same duration at 50% and 200% tempo",
+    "PASS pausing during native motion prevents late writes",
+    "PASS playback resume re-evaluates the paused position",
+    "PASS Follow uses the same quarter-beat duration as Realtime",
+    "PASS wheel cancels and duplicate notification does not reclaim the same event",
+    "PASS disabled follow leaves traditional scroll alone",
+    "PASS re-enabled follow aligns the current traditional system",
+    "PASS touchstart cancels native settling",
+    "PASS same-width reflow retains scroll and live iterator identity",
+    "PASS 50% zoom builds fresh finite geometry",
+    "PASS 100% zoom builds fresh finite geometry",
+    "PASS 150% zoom builds fresh finite geometry",
+    "PASS 100% zoom restores the unchanged original system layout",
+    "PASS resize invalidates geometry through original OSMD reflow",
+    "PASS traditional fullscreen or its supported fallback retains painted position and cancels old motion",
+    "PASS oversized-system fallback converges in a narrow-height viewport",
+    "PASS a real rapid next-system entry takes over from the current position",
+    "PASS retarget converges to the latest row with no queued old goal",
+    "PASS Loop count-in displays the reset source position before the next formal event",
+    "PASS early Loop reset cancels settling and never pulls back to the outgoing system",
+    "PASS formal Loop restart keeps its original return and musical iteration",
+    "PASS backward seek preserves the traditional navigation branch",
+    "PASS reduced-motion commits the same safe reading target without an animation",
+    "PASS a real system already in the reading band stays still",
+    "PASS a safely visible real system above the band does not scroll backward to center",
+    "PASS actual same-system original repeat is classified as navigation despite reason advance",
+    "PASS actual cross-system original repeat cancels forward settling and returns",
+    "PASS whole-note sparse piano fixture retains multiple original systems",
+    "PASS a real long-note system finishes settling without receiving another musical event",
+    "PASS complete raw and original MusicXML remain unchanged",
+    "PASS repeated layout switches cancel vertical owners"
+  ],
+  "status": [
+    "FULLSCREEN {\"native\":false,\"pseudo\":true}",
+    "PAGES 1",
+    "CHECKS 49",
+    "READY_FOR_CAPTURE",
+    "DONE"
+  ],
+  "native": {
+    "frames": "native",
+    "height": 697,
+    "animation": {
+      "from": 0,
+      "target": 235.40001022964722,
+      "started": 23388.8,
+      "durationMs": 1200,
+      "lineSeconds": 10.66666666666666,
+      "systemId": 1
+    },
+    "elapsed": 1173.2999999999993,
+    "intermediateSamples": 233,
+    "finalScroll": 235.1999969482422,
+    "system": {
+      "systemId": 1,
+      "layoutRevision": 5,
+      "pageIndex": 0,
+      "firstMeasureIndex": 6,
+      "lastMeasureIndex": 12,
+      "left": 58.00000074505806,
+      "right": 1027.0000151842833,
+      "top": 444.5000102296472,
+      "bottom": 680.6000137478112
+    }
+  },
+  "motion": {
+    "visibility": "visible",
+    "total": 337,
+    "matching": 233,
+    "animation": {
+      "from": 0,
+      "target": 235.40001022964722,
+      "started": 23388.8,
+      "durationMs": 1200,
+      "lineSeconds": 10.66666666666666,
+      "systemId": 1
+    },
+    "samples": [
+      {
+        "phase": "realtime-100",
+        "time": 23402.5,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 0,
+        "top": 444.5000102296472,
+        "bottom": 680.6000137478112,
+        "active": true,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 23541.3,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 9.600000381469727,
+        "top": 434.9000098481775,
+        "bottom": 671.0000133663415,
+        "active": true,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 23680.4,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 33.599998474121094,
+        "top": 410.9000117555261,
+        "bottom": 647.0000152736901,
+        "active": true,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 23819.1,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 67.19999694824219,
+        "top": 377.30001328140503,
+        "bottom": 613.400016799569,
+        "active": true,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 23957.9,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 106.4000015258789,
+        "top": 338.1000087037683,
+        "bottom": 574.2000122219323,
+        "active": true,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 24096.9,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 147.1999969482422,
+        "top": 297.30001328140503,
+        "bottom": 533.400016799569,
+        "active": true,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 24235.8,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 184.8000030517578,
+        "top": 259.7000071778894,
+        "bottom": 495.8000106960534,
+        "active": true,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 24374.6,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 214.39999389648438,
+        "top": 230.10001633316284,
+        "bottom": 466.20001985132683,
+        "active": true,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 24513.6,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 232,
+        "top": 212.50001022964722,
+        "bottom": 448.6000137478112,
+        "active": true,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 24652.4,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 235.1999969482422,
+        "top": 209.30001328140503,
+        "bottom": 445.400016799569,
+        "active": false,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 24791.5,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 235.1999969482422,
+        "top": 209.30001328140503,
+        "bottom": 445.400016799569,
+        "active": false,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 24930.2,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 235.1999969482422,
+        "top": 209.30001328140503,
+        "bottom": 445.400016799569,
+        "active": false,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      },
+      {
+        "phase": "realtime-100",
+        "time": 25013.5,
+        "height": 697,
+        "eventId": 26,
+        "systemId": 1,
+        "painted": {
+          "measureIndex": 6,
+          "timestampWhole": 6
+        },
+        "traversal": {
+          "measureIndex": 6,
+          "timestampWhole": 6.25
+        },
+        "scroll": 235.1999969482422,
+        "top": 209.30001328140503,
+        "bottom": 445.400016799569,
+        "active": false,
+        "animation": {
+          "from": 0,
+          "target": 235.40001022964722,
+          "started": 23388.8,
+          "durationMs": 1200,
+          "lineSeconds": 10.66666666666666,
+          "systemId": 1
+        }
+      }
+    ]
+  }
+}

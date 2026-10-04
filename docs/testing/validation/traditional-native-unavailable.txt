@@ -1,0 +1,8 @@
+PASS complete original piano score has at least four systems
+PASS system assignments and visual borders match the pre-change OSMD baseline
+PASS system geometry includes extreme ledger notes, lyric and dynamic extents
+PASS live iterator has prefetched the next system while the painted cursor remains in the first
+PASS no preview scrolling before the actual system entry
+PASS new system was already fully visible below the reading band
+NATIVE_UNAVAILABLE {"visibility":"visible","reason":"browser frame delivery is throttled; foreground motion cannot be verified","state":{"framePending":false,"active":false,"framesRun":3,"framesRequested":4,"position":{"measureIndex":6,"timestampWhole":6,"scoreRevision":1,"layoutRevision":5,"traceStepIndex":24,"systemId":1,"occurrenceId":6,"eventId":26,"runId":2,"loopIteration":0,"reason":"advance"},"system":{"systemId":1,"layoutRevision":5,"pageIndex":0,"firstMeasureIndex":6,"lastMeasureIndex":12,"left":58.00000074505806,"right":1027.0000151842833,"top":444.5000102296472,"bottom":680.6000137478112},"animation":{"from":0,"target":235.40001022964722,"started":55975.6,"durationMs":650,"lineSeconds":null,"systemId":1},"lastKind":"visibility"},"animation":{"from":0,"target":235.40001022964722,"started":55975.6,"durationMs":650,"lineSeconds":null,"systemId":1},"points":[{"phase":"realtime-100","time":56982.6,"height":697,"eventId":26,"systemId":1,"painted":{"measureIndex":6,"timestampWhole":6},"traversal":{"measureIndex":6,"timestampWhole":6.25},"scroll":0,"top":444.5000102296472,"bottom":680.6000137478112,"active":true,"animation":{"from":0,"target":235.40001022964722,"started":55975.6,"durationMs":650,"lineSeconds":null,"systemId":1}}]}
+DONE

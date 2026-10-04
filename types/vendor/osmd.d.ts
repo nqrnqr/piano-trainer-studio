@@ -24,7 +24,8 @@ namespace PianoTrainerOsmdVendor {
     interface Staff {id?: number;}
     interface Instrument {Staves?: Staff[]; staves?: Staff[]; Staffs?: Staff[]; staffs?: Staff[];}
     interface IdentityVoiceEntry {Notes?: Note[]; notes?: Note[];}
-    interface Shape { AbsolutePosition: PianoTrainerDomain.SvgPoint; Size?: {width: number; height: number}; }
+    interface Shape { AbsolutePosition: PianoTrainerDomain.SvgPoint; Size?: {width: number; height: number};
+        BorderTop?: number; BorderBottom?: number; BorderLeft?: number; BorderRight?: number; }
     interface ShapeContainer { PositionAndShape?: Shape; }
     interface GraphicalNote extends ShapeContainer {
         sourceNote?: Note;
@@ -46,7 +47,7 @@ namespace PianoTrainerOsmdVendor {
         PositionAndShape: MeasureShape;
         ParentStaffLine?: {ParentMusicSystem: MusicSystem};
     }
-    interface GraphicSheet { MeasureList: GraphicalMeasure[][]; MusicPages?: {MusicSystems: unknown[]}[]; }
+    interface GraphicSheet { MeasureList: GraphicalMeasure[][]; MusicPages?: {MusicSystems: MusicSystem[]; PositionAndShape?: Shape}[]; }
     interface Cursor extends PianoTrainerScoreTraversal.Cursor {
         show(): void;
         // Actual OSMD getter and its backing field. Neither is a domain position.

@@ -1,0 +1,32 @@
+PASS Traditional layout has multiple systems
+PASS 48 measures and both piano staves stay in one system (including XML line break)
+PASS Layout switch preserves playback iterator
+PASS Cursor anchored at 33% of viewport
+PASS New position schedules animation without a sudden jump
+PASS Scroll advances across multiple frames
+PASS Scroll converges on stable cursor region
+PASS Explicit backward seek converges without stale forward scroll
+PASS Trailing space retains cursor region at the last measure
+PASS Auto Scroll off leaves the viewport alone
+PASS Relayout leaves the ahead-of-display iterator intact
+PASS Relayout preserves the logical painted cursor while waiting, including origin recycling
+PASS Zoom keeps traversal and single-system layout
+PASS wait: waits for expected notes
+PASS wait: cursor does not run ahead while waiting
+PASS wait: switch layouts while waiting preserves current note
+PASS wait: switching preserves score and wrong-note state
+PASS wait: expected-note feedback anchors refresh for horizontal layout
+PASS wait: correct notes advance the visible cursor
+PASS follow: waits for expected notes
+PASS follow: cursor does not run ahead while waiting
+PASS follow: switch layouts while waiting preserves current note
+PASS follow: switching preserves score and wrong-note state
+PASS follow: expected-note feedback anchors refresh for horizontal layout
+PASS follow: correct notes advance the visible cursor
+PASS realtime: scheduled playback advances horizontal cursor
+PASS Reset returns to the first measure with cursor visible (measure=0, x=95.48750305175781, width=1226)
+PASS Traditional layout and normal container width restored
+PASS 390px mobile viewport retains single system and cursor anchor
+PASS 240 measures use 30 fixed definitions with bounded active SVG and template resources
+
+All checks passed.

@@ -211,6 +211,21 @@ verbatimModuleSyntax，局部不变量/原错误路径见 [STRICT_MODULE_CONTRAC
 
 ## 调试与回退
 
+传统布局的跟随由 `render/traditional-scroll-policy.ts` 决定系统目标，
+`score-viewport.ts` 拥有单条有限时长的纵向 rAF。换入相邻系统后归位到顶部
+25%–35% 阅读带（中心 30%）；Wait 固定 650ms，Follow / Realtime 取本次
+系统剩余实际四分拍时长的 20%，限制为 400–1200ms。整组谱表安全边界优先。
+adapter 缓存原 OSMD 系统身份和 SVG 边界；geometry 用各页 CTM 转成 CSS 内容坐标。
+滚动在同步绘制完成后的帧中读取 painted 位置，只在正式事件与该位置匹配时采纳事件身份。
+原谱返回及 Loop 仍走传统 10% 导航定位；重绘前保存 scrollTop，重绘后恢复并检查可见性。
+
+本地传统验收页为 `/docs/testing/traditional-scroll.html?led=off`，使用真实 OSMD、
+播放/输入路径和原生滚动帧。测试时保持浏览器前台；采样被限制时会显示
+`NATIVE_UNAVAILABLE`，不能视为运动验收通过。加 `&frames=controlled` 可执行
+确定性集成矩阵。两者均使用随机测试库、隔离偏好和静音输出；完成后点击
+“Dispose after capture” 清理。实际结果和限制见
+[traditional-scroll-results.md](../testing/traditional-scroll-results.md)。
+
 横向显示的 source revision 与 display generation 分开。反馈和 debug 保存源 NoteRef 与
 PerformedEvent 后重投影；诊断时同时查看 traceStepIndex、measureOccurrenceId 和 loopIteration，
 不要只凭源小节号判断当前遍数。显示模板最多 16、挂载块最多 7，每块 8 个主要小节，

@@ -1,0 +1,651 @@
+PASS simple-repeat: independent vendor path matches handwritten expectation
+PASS simple-repeat: planning leaves source cursor/paint unchanged
+PASS simple-repeat: every performed event has a validated structural display anchor
+PASS simple-repeat: repeated occurrences progress to the right
+PASS simple-repeat: consumed navigation removed from display XML
+PASS simple-repeat: display does not change source NoteRef revision
+PASS first-second-ending: independent vendor path matches handwritten expectation
+PASS first-second-ending: planning leaves source cursor/paint unchanged
+PASS first-second-ending: every performed event has a validated structural display anchor
+PASS first-second-ending: repeated occurrences progress to the right
+PASS first-second-ending: consumed navigation removed from display XML
+PASS first-second-ending: display does not change source NoteRef revision
+PASS horizontal-single: independent vendor path matches handwritten expectation
+PASS horizontal-single: planning leaves source cursor/paint unchanged
+PASS horizontal-single: every performed event has a validated structural display anchor
+PASS horizontal-single: repeated occurrences progress to the right
+PASS horizontal-single: consumed navigation removed from display XML
+PASS horizontal-single: display does not change source NoteRef revision
+PASS horizontal-voices: independent vendor path matches handwritten expectation
+PASS horizontal-voices: planning leaves source cursor/paint unchanged
+PASS horizontal-voices: every performed event has a validated structural display anchor
+PASS horizontal-voices: repeated occurrences progress to the right
+PASS horizontal-voices: consumed navigation removed from display XML
+PASS horizontal-voices: display does not change source NoteRef revision
+PASS trace observations cannot mutate source addresses
+PASS wait step 0: official event and display move forward
+PASS wait step 0: redraw keeps event, prefetch and pending notes
+PASS wait step 0: Wait/Follow hold current event before input
+PASS wait step 1: official event and display move forward
+PASS wait step 1: redraw keeps event, prefetch and pending notes
+PASS wait step 1: Wait/Follow hold current event before input
+PASS wait step 2: official event and display move forward
+PASS wait step 2: redraw keeps event, prefetch and pending notes
+PASS wait step 2: Wait/Follow hold current event before input
+PASS wait step 3: official event and display move forward
+PASS wait step 3: redraw keeps event, prefetch and pending notes
+PASS wait step 3: Wait/Follow hold current event before input
+PASS wait step 4: official event and display move forward
+PASS wait step 4: redraw keeps event, prefetch and pending notes
+PASS wait step 4: Wait/Follow hold current event before input
+PASS wait step 5: official event and display move forward
+PASS wait step 5: redraw keeps event, prefetch and pending notes
+PASS wait step 5: Wait/Follow hold current event before input
+PASS wait step 6: official event and display move forward
+PASS wait step 6: redraw keeps event, prefetch and pending notes
+PASS wait step 6: Wait/Follow hold current event before input
+PASS wait step 7: official event and display move forward
+PASS wait step 7: redraw keeps event, prefetch and pending notes
+PASS wait step 7: Wait/Follow hold current event before input
+PASS wait step 8: official event and display move forward
+PASS wait step 8: redraw keeps event, prefetch and pending notes
+PASS wait: second-pass preview rebuild preserves precise occurrence
+PASS wait: second-pass layout roundtrip preserves event and prefetch
+PASS wait step 8: Wait/Follow hold current event before input
+PASS wait step 9: official event and display move forward
+PASS wait step 9: redraw keeps event, prefetch and pending notes
+PASS wait step 9: Wait/Follow hold current event before input
+PASS wait step 10: official event and display move forward
+PASS wait step 10: redraw keeps event, prefetch and pending notes
+PASS wait step 10: Wait/Follow hold current event before input
+PASS wait step 11: official event and display move forward
+PASS wait step 11: redraw keeps event, prefetch and pending notes
+PASS wait step 11: Wait/Follow hold current event before input
+PASS wait step 12: official event and display move forward
+PASS wait step 12: redraw keeps event, prefetch and pending notes
+PASS wait step 12: Wait/Follow hold current event before input
+PASS wait step 13: official event and display move forward
+PASS wait step 13: redraw keeps event, prefetch and pending notes
+PASS wait step 13: Wait/Follow hold current event before input
+PASS wait step 14: official event and display move forward
+PASS wait step 14: redraw keeps event, prefetch and pending notes
+PASS wait step 14: Wait/Follow hold current event before input
+PASS wait step 15: official event and display move forward
+PASS wait step 15: redraw keeps event, prefetch and pending notes
+PASS wait step 15: Wait/Follow hold current event before input
+PASS wait step 16: official event and display move forward
+PASS wait step 16: redraw keeps event, prefetch and pending notes
+PASS wait step 16: Wait/Follow hold current event before input
+PASS wait step 17: official event and display move forward
+PASS wait step 17: redraw keeps event, prefetch and pending notes
+PASS wait step 17: Wait/Follow hold current event before input
+PASS wait step 18: official event and display move forward
+PASS wait step 18: redraw keeps event, prefetch and pending notes
+PASS wait step 18: Wait/Follow hold current event before input
+PASS wait step 19: official event and display move forward
+PASS wait step 19: redraw keeps event, prefetch and pending notes
+PASS wait step 19: Wait/Follow hold current event before input
+PASS wait: finite repeat ends after all five displayed occurrences
+PASS follow step 0: official event and display move forward
+PASS follow step 0: redraw keeps event, prefetch and pending notes
+PASS follow step 0: Wait/Follow hold current event before input
+PASS follow step 1: official event and display move forward
+PASS follow step 1: redraw keeps event, prefetch and pending notes
+PASS follow step 1: Wait/Follow hold current event before input
+PASS follow step 2: official event and display move forward
+PASS follow step 2: redraw keeps event, prefetch and pending notes
+PASS follow step 2: Wait/Follow hold current event before input
+PASS follow step 3: official event and display move forward
+PASS follow step 3: redraw keeps event, prefetch and pending notes
+PASS follow step 3: Wait/Follow hold current event before input
+PASS follow step 4: official event and display move forward
+PASS follow step 4: redraw keeps event, prefetch and pending notes
+PASS follow step 4: Wait/Follow hold current event before input
+PASS follow step 5: official event and display move forward
+PASS follow step 5: redraw keeps event, prefetch and pending notes
+PASS follow step 5: Wait/Follow hold current event before input
+PASS follow step 6: official event and display move forward
+PASS follow step 6: redraw keeps event, prefetch and pending notes
+PASS follow step 6: Wait/Follow hold current event before input
+PASS follow step 7: official event and display move forward
+PASS follow step 7: redraw keeps event, prefetch and pending notes
+PASS follow step 7: Wait/Follow hold current event before input
+PASS follow step 8: official event and display move forward
+PASS follow step 8: redraw keeps event, prefetch and pending notes
+PASS follow: second-pass preview rebuild preserves precise occurrence
+PASS follow: second-pass layout roundtrip preserves event and prefetch
+PASS follow step 8: Wait/Follow hold current event before input
+PASS follow step 9: official event and display move forward
+PASS follow step 9: redraw keeps event, prefetch and pending notes
+PASS follow step 9: Wait/Follow hold current event before input
+PASS follow step 10: official event and display move forward
+PASS follow step 10: redraw keeps event, prefetch and pending notes
+PASS follow step 10: Wait/Follow hold current event before input
+PASS follow step 11: official event and display move forward
+PASS follow step 11: redraw keeps event, prefetch and pending notes
+PASS follow step 11: Wait/Follow hold current event before input
+PASS follow step 12: official event and display move forward
+PASS follow step 12: redraw keeps event, prefetch and pending notes
+PASS follow step 12: Wait/Follow hold current event before input
+PASS follow step 13: official event and display move forward
+PASS follow step 13: redraw keeps event, prefetch and pending notes
+PASS follow step 13: Wait/Follow hold current event before input
+PASS follow step 14: official event and display move forward
+PASS follow step 14: redraw keeps event, prefetch and pending notes
+PASS follow step 14: Wait/Follow hold current event before input
+PASS follow step 15: official event and display move forward
+PASS follow step 15: redraw keeps event, prefetch and pending notes
+PASS follow step 15: Wait/Follow hold current event before input
+PASS follow step 16: official event and display move forward
+PASS follow step 16: redraw keeps event, prefetch and pending notes
+PASS follow step 16: Wait/Follow hold current event before input
+PASS follow step 17: official event and display move forward
+PASS follow step 17: redraw keeps event, prefetch and pending notes
+PASS follow step 17: Wait/Follow hold current event before input
+PASS follow step 18: official event and display move forward
+PASS follow step 18: redraw keeps event, prefetch and pending notes
+PASS follow step 18: Wait/Follow hold current event before input
+PASS follow step 19: official event and display move forward
+PASS follow step 19: redraw keeps event, prefetch and pending notes
+PASS follow step 19: Wait/Follow hold current event before input
+PASS follow: finite repeat ends after all five displayed occurrences
+PASS realtime step 0: official event and display move forward
+PASS realtime step 0: redraw keeps event, prefetch and pending notes
+PASS realtime step 1: official event and display move forward
+PASS realtime step 1: redraw keeps event, prefetch and pending notes
+PASS realtime step 2: official event and display move forward
+PASS realtime step 2: redraw keeps event, prefetch and pending notes
+PASS realtime step 3: official event and display move forward
+PASS realtime step 3: redraw keeps event, prefetch and pending notes
+PASS realtime step 4: official event and display move forward
+PASS realtime step 4: redraw keeps event, prefetch and pending notes
+PASS realtime step 5: official event and display move forward
+PASS realtime step 5: redraw keeps event, prefetch and pending notes
+PASS realtime step 6: official event and display move forward
+PASS realtime step 6: redraw keeps event, prefetch and pending notes
+PASS realtime step 7: official event and display move forward
+PASS realtime step 7: redraw keeps event, prefetch and pending notes
+PASS realtime step 8: official event and display move forward
+PASS realtime step 8: redraw keeps event, prefetch and pending notes
+PASS realtime: second-pass preview rebuild preserves precise occurrence
+PASS realtime: second-pass layout roundtrip preserves event and prefetch
+PASS realtime step 9: official event and display move forward
+PASS realtime step 9: redraw keeps event, prefetch and pending notes
+PASS realtime step 10: official event and display move forward
+PASS realtime step 10: redraw keeps event, prefetch and pending notes
+PASS realtime step 11: official event and display move forward
+PASS realtime step 11: redraw keeps event, prefetch and pending notes
+PASS realtime step 12: official event and display move forward
+PASS realtime step 12: redraw keeps event, prefetch and pending notes
+PASS realtime step 13: official event and display move forward
+PASS realtime step 13: redraw keeps event, prefetch and pending notes
+PASS realtime step 14: official event and display move forward
+PASS realtime step 14: redraw keeps event, prefetch and pending notes
+PASS realtime step 15: official event and display move forward
+PASS realtime step 15: redraw keeps event, prefetch and pending notes
+PASS realtime step 16: official event and display move forward
+PASS realtime step 16: redraw keeps event, prefetch and pending notes
+PASS realtime step 17: official event and display move forward
+PASS realtime step 17: redraw keeps event, prefetch and pending notes
+PASS realtime step 18: official event and display move forward
+PASS realtime step 18: redraw keeps event, prefetch and pending notes
+PASS realtime step 19: official event and display move forward
+PASS realtime step 19: redraw keeps event, prefetch and pending notes
+PASS realtime: finite repeat ends after all five displayed occurrences
+PASS Loop 1.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 1.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 1.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 1.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 2.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 2.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 2.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 2.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 3.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 3.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 3.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 3.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 4.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 4.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 4.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 4.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 5.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 5.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 5.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 5.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 6.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 6.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 6.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 6.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 7.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 7.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 7.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 7.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 8.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 8.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 8.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 8.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 9.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 9.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 9.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 9.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 10.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 10.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 10.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 10.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 11.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 11.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 11.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 11.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 12.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 12.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 12.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 12.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 13.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 13.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 13.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 13.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 14.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 14.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 14.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 14.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 15.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 15.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 15.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 15.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 16.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 16.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 16.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 16.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 17.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 17.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 17.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 17.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 18.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 18.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 18.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 18.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 19.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 19.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 19.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 19.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 20.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 20.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 20.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 20.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 21.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 21.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 21.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 21.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 22.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 22.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 22.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 22.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 23.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 23.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 23.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 23.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 24.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 24.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 24.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 24.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 25.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 25.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 25.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 25.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 26.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 26.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 26.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 26.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 27.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 27.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 27.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 27.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 28.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 28.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 28.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 28.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 29.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 29.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 29.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 29.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 30.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 30.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 30.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 30.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 31.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 31.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 31.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 31.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 32.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 32.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 32.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 32.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 33.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 33.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 33.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 33.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 34.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 34.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 34.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 34.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 35.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 35.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 35.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 35.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 36.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 36.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 36.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 36.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 37.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 37.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 37.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 37.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 38.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 38.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 38.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 38.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 39.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 39.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 39.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 39.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 40.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 40.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 40.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 40.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 41.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 41.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 41.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 41.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 42.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 42.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 42.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 42.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 43.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 43.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 43.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 43.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 44.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 44.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 44.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 44.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 45.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 45.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 45.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 45.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 46.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 46.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 46.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 46.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 47.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 47.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 47.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 47.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 48.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 48.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 48.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 48.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 49.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 49.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 49.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 49.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 50.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 50.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 50.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 50.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 51.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 51.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 51.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 51.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 51: count-in keeps the outgoing official event
+PASS Loop 52.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 52.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 52.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 52.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 52: count-in keeps the outgoing official event
+PASS Loop 53.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 53.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 53.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 53.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 53: count-in keeps the outgoing official event
+PASS Loop 54.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 54.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 54.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 54.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 54: count-in keeps the outgoing official event
+PASS Loop 55.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 55.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 55.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 55.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 55: count-in keeps the outgoing official event
+PASS Loop 56.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 56.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 56.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 56.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 56: count-in keeps the outgoing official event
+PASS Loop 57.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 57.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 57.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 57.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 57: count-in keeps the outgoing official event
+PASS Loop 58.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 58.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 58.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 58.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 58: count-in keeps the outgoing official event
+PASS Loop 59.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 59.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 59.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 59.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 59: count-in keeps the outgoing official event
+PASS Loop 60.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 60.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 60.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 60.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 60: count-in keeps the outgoing official event
+PASS Loop 61.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 61.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 61.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 61.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 61: count-in keeps the outgoing official event
+PASS Loop 62.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 62.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 62.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 62.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 62: count-in keeps the outgoing official event
+PASS Loop 63.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 63.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 63.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 63.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 63: count-in keeps the outgoing official event
+PASS Loop 64.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 64.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 64.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 64.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 64: count-in keeps the outgoing official event
+PASS Loop 65.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 65.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 65.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 65.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 65: count-in keeps the outgoing official event
+PASS Loop 66.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 66.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 66.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 66.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 66: count-in keeps the outgoing official event
+PASS Loop 67.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 67.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 67.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 67.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 67: count-in keeps the outgoing official event
+PASS Loop 68.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 68.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 68.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 68.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 68: count-in keeps the outgoing official event
+PASS Loop 69.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 69.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 69.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 69.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 69: count-in keeps the outgoing official event
+PASS Loop 70.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 70.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 70.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 70.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 70: count-in keeps the outgoing official event
+PASS Loop 71.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 71.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 71.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 71.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 71: count-in keeps the outgoing official event
+PASS Loop 72.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 72.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 72.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 72.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 72: count-in keeps the outgoing official event
+PASS Loop 73.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 73.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 73.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 73.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 73: count-in keeps the outgoing official event
+PASS Loop 74.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 74.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 74.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 74.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 74: count-in keeps the outgoing official event
+PASS Loop 75.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 75.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 75.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 75.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 75: count-in keeps the outgoing official event
+PASS Loop 76.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 76.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 76.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 76.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 76: count-in keeps the outgoing official event
+PASS Loop 77.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 77.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 77.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 77.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 77: count-in keeps the outgoing official event
+PASS Loop 78.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 78.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 78.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 78.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 78: count-in keeps the outgoing official event
+PASS Loop 79.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 79.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 79.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 79.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 79: count-in keeps the outgoing official event
+PASS Loop 80.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 80.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 80.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 80.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 80: count-in keeps the outgoing official event
+PASS Loop 81.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 81.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 81.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 81.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 81: count-in keeps the outgoing official event
+PASS Loop 82.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 82.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 82.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 82.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 82: count-in keeps the outgoing official event
+PASS Loop 83.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 83.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 83.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 83.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 83: count-in keeps the outgoing official event
+PASS Loop 84.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 84.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 84.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 84.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 84: count-in keeps the outgoing official event
+PASS Loop 85.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 85.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 85.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 85.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 85: count-in keeps the outgoing official event
+PASS Loop 86.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 86.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 86.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 86.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 86: count-in keeps the outgoing official event
+PASS Loop 87.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 87.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 87.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 87.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 87: count-in keeps the outgoing official event
+PASS Loop 88.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 88.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 88.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 88.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 88: count-in keeps the outgoing official event
+PASS Loop 89.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 89.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 89.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 89.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 89: count-in keeps the outgoing official event
+PASS Loop 90.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 90.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 90.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 90.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 90: count-in keeps the outgoing official event
+PASS Loop 91.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 91.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 91.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 91.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 91: count-in keeps the outgoing official event
+PASS Loop 92.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 92.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 92.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 92.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 92: count-in keeps the outgoing official event
+PASS Loop 93.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 93.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 93.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 93.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 93: count-in keeps the outgoing official event
+PASS Loop 94.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 94.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 94.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 94.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 94: count-in keeps the outgoing official event
+PASS Loop 95.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 95.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 95.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 95.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 95: count-in keeps the outgoing official event
+PASS Loop 96.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 96.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 96.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 96.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 96: count-in keeps the outgoing official event
+PASS Loop 97.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 97.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 97.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 97.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 97: count-in keeps the outgoing official event
+PASS Loop 98.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 98.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 98.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 98.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 98: count-in keeps the outgoing official event
+PASS Loop 99.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 99.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 99.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 99.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 99: count-in keeps the outgoing official event
+PASS Loop 100.1: logical cursor proceeds into the next right-hand copy
+PASS Loop 100.2: logical cursor proceeds into the next right-hand copy
+PASS Loop 100.3: logical cursor proceeds into the next right-hand copy
+PASS Loop 100.4: logical cursor proceeds into the next right-hand copy
+PASS Loop 100: count-in keeps the outgoing official event
+PASS 100 Loops: SVG chunks, template models and note mappings stay bounded
+PASS 100 Loops: display instances and actual SVG descendants stay within the measured fixed window
+PASS mounted chunk copies own unique SVG IDs including their roots
+PASS 100 Loops: origin rebasing preserves the current screen coordinate within 1 CSS px
+MEASUREMENT {"iterations":100,"maxChunks":7,"maxModels":2,"maxNotes":10,"maxError":0.27246753354847897,"maxNodes":671,"maxTemplateNodes":158,"maxInstances":0,"resources":{"generation":28,"pending":false,"instances":0,"models":2,"callbacks":0,"templateNodes":158,"mountedNodes":667,"mappedNotes":10,"chunks":7,"maxChunks":7,"maxModels":16,"origin":23420.89750879999,"windowStart":98,"windowEnd":104,"definitions":2,"lastRebase":{"before":490.87009636601215,"after":491.1425638995606,"error":0.27246753354847897}}}
+
+All checks passed.

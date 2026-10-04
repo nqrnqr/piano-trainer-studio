@@ -36,6 +36,8 @@ import {PianoTrainerGeometry} from '../render/geometry-engine';
 import {PianoTrainerLoopOverlay} from '../render/loop-overlay';
 import {PianoTrainerScoreRenderer} from '../render/score-renderer';
 import {PianoTrainerScoreViewport} from '../render/score-viewport';
+import {systemBoundsInContent} from '../render/traditional-scroll-geometry';
+import {estimateSystemSeconds} from '../score/system-duration';
 import {PianoTrainerHorizontalScore} from '../render/horizontal-score';
 import {PianoTrainerPerformancePosition} from '../score/performance-position';
 import {PianoTrainerVirtualKeyboardView} from '../render/virtual-keyboard';
@@ -554,6 +556,33 @@ function requireScoreDisplayElement<T extends HTMLElement>(id: string, type: {ne
     return element;
 }
 const ScoreDisplay = PianoTrainerScoreViewport.create({
+    traditional: {
+        read: () => {
+            const painted = osmdAdapter.readPaintedPosition(), cursor = osmdAdapter.getCursorElement();
+            if (!painted || !cursor || cursor.style.display === 'none') return null;
+            const area = requireScoreDisplayElement('music-area', HTMLElement), rect = area.getBoundingClientRect(), cursorRect = cursor.getBoundingClientRect();
+            const raw = osmdAdapter.getSystemForMeasure(painted.measureIndex);
+            const svg = raw ? requireScoreDisplayElement('source-score', HTMLElement).querySelectorAll('svg')[raw.pageIndex] : null;
+            const system = raw && svg ? systemBoundsInContent(raw,svg,area) : null;
+            const event = performancePosition.current();
+            const matching = event && event.scoreRevision === painted.scoreRevision && event.traceStepIndex === painted.traceStepIndex
+                && event.source.sourceMeasureIndex === painted.measureIndex && event.source.timestampWhole === painted.timestampWhole ? event : null;
+            const controls = area.querySelector('.score-overlay-controls')?.getBoundingClientRect();
+            return {position:{...painted, systemId:system?.systemId ?? null, occurrenceId:matching?.measureOccurrenceId ?? null,
+                    eventId:matching?.eventId ?? null, runId:matching?.runId ?? null, loopIteration:matching?.loopIteration ?? null, reason:matching?.reason ?? null},
+                system, cursor:{top:cursorRect.top-rect.top-area.clientTop+area.scrollTop, bottom:cursorRect.bottom-rect.top-area.clientTop+area.scrollTop},
+                mode:AppState.mode === 'wait' ? 'wait' : AppState.mode === 'follow' ? 'follow' : 'realtime',
+                topObstruction:controls ? Math.max(0,controls.bottom-rect.top-area.clientTop+4) : 0};
+        },
+        estimateSeconds: (system, position) => {
+            try {return estimateSystemSeconds({trace:osmdAdapter.getPerformanceTrace(), traceStepIndex:position.traceStepIndex,
+                firstMeasureIndex:system.firstMeasureIndex, lastMeasureIndex:system.lastMeasureIndex,
+                loopMax:playbackControls.isLoopEnabled() ? playbackControls.readLoopMax()-1 : null,
+                baseBpm:AppState.baseBpm, speed:AppState.speedPercent, getTempo:osmdAdapter.getPlaybackTempo,
+                getMeasureTimingInfo:scoreMeasureTiming.getInfo});} catch (_) {return null;}
+        },
+        lifecycle:document, isPlaying:() => AppState.isPlaying
+    },
     elements: {
         area: requireScoreDisplayElement('music-area', HTMLElement),
         wrapper: requireScoreDisplayElement('canvas-wrapper', HTMLElement),
@@ -576,6 +605,7 @@ const ScoreDisplay = PianoTrainerScoreViewport.create({
     prefersReducedMotion: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 });
 const scoreRenderer = PianoTrainerScoreRenderer.create({
+    beforeRender: ScoreDisplay.beforeRender,
     score: osmdAdapter, invalidateGeometry: () => GeometryEngine.invalidate(),
     afterRender: () => ScoreDisplay.afterRender(), renderFeedback: () => renderFeedbackOverlay(),
     renderLoop: () => GeometryEngine.renderLooper(),
