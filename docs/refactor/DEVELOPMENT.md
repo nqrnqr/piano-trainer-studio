@@ -8,6 +8,10 @@ P0–P9 已完成；审查后 bfcache P2 已修复，当前验证为 346 项 Nod
 干净安装、构建/watch、Windows 启动器与静态资源已复验，范围和手工限制见 [FINAL_ACCEPTANCE.md](FINAL_ACCEPTANCE.md)。
 阶段证据见 [PROGRESS.md](PROGRESS.md)，历史经典脚本说明保留于 [CLASSIC_DEVELOPMENT.md](CLASSIC_DEVELOPMENT.md)。
 
+2026-10-04 横向反复展开及无限 Loop 分段显示已接入；当前 Node 检查为 357 项，
+核心浏览器矩阵仍为两种 LED 配置的 44 页、1,555 项。新增路径、原生滚动、交互和生产入口
+验收及已知 OSMD 导航限制见 [horizontal-unfolded-results.md](../testing/horizontal-unfolded-results.md)。
+
 ## 运行应用
 
 使用原有 `Windows Launchers` / `Mac Launchers`，或运行：
@@ -69,6 +73,7 @@ Mac 四个 launcher 仅 shell syntax 检查通过，实际 macOS、LAN 客户端
 | midi.js | `midi/*.ts`、`ui/midi-controls.ts`；独立输入、设备与输出所有者 |
 | 音频节点、路由与节拍器 | `audio/*.ts`、`domain/velocity.ts`、`score/measure-timing.ts`、`ui/tempo-pulse.ts` |
 | score-display / feedback-engine 的图形 | `score/osmd-adapter.ts`、`render/*.ts`；私有 vendor 对象只在适配边界 |
+| 横向展开、正式事件及块回收 | `domain/performance-position.ts`、`score/performance-{trace,position}.ts`、`source-note-index.ts`、`unfold-musicxml.ts`、`horizontal-display-adapter.ts`、`render/horizontal-{score,chunks,chunk-model}.ts`；原谱保持唯一演奏引擎，`score-presentation.ts` 提供显示查询 |
 | 判定、提前输入、计分、延音 | `practice/*.ts`；消费领域数据与类型化端口 |
 | Play/Pause/Reset/Loop | `practice/playback-coordinator.ts` 与 `playback-state.ts`；保留唯一调度流程及原普通取消语义 |
 | XML/MXL、转换与移调 | `score/musicxml-io.ts`、`score-loader.ts`、`score-conversion.ts`、`webmscore-adapter.ts`、`transpose-*.ts` |
@@ -205,6 +210,13 @@ verbatimModuleSyntax，局部不变量/原错误路径见 [STRICT_MODULE_CONTRAC
 触屏硬件、实际 macOS 和 LAN 客户端仍需对应设备手工验证。
 
 ## 调试与回退
+
+横向显示的 source revision 与 display generation 分开。反馈和 debug 保存源 NoteRef 与
+PerformedEvent 后重投影；诊断时同时查看 traceStepIndex、measureOccurrenceId 和 loopIteration，
+不要只凭源小节号判断当前遍数。显示模板最多 16、挂载块最多 7，每块 8 个主要小节，
+Loop 用轮次数学地址定位；原点补偿之后 scrollLeft 可以下降，逻辑 X 才是自动推进依据。
+新增浏览器页 `horizontal-unfolded/notation/interactions/production/motion.html` 使用隔离偏好及随机库；
+production 页加载实际 app.js，其余页面使用独立 facade。connections fixture 与原生轨迹用于接缝／滚动复验。
 
 浏览器加载 `js/generated/app.js.map`，其中嵌入当前 TS 模块；单元检查验证 timing 表达式的行映射。
 在 F12 Sources 选择相应 TS 文件；无需将 src 作为独立运行时脚本加载。

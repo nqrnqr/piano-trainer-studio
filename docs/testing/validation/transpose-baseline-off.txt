@@ -1,0 +1,53 @@
+PASS native XML case 0 matches e91ca87
+PASS native XML case 1 matches e91ca87
+PASS native XML case 2 matches e91ca87
+PASS native XML case 3 matches e91ca87
+PASS native XML case 4 matches e91ca87
+PASS native XML case 5 matches e91ca87
+PASS native XML case 6 matches e91ca87
+PASS native XML case 7 matches e91ca87
+PASS native XML case 8 matches e91ca87
+PASS native XML case 9 matches e91ca87
+PASS native XML case 10 matches e91ca87
+PASS native XML case 11 matches e91ca87
+PASS native XML case 12 matches e91ca87
+PASS native XML case 13 matches e91ca87
+PASS native XML case 14 matches e91ca87
+PASS native XML case 15 matches e91ca87
+PASS native XML case 16 matches e91ca87
+PASS native XML case 17 matches e91ca87
+PASS native XML case 18 matches e91ca87
+PASS native XML case 19 matches e91ca87
+PASS native XML case 20 matches e91ca87
+PASS native XML case 21 matches e91ca87
+PASS native XML case 22 matches e91ca87
+PASS native XML case 23 matches e91ca87
+PASS native XML case 24 matches e91ca87
+PASS native XML case 25 matches e91ca87
+PASS native XML case 26 matches e91ca87
+PASS native XML case 27 matches e91ca87
+PASS native XML case 28 matches e91ca87
+PASS native XML case 29 matches e91ca87
+PASS native XML case 30 matches e91ca87
+PASS native XML case 31 matches e91ca87
+PASS native XML case 32 matches e91ca87
+PASS native XML case 33 matches e91ca87
+PASS native XML case 34 matches e91ca87
+PASS native XML case 35 matches e91ca87
+PASS native XML case 36 matches e91ca87
+PASS native XML case 37 matches e91ca87
+PASS native XML case 38 matches e91ca87
+PASS native XML case 39 matches e91ca87
+PASS initial controls report unavailable without a score
+PASS load enables controls with original preset list
+PASS native key Apply rejects the original matching signature
+PASS native mode and slider events update typed state
+PASS repeated init gives one load and the original positive status
+PASS button Apply preserves original metadata and speed
+PASS repeated Apply starts from original and keeps unchecked key signature
+PASS native Reset restores original pitch, preset and status
+PASS Reset preserves state identity, source and speed
+PASS explicit disposal removes actual UI listeners
+PASS controls reinitialize after explicit disposal
+PASS transpose runs with default/no-op LED composition
+DONE

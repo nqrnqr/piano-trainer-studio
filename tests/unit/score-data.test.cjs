@@ -24,6 +24,13 @@ test('invalid MXL falls back only for transpose normalization and keeps warning 
  const noConverter=harness();assert.equal(await noConverter.format.getCanonicalMusicXmlForTranspose(raw,{fileType:'mxl'}),null);
  assert.equal(noConverter.events[0][1],'Could not extract MXL to MusicXML for transpose support.');
 });
+
+test('canonical XML survives MXL original metadata and XML Blob loading without converter fallback',async()=>{
+ const h=harness({normalize:async()=>{throw Error('must not initialize converter');}}),xml='<?xml version="1.0"?><score-partwise/>';
+ assert.equal(await h.format.getCanonicalMusicXmlForTranspose(xml,{fileName:'original.mxl',fileType:'mxl'}),xml);
+ assert.equal(await h.format.getCanonicalMusicXmlForTranspose(new Blob([xml]),{fileType:'musicxml'}),xml);
+ assert.equal(h.events.length,0);
+});
 test('unsupported ZIP methods and missing embedded XML retain their specific errors',async()=>{
  const h=harness();await assert.rejects(h.format.extractMusicXmlFromMxl(zip([{path:'score.xml',text:'x',method:12}])),/Unsupported MXL compression method: 12/);
  await assert.rejects(h.format.extractMusicXmlFromMxl(zip([{path:'META-INF/container.xml',text:'x'}])),/Could not find the embedded MusicXML/);
@@ -66,6 +73,24 @@ test('OSMD failure reports then rethrows the same error without rolling back pla
  const error=new Error('bad score');const h=harness({load:async()=>{throw error;}});
  await assert.rejects(h.service.loadScoreIntoApp('<bad/>'),value=>value===error);
  assert.equal(h.state.currentScoreData,'old');assert.deepEqual(h.events,['reset-playback','tempo-100','load',['error',error]]);
+});
+
+test('concurrent loads serialize the shared vendor and only the newest score commits',async()=>{
+ let finish;const payloads=[];const h=harness();
+ h.ports.score.load=async raw=>{payloads.push(raw);if(raw==='first')await new Promise(resolve=>finish=resolve);};
+ const first=h.service.loadScoreIntoApp('first',{fileName:'First.xml'}),rejected=assert.rejects(first,{name:'AbortError'});
+ await turn();const second=h.service.loadScoreIntoApp('second',{fileName:'Second.xml'});await turn();
+ assert.deepEqual(payloads,['first']);finish();await rejected;await second;
+ assert.deepEqual(payloads,['first','second']);assert.equal(h.state.currentScoreData,'second');
+ assert.equal(h.events.filter(event=>event==='success').length,1);
+});
+
+test('a superseded async presentation receives an invalid generation and cannot notify success',async()=>{
+ let finish,active;const h=harness();
+ h.ports.prepareDisplay=async(raw,_options,isActive)=>{if(raw==='first'){active=isActive;await new Promise(resolve=>finish=resolve);}};
+ const first=h.service.loadScoreIntoApp('first'),rejected=assert.rejects(first,{name:'AbortError'});await turn();assert.equal(active(),true);
+ await h.service.loadScoreIntoApp('second');assert.equal(active(),false);finish();await rejected;
+ assert.equal(h.state.currentScoreData,'second');assert.equal(h.events.filter(event=>event==='success').length,1);
 });
 test('library failure occurs after new score state writes and does not notify successful load',async()=>{
  const error=new Error('db failure');const h=harness({library:{markScoreOpened:async()=>{throw error;}}});

@@ -101,9 +101,9 @@ test('absent cursor leaves timeline dirty and empty; stuck iterator preserves tr
     let moves = 0;
     h.cursor.Iterator.moveToNext = () => moves++;
     Object.defineProperty(h.cursor.Iterator,'EndReached',{get:()=>false});
-    h.service.ensurePreviewTimelineBuilt();
+    assert.throws(()=>h.service.ensurePreviewTimelineBuilt(),/exceeds 100000 events/);
     assert.equal(moves,100000);
-    assert.equal(h.state.ledPreviewTimelineDirty,false);
+    assert.equal(h.state.ledPreviewTimelineDirty,true);
 });
 
 test('single-hand early input uses shared timeline with no LED globals or output', () => {

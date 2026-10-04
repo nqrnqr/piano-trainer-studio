@@ -1,5 +1,8 @@
 import type {PianoTrainerDomain} from '../domain/model';
 import {PianoTrainerScoreTraversal} from './score-traversal';
+import {PianoTrainerPerformanceTrace} from './performance-trace';
+import {PianoTrainerSourceNoteIndex} from './source-note-index';
+import type {PianoTrainerPerformance} from '../domain/performance-position';
 // OSMD object identity, revision-scoped note references and painted cursor state.
 // Preserve the existing prototype/shallow-array snapshot and repeat state.
 export namespace PianoTrainerOsmdAdapter {
@@ -18,6 +21,8 @@ export namespace PianoTrainerOsmdAdapter {
         let globalStaffIdentityMap = new Map<PianoTrainerOsmdVendor.Staff, number>();
         let displayedIterator: PianoTrainerScoreTraversal.Iterator | null = null;
         let displayedSheet: object | null | undefined;
+        let trace: PianoTrainerPerformance.Trace | null = null;
+        let traceStepIndex = 0;
         let ownedHook: {cursor: PianoTrainerOsmdVendor.Cursor; original: () => void; wrapper: () => void} | null = null;
         function syncSheet() {
             const sheet = ports.getRenderer().Sheet;
@@ -27,6 +32,7 @@ export namespace PianoTrainerOsmdAdapter {
                 noteSequence = 0;
                 noteRefs = new WeakMap();
                 sourceNotes.clear();
+                trace = null; traceStepIndex = 0;
             }
             return sheet;
         }
@@ -42,6 +48,43 @@ export namespace PianoTrainerOsmdAdapter {
         function resolveNote(ref: PianoTrainerDomain.NoteRef) {
             syncSheet();
             return ref.scoreRevision === scoreRevision ? sourceNotes.get(ref.id) || null : null;
+        }
+        function getIndependentIterator() {
+            const sheet = syncSheet(), settings = sheet?.SheetPlaybackSetting, savedRhythm = settings?.rhythm;
+            const iterator = sheet?.MusicPartManager?.getIterator();
+            if (settings) settings.rhythm = savedRhythm;
+            if (!iterator) throw new Error('This score has no independent performance iterator.');
+            const advance = iterator.moveToNext.bind(iterator);
+            iterator.moveToNext = () => {const rhythm = settings?.rhythm; try {advance();} finally {if (settings) settings.rhythm = rhythm;}};
+            return iterator;
+        }
+        function getPerformanceTrace() {
+            const sheet = syncSheet();
+            if (trace) return trace;
+            const addresses = new WeakMap<PianoTrainerOsmdVendor.Note, PianoTrainerPerformance.NoteAddress>();
+            for (const measure of sheet?.SourceMeasures || []) {
+                for (const {note, staffIndex, structureKey} of PianoTrainerSourceNoteIndex.measure(measure).values()) {
+                    addresses.set(note, {sourceNoteRef: noteRef(note), staffIndex, structureKey, midi: note.halfTone + 12,
+                        lengthWhole: note.Length?.RealValue ?? 0, rest: !!note.isRest?.()});
+                }
+            }
+            const iterator = getIndependentIterator();
+            trace = PianoTrainerPerformanceTrace.scan(iterator, () => (iterator.CurrentVoiceEntries || []).flatMap(entry =>
+                (entry.Notes || []).map(source => {
+                    const address = addresses.get(source);
+                    if (!address) throw new Error('Performance note has no structural address.');
+                    return address;
+                })));
+            return trace;
+        }
+        function seekTraceStep(index: number) {
+            const cursor = ports.getRenderer().cursor;
+            if (!cursor) return;
+            const steps = getPerformanceTrace().steps;
+            if (!Number.isInteger(index) || index < 0 || index >= steps.length) throw new Error('Invalid performance step.');
+            cursor.reset();
+            for (let step = 0; step < index; step++) cursor.Iterator.moveToNext();
+            traceStepIndex = index;
         }
         function detachHook() {
             if (ownedHook && ownedHook.cursor.update === ownedHook.wrapper) ownedHook.cursor.update = ownedHook.original;
@@ -227,6 +270,7 @@ export namespace PianoTrainerOsmdAdapter {
         const playbackEntries = new WeakMap<PianoTrainerDomain.PlaybackEvent, PianoTrainerScoreTraversal.Entries>();
         function rebuildStaffIdentity() {
             globalStaffIdentityMap = new Map();
+            trace = null;
             const instruments = ports.getRenderer()?.Sheet?.Instruments || ports.getRenderer()?.Sheet?.instruments || [];
             let nextId = 1;
             instruments.forEach(instrument => {
@@ -269,8 +313,12 @@ export namespace PianoTrainerOsmdAdapter {
             displayedIterator = null; displayedSheet = undefined;
             noteRefs = new WeakMap(); sourceNotes.clear(); scoreRevision++;
             globalStaffIdentityMap = new Map();
+            trace = null;
         }
         return {getCombinedTieLength, readPracticeEntries, readPlaybackEvent, noteRef, resolveNote, afterRender, getDefaults, setLayout, getGraphicalNote, getMeasureBox, readPositions, dispose,
+            getIndependentIterator, getPerformanceTrace, seekTraceStep,
+            getTraceStepIndex: () => { syncSheet(); return traceStepIndex; },
+            getScoreRevision: () => { syncSheet(); return scoreRevision; },
             rebuildStaffIdentity, resolveStaffIdFromNote, resolveStaffIdFromEntry,
             getTraversalCursor: () => ports.getRenderer()?.cursor,
             hasGraphicSheet: () => !!ports.getRenderer().GraphicSheet,
@@ -282,6 +330,25 @@ export namespace PianoTrainerOsmdAdapter {
             },
             setZoom: (value: number) => { ports.getRenderer().zoom = value; },
             getZoom: () => ports.getRenderer().zoom,
+            getHorizontalMetrics: () => {
+                let gap = 0, top = 80, bottom = 80, staffCount = 1;
+                for (const row of ports.getRenderer().GraphicSheet?.MeasureList || []) {
+                    const system = row[0]?.ParentStaffLine?.ParentMusicSystem, staves = system?.StaffLines || [];
+                    staffCount = Math.max(staffCount, staves.length);
+                    for (let i = 1; i < staves.length; i++) gap = Math.max(gap, staves[i]!.PositionAndShape.AbsolutePosition.y - staves[i - 1]!.PositionAndShape.AbsolutePosition.y);
+                    const firstY = staves[0]?.PositionAndShape.AbsolutePosition.y, lastY = staves[staves.length - 1]?.PositionAndShape.AbsolutePosition.y;
+                    if (firstY === undefined || lastY === undefined || !system) continue;
+                    top = Math.max(top, (firstY - system.PositionAndShape.AbsolutePosition.y) * 10 + 20);
+                    bottom = Math.max(bottom, (system.PositionAndShape.AbsolutePosition.y + system.PositionAndShape.Size.height - lastY - 4) * 10 + 20);
+                    for (const [staff, measure] of row.entries()) for (const entry of measure.staffEntries || []) for (const voice of entry.graphicalVoiceEntries || []) for (const note of voice.notes || []) {
+                        const y = note.PositionAndShape?.AbsolutePosition.y;
+                        if (y === undefined) continue;
+                        if (staff === 0) top = Math.max(top, (firstY - y) * 10 + 60);
+                        if (staff === row.length - 1) bottom = Math.max(bottom, (y - lastY - 4) * 10 + 60);
+                    }
+                }
+                return {gap: Math.max(8, gap), top, bottom, staffCount};
+            },
             // Transitional UI wrapper consumes the captured entries only at this boundary.
             legacyEntriesForPlayback: (event: PianoTrainerDomain.PlaybackEvent) => playbackEntries.get(event),
             hasCursor: () => !!ports.getRenderer().cursor,
@@ -289,8 +356,8 @@ export namespace PianoTrainerOsmdAdapter {
             isEndReached: () => ports.getRenderer().cursor!.Iterator.EndReached,
             getCurrentTimestamp: () => ports.getRenderer().cursor!.Iterator.currentTimeStamp!.RealValue,
             getPlaybackTempo: (index: number) => ports.getRenderer().Sheet!.SourceMeasures![index]?.TempoInBPM,
-            advance: () => { ports.getRenderer().cursor!.Iterator.moveToNext(); },
-            reset: () => { ports.getRenderer().cursor!.reset(); },
+            advance: () => { syncSheet(); ports.getRenderer().cursor!.Iterator.moveToNext(); traceStepIndex++; },
+            reset: () => { syncSheet(); ports.getRenderer().cursor!.reset(); traceStepIndex = 0; },
             updateCursor: () => { ports.getRenderer().cursor!.update(); },
             showCursor: () => { ports.getRenderer().cursor!.show(); },
             getSourceMeasure: (measureIndex: number | undefined) => ports.getRenderer().Sheet?.SourceMeasures?.[measureIndex!] || null,

@@ -1,8 +1,11 @@
 import type {PianoTrainerDomain} from '../domain/model';
 import type {LegacyAppState} from '../state/model';
+import type {PianoTrainerPerformance} from '../domain/performance-position';
 // Preserve the P5 input contract and side-effect order; all external effects use ports.
 export namespace PianoTrainerFeedbackState {
     export interface Ports {
+        getPerformanceEvent?(): PianoTrainerPerformance.PerformedEvent | null;
+        captureDisplay?(midi: number, staff: number | null, anchor: PianoTrainerDomain.SvgPoint): Partial<PianoTrainerDomain.FeedbackMarker>;
         state: Pick<LegacyAppState, 'currentExpectedContext' | 'feedbackEnabled' | 'activeHeldIncorrectFeedback' | 'releasedIncorrectFeedback' | 'correctFeedbackHistory' | 'realtimeWrongPressInCurrentContext'>;
         getTraversalPosition(): PianoTrainerDomain.TraversalPosition | null;
         resolveAnchor(midi: number, staffId: number | null, measureIndex: number | null, anchor: PianoTrainerDomain.SvgPoint | number | null): PianoTrainerDomain.SvgPoint | null;
@@ -14,7 +17,9 @@ export namespace PianoTrainerFeedbackState {
     export function create(ports: Ports) {
         const state = ports.state;
         function getFeedbackContextKey(measureIndex: number | null = null, timestamp: number | null = null) {
-            return `${Number.isFinite(measureIndex) ? measureIndex : 'na'}|${Number.isFinite(timestamp) ? timestamp : 'na'}`;
+            const event = ports.getPerformanceEvent?.();
+            const suffix = event ? `|${event.scoreRevision}/${event.runId}/${event.eventId}` : '';
+            return `${Number.isFinite(measureIndex) ? measureIndex : 'na'}|${Number.isFinite(timestamp) ? timestamp : 'na'}${suffix}`;
         }
 
         function getCurrentFeedbackContext() {
@@ -42,6 +47,7 @@ export namespace PianoTrainerFeedbackState {
                 measureIndex: context.measureIndex,
                 timestamp: context.timestamp,
                 contextKey: context.key
+                ,...ports.captureDisplay?.(midi, targetStaffId, anchor)
             });
 
             ports.renderOverlay();
@@ -74,7 +80,7 @@ export namespace PianoTrainerFeedbackState {
             if (!anchor) return;
 
             const context = getCurrentFeedbackContext();
-            const marker = {
+            const marker: PianoTrainerDomain.FeedbackMarker = {
                 midi,
                 staffId: targetStaffId,
                 anchor,
@@ -82,6 +88,7 @@ export namespace PianoTrainerFeedbackState {
                 measureIndex: forceMIdx,
                 timestamp: context.timestamp,
                 contextKey: getFeedbackContextKey(forceMIdx, context.timestamp)
+                ,...ports.captureDisplay?.(midi, targetStaffId, anchor)
             };
 
             if (isCorrect) {

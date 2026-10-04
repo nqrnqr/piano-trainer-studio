@@ -1,0 +1,9 @@
+PASS legacy scripts publish only explicit hardware factory APIs
+PASS no-op LED starts no hardware UI, timers, readers or requests
+PASS complete no-op lifecycle allocates no optional LED resource
+PASS no-op keeps LED setup disabled and hidden
+PASS score and shared music traversal still load after optional LED disposal
+PASS explicit default/no-op selection is preserved
+RESOURCES {"led":{"active":false,"listeners":0,"markers":0,"timers":0,"intervals":0,"frames":0,"waits":0,"readers":0,"requests":0,"urls":0,"links":0,"captures":0},"midi":{"active":false,"listeners":0,"markers":0,"timers":0,"intervals":0,"frames":0,"waits":0,"readers":0,"requests":0,"urls":0,"links":0,"captures":0}}
+CLEANUP 1 disposable databases
+DONE

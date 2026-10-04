@@ -1,0 +1,996 @@
+{
+  "date": "2026-10-04",
+  "base": "fddd3ac",
+  "delivery": "working tree; no commit/push/deploy",
+  "checks": {
+    "node": 357,
+    "coreBrowserPages": 44,
+    "coreBrowserAssertions": 1555,
+    "newPages": [
+      {
+        "suite": "horizontal-unfolded",
+        "led": "default",
+        "assertions": 648,
+        "path": "docs/testing/validation/horizontal-unfolded-default.txt"
+      },
+      {
+        "suite": "horizontal-unfolded",
+        "led": "off",
+        "assertions": 648,
+        "path": "docs/testing/validation/horizontal-unfolded-off.txt"
+      },
+      {
+        "suite": "horizontal-notation",
+        "led": "default",
+        "assertions": 21,
+        "path": "docs/testing/validation/horizontal-notation-default.txt"
+      },
+      {
+        "suite": "horizontal-notation",
+        "led": "off",
+        "assertions": 21,
+        "path": "docs/testing/validation/horizontal-notation-off.txt"
+      },
+      {
+        "suite": "horizontal-interactions",
+        "led": "default",
+        "assertions": 16,
+        "path": "docs/testing/validation/horizontal-interactions-default.txt"
+      },
+      {
+        "suite": "horizontal-interactions",
+        "led": "off",
+        "assertions": 16,
+        "path": "docs/testing/validation/horizontal-interactions-off.txt"
+      },
+      {
+        "suite": "horizontal-production",
+        "led": "default",
+        "assertions": 75,
+        "path": "docs/testing/validation/horizontal-production-default.txt"
+      },
+      {
+        "suite": "horizontal-production",
+        "led": "off",
+        "assertions": 75,
+        "path": "docs/testing/validation/horizontal-production-off.txt"
+      },
+      {
+        "suite": "horizontal-motion",
+        "led": "off",
+        "assertions": 13,
+        "path": "docs/testing/validation/horizontal-motion.txt"
+      }
+    ],
+    "newBrowserAssertions": 1533,
+    "productionContainsTestFacade": false
+  },
+  "outputs": [
+    {
+      "path": "js/generated/app.js",
+      "sha256": "7d3c555e9627ef687091bc7c893870dddff7ede970fb4ddf0b093b7c489e4c6c"
+    },
+    {
+      "path": "js/generated/app.js.map",
+      "sha256": "ab8a2fa9183ed80f5b8d74ddb9f1dd358d772bd318e21253fd1b2b51fd9ce1d8"
+    },
+    {
+      "path": "docs/testing/generated/test-app.js",
+      "sha256": "853efebb60632508e682e4c6f9638ca6978d2c1fdadc060aa26690b03d84b13e"
+    },
+    {
+      "path": "docs/testing/generated/test-app.js.map",
+      "sha256": "44e6e501292fa649437106925378de2201156f2dc60fa0b0cb9f65fd0d7e2225"
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/refactor/DEVELOPMENT.md",
+      "status": " M",
+      "role": "documentation or style",
+      "bytes": 17048,
+      "sha256": "cae1ab74dd94b1cd093f299311d7795fc18ade6535752de8a6352e9b93119299"
+    },
+    {
+      "path": "docs/testing/bootstrap-baseline.integration.js",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 3186,
+      "sha256": "6a4a9fb5b38cfbeeaf09f2a60e8e1f9e7b86527f0081458e33bf1feac75409e6"
+    },
+    {
+      "path": "docs/testing/generated/test-app.js",
+      "status": " M",
+      "role": "rebuilt static output",
+      "bytes": 662930,
+      "sha256": "853efebb60632508e682e4c6f9638ca6978d2c1fdadc060aa26690b03d84b13e"
+    },
+    {
+      "path": "docs/testing/generated/test-app.js.map",
+      "status": " M",
+      "role": "rebuilt static output",
+      "bytes": 1182898,
+      "sha256": "e6edc03886e1c71cfe4d6e832a642792a8739a7a2701d6baa516d2bf15ccb20b"
+    },
+    {
+      "path": "docs/testing/input-baseline.integration.js",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 6047,
+      "sha256": "cdb609a981e30677c8b536de465aca7750eb08fe4ad357c1be06ed9328b0afa8"
+    },
+    {
+      "path": "docs/testing/keyboard-controls-baseline.integration.js",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 10089,
+      "sha256": "1a8d4adb239d91a7435313367ab056c6c383478dd13139bdd51f928f536ab250"
+    },
+    {
+      "path": "docs/testing/playback-baseline.integration.js",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 7649,
+      "sha256": "ffe0fa4ce7ef64ecf3cf4d9fb7fd6fbda1609d3b221f018815e1bca3a8d224b3"
+    },
+    {
+      "path": "docs/testing/practice-baseline.integration.js",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 6345,
+      "sha256": "5af4538574f90a87319e387e8c796d76d145c472499e95a9e76abcee6788c42f"
+    },
+    {
+      "path": "docs/testing/render-baseline.integration.js",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 6474,
+      "sha256": "4e6aae3435048d38b3dd03b9e92a75634d29a45ce0fb85ec8b6b8093b2fdb432"
+    },
+    {
+      "path": "docs/testing/score-display.integration.js",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 9267,
+      "sha256": "a39ebcd247abc7dc9fb565d257fcee6f9ee7f72d813f62b9cac0e50396b6caec"
+    },
+    {
+      "path": "docs/testing/settings-debug-baseline.integration.js",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 6118,
+      "sha256": "ac42531d1b0559f6e80c30129128f5cf095807ca6017e36a4c87dd0d6b2f6ea7"
+    },
+    {
+      "path": "docs/testing/traversal-baseline.integration.js",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 4917,
+      "sha256": "bf2742287b16e0e268a15cf166855f850654dd2a8a1358893fb99e7a31f0ad04"
+    },
+    {
+      "path": "js/generated/app.js",
+      "status": " M",
+      "role": "rebuilt static output",
+      "bytes": 608294,
+      "sha256": "7d3c555e9627ef687091bc7c893870dddff7ede970fb4ddf0b093b7c489e4c6c"
+    },
+    {
+      "path": "js/generated/app.js.map",
+      "status": " M",
+      "role": "rebuilt static output",
+      "bytes": 1087890,
+      "sha256": "4682259f214b566206b927d0dc43c3385275060a578ec64dff04b8602cd27ad1"
+    },
+    {
+      "path": "src/app/score-seek-controller.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 2284,
+      "sha256": "e0605f967f89f5c1723cafa410237f07f5d7c477cf5cf56617954135972e1d10"
+    },
+    {
+      "path": "src/app/services.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 72029,
+      "sha256": "f6774dd094e410894f3192ae63ec83630f6f22bd6168d9bc7a4729c9f3184b01"
+    },
+    {
+      "path": "src/domain/model.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 7211,
+      "sha256": "07d11866275f464e5c3f386da8d1764522f72abda53f760ef3a995ee3afcdd04"
+    },
+    {
+      "path": "src/practice/early-grace.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 10729,
+      "sha256": "f13d193c60c769632fae8569b1f31ed0004da0c78557e74f538d234b93b224f5"
+    },
+    {
+      "path": "src/practice/feedback-state.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 5742,
+      "sha256": "54db5bef32250356e5fce76b0cd36d1892905ecfa95524603e7a136c5fba530c"
+    },
+    {
+      "path": "src/practice/playback-coordinator.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 22814,
+      "sha256": "107a639dd267216dd30d6b1b85e4d28da85a3a7ab26e55e9f7eaa7ad250bfa3d"
+    },
+    {
+      "path": "src/render/feedback-overlay.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 2735,
+      "sha256": "e9c14fb4a192f0a34c3e295cf8e17ff056669bc533a404e3e840986e29beb7ef"
+    },
+    {
+      "path": "src/render/loop-overlay.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 2496,
+      "sha256": "f75a6ecbaaf8223f1fe1930e13f016e2a2bbf817ced1f3635bb8d86bcbac8e2d"
+    },
+    {
+      "path": "src/render/score-viewport.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 7607,
+      "sha256": "b841b74385da8307a58ac306e4d2adf025495a240531b9c324a2e67e5791f02d"
+    },
+    {
+      "path": "src/score/measure-timing.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 5512,
+      "sha256": "8bd918b8c03345b354031ccde76c89a4386797f2e0ed117222d398665e651dc8"
+    },
+    {
+      "path": "src/score/musicxml-io.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 14232,
+      "sha256": "e78e69223e8d63b6be243f90fd76b574681dbaa0b036f10954df5e451d2db01b"
+    },
+    {
+      "path": "src/score/osmd-adapter.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 25171,
+      "sha256": "063e006ecd2723f87b7eee3269fa0b8d4c4d93966e6f44696f630660421e9389"
+    },
+    {
+      "path": "src/score/score-loader.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 5574,
+      "sha256": "0ab15951955f834c1f9c57f7ea86485072537d7c0976e410b16266c866cac596"
+    },
+    {
+      "path": "src/score/score-traversal.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 13449,
+      "sha256": "108587ed27fff9a66403b5a51cde55db55d564b1e5defdce115149621d39a2f4"
+    },
+    {
+      "path": "src/testing/debug-checks.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 1575,
+      "sha256": "449ee101c041f41eee0404a14ca7057052bb70e63fdadfd68a420a2f06a7eb33"
+    },
+    {
+      "path": "src/testing/facade.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 6143,
+      "sha256": "b4f298fa773b144a010d4fdbb49d33e64d124d4347a13c173ea26096d2d93075"
+    },
+    {
+      "path": "src/testing/practice-checks.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 8099,
+      "sha256": "a64a74acf2b0aaca81f03a2ed46aee71f234a8eb3fcc6a01f578006d8dd0e9a1"
+    },
+    {
+      "path": "src/testing/render-checks.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 3944,
+      "sha256": "05fa23bd4a213e45ba806c89f37d7f5caf1f0e612ae5347c139429290c61b5c7"
+    },
+    {
+      "path": "src/ui/feedback-debug.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 14814,
+      "sha256": "b48086292827c1fb5922362ee94b06f6d92da3983e506b10604ac6b73a32b317"
+    },
+    {
+      "path": "style.css",
+      "status": " M",
+      "role": "documentation or style",
+      "bytes": 114616,
+      "sha256": "0b7ec4480ce3a8e84d6e77c5a1b4872625ca6be65a1ce4715162a836dfaf7723"
+    },
+    {
+      "path": "tests/unit/measure-timing.test.cjs",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 3260,
+      "sha256": "b36c16caeb1fd45debeb4e19b23f604ffe1dbc44068d77058e6411637a2eb2c8"
+    },
+    {
+      "path": "tests/unit/score-data.test.cjs",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 13186,
+      "sha256": "8efba24f69f953cfead9eb48396d2ac7be00b84ec806403248113a22cb04b32d"
+    },
+    {
+      "path": "tests/unit/score-traversal.test.cjs",
+      "status": " M",
+      "role": "test or fixture",
+      "bytes": 8045,
+      "sha256": "388dd5eeca33654c517ed05662c003626c93d174282c41cef1cfe0d3f5e61b7f"
+    },
+    {
+      "path": "types/vendor/osmd.d.ts",
+      "status": " M",
+      "role": "implementation",
+      "bytes": 4548,
+      "sha256": "3176a8fb34ca9f0ad8f0057756bb79123414ae600f18b3fe2920ead3b6006916"
+    },
+    {
+      "path": "docs/HORIZONTAL_UNFOLDED_PROGRESS.md",
+      "status": "??",
+      "role": "documentation or style",
+      "bytes": 5601,
+      "sha256": "2390decfe871bdd0ad83eee7d406e3588e6a6a0469ca00b2d7a5da87eb36f22f"
+    },
+    {
+      "path": "docs/HORIZONTAL_UNFOLDED_SCORE_PLAN.md",
+      "status": "??",
+      "role": "preexisting user plan, status/link updated",
+      "bytes": 25111,
+      "sha256": "fc6b930751fedc6685e3f76e8f1273bb04b78b7524247e6def22e1fdda70f647"
+    },
+    {
+      "path": "docs/refactor/REVIEW_2026-10-04.md",
+      "status": "??",
+      "role": "preexisting user file, untouched",
+      "bytes": 4985,
+      "sha256": "e295b631b37afcf59377e40393d29a9d97d2799ab1b7cba0c389adf7bd996938"
+    },
+    {
+      "path": "docs/testing/fixtures/horizontal-connections.musicxml",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 7165,
+      "sha256": "85b2976b8401fb53ff467d1f1b4b21ea2ad8cfe8644eebfbd86f6a4455d0b4c1"
+    },
+    {
+      "path": "docs/testing/fixtures/horizontal-single.musicxml",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 930,
+      "sha256": "aea869c53e28a9a3fe856d989f0561fce4e319226712cf75db65090d9c17f321"
+    },
+    {
+      "path": "docs/testing/fixtures/horizontal-voices.musicxml",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 2909,
+      "sha256": "279f959dd09038af5da66d6653b53fbb0de79c1acea9cccae3d5a64a94d9b1db"
+    },
+    {
+      "path": "docs/testing/horizontal-interactions.html",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 1278,
+      "sha256": "8dcd48465bb8c77964af7278bb0db50c556dba8443432eb216700a4aa903b4d0"
+    },
+    {
+      "path": "docs/testing/horizontal-interactions.integration.js",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 8208,
+      "sha256": "0d319a3bfd3f602de8e9529b246e550e0b68ff2d4402537915c19233cb620119"
+    },
+    {
+      "path": "docs/testing/horizontal-motion.html",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 1154,
+      "sha256": "2b0a2cea55bb0be048b2193bf971b51cb938af66baf8ddad976cf848ac461e9e"
+    },
+    {
+      "path": "docs/testing/horizontal-motion.integration.js",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 6189,
+      "sha256": "8ffc8d9e3024386ee922c511ae36969776f005f903f7e6070d3d2fde88c2445c"
+    },
+    {
+      "path": "docs/testing/horizontal-notation.html",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 1118,
+      "sha256": "6d0f4d63698532d2e51cc2053414c0fe42174ce8048ae5dd644696e64cf00156"
+    },
+    {
+      "path": "docs/testing/horizontal-notation.integration.js",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 6994,
+      "sha256": "7be71548a2dc170cb805c9970f03ca63b684ca10aac48035f03fa55c3efb6abc"
+    },
+    {
+      "path": "docs/testing/horizontal-production.html",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 1750,
+      "sha256": "9a857525ea0c64f943922da68baa0437dd82b95d44e1aa0a2807b613a434fd30"
+    },
+    {
+      "path": "docs/testing/horizontal-production.integration.js",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 6482,
+      "sha256": "4e20079d75dc8224e19aab0ff388fbebef0dba674c4391378ba5a25637c7843f"
+    },
+    {
+      "path": "docs/testing/horizontal-unfolded-baseline.md",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 1360,
+      "sha256": "acb1084d5deb4ab93e9662ab662ea91dc95bb2358c16a099bc442989dd34692b"
+    },
+    {
+      "path": "docs/testing/horizontal-unfolded-results.md",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 10130,
+      "sha256": "5e02f8f9675601376d4c5114fdf8f3d0d25a6aec841bf58621957f76cc557035"
+    },
+    {
+      "path": "docs/testing/horizontal-unfolded.html",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 1128,
+      "sha256": "73b6edfbcafc833617f2c8b06b99b15bca7212eb9cd2e5b0c95ec584193f55af"
+    },
+    {
+      "path": "docs/testing/horizontal-unfolded.integration.js",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 8317,
+      "sha256": "a60e94708f0223222a573ab196360ba89c4d8175cf4247311ab9b5ee675b8450"
+    },
+    {
+      "path": "docs/testing/validation/audio-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1654,
+      "sha256": "a3b5bed6f522c75a1ea7b85fb5986d71efaaaeedb86ec5e475b793cffbd151d2"
+    },
+    {
+      "path": "docs/testing/validation/audio-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1654,
+      "sha256": "a3b5bed6f522c75a1ea7b85fb5986d71efaaaeedb86ec5e475b793cffbd151d2"
+    },
+    {
+      "path": "docs/testing/validation/bootstrap-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2537,
+      "sha256": "e852992cf7d4d7c9158c5a742721f05647a469b725aa6fee5ab8126e1524d0c8"
+    },
+    {
+      "path": "docs/testing/validation/bootstrap-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2537,
+      "sha256": "e852992cf7d4d7c9158c5a742721f05647a469b725aa6fee5ab8126e1524d0c8"
+    },
+    {
+      "path": "docs/testing/validation/device-controls-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1220,
+      "sha256": "4123d7e1416d5f277217ce3e7db86c6c2d8818bc11934eb4b9fbc8e8a88b3b12"
+    },
+    {
+      "path": "docs/testing/validation/device-controls-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1220,
+      "sha256": "4123d7e1416d5f277217ce3e7db86c6c2d8818bc11934eb4b9fbc8e8a88b3b12"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-check.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 92038,
+      "sha256": "7758e780e1bba981a216897f1b54a8fb66fb44e1fb018ac83ad893b1ee1955f4"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-connections.png",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 162976,
+      "sha256": "4bb80f2c6e4211d5f20b2a1e941f74fef6681cb1f8714f4e85de8df19a4fd90e"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-core-matrix.json",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 5224,
+      "sha256": "16449bddd5c047b3f66a6eb1d2cfebef5667d9c4068f8be60ac6013a93ed053d"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-file-manifest.json",
+      "status": "??",
+      "role": "manifest (self; hash intentionally omitted)"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-interactions-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1674,
+      "sha256": "954d8c61948001525402e63629d69c85977696f48273873a3b258a0aaeec6dbb"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-interactions-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1674,
+      "sha256": "954d8c61948001525402e63629d69c85977696f48273873a3b258a0aaeec6dbb"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-locked-assets.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 231,
+      "sha256": "9a348bfd04ae45a74846745d41a6c8f0e8eb0509beb75bbfd8853618fd266779"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-motion.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 21039,
+      "sha256": "f9437a06d5262cb75d4e6a80439464df2590a30a42084451f6c9301dc412f88a"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-notation-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2317,
+      "sha256": "cacda3217a33ceaecf1fdc3ffa2c69893d3c6d0d8ff2b4961a2abcad49044809"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-notation-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2317,
+      "sha256": "cacda3217a33ceaecf1fdc3ffa2c69893d3c6d0d8ff2b4961a2abcad49044809"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-notation.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2317,
+      "sha256": "cacda3217a33ceaecf1fdc3ffa2c69893d3c6d0d8ff2b4961a2abcad49044809"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-production-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 6427,
+      "sha256": "deea10de161c75e4893fd461b83197b9c37e748f003159f574c73e3dcd762cc9"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-production-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 6427,
+      "sha256": "887f139ffcb28609a495f691f9fdda55d1d12c85d233317402027565f4c40dfe"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-production.png",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 152504,
+      "sha256": "4237d6c0da3e95bcc8027fe84b0ce7bebc859f8237c800af68fe313c1fa0f775"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-unfolded-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 44357,
+      "sha256": "70444a2b14dca4c26b53eeea5c54c5472db2ce0cca85963b201ca3f5ec9abd35"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-unfolded-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 44359,
+      "sha256": "1ec9c3187e937a69910a5d93dc9a14d42f0811e97870da02a2ad322b99b4723d"
+    },
+    {
+      "path": "docs/testing/validation/horizontal-unfolded.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 44357,
+      "sha256": "70444a2b14dca4c26b53eeea5c54c5472db2ce0cca85963b201ca3f5ec9abd35"
+    },
+    {
+      "path": "docs/testing/validation/input-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 3050,
+      "sha256": "3a972286a5444294d2546b8e730ed8e62dae1bc20ebb166c48411772ea03699a"
+    },
+    {
+      "path": "docs/testing/validation/input-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 3050,
+      "sha256": "3a972286a5444294d2546b8e730ed8e62dae1bc20ebb166c48411772ea03699a"
+    },
+    {
+      "path": "docs/testing/validation/keyboard-controls-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2564,
+      "sha256": "b1ad2435727ced8a994cb1a70577b8901b50586f730b09496748bc100251a3d7"
+    },
+    {
+      "path": "docs/testing/validation/keyboard-controls-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2564,
+      "sha256": "b1ad2435727ced8a994cb1a70577b8901b50586f730b09496748bc100251a3d7"
+    },
+    {
+      "path": "docs/testing/validation/legacy-led-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1638,
+      "sha256": "c06508804c7231fbe034a84e4a1b13c01cf94275f92376ed113a0fdf15d9a83e"
+    },
+    {
+      "path": "docs/testing/validation/legacy-led-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 723,
+      "sha256": "cc1d7e8362fb840b3b1b112b4f77d24b21f163098ddb4f631ec259116acf7eba"
+    },
+    {
+      "path": "docs/testing/validation/library-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2222,
+      "sha256": "e3d391bb7172ccf61b270a9e68c79710a706cc7d9bd9ca08cc71300811110bd6"
+    },
+    {
+      "path": "docs/testing/validation/library-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2222,
+      "sha256": "e3d391bb7172ccf61b270a9e68c79710a706cc7d9bd9ca08cc71300811110bd6"
+    },
+    {
+      "path": "docs/testing/validation/library-ui-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 3208,
+      "sha256": "d4e1cb74122ce4d63e772f98bc119bba223f93027c80fdf0a48f11f3f3de088c"
+    },
+    {
+      "path": "docs/testing/validation/library-ui-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 3208,
+      "sha256": "d4e1cb74122ce4d63e772f98bc119bba223f93027c80fdf0a48f11f3f3de088c"
+    },
+    {
+      "path": "docs/testing/validation/loader-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2516,
+      "sha256": "08020c5e2e3e8eb5be09c212f13bf84647d17c41d7a72ff50d0ba7ccdc3d8111"
+    },
+    {
+      "path": "docs/testing/validation/loader-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2517,
+      "sha256": "a91105c3a7441504ce9628f88c09c9b398f638dea4583d8b92da6854ddc5b703"
+    },
+    {
+      "path": "docs/testing/validation/metronome-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2550,
+      "sha256": "6228f8883c80e3b5e948c8a03611af3a9e47ec5b312860a3b4defa7414098b9b"
+    },
+    {
+      "path": "docs/testing/validation/metronome-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2526,
+      "sha256": "3f30d054a5ba35e6b0fb62933c6609ec68b5d627965cf7533f3245a7f7860753"
+    },
+    {
+      "path": "docs/testing/validation/midi-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1179,
+      "sha256": "8ce2f1b9cb77e988ce007f7b08715deace6e5aaf171db933996e0eb76fe64858"
+    },
+    {
+      "path": "docs/testing/validation/midi-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1252,
+      "sha256": "7f81281fbfe3e40acffaab1360583951463dfe8de48631448fd7c6f05aa75548"
+    },
+    {
+      "path": "docs/testing/validation/native-controls-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 4200,
+      "sha256": "d7afeb1287d144427c725fa56c981e45db8564326c3eb0c7cb91249f6852ae51"
+    },
+    {
+      "path": "docs/testing/validation/native-controls-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 4200,
+      "sha256": "d7afeb1287d144427c725fa56c981e45db8564326c3eb0c7cb91249f6852ae51"
+    },
+    {
+      "path": "docs/testing/validation/playback-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 14157,
+      "sha256": "9c78f0442aa3a9e037933717869bc6132ab24f3faa235930b1331cd3a933fc19"
+    },
+    {
+      "path": "docs/testing/validation/playback-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 14157,
+      "sha256": "9c78f0442aa3a9e037933717869bc6132ab24f3faa235930b1331cd3a933fc19"
+    },
+    {
+      "path": "docs/testing/validation/practice-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 7564,
+      "sha256": "dd60e0e86d3d854d1d501aba728da3e95721d131ed212c606ef5a27ff1b6a467"
+    },
+    {
+      "path": "docs/testing/validation/practice-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 7564,
+      "sha256": "dd60e0e86d3d854d1d501aba728da3e95721d131ed212c606ef5a27ff1b6a467"
+    },
+    {
+      "path": "docs/testing/validation/preference-controls-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2801,
+      "sha256": "3fbe80674838d04c41d6580e347b19fe9424e694c458fc6730948d3a86e35cd1"
+    },
+    {
+      "path": "docs/testing/validation/preference-controls-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2801,
+      "sha256": "3fbe80674838d04c41d6580e347b19fe9424e694c458fc6730948d3a86e35cd1"
+    },
+    {
+      "path": "docs/testing/validation/production-lifecycle-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1620,
+      "sha256": "99cd4b9bd9773573e9a1d07610fc158ed87cef55ad856f7f3e87b2df3716d86b"
+    },
+    {
+      "path": "docs/testing/validation/production-lifecycle-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1620,
+      "sha256": "99cd4b9bd9773573e9a1d07610fc158ed87cef55ad856f7f3e87b2df3716d86b"
+    },
+    {
+      "path": "docs/testing/validation/render-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1343,
+      "sha256": "3ccd8135df4392b7174abc6b06d27d7c9818f1cbedeacb0704b14f885e9a811e"
+    },
+    {
+      "path": "docs/testing/validation/render-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1343,
+      "sha256": "3ccd8135df4392b7174abc6b06d27d7c9818f1cbedeacb0704b14f885e9a811e"
+    },
+    {
+      "path": "docs/testing/validation/score-display-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1824,
+      "sha256": "759a17feb40061b8cdad7894655869642916ea280d0cbfe1a2ef2821b268b7e3"
+    },
+    {
+      "path": "docs/testing/validation/score-display-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1824,
+      "sha256": "759a17feb40061b8cdad7894655869642916ea280d0cbfe1a2ef2821b268b7e3"
+    },
+    {
+      "path": "docs/testing/validation/settings-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 729,
+      "sha256": "43d8cff8754d7a0ea7c5e6720a5b9120ff249b44975ba70541249653c3a00916"
+    },
+    {
+      "path": "docs/testing/validation/settings-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 729,
+      "sha256": "43d8cff8754d7a0ea7c5e6720a5b9120ff249b44975ba70541249653c3a00916"
+    },
+    {
+      "path": "docs/testing/validation/settings-debug-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1323,
+      "sha256": "39a66aeb4e7ee63e3817278a156c7e33d104d7466c670ceb129a2c04143720b7"
+    },
+    {
+      "path": "docs/testing/validation/settings-debug-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 1323,
+      "sha256": "39a66aeb4e7ee63e3817278a156c7e33d104d7466c670ceb129a2c04143720b7"
+    },
+    {
+      "path": "docs/testing/validation/transpose-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2291,
+      "sha256": "e10c33c01ca6c0d02243d477a31cc8078b69b107362252d32d78e9baf1c8af44"
+    },
+    {
+      "path": "docs/testing/validation/transpose-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2291,
+      "sha256": "e10c33c01ca6c0d02243d477a31cc8078b69b107362252d32d78e9baf1c8af44"
+    },
+    {
+      "path": "docs/testing/validation/traversal-baseline-default.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2228,
+      "sha256": "27c7606c6af6b1c1eb9eef5ca2ceecb4b60073ff70e58a1a404ee70a8b34a190"
+    },
+    {
+      "path": "docs/testing/validation/traversal-baseline-off.txt",
+      "status": "??",
+      "role": "validation evidence",
+      "bytes": 2427,
+      "sha256": "2ab479078d59663a9f144c35be52b30b2eea04e1c4027a00c08042ef02e828ee"
+    },
+    {
+      "path": "src/domain/performance-position.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 1276,
+      "sha256": "bb1579b7cbb6973633620e6fefd68b48c7c02b443cd1c2c101b38bc7d86fdf80"
+    },
+    {
+      "path": "src/render/horizontal-chunk-model.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 7145,
+      "sha256": "9e46d9a00d9c8aebc7ff8c2d30f46df0836568a3350c4ed572f1ec5242bd6566"
+    },
+    {
+      "path": "src/render/horizontal-chunks.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 4699,
+      "sha256": "a622d833bb77900d388b5febee8926d258620116686d4ec565caa988b65096be"
+    },
+    {
+      "path": "src/render/horizontal-score.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 21199,
+      "sha256": "b9674f16d5d179e059330fa4b9ab488661fa2427992813228b331d166f2db14f"
+    },
+    {
+      "path": "src/render/score-presentation.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 706,
+      "sha256": "01571478a3d84cfb316d5f779e275f0ba3c2dc9ffcaca2c7b76cbb87e1ff7009"
+    },
+    {
+      "path": "src/score/horizontal-display-adapter.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 6711,
+      "sha256": "0a918c84cb949462427b9ed04c42d0d63b3e7b6eac12f390d5a126716b090fcb"
+    },
+    {
+      "path": "src/score/performance-position.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 1612,
+      "sha256": "5036f757660eb7ef3aa955640a4fd58b3263e69f0bc4fd637d05c1aa00000d12"
+    },
+    {
+      "path": "src/score/performance-trace.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 3001,
+      "sha256": "1554106ed5be5c0c884da889bc618b4aa85303bf8c3768a5203929694de2fb00"
+    },
+    {
+      "path": "src/score/source-note-index.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 1057,
+      "sha256": "3839c66f013ebe616b55a443a77a49333faa0daf693a063bb31e9c274a213de6"
+    },
+    {
+      "path": "src/score/unfold-musicxml.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 15176,
+      "sha256": "a8bca0f39266d1c3527995acc8f894db01b87a92d9200938d7441b3ee2965d8a"
+    },
+    {
+      "path": "src/testing/horizontal-checks.ts",
+      "status": "??",
+      "role": "implementation",
+      "bytes": 3493,
+      "sha256": "70381a94d952d2ab0a6e4f91860d24172c5c2bfc76be6ad5af147276a60e8b5a"
+    },
+    {
+      "path": "tests/unit/horizontal-chunks.test.cjs",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 2313,
+      "sha256": "1ef4b3ab3f146d18415bf073aa6132e406676a23fe188b28b97cc746fdc6756e"
+    },
+    {
+      "path": "tests/unit/performance-trace.test.cjs",
+      "status": "??",
+      "role": "test or fixture",
+      "bytes": 3492,
+      "sha256": "4b80376e7b936571aecd2d564c61af97cefd2d7d4501cf57df75e35330e43af7"
+    }
+  ]
+}

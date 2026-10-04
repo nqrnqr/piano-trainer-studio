@@ -1,0 +1,24 @@
+PASS actual startup allocates exactly one sampler, synth and volume
+PASS repeated init retains the same three real Tone nodes
+PASS local sampler assets load and share the startup promise
+PASS user-initiated check unlocks the real audio context
+PASS all 30 chosen-codec local samples are requested and decoded
+PASS Follow applies writable context fields and preserves the vendor getter
+PASS Wait restores the captured latency profile
+PASS common UI input uses sampler with fixed velocity and local-only release
+PASS common UI input can route only to MIDI output
+PASS raw MIDI input boosts only local monitoring and preserves output velocity
+PASS wait lowLatency=true: accompaniment selects sampler and MIDI independently
+PASS wait lowLatency=true: original millisecond note-off timer releases MIDI
+PASS follow lowLatency=true: accompaniment selects synth and MIDI independently
+PASS follow lowLatency=true: original millisecond note-off timer releases MIDI
+PASS realtime lowLatency=true: accompaniment selects synth and MIDI independently
+PASS realtime lowLatency=true: original millisecond note-off timer releases MIDI
+PASS follow lowLatency=false: accompaniment selects sampler and MIDI independently
+PASS follow lowLatency=false: original millisecond note-off timer releases MIDI
+PASS pause/reset silence releases both local voices before the unchanged MIDI CC sequence
+PASS volume UI sends the same decibel conversion to the owned node
+PASS explicit dispose tears down real Tone voices and their destination
+PASS reinitialization creates a fresh usable sampler exactly once
+PASS audio and routing work with the selected default/no-op LED adapter
+DONE

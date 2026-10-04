@@ -4,6 +4,7 @@ import type {LegacyAppState} from '../state/model';
 export namespace PianoTrainerScoreSeek {
     export interface Box {x: number; y: number; width: number; height: number;}
     export interface Ports {
+        seekPresentation?(x: number, y: number): boolean;
         state: Pick<LegacyAppState, 'isPlaying' | 'looper'>;
         hasGraphicSheet(): boolean;
         isAnyToolbarPanelOpen(): boolean;
@@ -24,6 +25,7 @@ export namespace PianoTrainerScoreSeek {
         function seek(clientX: number, clientY: number) {
             if (!ports.hasGraphicSheet() || ports.state.isPlaying) return;
             if (ports.isAnyToolbarPanelOpen()) return;
+            if (ports.seekPresentation?.(clientX, clientY)) return;
             const point = ports.clientPointToSvg(clientX, clientY);
             if (!point) return;
             let target = -1;

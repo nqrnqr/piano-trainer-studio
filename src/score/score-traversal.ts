@@ -49,6 +49,7 @@ export namespace PianoTrainerScoreTraversal {
     export interface Ports {
         state: State;
         getCursor(): Cursor | null | undefined;
+        getIndependentIterator?(): Iterator;
         resolveStaffId(note: Note): number | null;
         isPracticeHandEnabled(staffId: number | null): boolean;
         getHandRole(staffId: number | null): PianoTrainerDomain.HandRole | null;
@@ -192,16 +193,17 @@ export namespace PianoTrainerScoreTraversal {
             const timeline: PianoTrainerDomain.PreviewTimelineEvent[] = [];
             const safetyMax = 100000;
             let safety = 0;
-            cursor.reset();
-            while (!cursor.Iterator.EndReached && safety < safetyMax) {
-                const entries = cursor.Iterator.CurrentVoiceEntries;
+            const iterator = ports.getIndependentIterator?.() || (cursor.reset(), cursor.Iterator);
+            while (!iterator.EndReached && safety < safetyMax) {
+                const entries = iterator.CurrentVoiceEntries;
                 if (entries && entries.length > 0) {
-                    timeline.push(buildTimelineEvent(entries, cursor.Iterator.CurrentMeasureIndex, cursor.Iterator.currentTimeStamp?.RealValue ?? null));
+                    timeline.push({...buildTimelineEvent(entries, iterator.CurrentMeasureIndex, iterator.currentTimeStamp?.RealValue ?? null), traceStepIndex: safety});
                 }
-                cursor.Iterator.moveToNext();
+                iterator.moveToNext();
                 safety += 1;
             }
-            restoreToMeasureAndTimestamp(savedMeasureIndex, savedTimestamp);
+            if (!iterator.EndReached) throw new Error(`Preview traversal exceeds ${safetyMax} events.`);
+            if (!ports.getIndependentIterator) restoreToMeasureAndTimestamp(savedMeasureIndex, savedTimestamp);
             state.ledPreviewTimeline = timeline;
             state.ledPreviewTimelineDirty = false;
             state.ledPreviewTraversalIndex = -1;

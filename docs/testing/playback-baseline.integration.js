@@ -10,11 +10,11 @@
  const hit=()=>{for(const note of [...snapshot().expected])if(!note.hit)api.dispatchInput(note.midi,true,'ui');release();};
  const clean=()=>{api.pause();release();f.disposeCoordinator();f.clearCountIns();};
  const load=async name=>{await api.loadScore(await(await fetch(`/docs/testing/fixtures/${name}.musicxml`)).text(),{fileName:`${name}.musicxml`});};
- const play=async()=>{document.getElementById('btn-play').click();await wait(0);};
+ const play=async()=>{await api.horizontal.ready();document.getElementById('btn-play').click();await wait(0);};
  const begin=async()=>{await play();finishCountIn();};
  const advance=()=>{if(snapshot().mode!=='realtime')hit();return f.fireNext();};
  const setup=async(layout,mode)=>{
-  clean();await load('simple-repeat');api.setLayout(layout);f.prepareScenario();f.selectMode(mode);
+  clean();await load('simple-repeat');await api.setLayout(layout);f.prepareScenario();f.selectMode(mode);
   document.getElementById('check-looper').checked=false;document.getElementById('check-metronome').checked=false;
   f.setNow(10);
  };

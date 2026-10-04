@@ -18,7 +18,7 @@
   await api.loadScore(await(await fetch('/docs/testing/fixtures/geometry.musicxml')).text(),{fileName:'geometry.musicxml'});
   api.practice.assignPianoHands();
   for(const layout of ['traditional','horizontal']){
-   api.setLayout(layout);prepare();at(0,0);
+   await api.setLayout(layout);prepare();at(0,0);
    const firstRefs=snapshot().expected.filter(n=>n.midi===60).map(n=>n.noteId);
    check(snapshot().expected.length===3&&firstRefs.length===2&&firstRefs[0]!==firstRefs[1],`${layout}: same pitch across actual piano staves retains two source identities`);
    const key=await press(60);

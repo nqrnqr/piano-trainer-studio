@@ -1,0 +1,33 @@
+PASS native FileReader preserves MusicXML text
+PASS direct XML selection installs original metadata
+PASS XML load paints the actual first OSMD event
+PASS XML render creates actual SVG
+PASS XML keeps original transpose source
+PASS native file input change loads and clears its selected value
+PASS native FileReader keeps MXL binary
+PASS MXL render keeps original compressed bytes
+PASS deflated MXL extracts container-selected XML only for transpose
+PASS valid MXL extraction does not initialize the converter
+PASS original MXL renders the same first event
+PASS actual transpose controller reloads a two-semitone score
+PASS transpose preserves its original MXL source metadata
+PASS transpose reload preserves existing speed
+PASS transpose reset restores the original pitches
+PASS transpose reset preserves original source and speed
+PASS invalid XML alerts once and rejects the load promise
+PASS failed import preserves old metadata after stopping playback
+WORKERS BEFORE MIDI {"created":1,"terminated":0,"live":1,"urls":["blob:http://127.0.0.1:8080/8bc3afb1-bd52-4cc7-84a4-e88231ad17a5"]}
+PASS actual MIDI converter dispatch loads exported MusicXML
+PASS converter metadata retains original base title
+PASS converted score renders and enables transpose
+PASS local WASM relative path responds after actual successful conversion
+RESOURCES {"wasm":{"url":"http://127.0.0.1:8080/assets/vendor/webmscore/webmscore.lib.wasm","status":200},"frame":[{"name":"http://127.0.0.1:8080/docs/testing/webmscore-worker-fixture.js","duration":3.299999952316284},{"name":"http://127.0.0.1:8080/assets/vendor/webmscore/webmscore.js","duration":2.200000047683716}]}
+WORKERS BEFORE DISPOSE {"created":2,"terminated":0,"live":2,"urls":["blob:http://127.0.0.1:8080/8bc3afb1-bd52-4cc7-84a4-e88231ad17a5","blob:http://127.0.0.1:8080/59d5c8bd-3098-4ac0-b4be-b96cb8b78bd3"]}
+PASS ordinary conversion preserves the original soft destroy worker lifetime
+PASS explicit converter disposal terminates the owned worker once and preserves existing workers
+PASS converter can start a fresh worker after explicit disposal
+PASS reinitialized converter releases its fresh worker
+WORKERS {"created":3,"terminated":2,"live":1,"urls":["blob:http://127.0.0.1:8080/8bc3afb1-bd52-4cc7-84a4-e88231ad17a5","blob:http://127.0.0.1:8080/59d5c8bd-3098-4ac0-b4be-b96cb8b78bd3","blob:http://127.0.0.1:8080/2ad0d90c-5dec-44c6-a25e-3597e46f4264"]}
+PASS file controls dispose and reinitialize their actual input
+PASS loader completes with default/no-op LED composition
+DONE

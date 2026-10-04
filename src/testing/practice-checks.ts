@@ -36,6 +36,7 @@ export function createPracticeChecks(getServices: () => Services) {
     function buildCurrentExpectations() {
         const services = getServices(), adapter = services.osmdAdapter;
         const event = adapter.readPlaybackEvent(adapter.resolveStaffIdFromEntry);
+        services.performancePosition.present();
         services.practiceExpectedNotes.build(event.entries, adapter.getCurrentMeasureIndex(), adapter.getCurrentTimestamp());
     }
     function selectEvent(measureIndex: number, timestamp: number, build = true) {
@@ -45,6 +46,7 @@ export function createPracticeChecks(getServices: () => Services) {
         while (!adapter.isEndReached() && steps++ < 1000) {
             if (adapter.getCurrentMeasureIndex() === measureIndex && Math.abs(adapter.getCurrentTimestamp() - timestamp) < 1e-6) {
                 adapter.updateCursor();
+                services.performancePosition.navigate('seek');
                 services.AppState.currentExpectedContext = {measureIndex,timestamp,
                     signature:adapter.readPlaybackEvent(adapter.resolveStaffIdFromEntry).signature};
                 if (build) buildCurrentExpectations();

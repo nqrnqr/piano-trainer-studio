@@ -2,6 +2,7 @@ import type {LegacyAppState} from '../state/model';
 export namespace PianoTrainerLoopOverlay {
     export interface Box { x: number; y: number; width: number; height: number; }
     export interface Ports {
+        displayMeasures?(): {index: number; box: Box}[] | null;
         bounds: Pick<LegacyAppState['looper'], 'min' | 'max'>;
         document: Pick<Document, 'createElementNS'>;
         getSvg(): SVGSVGElement | null;
@@ -21,8 +22,8 @@ export namespace PianoTrainerLoopOverlay {
             const group = getGroup();
             if (!group) return;
             const minIdx = ports.bounds.min - 1, maxIdx = ports.bounds.max - 1;
-            for (let i = 0; i < count; i++) {
-                const box = ports.measureBox(i, 0);
+            const displayed = ports.displayMeasures?.() || Array.from({length: count}, (_, index) => ({index, box: ports.measureBox(index, 0)}));
+            for (const {index: i, box} of displayed) {
                 if (!box) continue;
                 if (i < minIdx || i > maxIdx) {
                     const shade = ports.document.createElementNS('http://www.w3.org/2000/svg', 'rect');

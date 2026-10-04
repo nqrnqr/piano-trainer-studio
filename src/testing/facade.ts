@@ -18,6 +18,7 @@ import {createDebugChecks} from './debug-checks';
 import {createSettingsChecks} from './settings-checks';
 import {createLibraryUiChecks} from './library-ui-checks';
 import {createLedChecks} from './led-checks';
+import {createHorizontalChecks} from './horizontal-checks';
 
 // Separate test entry: commands and copied observations, with no state/vendor object.
 export function createTestFacade(options: {controlledPlayback?:boolean} = {}, injectedPorts:ServicePorts = {}, libraryFixture?:LibraryFixturePorts) {
@@ -28,6 +29,7 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
     services.init();
     const checks = createPracticeChecks(() => services);
     const renderChecks = createRenderChecks(() => services);
+    const horizontalChecks = createHorizontalChecks(() => services);
     const scoreChecks = createScoreChecks(() => services);
     const libraryChecks = createLibraryChecks(() => services,libraryFixture);
     const controlsChecks = createControlsChecks(() => services);
@@ -42,6 +44,7 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
         readPracticeSnapshot:checks.snapshot,
         practice:checks.commands,
         render:renderChecks.commands,
+        horizontal:horizontalChecks,
         playback:playbackChecks?.commands,
         midi:createMidiChecks(() => services),
         audio:createAudioChecks(() => services),
@@ -59,10 +62,10 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
         dispatchNote:(input:PianoTrainerDomain.TrainerNoteInput)=>services.practiceInput.handle({...input}),
         readViewportSnapshot:()=>({layout:services.ScoreDisplay.isHorizontal()?'horizontal':'traditional',
             ...services.osmdAdapter.readPositions(),measureCount:services.osmdAdapter.getMeasureCount(),
-            systems:services.osmdAdapter.getSystemCount(),cursorLeft:services.osmdAdapter.getCursorElement()?.style.left,
-            cursorBounds:(() => {const rect = services.osmdAdapter.getCursorElement()?.getBoundingClientRect();
+            systems:services.horizontalScore.isActive()?1:services.osmdAdapter.getSystemCount(),cursorLeft:services.horizontalScore.getCursorElement()?.style.left,
+            cursorBounds:(() => {const rect = services.horizontalScore.getCursorElement()?.getBoundingClientRect();
                 return rect ? {left:rect.left,width:rect.width} : null;})()}),
-        setLayout:(layout:PianoTrainerDomain.ScoreLayout)=>services.ScoreDisplay.setMode(layout,{save:false}),
+        setLayout:async (layout:PianoTrainerDomain.ScoreLayout)=>{services.ScoreDisplay.setMode(layout,{save:false});await services.horizontalScore.ready();services.ScoreDisplay.afterRender();},
         beginScenario:(mode:PianoTrainerDomain.PracticeMode)=>{
             services.trainerPlayback.pausePlaybackFromToolbar(); services.playbackState.clearVisuals();
             services.AppState.mode=mode;services.handRouting.syncActiveHandStateFromMode();
@@ -75,7 +78,7 @@ export function createTestFacade(options: {controlledPlayback?:boolean} = {}, in
             services.trainerPlayback.playbackLoop();
         },
         pause:()=>services.trainerPlayback.pausePlaybackFromToolbar(),
-        init:()=>services.init(),dispose:()=>{services.dispose();renderChecks.clear();scoreChecks.clear();libraryChecks.clear();controlsChecks.clear();preferenceChecks.clear();keyboardChecks.clear();deviceChecks.clear();libraryUiChecks.clear();playbackChecks?.dispose();},
+        init:()=>services.init(),dispose:()=>{horizontalChecks.clear();services.dispose();renderChecks.clear();scoreChecks.clear();libraryChecks.clear();controlsChecks.clear();preferenceChecks.clear();keyboardChecks.clear();deviceChecks.clear();libraryUiChecks.clear();playbackChecks?.dispose();},
         recreate:()=>{services.dispose();renderChecks.clear();scoreChecks.clear();libraryChecks.clear();controlsChecks.clear();preferenceChecks.clear();keyboardChecks.clear();deviceChecks.clear();libraryUiChecks.clear();playbackChecks?.dispose();services=createServices(servicePorts);
             playbackChecks?.attach(() => services);services.init();checks.observe();}
     });

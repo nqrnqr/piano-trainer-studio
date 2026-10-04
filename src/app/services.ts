@@ -36,6 +36,8 @@ import {PianoTrainerGeometry} from '../render/geometry-engine';
 import {PianoTrainerLoopOverlay} from '../render/loop-overlay';
 import {PianoTrainerScoreRenderer} from '../render/score-renderer';
 import {PianoTrainerScoreViewport} from '../render/score-viewport';
+import {PianoTrainerHorizontalScore} from '../render/horizontal-score';
+import {PianoTrainerPerformancePosition} from '../score/performance-position';
 import {PianoTrainerVirtualKeyboardView} from '../render/virtual-keyboard';
 import {PianoTrainerMeasureTiming} from '../score/measure-timing';
 import {PianoTrainerMusicXmlIO} from '../score/musicxml-io';
@@ -431,12 +433,12 @@ const geometryEngine = PianoTrainerGeometry.create({
     score: {
         getGraphicalNote: (note, measure, staff) => osmdAdapter.getGraphicalNote(note, measure, staff),
         getMeasureBox: (measure, staff, units) => osmdAdapter.getMeasureBox(measure, staff, units),
-        getCursorElement: () => osmdAdapter.getCursorElement(),
+        getCursorElement: () => horizontalScore.getCursorElement(),
         getCurrentMeasureIndex: () => osmdAdapter.getCurrentMeasureIndex(),
-        getStaffTopY: (measure, staff) => osmdAdapter.getStaffTopY(measure, staff)
+        getStaffTopY: (measure, staff) => horizontalScore.staffTopY(staff) ?? osmdAdapter.getStaffTopY(measure, staff)
     },
     document,
-    getSvg: () => document.querySelector<SVGSVGElement>('#osmd-container svg'),
+    getSvg: () => horizontalScore.getSvg(),
     getComputedStyle: node => window.getComputedStyle(node),
     clearOverlays: () => {
         feedbackOverlay.clear(); loopOverlay.clear(); feedbackDebug?.clearSvgDebug();
@@ -447,11 +449,13 @@ const geometryEngine = PianoTrainerGeometry.create({
     debugLog: (name, detail) => debugLogAnchorResolution(name, detail)
 });
 const feedbackOverlay = PianoTrainerFeedbackOverlay.create({
+    projectMarker: projectDisplayReference,
     state: AppState, document, getSvg: () => geometryEngine.getSvg(),
     ensureGroup: id => geometryEngine.ensureGroup(id),
     getCurrentContextKey: () => getCurrentFeedbackContext().key
 });
 const loopOverlay = PianoTrainerLoopOverlay.create({
+    displayMeasures: () => horizontalScore.measureBoxes(),
     bounds: AppState.looper, document, getSvg: () => geometryEngine.getSvg(),
     ensureGroup: id => geometryEngine.ensureGroup(id),
     enabled: () => {
@@ -477,6 +481,7 @@ function renderFeedbackOverlay() { feedbackOverlay.render(); }
 
 // feedback-debug.ts composition
 const feedbackDebug = PianoTrainerFeedbackDebug.create({document, state: AppState,
+    captureDisplay: captureDisplayReference, projectNote: projectDisplayReference,
     getSvg: () => GeometryEngine.getSvg(), ensureGroup: id => GeometryEngine.ensureGroup(id),
     readEnabled: () => getStoredBool(SETTINGS_DEBUG_STORAGE_KEY, false),
     saveEnabled: enabled => setStoredBool(SETTINGS_DEBUG_STORAGE_KEY, enabled),
@@ -501,6 +506,46 @@ const osmdAdapter = PianoTrainerOsmdAdapter.create({
     debugLog: (name, detail) => debugLogAnchorResolution(name, detail),
     reportError: (message, error) => console.error(message, error)
 });
+const performancePosition = PianoTrainerPerformancePosition.create({
+    getTrace: osmdAdapter.getPerformanceTrace, getTraceStepIndex: osmdAdapter.getTraceStepIndex,
+    getScoreRevision: osmdAdapter.getScoreRevision,
+    changed: () => {horizontalScore.paint(); handleAutoScroll();}
+});
+const horizontalScore = PianoTrainerHorizontalScore.create({
+    container: requireScoreDisplayElement('osmd-container', HTMLElement), area: requireScoreDisplayElement('music-area', HTMLElement),
+    source: osmdAdapter, currentEvent: performancePosition.current,
+    loopSettings: () => ({enabled: playbackControls.isLoopEnabled(), min: playbackControls.readLoopMin(), max: playbackControls.readLoopMax()}),
+    follows: () => requireScoreDisplayElement('check-autoscroll', HTMLInputElement).checked,
+    refreshed: immediate => {
+        GeometryEngine.invalidate();
+        for (const expected of AppState.expectedNotes) expected.anchor = getPresentedNoteAnchor(expected.noteRef, expected.mIdx, Number(expected.staffId) - 1);
+        renderFeedbackOverlay(); feedbackDebug.renderStickyDebug(); renderLooper(); ScoreDisplay.follow({immediate});
+    },
+    reportError: error => console.error('Could not prepare horizontal score:', error)
+});
+function getPresentedNoteAnchor(ref: PianoTrainerDomain.NoteRef, measure: number, staff: number) {
+    if (horizontalScore.isActive()) return horizontalScore.anchor(ref);
+    const note = osmdAdapter.resolveNote(ref);
+    return note ? GeometryEngine.getNoteAnchor(note, measure, staff) : null;
+}
+function captureDisplayReference(midi: number, staff: number | null, anchor: PianoTrainerDomain.SvgPoint) {
+    const event = performancePosition.current();
+    if (!event) return {};
+    const effectiveStaff = staff ?? (midi >= 60 ? AppState.hands.right : AppState.hands.left) ?? AppState.hands.right ?? 1;
+    const ref = AppState.expectedNotes.find(note => note.midi === midi && note.staffId === effectiveStaff)?.noteRef
+        || event.notes.find(note => note.staffIndex === effectiveStaff - 1)?.sourceNoteRef;
+    const point = ref ? getPresentedNoteAnchor(ref, event.source.sourceMeasureIndex, effectiveStaff - 1) : null;
+    return {performance: event, ...(ref ? {referenceNoteRef: ref} : {}),
+        ...(point ? {displayOffset: {x: anchor.x - point.x, y: anchor.y - point.y}} : {})};
+}
+function projectDisplayReference(marker: Pick<PianoTrainerDomain.FeedbackMarker, 'performance' | 'referenceNoteRef' | 'displayOffset' | 'anchor' | 'staffId'>) {
+    if (!marker.performance || !marker.referenceNoteRef) return marker.anchor;
+    const point = horizontalScore.isActive() ? horizontalScore.anchor(marker.referenceNoteRef, marker.performance)
+        : (() => {const note = osmdAdapter.resolveNote(marker.referenceNoteRef);
+            const staff = marker.performance.notes.find(entry => entry.sourceNoteRef.id === marker.referenceNoteRef!.id)?.staffIndex ?? Math.max(0, Number(marker.staffId) - 1);
+            return note ? GeometryEngine.getNoteAnchor(note, marker.performance.source.sourceMeasureIndex, staff) : null;})();
+    return point ? {x: point.x + (marker.displayOffset?.x || 0), y: point.y + (marker.displayOffset?.y || 0)} : null;
+}
 const getResolvedStaffAssignmentIdFromNote = osmdAdapter.resolveStaffIdFromNote;
 const getResolvedStaffAssignmentIdFromEntry = osmdAdapter.resolveStaffIdFromEntry;
 function requireScoreDisplayElement<T extends HTMLElement>(id: string, type: {new(): T}): T {
@@ -515,12 +560,14 @@ const ScoreDisplay = PianoTrainerScoreViewport.create({
         layout: requireScoreDisplayElement('select-score-layout', HTMLSelectElement),
         autoScroll: requireScoreDisplayElement('check-autoscroll', HTMLInputElement)
     },
-    score: osmdAdapter, state: AppState, storage: localStorage,
+    score: {...osmdAdapter, getCursorElement: horizontalScore.getCursorElement,
+        setLayout: (horizontal, defaults) => {osmdAdapter.setLayout(false, defaults); horizontalScore.setMode(horizontal);}},
+    refreshPresentation: () => {void horizontalScore.refresh();},
+    state: AppState, storage: localStorage,
     storageKey: TRAINER_SCORE_LAYOUT_STORAGE_KEY,
-    getSvg: () => document.querySelector<SVGSVGElement>('#osmd-container svg'),
+    getSvg: () => horizontalScore.getSvg(),
     getAnchor: (ref, measureIndex, staffIndex) => {
-        const note = osmdAdapter.resolveNote(ref);
-        return note ? GeometryEngine.getNoteAnchor(note, measureIndex, staffIndex) : null;
+        return getPresentedNoteAnchor(ref, measureIndex, staffIndex);
     },
     clearFeedbackPreserveScoring: () => clearFeedbackVisualStatePreserveScoring(),
     renderScoreAndRefreshGeometry: () => scoreRenderer.renderScoreAndRefreshGeometry(),
@@ -543,6 +590,7 @@ function handleAutoScroll() { ScoreDisplay.autoScroll(); }
 const sharedScoreTraversal = PianoTrainerScoreTraversal.create({
     state: AppState,
     getCursor: () => osmdAdapter.getTraversalCursor(),
+    getIndependentIterator: osmdAdapter.getIndependentIterator,
     resolveStaffId: note => getResolvedStaffAssignmentIdFromNote(note),
     isPracticeHandEnabled: staffId => isPracticeHandEnabledForStaff(staffId),
     getHandRole: staffId => getAssignedHandRoleForStaff(staffId),
@@ -584,6 +632,7 @@ const scoreMeasureTiming = PianoTrainerMeasureTiming.create({
     getMeasure: index => osmdAdapter.getSourceMeasure(index),
     getMeasureCount: () => osmdAdapter.getSourceMeasureCount(),
     getCursor: () => osmdAdapter.getTraversalCursor(),
+    getIndependentIterator: osmdAdapter.getIndependentIterator,
     restoreToPosition: (measure, timestamp) => sharedScoreTraversal.restoreToMeasureAndTimestamp(measure, timestamp)
 });
 const metronomeClock = PianoTrainerPlaybackClock.create({
@@ -627,6 +676,8 @@ const rebuildWaitModeMetronome = trainerMetronome.rebuildWaitModeMetronome;
 // practice.ts composition
 // Concrete score/audio/render/optional LED objects are composed only here.
 const practiceFeedback = PianoTrainerFeedbackState.create({
+    getPerformanceEvent: performancePosition.current,
+    captureDisplay: captureDisplayReference,
     state: AppState,
     getTraversalPosition: () => osmdAdapter.readPositions().traversal,
     resolveAnchor: (midi, staffId, measureIndex, anchor) => GeometryEngine.resolveFeedbackAnchor(midi, staffId, measureIndex, anchor),
@@ -656,8 +707,7 @@ const practiceExpectedNotes = PianoTrainerExpectedNotes.create({
     state: AppState, getHandRole: staff => getAssignedHandRoleForStaff(staff),
     isMidiInRange: midi => isMidiInPlayerRange(midi),
     getAnchor: (ref, measureIndex, staffIndex) => {
-        const note = osmdAdapter.resolveNote(ref);
-        return note ? GeometryEngine.getNoteAnchor(note, measureIndex, staffIndex) : null;
+        return getPresentedNoteAnchor(ref, measureIndex, staffIndex);
     },
     describeNote: (ref, measureIndex, staffIndex) => {
         const note = osmdAdapter.resolveNote(ref);
@@ -719,6 +769,8 @@ const playbackState = PianoTrainerPlaybackState.create({
     renderKeyboard: () => renderVirtualKeyboard()
 });
 const trainerPlayback = PianoTrainerPlaybackCoordinator.create({
+    presentation: {prepare: () => horizontalScore.ready(), present: () => {performancePosition.present();}, navigate: reason => {performancePosition.navigate(reason);},
+        loop: performancePosition.loop, traceStepIndex: osmdAdapter.getTraceStepIndex},
     state: AppState, clock: playbackClock, transport: playbackTransport, controls: playbackControls,
     transitions: playbackState, metronome: trainerMetronome,
     score: {
@@ -773,7 +825,15 @@ const scoreFormat = PianoTrainerMusicXmlIO.create({
 });
 const scoreFileReader = PianoTrainerScoreFileReader.create({createReader: () => new FileReader(), format: scoreFormat});
 const scoreLoader = PianoTrainerScoreLoader.create({
+    beginLoad: horizontalScore.beginLoad,
     state: AppState, format: scoreFormat, score: osmdAdapter,
+    prepareDisplay: async (raw, options, isActive) => {
+        const currentXml = await scoreFormat.getCanonicalMusicXmlForTranspose(raw, options);
+        if (!isActive()) throw new DOMException('Expired horizontal score load.', 'AbortError');
+        if (!currentXml) throw new Error('Could not obtain current MusicXML for horizontal presentation.');
+        performancePosition.navigate('load');
+        await horizontalScore.loaded(currentXml);
+    },
     resetPlayback: () => resetPlaybackForLoadedScore(),
     resetTempo: () => {if (typeof updateTempo === 'function') updateTempo('percent', 100);},
     render: () => renderScoreAndRefreshGeometry(), initSongUI: () => initSongUI(), scroll: () => handleAutoScroll(),
@@ -821,7 +881,7 @@ const displayControls=PianoTrainerDisplayControls.create({document,window,state:
     reportWarning:(message,error)=>console.warn(message,error),pause:()=>pausePlaybackFromToolbar(),
     play:()=>startPlaybackFromToolbar(),reset:()=>resetPlaybackFromToolbar(),
     isReadyToRender:()=>osmdAdapter.isReady(),setZoom:value=>osmdAdapter.setZoom(value),
-    clearFeedbackVisualStatePreserveScoring:()=>clearFeedbackVisualStatePreserveScoring(),
+    clearFeedbackVisualStatePreserveScoring:()=>{},
     renderScoreAndRefreshGeometry:()=>renderScoreAndRefreshGeometry(),positionCalibrationPanel:()=>optionalLedOutput.positionCalibrationPanel()});
 const tempoControls=PianoTrainerTempoControls.create({document,state:AppState,hasMidiOutput:()=>!!getSelectedMidiOutOutput(),
     setBpm:value=>playbackTransport.setBpm(value),getCurrentMeasureIndex:()=>osmdAdapter.getCurrentMeasureIndexIfAvailable(),
@@ -834,7 +894,7 @@ const audioLevelControls=PianoTrainerAudioLevelControls.create({document,state:A
         midiInBoost:TRAINER_MIDIIN_BOOST_STORAGE_KEY,metroVolume:METRONOME_VOL_STORAGE_KEY})[key],value),
     setPianoVolume:value=>audioOutput.setPianoVolume(value),sendMidiOutExpressionLevel:value=>sendMidiOutExpressionLevel(value),
     setMetronomeVolumeDecibels:value=>metronomeOutput.setVolumeDecibels(value)});
-const loopControls=PianoTrainerLoopControls.create({document,window,state:AppState,renderLooper:()=>renderLooper(),
+const loopControls=PianoTrainerLoopControls.create({document,window,state:AppState,renderLooper:()=>{renderLooper();void horizontalScore.refresh();},
     enforceLooperBounds:()=>enforceLooperBounds(),saveLoopCountIn:value=>setStoredBool(LOOP_COUNT_IN_STORAGE_KEY,value)});
 const isFullscreenActive=displayControls.isFullscreenActive;
 const syncFullscreenUi=displayControls.syncFullscreenUi;
@@ -936,11 +996,18 @@ const scoreUiController = PianoTrainerScoreUiController.create({state: AppState,
     updateScoreDisplay, renderLooper: () => renderLooper()});
 const initSongUI = scoreUiController.initSongUI;
 const scoreSeekController = PianoTrainerScoreSeek.create({state: AppState, hasGraphicSheet: osmdAdapter.hasGraphicSheet,
+    seekPresentation: (x, y) => {
+        if (!horizontalScore.isActive()) return false;
+        const hit = horizontalScore.hitTest(x, y);
+        if (!hit || (playbackControls.isLoopEnabled() && (hit.sourceMeasureIndex < AppState.looper.min - 1 || hit.sourceMeasureIndex > AppState.looper.max - 1))) return true;
+        playbackTransport.stop(); osmdAdapter.seekTraceStep(hit.traceStepIndex); osmdAdapter.updateCursor(); clearVisuals();
+        performancePosition.navigate('seek', hit.loopIteration); handleAutoScroll(); return true;
+    },
     isAnyToolbarPanelOpen: () => isAnyToolbarPanelOpen(), clientPointToSvg: (x, y) => GeometryEngine.clientPointToSvg(x, y),
     getMeasureCount: osmdAdapter.getGraphicalMeasureCount, getMeasureBox: (index, staff) => GeometryEngine.getMeasureBox(index, staff),
     isLoopEnabled: () => playbackControls.isLoopEnabled(), stopTransport: () => playbackTransport.stop(), resetCursor: osmdAdapter.reset,
     isEndReached: osmdAdapter.isEndReached, getCurrentMeasureIndex: osmdAdapter.getCurrentMeasureIndex, advance: osmdAdapter.advance,
-    updateCursor: osmdAdapter.updateCursor, scroll: () => handleAutoScroll(), clearVisuals: () => clearVisuals()});
+    updateCursor: () => {osmdAdapter.updateCursor(); performancePosition.navigate('seek');}, scroll: () => handleAutoScroll(), clearVisuals: () => clearVisuals()});
 const scoreSeekControls = PianoTrainerScoreSeekControls.create({document, seek: scoreSeekController.seek});
 
 function init() {if(initialized || disposed)return;initialized=true;
@@ -953,7 +1020,7 @@ positionScoresPanel();
 syncToolbarButtonStates();
 midiControls.init();
 feedbackDebug.init();
-osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay('osmd-container',{autoResize:false,drawTitle:true});
+osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay('source-score',{autoResize:false,drawTitle:true});
 ScoreDisplay.init();
 audioOutput.init();
 metronomeOutput.init();
@@ -1063,6 +1130,7 @@ audioRouting.dispose();
 audioOutput.dispose();
 metronomeOutput.dispose();
 osmdAdapter.dispose();
+horizontalScore.dispose();
 preferences.dispose();
 }
 return {
@@ -1108,6 +1176,8 @@ return {
     loopOverlay,
     feedbackDebug,
     osmdAdapter,
+    performancePosition,
+    horizontalScore,
     ScoreDisplay,
     scoreRenderer,
     sharedScoreTraversal,

@@ -1,0 +1,48 @@
+PASS wide empty drawer retains split panes and system folders
+PASS save-current availability retains initial disabled hint
+LISTENERS {"listeners":14,"static":6,"resize":2,"keydown":0,"frames":0}
+PASS shell owns the original six present control and two resize listeners
+PASS repeated explicit init does not add another shell listener set
+PASS native open button forwards once to the existing file picker
+PASS actual New Folder event preserves prompt signature and persists its result
+PASS native file input opens one folder picker with one capture key listener
+PASS ordinary drawer close leaves an in-flight picker active
+PASS successful sequential import clears the native input and opens the selected folder
+PASS mixed native import stores source XML in the chosen folder
+PASS mixed native import keeps original compressed MXL bytes
+PASS library import routes actual MIDI through the local converter
+PASS picker completion releases its capture listener and overlay
+PASS native score row opens the full original score through the loader
+PASS refresh preserves the loaded badge and save-current availability
+PASS row Rename preserves the original separate loaded-title behavior
+PASS folder picker retains option order including optional All Scores
+PASS Escape cancels the actual picker and releases its listener
+PASS overlay cancel leaves the row unchanged and releases menu keydown
+PASS single Move retains folder selection and the original loaded title
+PASS manage row selection exposes the original selected state
+PASS wide bulk Move retains original view choice and refreshes the loaded score title
+PASS bulk Delete cancellation preserves scores and manage selection
+PASS Cancel exits score manage mode and clears only its selection
+PASS actual folder row Rename updates its list label
+PASS folder Select All excludes the system folder options
+PASS folder cascade confirmation cancellation preserves all contents
+PASS narrow drawer uses the original folders page
+PASS narrow folder click navigates to its score page
+PASS narrow Back restores folder navigation
+PASS exactly 900px retains the original split-view threshold
+PASS native backup export preserves blob content, filename, MIME and URL revocation
+PASS invalid native backup input clears selection and preserves saved records
+PASS valid native backup input restores new IDs and the original folder view
+PASS native Save Current installs its new library identity/title and unfiled view
+PASS confirmed row Delete clears library identity while leaving the loaded score usable
+PASS confirmed bulk Delete removes the selected record and exits manage mode
+PASS confirmed folder cascade clears loaded ID and selected folder while preserving the displayed score
+PASS resize retargets one owned drawer refresh frame
+PASS explicit disposal cancels dialog, connected listeners and owned frames once
+PASS disposed row handlers cannot mutate selection
+PASS fresh init restores one shell listener set and rebuilt row handlers
+PASS late folder query creates no overlay after explicit disposal
+PASS complete library UI workflow runs with default/no-op LED
+RESOURCES {"listeners":14,"static":6,"resize":2,"keydown":0,"frames":0}
+CLEANUP 1 disposable databases
+DONE

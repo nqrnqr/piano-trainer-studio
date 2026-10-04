@@ -22,7 +22,7 @@
             for (const mode of ['wait', 'follow', 'realtime']) {
                 stop();
                 await load('simple-repeat');
-                api.setLayout(layout, { save: false });
+                await api.setLayout(layout, { save: false });
                 api.beginScenario(mode);
                 const label = `${mode}/${layout}`;
                 const painted = position();

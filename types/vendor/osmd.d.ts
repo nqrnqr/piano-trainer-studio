@@ -13,6 +13,14 @@ namespace PianoTrainerOsmdVendor {
         SourceStaff?: Staff;
         sourceStaff?: Staff;
     }
+    interface SourceVoiceEntry {Notes: Note[];}
+    interface SourceStaffEntry {VoiceEntries: SourceVoiceEntry[];}
+    interface SourceContainer {StaffEntries: (SourceStaffEntry | undefined)[];}
+    interface PerformanceIterator extends PianoTrainerScoreTraversal.Iterator {
+        CurrentRelativeInMeasureTimestamp: Fraction;
+        CurrentEnrolledTimestamp: Fraction;
+        JumpOccurred: boolean;
+    }
     interface Staff {id?: number;}
     interface Instrument {Staves?: Staff[]; staves?: Staff[]; Staffs?: Staff[]; staffs?: Staff[];}
     interface IdentityVoiceEntry {Notes?: Note[]; notes?: Note[];}
@@ -52,8 +60,11 @@ namespace PianoTrainerOsmdVendor {
         newPageFromXML: boolean;
         followCursor: boolean;
     }
-    interface SourceMeasure {TempoInBPM?: number; ActiveTimeSignature?: {Numerator: number; Denominator: number};}
-    interface Sheet {SourceMeasures?: SourceMeasure[]; Instruments?: Instrument[]; instruments?: Instrument[];}
+    interface SourceMeasure {TempoInBPM?: number; ActiveTimeSignature?: {Numerator: number; Denominator: number};
+        VerticalSourceStaffEntryContainers?: SourceContainer[];}
+    interface Sheet {SourceMeasures?: SourceMeasure[]; Instruments?: Instrument[]; instruments?: Instrument[];
+        SheetPlaybackSetting?: {rhythm?: unknown};
+        MusicPartManager?: {getIterator(): PerformanceIterator};}
     interface Renderer {
         zoom: number;
         load(rawData: PianoTrainerDomain.ScoreRawData): Promise<unknown>;
@@ -65,6 +76,8 @@ namespace PianoTrainerOsmdVendor {
             NewSystemAtXMLNewSystemAttribute: boolean;
             NewSystemAtXMLNewPageAttribute: boolean;
             NewPageAtXMLNewPageAttribute: boolean;
+            MinimumStaffLineDistance: number;
+            MinSkyBottomDistBetweenStaves: number;
         };
         FollowCursor: boolean;
         setOptions(options: LayoutOptions): void;
@@ -73,7 +86,7 @@ namespace PianoTrainerOsmdVendor {
     }
 }
 
-const opensheetmusicdisplay: {OpenSheetMusicDisplay: new (container: string, options: {autoResize:boolean;drawTitle:boolean}) => PianoTrainerOsmdVendor.Renderer};
+const opensheetmusicdisplay: {OpenSheetMusicDisplay: new (container: string | HTMLElement, options: {autoResize:boolean;drawTitle:boolean}) => PianoTrainerOsmdVendor.Renderer};
 
 }
 export {};

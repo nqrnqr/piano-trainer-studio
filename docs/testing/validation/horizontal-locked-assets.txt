@@ -1,0 +1,3 @@
+All 21 tracked vendor/sample/toolchain files match HEAD after Git checkout filters (Windows CRLF).
+OSMD working-copy SHA256 9ab640955523a62944793a4560c78ebfe2852b8ee896c3e94b6895022b9f39ed
+No asset or lockfile changes in git diff.

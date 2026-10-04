@@ -11,8 +11,7 @@ export function createDebugChecks(getServices:() => ReturnType<typeof createServ
         readSnapshot:() => {
             const state=getServices().AppState;
             return {anchors:state.debugPersistentAnchors,events:state.debugEventFlow,matches:state.debugMatchLogs,resolution:state.debugAnchorResolution,
-                sequence:state.debugFrameSeq,history:state.debugAnchorHistory.map(frame => ({...frame,
-                    notes:frame.notes.map(note => ({...note,anchor:{...note.anchor}}))}))};
+                sequence:state.debugFrameSeq,history:structuredClone(state.debugAnchorHistory)};
         },
         readFirstNote:() => {
             const adapter=getServices().osmdAdapter;

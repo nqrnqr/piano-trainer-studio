@@ -1246,6 +1246,14 @@ body.app-fullscreen-active .score-overlay-controls {
     box-sizing: content-box;
 }
 
+.pt-performance-cursor {
+    position: absolute;
+    width: 10px;
+    background: rgba(70, 170, 90, .4);
+    pointer-events: none;
+    z-index: 3;
+}
+
 .score-horizontal .horizontal-score-cursor {
     border-left: 3px solid #007b9e;
     box-shadow: -2px 0 5px rgba(0, 123, 158, 0.25);

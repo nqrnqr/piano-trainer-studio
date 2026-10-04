@@ -6,6 +6,7 @@
  try{
   api.pause();api.score.disposeCoordinator();api.practice.muteOutputs();
   await api.loadScore(await(await fetch('/docs/testing/fixtures/simple-repeat.musicxml')).text(),{fileName:'simple-repeat.musicxml'});
+  await api.setLayout('traditional');
   const initial=f.snapshot();d.init();d.init();check(initial.listeners===1&&initial.intervals===1&&JSON.stringify(f.snapshot())===JSON.stringify(initial),'repeated debug init retains one native checkbox and heartbeat');
   el('check-debug').checked=true;el('check-debug').dispatchEvent(new Event('change',{bubbles:true}));check(snapshot().anchors&&snapshot().events&&snapshot().matches&&snapshot().resolution&&localStorage.getItem('pt_debugEnabled')==='true','native checkbox stores enabled state and all original debug flags');
   d.setFrameLimit(2);const anchor={x:42,y:56};d.pushFrame({kind:'expected',measureIndex:1,timestamp:0.25,notes:[{midi:60,staffId:1,anchor,kind:'expected',hit:false},{midi:61,staffId:1,anchor:{x:NaN,y:3}}]});anchor.x=999;

@@ -43,12 +43,12 @@
         document.getElementById('check-autoscroll').checked = true;
         const xml = await (await fetch('/docs/testing/continuous-score.musicxml')).text();
         await api.loadScore(xml, { fileName: 'Continuous Score Test.musicxml' });
-        api.setLayout('traditional', {save:false});
+        await api.setLayout('traditional', {save:false});
         const systems = () => api.readViewportSnapshot().systems;
         check(systems() > 1, 'Traditional layout has multiple systems');
         seek(15);
         const before = current();
-        api.setLayout('horizontal', {save:false});
+        await api.setLayout('horizontal', {save:false});
         check(systems() === 1, '48 measures and both piano staves stay in one system (including XML line break)');
         check(current() === before, 'Layout switch preserves playback iterator');
         check(Math.abs(cursorX() - viewport.clientWidth * .33) < 3, 'Cursor anchored at 33% of viewport');
@@ -63,7 +63,7 @@
         check(Math.abs(cursorX() - viewport.clientWidth * .33) < 3, 'Scroll converges on stable cursor region');
         seek(3);
         await settle();
-        check(Math.abs(cursorX() - viewport.clientWidth * .33) < 3, 'Backward repeat/seek converges without stale forward scroll');
+        check(Math.abs(cursorX() - viewport.clientWidth * .33) < 3, 'Explicit backward seek converges without stale forward scroll');
         seek(47);
         await settle();
         check(Math.abs(cursorX() - viewport.clientWidth * .33) < 3, 'Trailing space retains cursor region at the last measure');
@@ -78,11 +78,12 @@
         await settle();
         const iteratorBeforeLookahead = api.render.captureIdentity();
         const paintedX = contentX();
+        const paintedLogicalX=Number(document.querySelector('.pt-performance-cursor').dataset.logicalX);
         api.practice.advanceTraversal();
         const aheadPosition = current();
         api.render.render();
         check(api.render.readIdentity(iteratorBeforeLookahead).iteratorSame && current() === aheadPosition, 'Relayout leaves the ahead-of-display iterator intact');
-        check(Math.abs(contentX() - paintedX) < 3, 'Relayout preserves the painted cursor while waiting');
+        check(Math.abs(Number(document.querySelector('.pt-performance-cursor').dataset.logicalX)-paintedLogicalX)<3, 'Relayout preserves the logical painted cursor while waiting, including origin recycling');
         const zoomPosition = current();
         api.render.zoom(125);
         check(current() === zoomPosition && systems() === 1, 'Zoom keeps traversal and single-system layout');
@@ -102,9 +103,9 @@
                 check(Math.abs(contentX() - waitingX) < 3, `${mode}: cursor does not run ahead while waiting`);
                 const scoreBefore = JSON.stringify(snapshot().score);
                 api.render.setWrongContext(true);
-                api.setLayout('traditional', {save:false});
+                await api.setLayout('traditional', {save:false});
                 const traditionalAnchor = snapshot().expected[0].anchor;
-                api.setLayout('horizontal', {save:false});
+                await api.setLayout('horizontal', {save:false});
                 check(current() === waitingPosition && Math.abs(contentX() - waitingX) < 3, `${mode}: switch layouts while waiting preserves current note`);
                 check(JSON.stringify(snapshot().score) === scoreBefore && snapshot().wrongContext, `${mode}: switching preserves score and wrong-note state`);
                 check(snapshot().expected[0].anchor.x !== traditionalAnchor.x, `${mode}: expected-note feedback anchors refresh for horizontal layout`);
@@ -124,9 +125,9 @@
         document.getElementById('btn-reset').click();
         await settle();
         check(api.practice.readTraversal().measure === 0 && cursorX() >= 0 && cursorX() < viewport.clientWidth, `Reset returns to the first measure with cursor visible (measure=${api.practice.readTraversal().measure}, x=${cursorX()}, width=${viewport.clientWidth})`);
-        api.setLayout('traditional', {save:false});
+        await api.setLayout('traditional', {save:false});
         check(systems() > 1 && viewport.scrollLeft === 0 && !document.getElementById('canvas-wrapper').style.width, 'Traditional layout and normal container width restored');
-        api.setLayout('horizontal', {save:false});
+        await api.setLayout('horizontal', {save:false});
         const frame = parent.document.querySelector('iframe');
         frame.style.width = '390px';
         await wait(650);
@@ -144,9 +145,9 @@
             copy.setAttribute('number', i);
             part.append(copy);
         }
-        api.setLayout('horizontal', {save:false});
+        await api.setLayout('horizontal', {save:false});
         await api.loadScore(new XMLSerializer().serializeToString(doc), {fileName:'Long test.musicxml'});
-        check(systems() === 1 && document.querySelector('#osmd-container svg').getBoundingClientRect().width > 32767, '240-measure SVG exceeds 32767px without wrapping or clipping');
+        check(systems() === 1 && api.horizontal.resources().definitions===30 && api.horizontal.resources().chunks<=7 && api.horizontal.resources().models<=16, '240 measures use 30 fixed definitions with bounded active SVG and template resources');
 
     } catch (error) {
         results.textContent += `ERROR: ${error.stack}\n`;

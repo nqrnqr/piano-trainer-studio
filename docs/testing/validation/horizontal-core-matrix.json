@@ -1,0 +1,270 @@
+{
+  "rows": [
+    {
+      "suite": "audio-baseline",
+      "led": "off",
+      "assertions": 23,
+      "passed": true
+    },
+    {
+      "suite": "audio-baseline",
+      "led": "default",
+      "assertions": 23,
+      "passed": true
+    },
+    {
+      "suite": "bootstrap-baseline",
+      "led": "off",
+      "assertions": 37,
+      "passed": true
+    },
+    {
+      "suite": "bootstrap-baseline",
+      "led": "default",
+      "assertions": 37,
+      "passed": true
+    },
+    {
+      "suite": "device-controls-baseline",
+      "led": "off",
+      "assertions": 19,
+      "passed": true
+    },
+    {
+      "suite": "device-controls-baseline",
+      "led": "default",
+      "assertions": 19,
+      "passed": true
+    },
+    {
+      "suite": "input-baseline",
+      "led": "off",
+      "assertions": 40,
+      "passed": true
+    },
+    {
+      "suite": "input-baseline",
+      "led": "default",
+      "assertions": 40,
+      "passed": true
+    },
+    {
+      "suite": "keyboard-controls-baseline",
+      "led": "off",
+      "assertions": 36,
+      "passed": true
+    },
+    {
+      "suite": "keyboard-controls-baseline",
+      "led": "default",
+      "assertions": 36,
+      "passed": true
+    },
+    {
+      "suite": "legacy-led-baseline",
+      "led": "off",
+      "assertions": 6,
+      "passed": true
+    },
+    {
+      "suite": "legacy-led-baseline",
+      "led": "default",
+      "assertions": 19,
+      "passed": true
+    },
+    {
+      "suite": "library-baseline",
+      "led": "off",
+      "assertions": 38,
+      "passed": true
+    },
+    {
+      "suite": "library-baseline",
+      "led": "default",
+      "assertions": 38,
+      "passed": true
+    },
+    {
+      "suite": "library-ui-baseline",
+      "led": "off",
+      "assertions": 44,
+      "passed": true
+    },
+    {
+      "suite": "library-ui-baseline",
+      "led": "default",
+      "assertions": 44,
+      "passed": true
+    },
+    {
+      "suite": "loader-baseline",
+      "led": "off",
+      "assertions": 28,
+      "passed": true
+    },
+    {
+      "suite": "loader-baseline",
+      "led": "default",
+      "assertions": 28,
+      "passed": true
+    },
+    {
+      "suite": "metronome-baseline",
+      "led": "off",
+      "assertions": 28,
+      "passed": true
+    },
+    {
+      "suite": "metronome-baseline",
+      "led": "default",
+      "assertions": 28,
+      "passed": true
+    },
+    {
+      "suite": "midi-baseline",
+      "led": "off",
+      "assertions": 21,
+      "passed": true
+    },
+    {
+      "suite": "midi-baseline",
+      "led": "default",
+      "assertions": 20,
+      "passed": true
+    },
+    {
+      "suite": "native-controls-baseline",
+      "led": "off",
+      "assertions": 39,
+      "passed": true
+    },
+    {
+      "suite": "native-controls-baseline",
+      "led": "default",
+      "assertions": 39,
+      "passed": true
+    },
+    {
+      "suite": "playback-baseline",
+      "led": "off",
+      "assertions": 128,
+      "passed": true
+    },
+    {
+      "suite": "playback-baseline",
+      "led": "default",
+      "assertions": 128,
+      "passed": true
+    },
+    {
+      "suite": "practice-baseline",
+      "led": "off",
+      "assertions": 53,
+      "passed": true
+    },
+    {
+      "suite": "practice-baseline",
+      "led": "default",
+      "assertions": 53,
+      "passed": true
+    },
+    {
+      "suite": "preference-controls-baseline",
+      "led": "off",
+      "assertions": 39,
+      "passed": true
+    },
+    {
+      "suite": "preference-controls-baseline",
+      "led": "default",
+      "assertions": 39,
+      "passed": true
+    },
+    {
+      "suite": "production-lifecycle",
+      "led": "off",
+      "assertions": 29,
+      "passed": true
+    },
+    {
+      "suite": "production-lifecycle",
+      "led": "default",
+      "assertions": 29,
+      "passed": true
+    },
+    {
+      "suite": "render-baseline",
+      "led": "off",
+      "assertions": 19,
+      "passed": true
+    },
+    {
+      "suite": "render-baseline",
+      "led": "default",
+      "assertions": 19,
+      "passed": true
+    },
+    {
+      "suite": "score-display",
+      "led": "off",
+      "assertions": 30,
+      "passed": true
+    },
+    {
+      "suite": "score-display",
+      "led": "default",
+      "assertions": 30,
+      "passed": true
+    },
+    {
+      "suite": "settings-baseline",
+      "led": "off",
+      "assertions": 11,
+      "passed": true
+    },
+    {
+      "suite": "settings-baseline",
+      "led": "default",
+      "assertions": 11,
+      "passed": true
+    },
+    {
+      "suite": "settings-debug-baseline",
+      "led": "off",
+      "assertions": 20,
+      "passed": true
+    },
+    {
+      "suite": "settings-debug-baseline",
+      "led": "default",
+      "assertions": 20,
+      "passed": true
+    },
+    {
+      "suite": "transpose-baseline",
+      "led": "off",
+      "assertions": 52,
+      "passed": true
+    },
+    {
+      "suite": "transpose-baseline",
+      "led": "default",
+      "assertions": 52,
+      "passed": true
+    },
+    {
+      "suite": "traversal-baseline",
+      "led": "off",
+      "assertions": 33,
+      "passed": true
+    },
+    {
+      "suite": "traversal-baseline",
+      "led": "default",
+      "assertions": 30,
+      "passed": true
+    }
+  ],
+  "pages": 44,
+  "assertions": 1555
+}

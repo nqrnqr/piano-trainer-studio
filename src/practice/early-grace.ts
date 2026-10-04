@@ -41,7 +41,8 @@ export namespace PianoTrainerEarlyGrace {
             const timeline = ports.getTimeline();
             if (!Array.isArray(timeline) || timeline.length === 0) return null;
 
-            const currentIndex = ports.findTimelineIndex(
+            const exactIndex = ctx.traceStepIndex === undefined ? -1 : timeline.findIndex(event => event.traceStepIndex === ctx.traceStepIndex);
+            const currentIndex = exactIndex >= 0 ? exactIndex : ports.findTimelineIndex(
                 timeline,
                 ctx.measureIndex,
                 ctx.timestamp,
@@ -170,7 +171,8 @@ export namespace PianoTrainerEarlyGrace {
             if (!Array.isArray(timeline) || timeline.length === 0) return null;
 
             const ctx = state.currentExpectedContext;
-            const currentIndex = ports.findTimelineIndex(
+            const exactIndex = ctx.traceStepIndex === undefined ? -1 : timeline.findIndex(event => event.traceStepIndex === ctx.traceStepIndex);
+            const currentIndex = exactIndex >= 0 ? exactIndex : ports.findTimelineIndex(
                 timeline,
                 ctx.measureIndex,
                 ctx.timestamp,

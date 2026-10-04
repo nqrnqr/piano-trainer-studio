@@ -1,0 +1,84 @@
+PASS production main runs without facade
+PASS wait/traditional: native clock and virtual input finish all 20 repeated events
+OBSERVED wait/traditional {"pitches":[[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[62,67],[64,67],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67]],"score":"100%"}
+PASS wait: native formal event 1 moves right
+PASS wait: native formal event 2 moves right
+PASS wait: native formal event 3 moves right
+PASS wait: native formal event 4 moves right
+PASS wait: native formal event 5 moves right
+PASS wait: native formal event 6 moves right
+PASS wait: native formal event 7 moves right
+PASS wait: native formal event 8 moves right
+PASS wait: native formal event 9 moves right
+PASS wait: native formal event 10 moves right
+PASS wait: native formal event 11 moves right
+PASS wait: native formal event 12 moves right
+PASS wait: native formal event 13 moves right
+PASS wait: native formal event 14 moves right
+PASS wait: native formal event 15 moves right
+PASS wait: native formal event 16 moves right
+PASS wait: native formal event 17 moves right
+PASS wait: native formal event 18 moves right
+PASS wait: native formal event 19 moves right
+PASS wait: native formal event 20 moves right
+PASS wait/horizontal: native clock and virtual input finish all 20 repeated events
+OBSERVED wait/horizontal {"pitches":[[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[62,67],[64,67],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67]],"score":"100%"}
+PASS wait: production layouts have identical input order and final score
+PASS follow/traditional: native clock and virtual input finish all 20 repeated events
+OBSERVED follow/traditional {"pitches":[[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67]],"score":"100%"}
+PASS follow: native formal event 1 moves right
+PASS follow: native formal event 2 moves right
+PASS follow: native formal event 3 moves right
+PASS follow: native formal event 4 moves right
+PASS follow: native formal event 5 moves right
+PASS follow: native formal event 6 moves right
+PASS follow: native formal event 7 moves right
+PASS follow: native formal event 8 moves right
+PASS follow: native formal event 9 moves right
+PASS follow: native formal event 10 moves right
+PASS follow: native formal event 11 moves right
+PASS follow: native formal event 12 moves right
+PASS follow: native formal event 13 moves right
+PASS follow: native formal event 14 moves right
+PASS follow: native formal event 15 moves right
+PASS follow: native formal event 16 moves right
+PASS follow: native formal event 17 moves right
+PASS follow: native formal event 18 moves right
+PASS follow: native formal event 19 moves right
+PASS follow: native formal event 20 moves right
+PASS follow/horizontal: native clock and virtual input finish all 20 repeated events
+OBSERVED follow/horizontal {"pitches":[[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67]],"score":"100%"}
+PASS follow: production layouts have identical input order and final score
+PASS realtime/traditional: native clock and virtual input finish all 20 repeated events
+OBSERVED realtime/traditional {"pitches":[[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67]],"score":"100%"}
+PASS realtime: native formal event 1 moves right
+PASS realtime: native formal event 2 moves right
+PASS realtime: native formal event 3 moves right
+PASS realtime: native formal event 4 moves right
+PASS realtime: native formal event 5 moves right
+PASS realtime: native formal event 6 moves right
+PASS realtime: native formal event 7 moves right
+PASS realtime: native formal event 8 moves right
+PASS realtime: native formal event 9 moves right
+PASS realtime: native formal event 10 moves right
+PASS realtime: native formal event 11 moves right
+PASS realtime: native formal event 12 moves right
+PASS realtime: native formal event 13 moves right
+PASS realtime: native formal event 14 moves right
+PASS realtime: native formal event 15 moves right
+PASS realtime: native formal event 16 moves right
+PASS realtime: native formal event 17 moves right
+PASS realtime: native formal event 18 moves right
+PASS realtime: native formal event 19 moves right
+PASS realtime: native formal event 20 moves right
+PASS realtime/horizontal: native clock and virtual input finish all 20 repeated events
+OBSERVED realtime/horizontal {"pitches":[[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67]],"score":"100%"}
+PASS realtime: production layouts have identical input order and final score
+PASS production cache suspend/resume retains the exact Loop display event and score
+PASS production cache return preserves single listener ownership
+PASS production Loop layout roundtrip preserves score
+PASS production Loop keeps the mounted SVG window bounded
+PRODUCTION {"observed":{"wait/traditional":{"pitches":[[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[62,67],[64,67],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67]],"score":"100%"},"wait/horizontal":{"pitches":[[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[62,67],[64,67],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67]],"score":"100%"},"follow/traditional":{"pitches":[[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67]],"score":"100%"},"follow/horizontal":{"pitches":[[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67],[60],[62],[64],[67]],"score":"100%"},"realtime/traditional":{"pitches":[[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67]],"score":"100%"},"realtime/horizontal":{"pitches":[[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67],[48,60],[48,62],[48,64],[48,67]],"score":"100%"}},"window":7,"maxWorld":759.2700902624999,"resources":{"listeners":1040,"databases":0}}
+READY_FOR_CAPTURE
+PASS production disposal releases all application bindings and database connections
+DONE

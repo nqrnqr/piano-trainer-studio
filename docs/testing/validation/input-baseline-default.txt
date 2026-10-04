@@ -1,0 +1,42 @@
+PASS traditional: same pitch across actual piano staves retains two source identities
+PASS traditional: DOM mouse press grades only one chord candidate
+PASS traditional: duplicate DOM down is suppressed by the existing virtual key guard
+PASS traditional: DOM mouse release clears physical input
+PASS traditional: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS traditional: already-hit re-press remains ungraded
+PASS traditional: final chord note completes all expectations
+PASS traditional: DOM and MIDI enter one controller with their original source metadata
+PASS traditional: wrong release transfers the same feedback marker to history
+PASS traditional: virtual pointer cancel releases through the shared controller
+PASS traditional: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS traditional: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS traditional: accompaniment pitch input retains original wrong-note semantics
+PASS traditional: hidden source note creates no expectation
+PASS traditional: cue source note creates no expectation
+PASS traditional: duplicate same-staff pitch merges into one expectation
+PASS traditional: actual tied source combines the original sustain duration
+PASS traditional: tie continuation skips attack matching while active sustain accepts repeats
+PASS traditional: tie sustain re-press does not change scoring
+PASS traditional: small keyboard reports out-of-range notes without expectations
+PASS horizontal: same pitch across actual piano staves retains two source identities
+PASS horizontal: DOM mouse press grades only one chord candidate
+PASS horizontal: duplicate DOM down is suppressed by the existing virtual key guard
+PASS horizontal: DOM mouse release clears physical input
+PASS horizontal: MIDI bridge consumes the other staff and leaves the partial chord waiting
+PASS horizontal: already-hit re-press remains ungraded
+PASS horizontal: final chord note completes all expectations
+PASS horizontal: DOM and MIDI enter one controller with their original source metadata
+PASS horizontal: wrong release transfers the same feedback marker to history
+PASS horizontal: virtual pointer cancel releases through the shared controller
+PASS horizontal: realtime wrong input suppresses miss visuals while each unhit staff still counts
+PASS horizontal: practice-hand filtering keeps visible grace and excludes accompaniment
+PASS horizontal: accompaniment pitch input retains original wrong-note semantics
+PASS horizontal: hidden source note creates no expectation
+PASS horizontal: cue source note creates no expectation
+PASS horizontal: duplicate same-staff pitch merges into one expectation
+PASS horizontal: actual tied source combines the original sustain duration
+PASS horizontal: tie continuation skips attack matching while active sustain accepts repeats
+PASS horizontal: tie sustain re-press does not change scoring
+PASS horizontal: small keyboard reports out-of-range notes without expectations
+
+All checks passed.

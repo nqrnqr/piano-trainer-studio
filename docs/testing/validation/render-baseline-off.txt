@@ -1,0 +1,20 @@
+PASS traditional: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS horizontal: beam/chord/dot/grace/tie fixture resolves finite notehead anchors
+PASS traditional: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS horizontal: every expected note and SVG anchor matches the P4b real-OSMD baseline
+PASS hidden B4 and cue C5 do not become practice expectations
+PASS same-pitch cross-staff expectations own distinct revision-scoped exact sources
+PASS expected state keeps immutable NoteRef without vendor source objects
+PASS layout switch preserves the original realtime wrong flag
+PASS Wait relayout/zoom retains live iterator, expectation/ref identities, hit state and score
+PASS zoom preserves the current realtime wrong flag while reprojecting feedback
+PASS adapter distinguishes the painted event from actual prefetch
+PASS Loop overlay draws the two shades and two inclusive boundaries in each displayed copy
+PASS disabled Loop clears only its overlay
+PASS loading a new sheet invalidates all old note references
+PASS new expectations bind to the new sheet revision
+PASS foreground native rAF moves the horizontal viewport
+PASS native rAF settles around the original 33% cursor target
+PASS viewport dispose cancels native frame ownership
+PASS viewport reinit reads the same persisted layout
+DONE

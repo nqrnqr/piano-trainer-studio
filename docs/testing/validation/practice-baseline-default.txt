@@ -1,0 +1,57 @@
+PASS wait/traditional: piano chord builds both staff expectations
+PASS wait/traditional: live iterator prefetches while displayed event stays current
+PASS wait/traditional: wrong input counts once and holds display
+PASS wait/traditional: partial chord holds display
+PASS wait/traditional: already-hit repeat is suppressed from duplicate grading
+PASS wait/traditional: completing chord grades both notes
+PASS wait/traditional: completing chord advances displayed event
+PASS wait/traditional: release clears held input
+PASS wait/traditional: pause suppresses pending advancement
+PASS follow/traditional: piano chord builds both staff expectations
+PASS follow/traditional: live iterator prefetches while displayed event stays current
+PASS follow/traditional: wrong input counts once and holds display
+PASS follow/traditional: partial chord holds display
+PASS follow/traditional: already-hit repeat is suppressed from duplicate grading
+PASS follow/traditional: completing chord grades both notes
+PASS follow/traditional: completing chord advances displayed event
+PASS follow/traditional: release clears held input
+PASS follow/traditional: pause suppresses pending advancement
+PASS realtime/traditional: piano chord builds both staff expectations
+PASS realtime/traditional: live iterator prefetches while displayed event stays current
+PASS realtime/traditional: tempo advances without input
+PASS realtime/traditional: missed chord grades both notes
+PASS realtime/traditional: pause suppresses pending advancement
+PASS wait/horizontal: piano chord builds both staff expectations
+PASS wait/horizontal: live iterator prefetches while displayed event stays current
+PASS wait/horizontal: wrong input counts once and holds display
+PASS wait/horizontal: partial chord holds display
+PASS wait/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS wait/horizontal: completing chord grades both notes
+PASS wait/horizontal: completing chord advances displayed event
+PASS wait/horizontal: release clears held input
+PASS wait/horizontal: pause suppresses pending advancement
+PASS follow/horizontal: piano chord builds both staff expectations
+PASS follow/horizontal: live iterator prefetches while displayed event stays current
+PASS follow/horizontal: wrong input counts once and holds display
+PASS follow/horizontal: partial chord holds display
+PASS follow/horizontal: already-hit repeat is suppressed from duplicate grading
+PASS follow/horizontal: completing chord grades both notes
+PASS follow/horizontal: completing chord advances displayed event
+PASS follow/horizontal: release clears held input
+PASS follow/horizontal: pause suppresses pending advancement
+PASS realtime/horizontal: piano chord builds both staff expectations
+PASS realtime/horizontal: live iterator prefetches while displayed event stays current
+PASS realtime/horizontal: tempo advances without input
+PASS realtime/horizontal: missed chord grades both notes
+PASS realtime/horizontal: pause suppresses pending advancement
+PASS simple-repeat: structural jump 2 → 1 waits one remaining quarter beat
+PASS simple-repeat: actual repeat-sign traversal is 1 → 2 → 1 → 2 → 3
+PASS simple-repeat: repeat and ending skip are exercised
+SNAPSHOT simple-repeat [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1}]
+PASS first-second-ending: structural jump 3 → 1 waits one remaining quarter beat
+PASS first-second-ending: structural jump 2 → 4 waits one remaining quarter beat
+PASS first-second-ending: actual repeat-sign traversal is 1 → 2 → 3 → 1 → 2 → 4 → 5
+PASS first-second-ending: repeat and ending skip are exercised
+SNAPSHOT first-second-ending [{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":2,"nextTimestampWhole":2,"beats":1},{"measure":2,"timestampWhole":2,"nextMeasure":2,"nextTimestampWhole":2.25,"beats":1},{"measure":2,"timestampWhole":2.25,"nextMeasure":2,"nextTimestampWhole":2.5,"beats":1},{"measure":2,"timestampWhole":2.5,"nextMeasure":2,"nextTimestampWhole":2.75,"beats":1},{"measure":2,"timestampWhole":2.75,"nextMeasure":0,"nextTimestampWhole":0,"beats":1},{"measure":0,"timestampWhole":0,"nextMeasure":0,"nextTimestampWhole":0.25,"beats":1},{"measure":0,"timestampWhole":0.25,"nextMeasure":0,"nextTimestampWhole":0.5,"beats":1},{"measure":0,"timestampWhole":0.5,"nextMeasure":0,"nextTimestampWhole":0.75,"beats":1},{"measure":0,"timestampWhole":0.75,"nextMeasure":1,"nextTimestampWhole":1,"beats":1},{"measure":1,"timestampWhole":1,"nextMeasure":1,"nextTimestampWhole":1.25,"beats":1},{"measure":1,"timestampWhole":1.25,"nextMeasure":1,"nextTimestampWhole":1.5,"beats":1},{"measure":1,"timestampWhole":1.5,"nextMeasure":1,"nextTimestampWhole":1.75,"beats":1},{"measure":1,"timestampWhole":1.75,"nextMeasure":3,"nextTimestampWhole":3,"beats":1},{"measure":3,"timestampWhole":3,"nextMeasure":3,"nextTimestampWhole":3.25,"beats":1},{"measure":3,"timestampWhole":3.25,"nextMeasure":3,"nextTimestampWhole":3.5,"beats":1},{"measure":3,"timestampWhole":3.5,"nextMeasure":3,"nextTimestampWhole":3.75,"beats":1},{"measure":3,"timestampWhole":3.75,"nextMeasure":4,"nextTimestampWhole":4,"beats":1},{"measure":4,"timestampWhole":4,"nextMeasure":4,"nextTimestampWhole":4.25,"beats":1},{"measure":4,"timestampWhole":4.25,"nextMeasure":4,"nextTimestampWhole":4.5,"beats":1},{"measure":4,"timestampWhole":4.5,"nextMeasure":4,"nextTimestampWhole":4.75,"beats":1}]
+
+All checks passed.

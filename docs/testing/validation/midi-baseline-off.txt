@@ -1,0 +1,23 @@
+PASS startup and repeated setup share one access request
+PASS stored device selection binds actual input through DOM controls
+PASS device connection UI observes the service
+PASS raw press, release velocity and zero-velocity Note On reach the common input bridge
+PASS raw MIDI grades the real OSMD practice expectation
+PASS Any input accepts channel 16
+PASS specified channel and non-note filtering preserve the UI preference
+PASS one output implementation preserves effective core velocity and channel behavior
+PASS output reads committed state when DOM channel is stale
+PASS exact outgoing echo is suppressed while another velocity passes
+PASS echo is accepted after the 120ms window
+PASS device switching detaches previous callback
+PASS None releases input callback
+PASS hot unplug releases listener and refreshes device selection
+PASS reconnected saved device binds the new port object once
+PASS repeated UI init registers one expression callback
+PASS UI dispose removes its listeners
+PASS UI reinit restores exactly one callback
+PASS service dispose releases input and connection listeners
+PASS service reinit requests access and restores saved selection
+PASS MIDI input/output controls work with optional LED device DOM absent
+
+All checks passed.

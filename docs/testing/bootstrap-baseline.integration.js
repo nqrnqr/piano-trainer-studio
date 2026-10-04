@@ -7,7 +7,7 @@
   check(typeof AppState==='undefined' && typeof osmd==='undefined' && !window.ScoreLibrary && !window.PTTiming,'bundle keeps application state, score and business services private');
   const xml=await(await fetch('/docs/testing/fixtures/simple-repeat.musicxml')).text();
   for(const layout of ['traditional','horizontal'])for(const mode of ['wait','follow','realtime']){
-   app.pause();await app.loadScore(xml,{fileName:'simple-repeat.musicxml'});app.setLayout(layout);app.beginScenario(mode);
+   app.pause();await app.loadScore(xml,{fileName:'simple-repeat.musicxml'});await app.setLayout(layout);app.beginScenario(mode);
    const before=app.readPracticeSnapshot(),viewport=app.readViewportSnapshot();
    check(before.playing&&before.expected.length>0,`${mode}/${layout}: real score enters playback with expected notes`);
    check(viewport.layout===layout&&viewport.measureCount===3,`${mode}/${layout}: viewport observes the requested layout and real score`);

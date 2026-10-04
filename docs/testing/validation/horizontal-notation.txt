@@ -1,0 +1,30 @@
+PASS adjacent cross-measure tie endpoints remain intact
+PASS an intervening attack removes an invalid tie rather than matching a later same pitch
+PASS all chord pitches retain independent tie endpoints
+PASS forward time gaps break a tie
+PASS second block carries both endpoints of a 13-measure slur
+PASS cross-block crescendo and pedal retain their starts and stops
+PASS long connections render as two fixed main chunks
+PASS real OSMD engraves both cropped connection contexts
+NOTATION {"chunks":2,"paths":[59,64],"firstSlur":true,"resources":{"generation":3,"pending":false,"instances":0,"models":2,"callbacks":0,"templateNodes":237,"mountedNodes":239,"mappedNotes":16,"chunks":2,"maxChunks":7,"maxModels":16,"origin":0,"windowStart":0,"windowEnd":1,"definitions":2,"lastRebase":null}}
+NAVIGATION {"name":"repeat-times-3","expected":[0,1,0,1,0,1,2],"actual":[0,1,0,1,2],"matches":false}
+PASS repeat-times-3: derived display follows every vendor step to the right
+NAVIGATION {"name":"multiple-repeat-sections","expected":[0,1,0,1,2,3,2,3],"actual":[0,1,0,1,2,3,2,3],"matches":true}
+PASS multiple-repeat-sections: matches handwritten path
+PASS multiple-repeat-sections: derived display follows every vendor step to the right
+NAVIGATION {"name":"D.C. al Fine","expected":[0,1,2,0,1],"actual":[0,1,2,0,1],"matches":true}
+PASS D.C. al Fine: matches handwritten path
+PASS D.C. al Fine: derived display follows every vendor step to the right
+NAVIGATION {"name":"D.S. al Fine","expected":[0,1,2,3,1,2],"actual":[0,1,2,3,1,2],"matches":true}
+PASS D.S. al Fine: matches handwritten path
+PASS D.S. al Fine: derived display follows every vendor step to the right
+NAVIGATION {"name":"D.C. al Coda","expected":[0,1,2,0,1,3],"actual":[0,1,2,0,1,3],"matches":true}
+PASS D.C. al Coda: matches handwritten path
+PASS D.C. al Coda: derived display follows every vendor step to the right
+NAVIGATION {"name":"Fine alone","expected":[0,1,2],"actual":[0,1,2],"matches":true}
+PASS Fine alone: matches handwritten path
+PASS Fine alone: derived display follows every vendor step to the right
+NAVIGATION {"name":"nested repeats","expected":[0,1,2,1,2,3,0,1,2,1,2,3],"actual":[0,1,2,1,2,3,0,1,2,1,2,3],"matches":true}
+PASS nested repeats: matches handwritten path
+PASS nested repeats: derived display follows every vendor step to the right
+DONE

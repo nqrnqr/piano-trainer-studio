@@ -22,7 +22,7 @@
             for (const mode of ['wait','follow','realtime']) {
                 stop();
                 await api.loadScore(fixture, {fileName:'early-grace.musicxml'});
-                api.setLayout(layout);
+                await api.setLayout(layout);
                 api.practice.prepare(mode,{left:false,right:true},true);
                 api.practice.selectEvent(0,0.25,false);
                 const timestamp=api.practice.readTraversal().timestamp;

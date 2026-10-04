@@ -1,0 +1,44 @@
+INITIAL {"practice-controls":22,"hand-assignment-controls":2,"settings-actions":4}
+PASS repeated init retains one native listener set
+PASS score load and settings buttons bind their original two/four listeners
+PASS native mode radio commits and saves Follow
+PASS Follow starts with its original right-practice/left-playback pair
+PASS Follow keeps the selected practice hand checked
+PASS native Follow hand click selects its opposite accompaniment
+PASS Follow updates disabled playback controls and note
+PASS Wait retains its independent hand settings
+PASS Wait rejects programmatic playback toggle edits
+PASS mode changes retain saved audio preference and previous Follow hand
+PASS returning to Realtime restores its original settings object and choices
+PASS instrument audio routing updates boost visibility
+PASS MIDI virtual route persists independently
+PASS native low-latency toggle persists its disabled preference
+PASS fullscreen-on-play native preference updates state and storage
+PASS Auto Scroll native preference saves its checkbox
+PASS future preview edit preserves depth one and invalidates its current events
+PASS correct highlight native preference persists
+PASS feedback checkbox commits its preference
+PASS keyboard toggle hides native container
+PASS keyboard toggle shows and redraws native container
+PASS native staff assignment accepts the left none option and rebuilds its preview
+PASS captured OSMD frame uses the newly assigned practiced staff
+PASS empty right-staff assignment retains the previous committed hands
+PASS persisted application retains invalid mode fallback and clamped levels
+PASS persisted application seeds empty zoom and forces monitoring flags
+MIDI_RESET [["midi-in","none"],["midi-out","none"],["midi-out-channel","1"],["midi-lights","none"],["midi-lights-channel","1"]]
+PASS reset dispatches the five native MIDI change events in the original order
+PASS reset restores Realtime, traditional layout and 100 percent zoom
+PASS reset restores actual score default staff assignments
+PASS reset retains shared Set/Map identity and highlight defaults
+PASS reset restores original volume and MIDI boost defaults
+PASS cancelled native reset confirmation retains preferences
+PASS confirmed native reset invokes the full preference command
+PASS native import binding clears the input immediately after starting FileReader
+PASS native file selection reaches the existing invalid-backup alert
+PASS explicit dispose removes all three owned listener sets
+PASS disposed native change events do not mutate preference state
+PASS reinit restores the same native listener counts and markers
+PASS practice/preferences controls work with default and no-op LED
+RESOURCES {"practice-controls":0,"hand-assignment-controls":0,"settings-actions":0}
+CLEANUP 1 disposable databases
+DONE

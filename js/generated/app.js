@@ -166,6 +166,7 @@
       function seek(clientX, clientY) {
         if (!ports.hasGraphicSheet() || ports.state.isPlaying) return;
         if (ports.isAnyToolbarPanelOpen()) return;
+        if (ports.seekPresentation?.(clientX, clientY)) return;
         const point = ports.clientPointToSvg(clientX, clientY);
         if (!point) return;
         let target = -1;
@@ -1806,7 +1807,8 @@
         if (!handRole || !ctx) return null;
         const timeline = ports.getTimeline();
         if (!Array.isArray(timeline) || timeline.length === 0) return null;
-        const currentIndex = ports.findTimelineIndex(
+        const exactIndex = ctx.traceStepIndex === void 0 ? -1 : timeline.findIndex((event) => event.traceStepIndex === ctx.traceStepIndex);
+        const currentIndex = exactIndex >= 0 ? exactIndex : ports.findTimelineIndex(
           timeline,
           ctx.measureIndex,
           ctx.timestamp,
@@ -1915,7 +1917,8 @@
         const timeline = ports.getTimeline();
         if (!Array.isArray(timeline) || timeline.length === 0) return null;
         const ctx = state.currentExpectedContext;
-        const currentIndex = ports.findTimelineIndex(
+        const exactIndex = ctx.traceStepIndex === void 0 ? -1 : timeline.findIndex((event) => event.traceStepIndex === ctx.traceStepIndex);
+        const currentIndex = exactIndex >= 0 ? exactIndex : ports.findTimelineIndex(
           timeline,
           ctx.measureIndex,
           ctx.timestamp,
@@ -2128,7 +2131,9 @@
     function create(ports) {
       const state = ports.state;
       function getFeedbackContextKey(measureIndex = null, timestamp = null) {
-        return `${Number.isFinite(measureIndex) ? measureIndex : "na"}|${Number.isFinite(timestamp) ? timestamp : "na"}`;
+        const event = ports.getPerformanceEvent?.();
+        const suffix = event ? `|${event.scoreRevision}/${event.runId}/${event.eventId}` : "";
+        return `${Number.isFinite(measureIndex) ? measureIndex : "na"}|${Number.isFinite(timestamp) ? timestamp : "na"}${suffix}`;
       }
       function getCurrentFeedbackContext() {
         const measureIndex = state.currentExpectedContext?.measureIndex ?? ports.getTraversalPosition()?.measureIndex ?? null;
@@ -2151,7 +2156,8 @@
           isCorrect: false,
           measureIndex: context.measureIndex,
           timestamp: context.timestamp,
-          contextKey: context.key
+          contextKey: context.key,
+          ...ports.captureDisplay?.(midi, targetStaffId, anchor)
         });
         ports.renderOverlay();
         ports.pushDebugFrame({
@@ -2185,7 +2191,8 @@
           isCorrect: !!isCorrect,
           measureIndex: forceMIdx,
           timestamp: context.timestamp,
-          contextKey: getFeedbackContextKey(forceMIdx, context.timestamp)
+          contextKey: getFeedbackContextKey(forceMIdx, context.timestamp),
+          ...ports.captureDisplay?.(midi, targetStaffId, anchor)
         };
         if (isCorrect) {
           state.correctFeedbackHistory.push(marker);
@@ -2527,6 +2534,8 @@
         }
         await ports.audio.ensureReady();
         if (generation !== epoch) return;
+        await ports.presentation?.prepare?.();
+        if (generation !== epoch) return;
         state.isPlaying = true;
         ports.ui.updatePlayPause();
         ports.ui.hidePanels();
@@ -2607,6 +2616,7 @@
           return;
         }
         const entries = ports.score.readEvent();
+        ports.presentation?.present();
         if (entries.isEmpty) {
           ports.score.advance();
           ports.score.update();
@@ -2625,7 +2635,8 @@
         state.currentExpectedContext = {
           measureIndex: currentMeasureIdx,
           timestamp: currentTimestamp,
-          signature: entries.signature
+          signature: entries.signature,
+          ...ports.presentation ? { traceStepIndex: ports.presentation.traceStepIndex() } : {}
         };
         ports.ui.renderFeedback();
         ports.ui.renderEventKeyboard(entries, currentMeasureIdx, currentTimestamp);
@@ -2715,6 +2726,7 @@
               state.score.wrong = 0;
               ports.ui.updateScore();
               state.anchorTime = ports.clock.nowSeconds();
+              ports.presentation?.loop();
               ports.transport.start();
               playbackLoop();
             };
@@ -2792,6 +2804,7 @@
           }
         }
         ports.score.update();
+        ports.presentation?.navigate("reset");
         ports.ui.scroll();
         state.ledPreviewTraversalIndex = -1;
         state.lastLedPreviewEvents = [];
@@ -2814,6 +2827,7 @@
             ports.score.advance();
           }
           ports.score.update();
+          ports.presentation?.navigate("seek");
           ports.ui.scroll();
         }
       }
@@ -3036,7 +3050,7 @@
       }
       function drawStoredMarker(marker) {
         if (!marker?.anchor) return;
-        drawMarker(marker.anchor, !!marker.isCorrect);
+        drawMarker(ports.projectMarker ? ports.projectMarker(marker) : marker.anchor, !!marker.isCorrect);
       }
       function render() {
         clear();
@@ -3520,8 +3534,8 @@
         const group = getGroup();
         if (!group) return;
         const minIdx = ports.bounds.min - 1, maxIdx = ports.bounds.max - 1;
-        for (let i = 0; i < count; i++) {
-          const box = ports.measureBox(i, 0);
+        const displayed = ports.displayMeasures?.() || Array.from({ length: count }, (_, index) => ({ index, box: ports.measureBox(index, 0) }));
+        for (const { index: i, box } of displayed) {
           if (!box) continue;
           if (i < minIdx || i > maxIdx) {
             const shade = ports.document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -3620,6 +3634,7 @@
         } else if (frame === null) frame = ports.requestFrame(animate);
       }
       function afterRender() {
+        ports.refreshPresentation?.();
         if (isHorizontal() || changingLayout) {
           for (const expected of state.expectedNotes) {
             if (expected.noteRef) expected.anchor = ports.getAnchor(expected.noteRef, expected.mIdx, Number(expected.staffId) - 1);
@@ -3667,7 +3682,7 @@
         area().scrollTop = 0;
         if (score.isReady()) {
           const wrongPress = state.realtimeWrongPressInCurrentContext;
-          ports.clearFeedbackPreserveScoring();
+          if (!ports.refreshPresentation) ports.clearFeedbackPreserveScoring();
           state.realtimeWrongPressInCurrentContext = wrongPress;
           changingLayout = true;
           try {
@@ -3682,6 +3697,7 @@
         if (event.target instanceof HTMLSelectElement) setMode(event.target.value);
       };
       const onAutoScrollChange = () => {
+        ports.refreshPresentation?.();
         if (follows()) follow();
         else cancel();
       };
@@ -3713,347 +3729,89 @@
     PianoTrainerScoreViewport2.create = create;
   })(PianoTrainerScoreViewport || (PianoTrainerScoreViewport = {}));
 
-  // src/render/virtual-keyboard.ts
-  var PianoTrainerVirtualKeyboardView;
-  ((PianoTrainerVirtualKeyboardView2) => {
-    const classes = ["expected-l", "expected-r", "pressed-l", "pressed-r", "wrong", "active", "future1-l", "future1-r"];
-    function create(ports) {
-      function drawKey(midi, desiredClass, calibration = false) {
-        const node = ports.document.querySelector(`.key[data-midi="${midi}"]`);
-        if (!node) return;
-        if (!(node instanceof HTMLElement)) throw Error("Invalid virtual keyboard key: " + midi);
-        node.classList.toggle("out-of-range", !ports.isMidiInRange(midi));
-        if (calibration) {
-          classes.forEach((value) => node.classList.remove(value));
-          if (desiredClass) node.classList.add(desiredClass);
-        } else {
-          const current = [...node.classList].find((value) => classes.includes(value));
-          if (current !== desiredClass) {
-            if (current) node.classList.remove(current);
-            if (desiredClass) node.classList.add(desiredClass);
-          }
-        }
-        node.style.filter = "";
-        node.style.boxShadow = "";
-        node.style.transform = "";
-      }
-      return { drawKey };
-    }
-    PianoTrainerVirtualKeyboardView2.create = create;
-  })(PianoTrainerVirtualKeyboardView || (PianoTrainerVirtualKeyboardView = {}));
-
-  // src/score/measure-timing.ts
-  var PianoTrainerMeasureTiming;
-  ((PianoTrainerMeasureTiming2) => {
-    function create(ports) {
-      let measureTimingCache = [];
-      function getInfo(measureIndex) {
-        const measure = ports.getMeasure(measureIndex);
-        const cached = measureTimingCache[measureIndex] || null;
-        const activeTimeSignature = measure?.ActiveTimeSignature || ports.getMeasure(0)?.ActiveTimeSignature || null;
-        const numerator = Math.max(1, Number(activeTimeSignature?.Numerator) || 4);
-        const denominator = Math.max(1, Number(activeTimeSignature?.Denominator) || 4);
-        const beatLengthWhole = 1 / denominator;
-        const nominalMeasureLengthWhole = numerator * beatLengthWhole;
-        const startTimestamp = Number.isFinite(cached?.startTimestamp) ? cached.startTimestamp : 0;
-        return {
-          numerator,
-          denominator,
-          beatLengthWhole,
-          nominalMeasureLengthWhole,
-          actualLengthWhole: Number.isFinite(cached?.actualLengthWhole) ? cached.actualLengthWhole : nominalMeasureLengthWhole,
-          startTimestamp
-        };
-      }
-      function rebuild() {
-        const cursor = ports.getCursor();
-        if (!cursor?.Iterator) {
-          measureTimingCache = [];
-          return measureTimingCache;
-        }
-        const savedMeasureIndex = cursor.Iterator.CurrentMeasureIndex;
-        const savedTimestamp = cursor.Iterator.currentTimeStamp?.RealValue ?? null;
-        const totalMeasures = ports.getMeasureCount();
-        const nextStarts = new Array(totalMeasures).fill(null);
-        const firstEvents = new Array(totalMeasures).fill(null);
-        cursor.reset();
-        const safetyMax = 1e5;
-        let safety = 0;
-        let previousMeasureIndex = null;
-        while (!cursor.Iterator.EndReached && safety < safetyMax) {
-          const measureIndex = cursor.Iterator.CurrentMeasureIndex;
-          const timestamp = cursor.Iterator.currentTimeStamp?.RealValue ?? null;
-          if (firstEvents[measureIndex] == null && Number.isFinite(timestamp)) {
-            firstEvents[measureIndex] = timestamp;
-          }
-          if (previousMeasureIndex != null && measureIndex !== previousMeasureIndex && nextStarts[previousMeasureIndex] == null && Number.isFinite(timestamp)) {
-            nextStarts[previousMeasureIndex] = timestamp;
-          }
-          previousMeasureIndex = measureIndex;
-          cursor.Iterator.moveToNext();
-          safety += 1;
-        }
-        measureTimingCache = [];
-        let runningStart = 0;
-        for (let i = 0; i < totalMeasures; i++) {
-          const measure = ports.getMeasure(i);
-          const activeTimeSignature = measure?.ActiveTimeSignature || ports.getMeasure(0)?.ActiveTimeSignature || null;
-          const numerator = Math.max(1, Number(activeTimeSignature?.Numerator) || 4);
-          const denominator = Math.max(1, Number(activeTimeSignature?.Denominator) || 4);
-          const nominalMeasureLengthWhole = numerator / denominator;
-          const firstTimestamp = Number.isFinite(firstEvents[i]) ? firstEvents[i] : null;
-          const explicitStart = firstTimestamp != null ? firstTimestamp : runningStart;
-          const nextStart = Number.isFinite(nextStarts[i]) ? nextStarts[i] : null;
-          const actualLengthWhole = nextStart != null && Number.isFinite(explicitStart) ? Math.max(0, nextStart - explicitStart) : nominalMeasureLengthWhole;
-          measureTimingCache[i] = {
-            startTimestamp: explicitStart,
-            actualLengthWhole,
-            nominalMeasureLengthWhole,
-            numerator,
-            denominator
-          };
-          runningStart = explicitStart + actualLengthWhole;
-        }
-        ports.restoreToPosition(savedMeasureIndex, savedTimestamp);
-        return measureTimingCache;
-      }
-      return { getInfo, rebuild, getCachedMeasureCount: () => measureTimingCache.length, readCache: () => measureTimingCache.map((entry) => ({ ...entry })) };
-    }
-    PianoTrainerMeasureTiming2.create = create;
-  })(PianoTrainerMeasureTiming || (PianoTrainerMeasureTiming = {}));
-
-  // src/score/musicxml-io.ts
-  var PianoTrainerMusicXmlIO;
-  ((PianoTrainerMusicXmlIO2) => {
-    function sliceView(view) {
-      return view.buffer.slice(view.byteOffset, view.byteOffset + view.byteLength);
-    }
-    function create(ports) {
-      function getScoreFileTypeFromName(fileName = "") {
-        const lowered = String(fileName || "").toLowerCase();
-        if (lowered.endsWith(".mxl")) return "mxl";
-        if (lowered.endsWith(".musicxml")) return "musicxml";
-        return "xml";
-      }
-      function getScoreDisplayTitle(fileName = "", fallback = "Untitled Score") {
-        const base = String(fileName || "").trim();
-        if (!base) return fallback;
-        return base.replace(/\.(musicxml|xml|mxl)$/i, "").trim() || fallback;
-      }
-      function cloneScoreRawData(rawData) {
-        if (typeof rawData === "string") return rawData;
-        if (rawData instanceof ArrayBuffer) return rawData.slice(0);
-        if (ArrayBuffer.isView(rawData)) {
-          return sliceView(rawData);
-        }
-        if (typeof Blob !== "undefined" && rawData instanceof Blob) {
-          return rawData.slice(0, rawData.size, rawData.type || "");
-        }
-        return rawData;
-      }
-      function readUint16LE(bytes, offset) {
-        return (bytes[offset] ?? 0) | (bytes[offset + 1] ?? 0) << 8;
-      }
-      function readUint32LE(bytes, offset) {
-        return ((bytes[offset] ?? 0) | (bytes[offset + 1] ?? 0) << 8 | (bytes[offset + 2] ?? 0) << 16 | (bytes[offset + 3] ?? 0) << 24) >>> 0;
-      }
-      function normalizeZipEntryPath(path) {
-        return String(path || "").replace(/^\/+/, "").replace(/\\/g, "/");
-      }
-      function getZipEntryDepth(path) {
-        const normalized = normalizeZipEntryPath(path);
-        if (!normalized) return Number.MAX_SAFE_INTEGER;
-        return normalized.split("/").length - 1;
-      }
-      async function rawDataToArrayBuffer(rawData) {
-        if (rawData instanceof ArrayBuffer) return rawData;
-        if (ArrayBuffer.isView(rawData)) {
-          return sliceView(rawData);
-        }
-        if (typeof Blob !== "undefined" && rawData instanceof Blob) {
-          return await rawData.arrayBuffer();
-        }
-        return null;
-      }
-      function listZipEntries(arrayBuffer) {
-        const bytes = new Uint8Array(arrayBuffer);
-        const eocdSignature = 101010256;
-        const centralSignature = 33639248;
-        const minEocdSize = 22;
-        const maxCommentLength = 65535;
-        const searchStart = Math.max(0, bytes.length - (minEocdSize + maxCommentLength));
-        let eocdOffset = -1;
-        for (let offset2 = bytes.length - minEocdSize; offset2 >= searchStart; offset2 -= 1) {
-          if (readUint32LE(bytes, offset2) === eocdSignature) {
-            eocdOffset = offset2;
-            break;
-          }
-        }
-        if (eocdOffset < 0) {
-          throw new Error("Could not find the ZIP directory in this MXL file.");
-        }
-        const entryCount = readUint16LE(bytes, eocdOffset + 10);
-        const centralDirectoryOffset = readUint32LE(bytes, eocdOffset + 16);
-        let offset = centralDirectoryOffset;
-        const decoder = new TextDecoder("utf-8");
-        const entries = [];
-        for (let index = 0; index < entryCount; index += 1) {
-          if (offset + 46 > bytes.length || readUint32LE(bytes, offset) !== centralSignature) {
-            throw new Error("Could not read the ZIP entries from this MXL file.");
-          }
-          const compressionMethod = readUint16LE(bytes, offset + 10);
-          const compressedSize = readUint32LE(bytes, offset + 20);
-          const uncompressedSize = readUint32LE(bytes, offset + 24);
-          const fileNameLength = readUint16LE(bytes, offset + 28);
-          const extraFieldLength = readUint16LE(bytes, offset + 30);
-          const fileCommentLength = readUint16LE(bytes, offset + 32);
-          const localHeaderOffset = readUint32LE(bytes, offset + 42);
-          const fileNameStart = offset + 46;
-          const fileNameEnd = fileNameStart + fileNameLength;
-          const fileName = decoder.decode(bytes.slice(fileNameStart, fileNameEnd));
-          entries.push({
-            fileName,
-            compressionMethod,
-            compressedSize,
-            uncompressedSize,
-            localHeaderOffset
-          });
-          offset = fileNameEnd + extraFieldLength + fileCommentLength;
-        }
-        return entries;
-      }
-      async function inflateZipEntryData(compressedBytes, compressionMethod) {
-        if (compressionMethod === 0) {
-          return compressedBytes;
-        }
-        if (compressionMethod !== 8) {
-          throw new Error(`Unsupported MXL compression method: ${compressionMethod}.`);
-        }
-        if (typeof DecompressionStream !== "function") {
-          throw new Error("This browser does not support ZIP decompression for transpose.");
-        }
-        const stream = new Blob([compressedBytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
-        const inflatedBuffer = await new Response(stream).arrayBuffer();
-        return new Uint8Array(inflatedBuffer);
-      }
-      async function extractZipEntryText(arrayBuffer, entry) {
-        const bytes = new Uint8Array(arrayBuffer);
-        const localSignature = 67324752;
-        const localOffset = entry.localHeaderOffset;
-        if (localOffset + 30 > bytes.length || readUint32LE(bytes, localOffset) !== localSignature) {
-          throw new Error(`Could not read ZIP entry "${entry.fileName}".`);
-        }
-        const fileNameLength = readUint16LE(bytes, localOffset + 26);
-        const extraFieldLength = readUint16LE(bytes, localOffset + 28);
-        const dataStart = localOffset + 30 + fileNameLength + extraFieldLength;
-        const dataEnd = dataStart + entry.compressedSize;
-        const compressedBytes = bytes.slice(dataStart, dataEnd);
-        const inflatedBytes = await inflateZipEntryData(compressedBytes, entry.compressionMethod);
-        return new TextDecoder("utf-8").decode(inflatedBytes);
-      }
-      function chooseMusicXmlEntry(entries, containerPath = "") {
-        const normalizedContainerPath = normalizeZipEntryPath(containerPath).toLowerCase();
-        const xmlEntries = entries.filter((entry) => {
-          const normalizedPath = normalizeZipEntryPath(entry.fileName);
-          if (!normalizedPath) return false;
-          if (normalizedPath.toLowerCase() === "meta-inf/container.xml") return false;
-          return /\.(xml|musicxml)$/i.test(normalizedPath);
+  // src/render/horizontal-chunks.ts
+  var PianoTrainerHorizontalChunks;
+  ((PianoTrainerHorizontalChunks2) => {
+    PianoTrainerHorizontalChunks2.MEASURES_PER_CHUNK = 8;
+    PianoTrainerHorizontalChunks2.WINDOW_CHUNKS = 7;
+    PianoTrainerHorizontalChunks2.CACHE_MODELS = 16;
+    function split(path, prefix, loop) {
+      const result = [];
+      for (let start = 0; start < path.length; start += PianoTrainerHorizontalChunks2.MEASURES_PER_CHUNK) {
+        const end = Math.min(path.length, start + PianoTrainerHorizontalChunks2.MEASURES_PER_CHUNK);
+        result.push({
+          key: `${prefix}/${start}`,
+          measures: path.slice(start, end),
+          context: { path, start, end, cyclic: loop },
+          before: path[start - 1] || (loop ? path[path.length - 1] : null),
+          after: path[end] || (loop ? path[0] : null),
+          width: 0,
+          height: 0,
+          offset: 0
         });
-        if (!xmlEntries.length) return null;
-        if (normalizedContainerPath) {
-          const containerMatch = xmlEntries.find((entry) => normalizeZipEntryPath(entry.fileName).toLowerCase() === normalizedContainerPath);
-          if (containerMatch) return containerMatch;
-        }
-        const rootLevelEntry = xmlEntries.filter((entry) => getZipEntryDepth(entry.fileName) === 0).sort((left, right) => normalizeZipEntryPath(left.fileName).localeCompare(normalizeZipEntryPath(right.fileName)))[0];
-        if (rootLevelEntry) return rootLevelEntry;
-        return xmlEntries.sort((left, right) => {
-          const depthDelta = getZipEntryDepth(left.fileName) - getZipEntryDepth(right.fileName);
-          if (depthDelta !== 0) return depthDelta;
-          return normalizeZipEntryPath(left.fileName).localeCompare(normalizeZipEntryPath(right.fileName));
-        })[0];
       }
-      async function extractMusicXmlFromMxl(rawData) {
-        const arrayBuffer = await rawDataToArrayBuffer(rawData);
-        if (!arrayBuffer) return null;
-        const entries = listZipEntries(arrayBuffer);
-        const containerEntry = entries.find((entry) => normalizeZipEntryPath(entry.fileName).toLowerCase() === "meta-inf/container.xml");
-        let containerPath = "";
-        if (containerEntry) {
-          try {
-            const containerText = await extractZipEntryText(arrayBuffer, containerEntry);
-            const match = containerText.match(/full-path\s*=\s*["']([^"']+)["']/i);
-            if (match && match[1]) {
-              containerPath = match[1];
-            }
-          } catch (_) {
-          }
-        }
-        const xmlEntry = chooseMusicXmlEntry(entries, containerPath);
-        if (!xmlEntry) {
-          throw new Error("Could not find the embedded MusicXML inside this MXL file.");
-        }
-        return await extractZipEntryText(arrayBuffer, xmlEntry);
-      }
-      async function getCanonicalMusicXmlForTranspose(rawData, { fileName = "Untitled Score", fileType = "xml" } = {}) {
-        const resolvedType = String(fileType || getScoreFileTypeFromName(fileName || "") || "xml").toLowerCase();
-        if (resolvedType === "xml" || resolvedType === "musicxml") {
-          return typeof rawData === "string" ? rawData : null;
-        }
-        if (resolvedType === "mxl") {
-          try {
-            return await extractMusicXmlFromMxl(rawData);
-          } catch (extractErr) {
-            const normalize = ports.getNormalizer();
-            if (normalize) {
-              try {
-                return await normalize(rawData, { fileName, fileType: resolvedType });
-              } catch (normalizeErr) {
-                ports.warn("Could not normalize MXL to MusicXML for transpose support.", normalizeErr);
-                ports.warn("Direct MXL XML extraction also failed.", extractErr);
-                return null;
-              }
-            }
-            ports.warn("Could not extract MXL to MusicXML for transpose support.", extractErr);
-            return null;
-          }
-        }
-        return null;
-      }
-      function getOsmdLoadPayload(rawData, fileType = "xml", fileName = "Untitled Score") {
-        const resolvedType = String(fileType || getScoreFileTypeFromName(fileName || "") || "xml").toLowerCase();
-        if (resolvedType !== "mxl") return rawData;
-        const resolvedName = fileName || "Untitled Score.mxl";
-        if (rawData instanceof File) return rawData;
-        if (rawData instanceof Blob) {
-          if (typeof File === "function") {
-            return new File([rawData], resolvedName);
-          }
-          Object.assign(rawData, { name: resolvedName });
-          return rawData;
-        }
-        if (rawData instanceof ArrayBuffer) {
-          if (typeof File === "function") {
-            return new File([rawData], resolvedName);
-          }
-          const blob = new Blob([rawData]);
-          Object.assign(blob, { name: resolvedName });
-          return blob;
-        }
-        if (ArrayBuffer.isView(rawData)) {
-          const slice = sliceView(rawData);
-          if (typeof File === "function") {
-            return new File([slice], resolvedName);
-          }
-          const blob = new Blob([slice]);
-          Object.assign(blob, { name: resolvedName });
-          return blob;
-        }
-        return rawData;
-      }
-      return { getScoreFileTypeFromName, getScoreDisplayTitle, cloneScoreRawData, readUint16LE, readUint32LE, normalizeZipEntryPath, getZipEntryDepth, rawDataToArrayBuffer, listZipEntries, inflateZipEntryData, extractZipEntryText, chooseMusicXmlEntry, extractMusicXmlFromMxl, getCanonicalMusicXmlForTranspose, getOsmdLoadPayload };
+      return result;
     }
-    PianoTrainerMusicXmlIO2.create = create;
-  })(PianoTrainerMusicXmlIO || (PianoTrainerMusicXmlIO = {}));
+    function define(trace, loop, currentOccurrence = 0) {
+      const start = trace.measures.findIndex((measure) => measure.sourceMeasureIndex >= loop.min - 1);
+      let stop = trace.measures.findIndex((measure, index) => index >= Math.max(0, start) && measure.sourceMeasureIndex > loop.max - 1);
+      if (stop < 0) stop = trace.measures.length;
+      let initialStop = loop.enabled ? trace.measures.findIndex((measure, index) => index > currentOccurrence && measure.sourceMeasureIndex > loop.max - 1) : -1;
+      if (initialStop < 0) initialStop = trace.measures.length;
+      const initial = split(trace.measures.slice(0, initialStop), "initial", false);
+      const repeated = loop.enabled && start >= 0 ? split(trace.measures.slice(start, stop), "loop", true) : [];
+      let initialWidth = 0, repeatedWidth = 0;
+      function layout() {
+        initialWidth = 0;
+        repeatedWidth = 0;
+        for (const definition of initial) {
+          definition.offset = initialWidth;
+          initialWidth += definition.width;
+        }
+        for (const definition of repeated) {
+          definition.offset = repeatedWidth;
+          repeatedWidth += definition.width;
+        }
+      }
+      function address(index) {
+        if (index < 0 || !Number.isInteger(index)) return null;
+        if (index < initial.length) {
+          const definition2 = initial[index];
+          return { index, iteration: 0, definition: definition2, offset: definition2.offset };
+        }
+        if (!repeated.length) return null;
+        const relative = index - initial.length;
+        const iteration = Math.floor(relative / repeated.length) + 1;
+        const definition = repeated[relative % repeated.length];
+        return { index, iteration, definition, offset: initialWidth + (iteration - 1) * repeatedWidth + definition.offset };
+      }
+      function forEvent(event) {
+        const definitions = event.loopIteration > 0 && repeated.length ? repeated : initial;
+        const index = definitions.findIndex((definition) => definition.measures.some((measure) => measure.measureOccurrenceId === event.measureOccurrenceId));
+        if (index < 0) return null;
+        return address(definitions === initial ? index : initial.length + (event.loopIteration - 1) * repeated.length + index);
+      }
+      return {
+        initial,
+        repeated,
+        layout,
+        address,
+        forEvent,
+        definitions: [...initial, ...repeated],
+        finiteCount: () => repeated.length ? null : initial.length
+      };
+    }
+    PianoTrainerHorizontalChunks2.define = define;
+    function windowAround(index, finiteCount) {
+      const start = Math.max(0, index - 2);
+      return { start, end: Math.min(start + PianoTrainerHorizontalChunks2.WINDOW_CHUNKS - 1, finiteCount === null ? Infinity : finiteCount - 1) };
+    }
+    PianoTrainerHorizontalChunks2.windowAround = windowAround;
+    function compensatedScroll(oldScroll, oldOrigin, newOrigin, zoom) {
+      return oldScroll + (oldOrigin - newOrigin) * zoom;
+    }
+    PianoTrainerHorizontalChunks2.compensatedScroll = compensatedScroll;
+  })(PianoTrainerHorizontalChunks || (PianoTrainerHorizontalChunks = {}));
 
   // src/score/score-traversal.ts
   var PianoTrainerScoreTraversal;
@@ -4185,16 +3943,17 @@
         const timeline = [];
         const safetyMax = 1e5;
         let safety = 0;
-        cursor.reset();
-        while (!cursor.Iterator.EndReached && safety < safetyMax) {
-          const entries = cursor.Iterator.CurrentVoiceEntries;
+        const iterator = ports.getIndependentIterator?.() || (cursor.reset(), cursor.Iterator);
+        while (!iterator.EndReached && safety < safetyMax) {
+          const entries = iterator.CurrentVoiceEntries;
           if (entries && entries.length > 0) {
-            timeline.push(buildTimelineEvent(entries, cursor.Iterator.CurrentMeasureIndex, cursor.Iterator.currentTimeStamp?.RealValue ?? null));
+            timeline.push({ ...buildTimelineEvent(entries, iterator.CurrentMeasureIndex, iterator.currentTimeStamp?.RealValue ?? null), traceStepIndex: safety });
           }
-          cursor.Iterator.moveToNext();
+          iterator.moveToNext();
           safety += 1;
         }
-        restoreToMeasureAndTimestamp(savedMeasureIndex, savedTimestamp);
+        if (!iterator.EndReached) throw new Error(`Preview traversal exceeds ${safetyMax} events.`);
+        if (!ports.getIndependentIterator) restoreToMeasureAndTimestamp(savedMeasureIndex, savedTimestamp);
         state.ledPreviewTimeline = timeline;
         state.ledPreviewTimelineDirty = false;
         state.ledPreviewTraversalIndex = -1;
@@ -4282,6 +4041,70 @@
     PianoTrainerScoreTraversal2.create = create;
   })(PianoTrainerScoreTraversal || (PianoTrainerScoreTraversal = {}));
 
+  // src/score/performance-trace.ts
+  var PianoTrainerPerformanceTrace;
+  ((PianoTrainerPerformanceTrace2) => {
+    function scan(iterator, readNotes, limit = 1e5) {
+      const steps = [];
+      const measures = [];
+      const ordinals = /* @__PURE__ */ new Map();
+      let previousStart = null;
+      while (!iterator.EndReached) {
+        if (steps.length >= limit) throw new Error(`Performance traversal exceeds ${limit} events.`);
+        const sourceMeasureIndex = iterator.CurrentMeasureIndex;
+        const timestampWhole = iterator.currentTimeStamp?.RealValue;
+        const relativeTimestampWhole = iterator.CurrentRelativeInMeasureTimestamp.RealValue;
+        const enrolledStart = iterator.CurrentEnrolledTimestamp.RealValue - relativeTimestampWhole;
+        if (!Number.isFinite(timestampWhole) || !Number.isFinite(relativeTimestampWhole)) throw new Error("Invalid performance timestamp.");
+        let occurrence = measures[measures.length - 1];
+        if (!occurrence || occurrence.sourceMeasureIndex !== sourceMeasureIndex || previousStart === null || Math.abs(previousStart - enrolledStart) > 1e-8 || iterator.JumpOccurred) {
+          occurrence = { measureOccurrenceId: measures.length, sourceMeasureIndex, firstTraceStepIndex: steps.length, lastTraceStepIndex: steps.length };
+          measures.push(occurrence);
+        }
+        previousStart = enrolledStart;
+        const notes = readNotes();
+        const key = `${relativeTimestampWhole}|${notes.map((note) => note.structureKey).join(";")}`;
+        let measureOrdinals = ordinals.get(String(sourceMeasureIndex));
+        if (!measureOrdinals) {
+          measureOrdinals = /* @__PURE__ */ new Map();
+          ordinals.set(String(sourceMeasureIndex), measureOrdinals);
+        }
+        if (!measureOrdinals.has(key)) measureOrdinals.set(key, measureOrdinals.size);
+        steps.push({
+          traceStepIndex: steps.length,
+          measureOccurrenceId: occurrence.measureOccurrenceId,
+          source: { sourceMeasureIndex, timestampWhole, sourceEventOrdinal: measureOrdinals.get(key) },
+          relativeTimestampWhole,
+          notes
+        });
+        occurrence.lastTraceStepIndex = steps.length - 1;
+        iterator.moveToNext();
+      }
+      return { steps, measures };
+    }
+    PianoTrainerPerformanceTrace2.scan = scan;
+  })(PianoTrainerPerformanceTrace || (PianoTrainerPerformanceTrace = {}));
+
+  // src/score/source-note-index.ts
+  var PianoTrainerSourceNoteIndex;
+  ((PianoTrainerSourceNoteIndex2) => {
+    function measure(measure2) {
+      const result = /* @__PURE__ */ new Map();
+      for (const [containerIndex, container] of (measure2.VerticalSourceStaffEntryContainers || []).entries()) {
+        for (const [staffIndex, staff] of container.StaffEntries.entries()) {
+          for (const [voiceIndex, voice] of (staff?.VoiceEntries || []).entries()) {
+            for (const [noteIndex, note] of voice.Notes.entries()) {
+              const structureKey = `${staffIndex}/${containerIndex}/${voiceIndex}/${noteIndex}`;
+              result.set(structureKey, { note, staffIndex, structureKey });
+            }
+          }
+        }
+      }
+      return result;
+    }
+    PianoTrainerSourceNoteIndex2.measure = measure;
+  })(PianoTrainerSourceNoteIndex || (PianoTrainerSourceNoteIndex = {}));
+
   // src/score/osmd-adapter.ts
   var PianoTrainerOsmdAdapter;
   ((PianoTrainerOsmdAdapter2) => {
@@ -4292,6 +4115,8 @@
       let globalStaffIdentityMap = /* @__PURE__ */ new Map();
       let displayedIterator = null;
       let displayedSheet;
+      let trace = null;
+      let traceStepIndex = 0;
       let ownedHook = null;
       function syncSheet() {
         const sheet = ports.getRenderer().Sheet;
@@ -4301,6 +4126,8 @@
           noteSequence = 0;
           noteRefs = /* @__PURE__ */ new WeakMap();
           sourceNotes.clear();
+          trace = null;
+          traceStepIndex = 0;
         }
         return sheet;
       }
@@ -4316,6 +4143,55 @@
       function resolveNote(ref) {
         syncSheet();
         return ref.scoreRevision === scoreRevision ? sourceNotes.get(ref.id) || null : null;
+      }
+      function getIndependentIterator() {
+        const sheet = syncSheet(), settings = sheet?.SheetPlaybackSetting, savedRhythm = settings?.rhythm;
+        const iterator = sheet?.MusicPartManager?.getIterator();
+        if (settings) settings.rhythm = savedRhythm;
+        if (!iterator) throw new Error("This score has no independent performance iterator.");
+        const advance = iterator.moveToNext.bind(iterator);
+        iterator.moveToNext = () => {
+          const rhythm = settings?.rhythm;
+          try {
+            advance();
+          } finally {
+            if (settings) settings.rhythm = rhythm;
+          }
+        };
+        return iterator;
+      }
+      function getPerformanceTrace() {
+        const sheet = syncSheet();
+        if (trace) return trace;
+        const addresses = /* @__PURE__ */ new WeakMap();
+        for (const measure of sheet?.SourceMeasures || []) {
+          for (const { note, staffIndex, structureKey } of PianoTrainerSourceNoteIndex.measure(measure).values()) {
+            addresses.set(note, {
+              sourceNoteRef: noteRef(note),
+              staffIndex,
+              structureKey,
+              midi: note.halfTone + 12,
+              lengthWhole: note.Length?.RealValue ?? 0,
+              rest: !!note.isRest?.()
+            });
+          }
+        }
+        const iterator = getIndependentIterator();
+        trace = PianoTrainerPerformanceTrace.scan(iterator, () => (iterator.CurrentVoiceEntries || []).flatMap((entry) => (entry.Notes || []).map((source) => {
+          const address = addresses.get(source);
+          if (!address) throw new Error("Performance note has no structural address.");
+          return address;
+        })));
+        return trace;
+      }
+      function seekTraceStep(index) {
+        const cursor = ports.getRenderer().cursor;
+        if (!cursor) return;
+        const steps = getPerformanceTrace().steps;
+        if (!Number.isInteger(index) || index < 0 || index >= steps.length) throw new Error("Invalid performance step.");
+        cursor.reset();
+        for (let step = 0; step < index; step++) cursor.Iterator.moveToNext();
+        traceStepIndex = index;
       }
       function detachHook() {
         if (ownedHook && ownedHook.cursor.update === ownedHook.wrapper) ownedHook.cursor.update = ownedHook.original;
@@ -4511,6 +4387,7 @@
       const playbackEntries = /* @__PURE__ */ new WeakMap();
       function rebuildStaffIdentity() {
         globalStaffIdentityMap = /* @__PURE__ */ new Map();
+        trace = null;
         const instruments = ports.getRenderer()?.Sheet?.Instruments || ports.getRenderer()?.Sheet?.instruments || [];
         let nextId = 1;
         instruments.forEach((instrument) => {
@@ -4566,6 +4443,7 @@
         sourceNotes.clear();
         scoreRevision++;
         globalStaffIdentityMap = /* @__PURE__ */ new Map();
+        trace = null;
       }
       return {
         getCombinedTieLength,
@@ -4580,6 +4458,17 @@
         getMeasureBox,
         readPositions,
         dispose,
+        getIndependentIterator,
+        getPerformanceTrace,
+        seekTraceStep,
+        getTraceStepIndex: () => {
+          syncSheet();
+          return traceStepIndex;
+        },
+        getScoreRevision: () => {
+          syncSheet();
+          return scoreRevision;
+        },
         rebuildStaffIdentity,
         resolveStaffIdFromNote,
         resolveStaffIdFromEntry,
@@ -4595,6 +4484,25 @@
           ports.getRenderer().zoom = value;
         },
         getZoom: () => ports.getRenderer().zoom,
+        getHorizontalMetrics: () => {
+          let gap = 0, top = 80, bottom = 80, staffCount = 1;
+          for (const row of ports.getRenderer().GraphicSheet?.MeasureList || []) {
+            const system = row[0]?.ParentStaffLine?.ParentMusicSystem, staves = system?.StaffLines || [];
+            staffCount = Math.max(staffCount, staves.length);
+            for (let i = 1; i < staves.length; i++) gap = Math.max(gap, staves[i].PositionAndShape.AbsolutePosition.y - staves[i - 1].PositionAndShape.AbsolutePosition.y);
+            const firstY = staves[0]?.PositionAndShape.AbsolutePosition.y, lastY = staves[staves.length - 1]?.PositionAndShape.AbsolutePosition.y;
+            if (firstY === void 0 || lastY === void 0 || !system) continue;
+            top = Math.max(top, (firstY - system.PositionAndShape.AbsolutePosition.y) * 10 + 20);
+            bottom = Math.max(bottom, (system.PositionAndShape.AbsolutePosition.y + system.PositionAndShape.Size.height - lastY - 4) * 10 + 20);
+            for (const [staff, measure] of row.entries()) for (const entry of measure.staffEntries || []) for (const voice of entry.graphicalVoiceEntries || []) for (const note of voice.notes || []) {
+              const y = note.PositionAndShape?.AbsolutePosition.y;
+              if (y === void 0) continue;
+              if (staff === 0) top = Math.max(top, (firstY - y) * 10 + 60);
+              if (staff === row.length - 1) bottom = Math.max(bottom, (y - lastY - 4) * 10 + 60);
+            }
+          }
+          return { gap: Math.max(8, gap), top, bottom, staffCount };
+        },
         // Transitional UI wrapper consumes the captured entries only at this boundary.
         legacyEntriesForPlayback: (event) => playbackEntries.get(event),
         hasCursor: () => !!ports.getRenderer().cursor,
@@ -4603,10 +4511,14 @@
         getCurrentTimestamp: () => ports.getRenderer().cursor.Iterator.currentTimeStamp.RealValue,
         getPlaybackTempo: (index) => ports.getRenderer().Sheet.SourceMeasures[index]?.TempoInBPM,
         advance: () => {
+          syncSheet();
           ports.getRenderer().cursor.Iterator.moveToNext();
+          traceStepIndex++;
         },
         reset: () => {
+          syncSheet();
           ports.getRenderer().cursor.reset();
+          traceStepIndex = 0;
         },
         updateCursor: () => {
           ports.getRenderer().cursor.update();
@@ -4649,6 +4561,1284 @@
     }
     PianoTrainerOsmdAdapter2.create = create;
   })(PianoTrainerOsmdAdapter || (PianoTrainerOsmdAdapter = {}));
+
+  // src/score/horizontal-display-adapter.ts
+  var PianoTrainerHorizontalDisplay;
+  ((PianoTrainerHorizontalDisplay2) => {
+    function create(host, renderer, occurrences, trace) {
+      const adapter = PianoTrainerOsmdAdapter.create({
+        getRenderer: () => renderer,
+        describeNote: () => ({}),
+        describeGraphicalNote: () => ({}),
+        debugLog: () => {
+        },
+        reportError: (message, error) => console.error(message, error)
+      });
+      const geometry = PianoTrainerGeometry.create({
+        score: adapter,
+        document,
+        getSvg: () => host.querySelector("svg"),
+        getComputedStyle: (node) => getComputedStyle(node),
+        clearOverlays: () => {
+        },
+        fallbackHands: () => ({ left: 2, right: 1 }),
+        describeNote: () => ({}),
+        describeGraphicalNote: () => ({}),
+        debugLog: () => {
+        }
+      });
+      const notes = /* @__PURE__ */ new Map();
+      const measureIndices = /* @__PURE__ */ new Map();
+      let disposed = false;
+      function validate() {
+        notes.clear();
+        measureIndices.clear();
+        const measures = renderer.Sheet?.SourceMeasures || [];
+        if (measures.length !== occurrences.length) throw new Error("Display measure count does not match the performance path.");
+        for (const [index, occurrence] of occurrences.entries()) {
+          measureIndices.set(occurrence.measureOccurrenceId, index);
+          const displayNotes = PianoTrainerSourceNoteIndex.measure(measures[index]);
+          for (let stepIndex = occurrence.firstTraceStepIndex; stepIndex <= occurrence.lastTraceStepIndex; stepIndex++) {
+            for (const source of trace.steps[stepIndex].notes) {
+              const mapped = displayNotes.get(source.structureKey);
+              if (!mapped || mapped.note.halfTone + 12 !== source.midi || !!mapped.note.isRest?.() !== source.rest || Math.abs((mapped.note.Length?.RealValue ?? 0) - source.lengthWhole) > 1e-8) {
+                throw new Error(`Ambiguous display note mapping at source measure ${occurrence.sourceMeasureIndex}, address ${source.structureKey}.`);
+              }
+              notes.set(`${occurrence.measureOccurrenceId}/${source.sourceNoteRef.id}`, { note: mapped.note, measure: index, staff: source.staffIndex });
+            }
+          }
+        }
+      }
+      async function load(xml, zoom, staffGap) {
+        await renderer.load(xml);
+        if (disposed) return;
+        adapter.setLayout(true, adapter.getDefaults());
+        if (staffGap !== void 0) {
+          renderer.EngravingRules.MinimumStaffLineDistance = staffGap - 4;
+          renderer.EngravingRules.MinSkyBottomDistBetweenStaves = -1e5;
+        }
+        adapter.setZoom(zoom);
+        renderer.render();
+        if (renderer.cursor?.cursorElement) renderer.cursor.cursorElement.style.display = "none";
+        validate();
+      }
+      function anchor(occurrenceId, ref) {
+        const mapped = notes.get(`${occurrenceId}/${ref.id}`);
+        return mapped ? geometry.getNoteAnchor(mapped.note, mapped.measure, mapped.staff) : null;
+      }
+      function box(occurrenceId, staff = 0) {
+        const index = measureIndices.get(occurrenceId);
+        return index === void 0 ? null : geometry.getMeasureBox(index, staff);
+      }
+      function eventAnchor(step) {
+        const points = step.notes.map((note) => anchor(step.measureOccurrenceId, note.sourceNoteRef)).filter((point) => !!point);
+        const bounds = box(step.measureOccurrenceId);
+        if (!bounds) return null;
+        let x = points.length ? Math.min(...points.map((point) => point.x)) : bounds.x;
+        if (!points.length) {
+          const occurrence = occurrences.find((measure) => measure.measureOccurrenceId === step.measureOccurrenceId);
+          let before = { time: 0, x: bounds.x }, after = { time: 1, x: bounds.x + bounds.width };
+          for (let index = occurrence.firstTraceStepIndex; index <= occurrence.lastTraceStepIndex; index++) {
+            const candidate = trace.steps[index], anchors = candidate.notes.map((note) => anchor(step.measureOccurrenceId, note.sourceNoteRef)).filter((point2) => !!point2);
+            if (!anchors.length) continue;
+            const point = { time: candidate.relativeTimestampWhole, x: Math.min(...anchors.map((anchor2) => anchor2.x)) };
+            if (point.time <= step.relativeTimestampWhole) before = point;
+            else {
+              after = point;
+              break;
+            }
+          }
+          after.time = Math.max(after.time, step.relativeTimestampWhole);
+          const fraction = after.time > before.time ? (step.relativeTimestampWhole - before.time) / (after.time - before.time) : 0;
+          x = before.x + Math.max(0, Math.min(1, fraction)) * (after.x - before.x);
+        }
+        return {
+          x,
+          y: bounds.y,
+          height: bounds.height
+        };
+      }
+      function dispose() {
+        disposed = true;
+        adapter.dispose();
+        notes.clear();
+        measureIndices.clear();
+        geometry.invalidate();
+        host.replaceChildren();
+        host.remove();
+      }
+      return {
+        load,
+        anchor,
+        box,
+        eventAnchor,
+        dispose,
+        getSvg: () => geometry.getSvg(),
+        staffTopY: (occurrenceId, staff) => {
+          const index = measureIndices.get(occurrenceId);
+          return index === void 0 ? null : adapter.getStaffTopY(index, staff);
+        },
+        readResources: () => ({ mappedNotes: notes.size, measures: measureIndices.size }),
+        width: () => geometry.getSvg()?.getBoundingClientRect().width || 0,
+        height: () => geometry.getSvg()?.getBoundingClientRect().height || 0
+      };
+    }
+    PianoTrainerHorizontalDisplay2.create = create;
+  })(PianoTrainerHorizontalDisplay || (PianoTrainerHorizontalDisplay = {}));
+
+  // src/score/unfold-musicxml.ts
+  var PianoTrainerUnfoldMusicXml;
+  ((PianoTrainerUnfoldMusicXml2) => {
+    const navigationAttributes = ["dacapo", "dalsegno", "tocoda", "fine", "segno", "coda", "forward-repeat"];
+    const children = (node, name) => Array.from(node.children).filter((child) => child.localName === name);
+    const attributeKey = (node) => `${node.localName}/${node.getAttribute("number") || ""}`;
+    const serialize = (document2) => {
+      const xml = new XMLSerializer().serializeToString(document2);
+      return xml.startsWith("<?xml") ? xml : `<?xml version="1.0" encoding="UTF-8"?>
+${xml}`;
+    };
+    function displayIds(measure, partId, occurrence) {
+      const prefix = `display-${partId}-measure-${occurrence}`;
+      measure.setAttribute("id", prefix);
+      for (const [index, node] of Array.from(measure.querySelectorAll("note[id], direction[id], barline[id], harmony[id]")).entries()) node.setAttribute("id", `${prefix}-${node.localName}-${index}`);
+    }
+    function stripNavigation(measure) {
+      for (const node of Array.from(measure.querySelectorAll("repeat, ending, segno, coda, multiple-rest"))) node.remove();
+      for (const print of children(measure, "print")) print.remove();
+      for (const sound of Array.from(measure.querySelectorAll("sound"))) {
+        for (const attribute of navigationAttributes) sound.removeAttribute(attribute);
+      }
+      for (const words of Array.from(measure.querySelectorAll("direction-type > words"))) {
+        if (/^\s*(?:D\.?\s*[CS]\.?|Da\s+Capo|Dal\s+Segno|(?:To\s+)?Coda|Fine)(?:\s|$)/i.test(words.textContent || "")) words.remove();
+      }
+      for (const type of Array.from(measure.querySelectorAll("direction-type"))) if (!type.children.length) type.remove();
+      for (const direction of children(measure, "direction")) {
+        const meaningfulSound = direction.querySelector("sound")?.attributes.length;
+        if (!direction.querySelector("direction-type") && !meaningfulSound) direction.remove();
+      }
+    }
+    function contexts(measures) {
+      const result = [];
+      const attributes = /* @__PURE__ */ new Map();
+      let tempo = null;
+      for (const measure of measures) {
+        result.push({ attributes: new Map(attributes), tempo });
+        for (const block of children(measure, "attributes")) {
+          for (const attribute of Array.from(block.children)) {
+            if (!["measure-style"].includes(attribute.localName)) attributes.set(attributeKey(attribute), attribute);
+          }
+        }
+        for (const direction of children(measure, "direction")) {
+          if (direction.querySelector("sound[tempo], metronome")) tempo = direction;
+        }
+      }
+      return result;
+    }
+    function restoreContext(document2, measure, context) {
+      const block = document2.createElement("attributes");
+      const order = ["divisions", "key", "time", "staves", "part-symbol", "instruments", "clef", "staff-details", "transpose", "directive"];
+      for (const name of order) for (const attribute of context.attributes.values()) {
+        if (attribute.localName === name) block.appendChild(attribute.cloneNode(true));
+      }
+      if (block.children.length) measure.insertBefore(block, measure.firstChild);
+      if (context.tempo) {
+        const direction = context.tempo.cloneNode(true);
+        for (const type of children(direction, "direction-type")) {
+          for (const child of Array.from(type.children)) if (child.localName !== "metronome") child.remove();
+          if (!type.children.length) type.remove();
+        }
+        const sound = direction.querySelector("sound");
+        if (sound) {
+          for (const attribute of Array.from(sound.attributes)) if (attribute.name !== "tempo") sound.removeAttribute(attribute.name);
+        }
+        direction.querySelector("offset")?.remove();
+        measure.insertBefore(direction, block.nextSibling);
+      }
+    }
+    function repairConnections(part, occurrences) {
+      const spans = [];
+      const pendingTies = /* @__PURE__ */ new Map();
+      const pendingLines = /* @__PURE__ */ new Map();
+      let divisions = 1, elapsed = 0, meter = 4;
+      function line(link, key, index, start, stop) {
+        const prior = pendingLines.get(key);
+        if (stop) {
+          if (prior) {
+            spans.push({ start: prior.index, end: index });
+            pendingLines.delete(key);
+          } else link.remove();
+        }
+        if (start) {
+          pendingLines.get(key)?.link.remove();
+          pendingLines.set(key, { link, index });
+        }
+      }
+      for (const [index, measure] of children(part, "measure").entries()) {
+        if (index && occurrences[index].sourceMeasureIndex <= occurrences[index - 1].sourceMeasureIndex) {
+          for (const entry of pendingLines.values()) entry.link.remove();
+          pendingLines.clear();
+        }
+        const voices = /* @__PURE__ */ new Map();
+        let time = 0, duration = 0;
+        for (const node of Array.from(measure.children)) {
+          if (node.localName === "attributes") {
+            divisions = Number(node.querySelector("divisions")?.textContent) || divisions;
+            const signature = node.querySelector("time");
+            if (signature?.querySelector("beats") && signature.querySelector("beat-type")) meter = Number(signature.querySelector("beats").textContent) * 4 / Number(signature.querySelector("beat-type").textContent);
+          } else if (node.localName === "backup") time -= Number(node.querySelector("duration")?.textContent) / divisions;
+          else if (node.localName === "forward") time += Number(node.querySelector("duration")?.textContent) / divisions;
+          else if (node.localName === "note") {
+            const voice = node.querySelector("voice")?.textContent || `staff-${node.querySelector("staff")?.textContent || "1"}`;
+            const groups = voices.get(voice) || [], chord = !!node.querySelector("chord"), grace = !!node.querySelector("grace");
+            if (chord && groups.length) groups[groups.length - 1].notes.push(node);
+            else groups.push({ time, grace, notes: [node] });
+            voices.set(voice, groups);
+            if (!chord && !grace) time += (Number(node.querySelector("duration")?.textContent) || 0) / divisions;
+          }
+          duration = Math.max(duration, time);
+          const staff = node.querySelector("staff")?.textContent || "1";
+          for (const link of Array.from(node.querySelectorAll("wedge, pedal, dashes, bracket"))) {
+            const type = link.getAttribute("type");
+            line(
+              link,
+              `${link.localName}/${staff}/${link.getAttribute("number") || "1"}`,
+              index,
+              ["start", "crescendo", "diminuendo", "sostenuto", "resume", "change"].includes(type || ""),
+              ["stop", "discontinue", "change"].includes(type || "")
+            );
+          }
+        }
+        for (const [voice, groups] of voices) {
+          groups.sort((a, b) => a.time - b.time || Number(b.grace) - Number(a.grace));
+          for (const group of groups) {
+            const prior = pendingTies.get(voice) || /* @__PURE__ */ new Map();
+            const next = /* @__PURE__ */ new Map();
+            for (const note of group.notes) {
+              const pitch = note.querySelector("pitch")?.textContent?.replace(/\s/g, "") || "rest";
+              const ties = Array.from(note.querySelectorAll("tie, tied")), stops = ties.filter((tie) => tie.getAttribute("type") === "stop");
+              const pending = prior.get(pitch);
+              if (stops.length && pending && Math.abs(pending.end - elapsed - group.time) < 1e-8) {
+                spans.push({ start: pending.index, end: index });
+                prior.delete(pitch);
+              } else stops.forEach((tie) => tie.remove());
+              const starts = ties.filter((tie) => tie.getAttribute("type") === "start");
+              if (starts.length) next.set(pitch, { links: starts, index, end: elapsed + group.time + (Number(note.querySelector("duration")?.textContent) || 0) / divisions });
+              for (const slur of Array.from(note.querySelectorAll("slur"))) {
+                line(
+                  slur,
+                  `slur/${voice}/${slur.getAttribute("number") || "1"}`,
+                  index,
+                  slur.getAttribute("type") === "start",
+                  slur.getAttribute("type") === "stop"
+                );
+              }
+              for (const extend of Array.from(note.querySelectorAll("lyric > extend"))) {
+                line(
+                  extend,
+                  `lyric/${voice}/${extend.parentElement?.getAttribute("number") || "1"}`,
+                  index,
+                  extend.getAttribute("type") === "start",
+                  extend.getAttribute("type") === "stop"
+                );
+              }
+            }
+            for (const entry of prior.values()) entry.links.forEach((link) => link.remove());
+            pendingTies.set(voice, next);
+          }
+        }
+        elapsed += measure.getAttribute("implicit") === "yes" ? duration : Math.max(duration, meter);
+      }
+      for (const pending of pendingTies.values()) for (const entry of pending.values()) entry.links.forEach((link) => link.remove());
+      for (const entry of pendingLines.values()) entry.link.remove();
+      return spans;
+    }
+    function unfold(xml, occurrences, { drawTitle = true, repairLinks = true } = {}) {
+      const document2 = new DOMParser().parseFromString(xml, "application/xml");
+      if (document2.querySelector("parsererror") || document2.documentElement.localName !== "score-partwise") throw new Error("Horizontal display requires valid partwise MusicXML.");
+      if (!occurrences.length) throw new Error("The performance path is empty.");
+      if (!drawTitle) for (const node of Array.from(document2.querySelectorAll("work, movement-title, identification, credit"))) node.remove();
+      for (const part of children(document2.documentElement, "part")) {
+        const sourceMeasures = children(part, "measure"), inherited = contexts(sourceMeasures);
+        const copies = [];
+        for (const [index, occurrence] of occurrences.entries()) {
+          const source = sourceMeasures[occurrence.sourceMeasureIndex];
+          if (!source) throw new Error(`Part ${part.getAttribute("id")} is missing source measure ${occurrence.sourceMeasureIndex}.`);
+          const measure = source.cloneNode(true);
+          stripNavigation(measure);
+          displayIds(measure, part.getAttribute("id") || "part", occurrence.measureOccurrenceId);
+          if (index === 0 || occurrences[index - 1].sourceMeasureIndex + 1 !== occurrence.sourceMeasureIndex) {
+            restoreContext(document2, measure, inherited[occurrence.sourceMeasureIndex]);
+          }
+          copies.push(measure);
+        }
+        sourceMeasures.forEach((measure) => measure.remove());
+        copies.forEach((measure) => part.appendChild(measure));
+        if (repairLinks) repairConnections(part, occurrences);
+      }
+      return { xml: serialize(document2), measures: occurrences };
+    }
+    PianoTrainerUnfoldMusicXml2.unfold = unfold;
+    function prepare(xml, path, cyclic) {
+      const occurrences = cyclic ? [...path, ...path, ...path] : [...path];
+      const document2 = new DOMParser().parseFromString(unfold(xml, occurrences, { drawTitle: false }).xml, "application/xml");
+      const parts = children(document2.documentElement, "part");
+      const spans = parts.flatMap((part) => repairConnections(part, occurrences));
+      const inherited = parts.map((part) => contexts(children(part, "measure")));
+      return { excerpt(start, end) {
+        if (cyclic) {
+          start += path.length;
+          end += path.length;
+        }
+        let left = Math.max(0, start - 1), right = Math.min(occurrences.length, end + 1);
+        for (const span of spans) if (span.start < end && span.end >= start) {
+          left = Math.min(left, span.start);
+          right = Math.max(right, span.end + 1);
+        }
+        const excerpt = document2.cloneNode(true);
+        const selected = occurrences.slice(left, right).map((occurrence, index) => ({
+          ...occurrence,
+          measureOccurrenceId: left + index >= start && left + index < end ? occurrence.measureOccurrenceId : -index - 1
+        }));
+        for (const [partIndex, part] of children(excerpt.documentElement, "part").entries()) {
+          const measures = children(part, "measure");
+          measures.forEach((measure, index) => {
+            if (index < left || index >= right) measure.remove();
+            else displayIds(measure, part.getAttribute("id") || "part", selected[index - left].measureOccurrenceId);
+          });
+          restoreContext(excerpt, measures[left], inherited[partIndex][left]);
+        }
+        return { xml: serialize(excerpt), measures: selected };
+      } };
+    }
+    PianoTrainerUnfoldMusicXml2.prepare = prepare;
+  })(PianoTrainerUnfoldMusicXml || (PianoTrainerUnfoldMusicXml = {}));
+
+  // src/render/horizontal-chunk-model.ts
+  var PianoTrainerHorizontalChunkModel;
+  ((PianoTrainerHorizontalChunkModel2) => {
+    const contexts = /* @__PURE__ */ new WeakMap();
+    function cropGraphics(source, copy2, left, right) {
+      const inverse = source.getScreenCTM()?.inverse();
+      if (!inverse) return;
+      const selector = "path,text,rect,line,circle,ellipse,polygon,polyline,image,use";
+      const originals = source.querySelectorAll(selector), copies = copy2.querySelectorAll(selector);
+      originals.forEach((element, index) => {
+        if (element.closest("defs")) return;
+        const transform = element.getScreenCTM();
+        if (!transform) return;
+        const bounds = element.getBBox(), matrix = inverse.multiply(transform);
+        const points = [[bounds.x, bounds.y], [bounds.x + bounds.width, bounds.y], [bounds.x, bounds.y + bounds.height], [bounds.x + bounds.width, bounds.y + bounds.height]].map(([x, y]) => new DOMPoint(x, y).matrixTransform(matrix));
+        if (Math.max(...points.map((point) => point.x)) < left - 1 || Math.min(...points.map((point) => point.x)) > right + 1) copies[index]?.remove();
+      });
+      for (const group of Array.from(copy2.querySelectorAll("g")).reverse()) if (!group.children.length) group.remove();
+    }
+    async function load(xml, definition, trace, zoom, isActive, metrics) {
+      const context = definition.context;
+      let prepared = contexts.get(context.path);
+      if (!prepared) {
+        prepared = PianoTrainerUnfoldMusicXml.prepare(xml, context.path, context.cyclic);
+        contexts.set(context.path, prepared);
+      }
+      const excerpt = prepared.excerpt(context.start, context.end);
+      const host = document.createElement("div");
+      host.style.cssText = "position:fixed;left:-100000px;top:0;width:1200px;";
+      document.body.append(host);
+      const block = PianoTrainerHorizontalDisplay.create(
+        host,
+        new opensheetmusicdisplay.OpenSheetMusicDisplay(host, { autoResize: false, drawTitle: false }),
+        excerpt.measures,
+        trace
+      );
+      try {
+        await block.load(excerpt.xml, zoom, metrics.gap);
+        if (!isActive()) throw new DOMException("Expired horizontal chunk.", "AbortError");
+        const first = block.box(definition.measures[0].measureOccurrenceId), last = block.box(definition.measures[definition.measures.length - 1].measureOccurrenceId);
+        const svg = block.getSvg();
+        if (!svg || !first || !last) throw new Error("Missing rendered chunk geometry.");
+        const width = last.x + last.width - first.x, height = (metrics.staffCount - 1) * metrics.gap * 10 + 40 + metrics.top + metrics.bottom;
+        const top = first.y + 40 - metrics.top;
+        const template = svg.cloneNode(true);
+        cropGraphics(svg, template, first.x, first.x + width);
+        template.setAttribute("viewBox", `${first.x} ${top} ${width} ${height}`);
+        template.setAttribute("width", String(width));
+        template.setAttribute("height", String(height));
+        template.style.cssText = "overflow:hidden;";
+        const model = { template, width, height, anchors: /* @__PURE__ */ new Map(), boxes: /* @__PURE__ */ new Map(), events: /* @__PURE__ */ new Map(), staffTops: /* @__PURE__ */ new Map() };
+        for (const occurrence of definition.measures) {
+          const box = block.box(occurrence.measureOccurrenceId);
+          model.boxes.set(occurrence.measureOccurrenceId, { ...box, x: box.x - first.x, y: box.y - top });
+          for (let index = occurrence.firstTraceStepIndex; index <= occurrence.lastTraceStepIndex; index++) {
+            const step = trace.steps[index], point = block.eventAnchor(step);
+            if (!point) throw new Error("Missing performed event anchor in chunk.");
+            model.events.set(index, { ...point, x: point.x - first.x, y: point.y - top });
+            for (const note of step.notes) {
+              const anchor = block.anchor(occurrence.measureOccurrenceId, note.sourceNoteRef);
+              if (!anchor) throw new Error("Missing display note anchor in chunk.");
+              model.anchors.set(`${occurrence.measureOccurrenceId}/${note.sourceNoteRef.id}`, { x: anchor.x - first.x, y: anchor.y - top });
+              const staffTop = block.staffTopY(occurrence.measureOccurrenceId, note.staffIndex);
+              if (staffTop !== null) model.staffTops.set(`${occurrence.measureOccurrenceId}/${note.staffIndex}`, staffTop - top);
+            }
+          }
+        }
+        definition.width = width;
+        definition.height = height;
+        return model;
+      } finally {
+        block.dispose();
+      }
+    }
+    PianoTrainerHorizontalChunkModel2.load = load;
+    function copy(model, instanceId) {
+      const svg = model.template.cloneNode(true);
+      const ids = /* @__PURE__ */ new Map();
+      for (const [index, element] of [svg, ...Array.from(svg.querySelectorAll("[id]"))].entries()) {
+        if (!element.id) {
+          element.removeAttribute("id");
+          continue;
+        }
+        const prior = element.id, next = `${instanceId}-node-${index}-${prior}`;
+        if (!ids.has(prior)) ids.set(prior, next);
+        element.id = next;
+      }
+      for (const element of [svg, ...Array.from(svg.querySelectorAll("*"))]) for (const attribute of Array.from(element.attributes)) {
+        let value = attribute.value;
+        value = value.replace(/url\(#([^)]+)\)/g, (match, id) => ids.has(id) ? `url(#${ids.get(id)})` : match);
+        if (value.startsWith("#") && ids.has(value.slice(1))) value = `#${ids.get(value.slice(1))}`;
+        if (value !== attribute.value) element.setAttribute(attribute.name, value);
+      }
+      return svg;
+    }
+    PianoTrainerHorizontalChunkModel2.copy = copy;
+  })(PianoTrainerHorizontalChunkModel || (PianoTrainerHorizontalChunkModel = {}));
+
+  // src/render/horizontal-score.ts
+  var PianoTrainerHorizontalScore;
+  ((PianoTrainerHorizontalScore2) => {
+    function create(ports) {
+      const ns = "http://www.w3.org/2000/svg";
+      const sourceHost = document.createElement("div");
+      sourceHost.id = "source-score";
+      ports.container.append(sourceHost);
+      const host = document.createElement("div");
+      host.className = "horizontal-score-content";
+      host.style.position = "relative";
+      host.hidden = true;
+      ports.container.append(host);
+      const svg = document.createElementNS(ns, "svg");
+      svg.classList.add("pt-horizontal-canvas");
+      svg.style.display = "block";
+      host.append(svg);
+      const cursor = document.createElement("div");
+      cursor.className = "horizontal-score-cursor pt-performance-cursor";
+      cursor.setAttribute("aria-hidden", "true");
+      host.append(cursor);
+      let xml = null, trace = null;
+      let sequence = null;
+      const cache = /* @__PURE__ */ new Map();
+      const requests = /* @__PURE__ */ new WeakMap();
+      let renderQueue = Promise.resolve();
+      const mounted = /* @__PURE__ */ new Map();
+      const yields = /* @__PURE__ */ new Map();
+      let generation = 0, horizontal = false, disposed = false, loadedZoom = 1;
+      let loadedMetrics = { gap: 8, top: 80, bottom: 80, staffCount: 1 };
+      let preparedKey = "", origin = 0, windowStart = -1, windowEnd = -1, rendering = 0;
+      let pending = null;
+      let pendingWindow = null;
+      let loading = false;
+      let rebasing = false;
+      let wasFollowing = ports.follows();
+      let lastRebase = null;
+      function yieldToPlayback() {
+        return new Promise((resolve) => {
+          const id = window.setTimeout(() => {
+            yields.delete(id);
+            resolve();
+          }, 0);
+          yields.set(id, resolve);
+        });
+      }
+      function cancelYields() {
+        for (const [id, resolve] of yields) {
+          window.clearTimeout(id);
+          resolve();
+        }
+        yields.clear();
+      }
+      function desiredWindow(index, navigate = false) {
+        const result = PianoTrainerHorizontalChunks.windowAround(index, sequence?.finiteCount() ?? null);
+        const event = ports.currentEvent();
+        if (!navigate && mounted.size && sequence && event && (event.reason === "advance" || event.reason === "loop")) {
+          const worldLeft = ports.area.scrollLeft / loadedZoom + origin;
+          if ((sequence.address(result.start)?.offset || 0) > worldLeft) {
+            let low = 0, high = result.start;
+            while (low < high) {
+              const middle = Math.ceil((low + high) / 2);
+              if ((sequence.address(middle)?.offset || 0) <= worldLeft) low = middle;
+              else high = middle - 1;
+            }
+            result.start = low;
+            result.end = Math.min(low + PianoTrainerHorizontalChunks.WINDOW_CHUNKS - 1, (sequence.finiteCount() ?? Infinity) - 1);
+          }
+        }
+        return result;
+      }
+      function showSource() {
+        sourceHost.style.cssText = "";
+        sourceHost.removeAttribute("aria-hidden");
+        ports.container.prepend(sourceHost);
+        host.hidden = true;
+      }
+      function showDisplay() {
+        sourceHost.style.cssText = `position:fixed;left:-100000px;top:0;width:${Math.max(900, ports.area.clientWidth)}px;opacity:0;pointer-events:none;`;
+        sourceHost.setAttribute("aria-hidden", "true");
+        document.body.append(sourceHost);
+        host.hidden = false;
+      }
+      function clearWindow() {
+        for (const node of mounted.values()) node.svg.remove();
+        mounted.clear();
+        windowStart = windowEnd = -1;
+        origin = 0;
+      }
+      function trimCache() {
+        const pinned = new Set([...mounted.values()].map((node) => node.key));
+        const current = ports.currentEvent(), address = current && sequence?.forEvent(current);
+        if (address) pinned.add(address.definition.key);
+        for (const key of cache.keys()) {
+          if (cache.size <= PianoTrainerHorizontalChunks.CACHE_MODELS) break;
+          if (!pinned.has(key)) cache.delete(key);
+        }
+      }
+      async function model(definition, token, target = cache, zoom = loadedZoom, metrics = loadedMetrics) {
+        const existing = target.get(definition.key);
+        if (existing) {
+          target.delete(definition.key);
+          target.set(definition.key, existing);
+          return existing;
+        }
+        if (!xml || !trace) throw new Error("No horizontal score model.");
+        let inflight = requests.get(target);
+        if (!inflight) {
+          inflight = /* @__PURE__ */ new Map();
+          requests.set(target, inflight);
+        }
+        const requestKey = `${token}/${zoom}/${definition.key}`, prior = inflight.get(requestKey);
+        if (prior) return prior;
+        const currentXml = xml, currentTrace = trace;
+        const task = renderQueue.then(async () => {
+          if (disposed || token !== generation) throw new DOMException("Expired horizontal model.", "AbortError");
+          rendering++;
+          try {
+            const result = await PianoTrainerHorizontalChunkModel.load(currentXml, definition, currentTrace, zoom, () => !disposed && token === generation, metrics);
+            if (disposed || token !== generation) throw new DOMException("Expired horizontal model.", "AbortError");
+            target.set(definition.key, result);
+            if (target === cache) trimCache();
+            else while (target.size > PianoTrainerHorizontalChunks.CACHE_MODELS) target.delete(target.keys().next().value);
+            return result;
+          } finally {
+            rendering--;
+          }
+        });
+        renderQueue = task.catch(() => {
+        });
+        inflight.set(requestKey, task);
+        try {
+          return await task;
+        } finally {
+          inflight.delete(requestKey);
+        }
+      }
+      function localPoint(ref, event) {
+        const address = sequence?.forEvent(event), rendered = address && cache.get(address.definition.key);
+        if (!address || !rendered) return null;
+        const point = rendered.anchors.get(`${event.measureOccurrenceId}/${ref.id}`);
+        return point ? { x: address.offset - origin + point.x, y: point.y } : null;
+      }
+      function anchor(ref, event = ports.currentEvent()) {
+        return horizontal && preparedKey && event ? localPoint(ref, event) : null;
+      }
+      function paintCursor() {
+        const event = ports.currentEvent(), address = event && sequence?.forEvent(event);
+        const point = event && address && cache.get(address.definition.key)?.events.get(event.traceStepIndex);
+        if (!event || !address || !point) return;
+        const worldX = address.offset + point.x;
+        cursor.style.left = `${(worldX - origin) * loadedZoom - 5}px`;
+        cursor.style.top = `${point.y * loadedZoom}px`;
+        cursor.style.height = `${point.height * loadedZoom}px`;
+        cursor.dataset.eventId = String(event.eventId);
+        cursor.dataset.logicalX = String(worldX * loadedZoom);
+      }
+      function commitWindow(index, immediate = false, navigate = false) {
+        if (!sequence) return false;
+        const window2 = desiredWindow(index, navigate);
+        if (window2.start === windowStart && window2.end === windowEnd) {
+          paintCursor();
+          return true;
+        }
+        const addresses = [];
+        for (let i = window2.start; i <= window2.end; i++) {
+          const address = sequence.address(i);
+          if (!address || !cache.has(address.definition.key)) return false;
+          addresses.push(address);
+        }
+        if (!addresses.length) return false;
+        const priorOrigin = origin, scroll = ports.area.scrollLeft;
+        const event = ports.currentEvent(), activeAddress = event && sequence.forEvent(event);
+        const activePoint = event && activeAddress && cache.get(activeAddress.definition.key)?.events.get(event.traceStepIndex);
+        const before = activeAddress && activePoint ? (activeAddress.offset + activePoint.x - priorOrigin) * loadedZoom - scroll : null;
+        origin = addresses[0].offset;
+        const end = addresses[addresses.length - 1], width = end.offset + end.definition.width - origin;
+        const height = Math.max(...addresses.map((address) => address.definition.height));
+        rebasing = true;
+        for (const [i, node] of mounted) if (i < window2.start || i > window2.end) {
+          node.svg.remove();
+          mounted.delete(i);
+        }
+        for (const address of addresses) {
+          let node = mounted.get(address.index);
+          if (!node) {
+            const copy = PianoTrainerHorizontalChunkModel.copy(cache.get(address.definition.key), `chunk-${generation}-${address.index}`);
+            copy.dataset.chunkIndex = String(address.index);
+            copy.dataset.loopIteration = String(address.iteration);
+            svg.insertBefore(copy, svg.firstChild);
+            node = { key: address.definition.key, svg: copy };
+            mounted.set(address.index, node);
+          }
+          node.svg.setAttribute("x", String(address.offset - origin));
+          node.svg.setAttribute("y", "0");
+        }
+        const tail = ports.area.clientWidth * 0.7 / loadedZoom;
+        svg.setAttribute("viewBox", `0 0 ${width + tail} ${height}`);
+        svg.setAttribute("width", String((width + tail) * loadedZoom));
+        svg.setAttribute("height", String(height * loadedZoom));
+        host.style.width = `${(width + tail) * loadedZoom}px`;
+        host.style.overflow = "hidden";
+        windowStart = window2.start;
+        windowEnd = window2.end;
+        paintCursor();
+        showDisplay();
+        ports.area.scrollLeft = Math.max(0, PianoTrainerHorizontalChunks.compensatedScroll(scroll, priorOrigin, origin, loadedZoom));
+        if (before !== null && activeAddress && activePoint && priorOrigin !== origin) {
+          const after = (activeAddress.offset + activePoint.x - origin) * loadedZoom - ports.area.scrollLeft;
+          lastRebase = { before, after, error: Math.abs(before - after) };
+        }
+        rebasing = false;
+        trimCache();
+        ports.refreshed(immediate);
+        return true;
+      }
+      async function ensureWindow(index, immediate = false, navigate = false) {
+        if (commitWindow(index, immediate, navigate)) return;
+        if (pendingWindow) {
+          const token2 = generation;
+          try {
+            await pendingWindow;
+          } catch (error) {
+            if (token2 === generation && !disposed) ports.reportError(error);
+            return;
+          }
+          if (token2 !== generation || disposed || commitWindow(index, immediate, navigate)) return;
+        }
+        const token = generation, window2 = desiredWindow(index, navigate);
+        const task = (async () => {
+          for (let i = window2.start; i <= window2.end; i++) {
+            const address = sequence?.address(i);
+            if (address) await model(address.definition, token);
+          }
+          if (!disposed && token === generation) commitWindow(index, immediate, navigate);
+        })();
+        pendingWindow = task;
+        try {
+          await task;
+        } catch (error) {
+          if (token === generation && !disposed) ports.reportError(error);
+        } finally {
+          if (pendingWindow === task) pendingWindow = null;
+        }
+      }
+      function paint() {
+        if (!horizontal || !preparedKey) return;
+        const event = ports.currentEvent(), address = event && sequence?.forEvent(event);
+        if (!address) return;
+        const following = ports.follows(), resumed = following && !wasFollowing;
+        wasFollowing = following;
+        if (following || windowStart < 0) void ensureWindow(address.index, resumed, resumed);
+        const token = generation;
+        if (!cache.has(address.definition.key)) void model(address.definition, token).then(() => {
+          if (token === generation) paintCursor();
+        }, (error) => {
+          if (!disposed && token === generation) ports.reportError(error);
+        });
+        paintCursor();
+      }
+      async function refresh() {
+        if (!horizontal || !xml || !trace || disposed || loading) return;
+        const loop = ports.loopSettings(), zoom = ports.source.getZoom();
+        const key = `${ports.source.getScoreRevision()}/${zoom}/${loop.enabled}/${loop.min}/${loop.max}`;
+        if (preparedKey === key) {
+          paint();
+          return;
+        }
+        if (pending) return pending;
+        const token = ++generation, current = ports.currentEvent();
+        const nextSequence = PianoTrainerHorizontalChunks.define(trace, loop, current?.measureOccurrenceId || 0);
+        const nextCache = /* @__PURE__ */ new Map();
+        const nextMetrics = ports.source.getHorizontalMetrics();
+        const task = (async () => {
+          for (const definition of nextSequence.definitions) {
+            await model(definition, token, nextCache, zoom, nextMetrics);
+            if (disposed || token !== generation) return;
+            await yieldToPlayback();
+            if (disposed || token !== generation) return;
+          }
+          if (disposed || token !== generation || !horizontal) return;
+          nextSequence.layout();
+          loadedZoom = zoom;
+          loadedMetrics = nextMetrics;
+          sequence = nextSequence;
+          clearWindow();
+          cache.clear();
+          for (const [key2, value] of nextCache) cache.set(key2, value);
+          preparedKey = key;
+          const latest2 = ports.currentEvent(), address = latest2 && sequence.forEvent(latest2);
+          await ensureWindow(address?.index || 0, true);
+        })();
+        pending = task;
+        try {
+          await task;
+        } catch (error) {
+          if (token === generation && !disposed) {
+            preparedKey = "";
+            showSource();
+            ports.reportError(error);
+          }
+        } finally {
+          if (pending === task) pending = null;
+        }
+        const latest = ports.loopSettings();
+        if (!disposed && horizontal && token === generation && preparedKey && (zoom !== ports.source.getZoom() || loop.enabled !== latest.enabled || loop.min !== latest.min || loop.max !== latest.max)) await refresh();
+      }
+      function setMode(value) {
+        horizontal = value;
+        if (value) {
+          if (preparedKey) {
+            showDisplay();
+            paint();
+          }
+          void refresh();
+        } else {
+          generation++;
+          cancelYields();
+          pending = null;
+          pendingWindow = null;
+          showSource();
+        }
+      }
+      async function loaded(currentXml) {
+        loading = false;
+        generation++;
+        cancelYields();
+        pending = pendingWindow = null;
+        xml = currentXml;
+        trace = ports.source.getPerformanceTrace();
+        preparedKey = "";
+        sequence = null;
+        cache.clear();
+        clearWindow();
+        showSource();
+        await refresh();
+      }
+      function hitTest(clientX, clientY) {
+        if (!horizontal || !preparedKey || !sequence) return null;
+        const rect = svg.getBoundingClientRect(), viewBox = svg.viewBox.baseVal;
+        const x = (clientX - rect.left) / rect.width * viewBox.width, y = (clientY - rect.top) / rect.height * viewBox.height;
+        for (const [index, node] of mounted) {
+          const address = sequence.address(index), rendered = cache.get(node.key);
+          for (const occurrence of address.definition.measures) {
+            const box = rendered.boxes.get(occurrence.measureOccurrenceId), left = address.offset - origin + box.x;
+            if (x >= left && x <= left + box.width && y >= box.y && y <= box.y + box.height) return {
+              sourceMeasureIndex: occurrence.sourceMeasureIndex,
+              traceStepIndex: occurrence.firstTraceStepIndex,
+              loopIteration: address.iteration
+            };
+          }
+        }
+        return null;
+      }
+      function onScroll() {
+        if (rebasing || !horizontal || !preparedKey || !sequence || !mounted.size) return;
+        const area = ports.area, first = sequence.address(windowStart), last = sequence.address(windowEnd);
+        if (area.scrollLeft < area.clientWidth * 0.25 && windowStart > 0) void ensureWindow(windowStart + 1);
+        else if (area.scrollLeft + area.clientWidth > (last.offset + last.definition.width - first.offset) * loadedZoom - area.clientWidth * 0.25 && sequence.address(windowEnd + 1)) void ensureWindow(windowEnd - 1);
+      }
+      ports.area.addEventListener("scroll", onScroll, { passive: true });
+      function dispose() {
+        disposed = true;
+        generation++;
+        cancelYields();
+        ports.area.removeEventListener("scroll", onScroll);
+        clearWindow();
+        cache.clear();
+        sequence = null;
+        trace = null;
+        xml = null;
+        pending = pendingWindow = null;
+        sourceHost.remove();
+        host.remove();
+      }
+      async function ready() {
+        let token;
+        do {
+          token = generation;
+          try {
+            await refresh();
+            await pending;
+            await pendingWindow;
+            await renderQueue;
+          } catch (error) {
+            if (!(error instanceof DOMException && error.name === "AbortError")) throw error;
+          }
+          if (disposed || !horizontal || loading) return;
+        } while (token !== generation || pending || pendingWindow);
+      }
+      return {
+        sourceHost,
+        setMode,
+        refresh,
+        loaded,
+        paint,
+        anchor,
+        hitTest,
+        dispose,
+        beginLoad: () => {
+          loading = true;
+          generation++;
+          cancelYields();
+          pending = pendingWindow = null;
+        },
+        getSvg: () => horizontal && preparedKey ? svg : sourceHost.querySelector("svg"),
+        getCursorElement: () => horizontal && preparedKey ? cursor : ports.source.getCursorElement(),
+        staffTopY: (staff) => {
+          const event = ports.currentEvent(), address = event && sequence?.forEvent(event);
+          return horizontal && event && address ? cache.get(address.definition.key)?.staffTops.get(`${event.measureOccurrenceId}/${staff}`) ?? null : null;
+        },
+        isActive: () => horizontal && !!preparedKey,
+        measureBoxes: () => {
+          if (!horizontal || !preparedKey || !sequence) return null;
+          return [...mounted].flatMap(([index, node]) => {
+            const address = sequence.address(index), rendered = cache.get(node.key);
+            return address.definition.measures.map((measure) => {
+              const box = rendered.boxes.get(measure.measureOccurrenceId);
+              return {
+                index: measure.sourceMeasureIndex,
+                measureOccurrenceId: measure.measureOccurrenceId,
+                traceStepIndex: measure.firstTraceStepIndex,
+                loopIteration: address.iteration,
+                box: { ...box, x: box.x + address.offset - origin }
+              };
+            });
+          });
+        },
+        ready,
+        readResources: () => ({
+          generation,
+          pending: !!pending || !!pendingWindow,
+          instances: rendering,
+          models: cache.size,
+          callbacks: yields.size,
+          templateNodes: [...cache.values()].reduce((count, model2) => count + model2.template.querySelectorAll("*").length, 0),
+          mountedNodes: svg.querySelectorAll("*").length,
+          mappedNotes: [...cache.values()].reduce((count, model2) => count + model2.anchors.size, 0),
+          chunks: mounted.size,
+          maxChunks: PianoTrainerHorizontalChunks.WINDOW_CHUNKS,
+          maxModels: PianoTrainerHorizontalChunks.CACHE_MODELS,
+          origin,
+          windowStart,
+          windowEnd,
+          definitions: sequence?.definitions.length || 0,
+          lastRebase: lastRebase ? { ...lastRebase } : null
+        })
+      };
+    }
+    PianoTrainerHorizontalScore2.create = create;
+  })(PianoTrainerHorizontalScore || (PianoTrainerHorizontalScore = {}));
+
+  // src/score/performance-position.ts
+  var PianoTrainerPerformancePosition;
+  ((PianoTrainerPerformancePosition2) => {
+    function create(ports) {
+      let runId = 0, eventId = 0, loopIteration = 0;
+      let current = null;
+      let reason = "load";
+      function present() {
+        const step = ports.getTrace().steps[ports.getTraceStepIndex()];
+        if (!step) return current;
+        const scoreRevision = ports.getScoreRevision();
+        if (current?.traceStepIndex === step.traceStepIndex && current.loopIteration === loopIteration && current.runId === runId && current.scoreRevision === scoreRevision) return current;
+        current = { ...step, scoreRevision, runId, eventId: ++eventId, loopIteration, reason };
+        reason = "advance";
+        ports.changed(current);
+        return current;
+      }
+      function navigate(nextReason, iteration = 0) {
+        runId++;
+        loopIteration = iteration;
+        current = null;
+        reason = nextReason;
+        return present();
+      }
+      function loop() {
+        loopIteration++;
+        reason = "loop";
+      }
+      return { present, navigate, loop, current: () => current };
+    }
+    PianoTrainerPerformancePosition2.create = create;
+  })(PianoTrainerPerformancePosition || (PianoTrainerPerformancePosition = {}));
+
+  // src/render/virtual-keyboard.ts
+  var PianoTrainerVirtualKeyboardView;
+  ((PianoTrainerVirtualKeyboardView2) => {
+    const classes = ["expected-l", "expected-r", "pressed-l", "pressed-r", "wrong", "active", "future1-l", "future1-r"];
+    function create(ports) {
+      function drawKey(midi, desiredClass, calibration = false) {
+        const node = ports.document.querySelector(`.key[data-midi="${midi}"]`);
+        if (!node) return;
+        if (!(node instanceof HTMLElement)) throw Error("Invalid virtual keyboard key: " + midi);
+        node.classList.toggle("out-of-range", !ports.isMidiInRange(midi));
+        if (calibration) {
+          classes.forEach((value) => node.classList.remove(value));
+          if (desiredClass) node.classList.add(desiredClass);
+        } else {
+          const current = [...node.classList].find((value) => classes.includes(value));
+          if (current !== desiredClass) {
+            if (current) node.classList.remove(current);
+            if (desiredClass) node.classList.add(desiredClass);
+          }
+        }
+        node.style.filter = "";
+        node.style.boxShadow = "";
+        node.style.transform = "";
+      }
+      return { drawKey };
+    }
+    PianoTrainerVirtualKeyboardView2.create = create;
+  })(PianoTrainerVirtualKeyboardView || (PianoTrainerVirtualKeyboardView = {}));
+
+  // src/score/measure-timing.ts
+  var PianoTrainerMeasureTiming;
+  ((PianoTrainerMeasureTiming2) => {
+    function create(ports) {
+      let measureTimingCache = [];
+      function getInfo(measureIndex) {
+        const measure = ports.getMeasure(measureIndex);
+        const cached = measureTimingCache[measureIndex] || null;
+        const activeTimeSignature = measure?.ActiveTimeSignature || ports.getMeasure(0)?.ActiveTimeSignature || null;
+        const numerator = Math.max(1, Number(activeTimeSignature?.Numerator) || 4);
+        const denominator = Math.max(1, Number(activeTimeSignature?.Denominator) || 4);
+        const beatLengthWhole = 1 / denominator;
+        const nominalMeasureLengthWhole = numerator * beatLengthWhole;
+        const startTimestamp = Number.isFinite(cached?.startTimestamp) ? cached.startTimestamp : 0;
+        return {
+          numerator,
+          denominator,
+          beatLengthWhole,
+          nominalMeasureLengthWhole,
+          actualLengthWhole: Number.isFinite(cached?.actualLengthWhole) ? cached.actualLengthWhole : nominalMeasureLengthWhole,
+          startTimestamp
+        };
+      }
+      function rebuild() {
+        const cursor = ports.getCursor();
+        if (!cursor?.Iterator) {
+          measureTimingCache = [];
+          return measureTimingCache;
+        }
+        const savedMeasureIndex = cursor.Iterator.CurrentMeasureIndex;
+        const savedTimestamp = cursor.Iterator.currentTimeStamp?.RealValue ?? null;
+        const totalMeasures = ports.getMeasureCount();
+        const nextStarts = new Array(totalMeasures).fill(null);
+        const firstEvents = new Array(totalMeasures).fill(null);
+        const iterator = ports.getIndependentIterator?.() || (cursor.reset(), cursor.Iterator);
+        const safetyMax = 1e5;
+        let safety = 0;
+        let previousMeasureIndex = null;
+        while (!iterator.EndReached && safety < safetyMax) {
+          const measureIndex = iterator.CurrentMeasureIndex;
+          const timestamp = iterator.currentTimeStamp?.RealValue ?? null;
+          if (firstEvents[measureIndex] == null && Number.isFinite(timestamp)) {
+            firstEvents[measureIndex] = timestamp;
+          }
+          if (previousMeasureIndex != null && measureIndex !== previousMeasureIndex && nextStarts[previousMeasureIndex] == null && Number.isFinite(timestamp)) {
+            nextStarts[previousMeasureIndex] = timestamp;
+          }
+          previousMeasureIndex = measureIndex;
+          iterator.moveToNext();
+          safety += 1;
+        }
+        measureTimingCache = [];
+        let runningStart = 0;
+        for (let i = 0; i < totalMeasures; i++) {
+          const measure = ports.getMeasure(i);
+          const activeTimeSignature = measure?.ActiveTimeSignature || ports.getMeasure(0)?.ActiveTimeSignature || null;
+          const numerator = Math.max(1, Number(activeTimeSignature?.Numerator) || 4);
+          const denominator = Math.max(1, Number(activeTimeSignature?.Denominator) || 4);
+          const nominalMeasureLengthWhole = numerator / denominator;
+          const firstTimestamp = Number.isFinite(firstEvents[i]) ? firstEvents[i] : null;
+          const explicitStart = firstTimestamp != null ? firstTimestamp : runningStart;
+          const nextStart = Number.isFinite(nextStarts[i]) ? nextStarts[i] : null;
+          const actualLengthWhole = nextStart != null && Number.isFinite(explicitStart) ? Math.max(0, nextStart - explicitStart) : nominalMeasureLengthWhole;
+          measureTimingCache[i] = {
+            startTimestamp: explicitStart,
+            actualLengthWhole,
+            nominalMeasureLengthWhole,
+            numerator,
+            denominator
+          };
+          runningStart = explicitStart + actualLengthWhole;
+        }
+        if (!iterator.EndReached) throw new Error(`Timing traversal exceeds ${safetyMax} events.`);
+        if (!ports.getIndependentIterator) ports.restoreToPosition(savedMeasureIndex, savedTimestamp);
+        return measureTimingCache;
+      }
+      return { getInfo, rebuild, getCachedMeasureCount: () => measureTimingCache.length, readCache: () => measureTimingCache.map((entry) => ({ ...entry })) };
+    }
+    PianoTrainerMeasureTiming2.create = create;
+  })(PianoTrainerMeasureTiming || (PianoTrainerMeasureTiming = {}));
+
+  // src/score/musicxml-io.ts
+  var PianoTrainerMusicXmlIO;
+  ((PianoTrainerMusicXmlIO2) => {
+    function sliceView(view) {
+      return view.buffer.slice(view.byteOffset, view.byteOffset + view.byteLength);
+    }
+    function create(ports) {
+      function getScoreFileTypeFromName(fileName = "") {
+        const lowered = String(fileName || "").toLowerCase();
+        if (lowered.endsWith(".mxl")) return "mxl";
+        if (lowered.endsWith(".musicxml")) return "musicxml";
+        return "xml";
+      }
+      function getScoreDisplayTitle(fileName = "", fallback = "Untitled Score") {
+        const base = String(fileName || "").trim();
+        if (!base) return fallback;
+        return base.replace(/\.(musicxml|xml|mxl)$/i, "").trim() || fallback;
+      }
+      function cloneScoreRawData(rawData) {
+        if (typeof rawData === "string") return rawData;
+        if (rawData instanceof ArrayBuffer) return rawData.slice(0);
+        if (ArrayBuffer.isView(rawData)) {
+          return sliceView(rawData);
+        }
+        if (typeof Blob !== "undefined" && rawData instanceof Blob) {
+          return rawData.slice(0, rawData.size, rawData.type || "");
+        }
+        return rawData;
+      }
+      function readUint16LE(bytes, offset) {
+        return (bytes[offset] ?? 0) | (bytes[offset + 1] ?? 0) << 8;
+      }
+      function readUint32LE(bytes, offset) {
+        return ((bytes[offset] ?? 0) | (bytes[offset + 1] ?? 0) << 8 | (bytes[offset + 2] ?? 0) << 16 | (bytes[offset + 3] ?? 0) << 24) >>> 0;
+      }
+      function normalizeZipEntryPath(path) {
+        return String(path || "").replace(/^\/+/, "").replace(/\\/g, "/");
+      }
+      function getZipEntryDepth(path) {
+        const normalized = normalizeZipEntryPath(path);
+        if (!normalized) return Number.MAX_SAFE_INTEGER;
+        return normalized.split("/").length - 1;
+      }
+      async function rawDataToArrayBuffer(rawData) {
+        if (rawData instanceof ArrayBuffer) return rawData;
+        if (ArrayBuffer.isView(rawData)) {
+          return sliceView(rawData);
+        }
+        if (typeof Blob !== "undefined" && rawData instanceof Blob) {
+          return await rawData.arrayBuffer();
+        }
+        return null;
+      }
+      function listZipEntries(arrayBuffer) {
+        const bytes = new Uint8Array(arrayBuffer);
+        const eocdSignature = 101010256;
+        const centralSignature = 33639248;
+        const minEocdSize = 22;
+        const maxCommentLength = 65535;
+        const searchStart = Math.max(0, bytes.length - (minEocdSize + maxCommentLength));
+        let eocdOffset = -1;
+        for (let offset2 = bytes.length - minEocdSize; offset2 >= searchStart; offset2 -= 1) {
+          if (readUint32LE(bytes, offset2) === eocdSignature) {
+            eocdOffset = offset2;
+            break;
+          }
+        }
+        if (eocdOffset < 0) {
+          throw new Error("Could not find the ZIP directory in this MXL file.");
+        }
+        const entryCount = readUint16LE(bytes, eocdOffset + 10);
+        const centralDirectoryOffset = readUint32LE(bytes, eocdOffset + 16);
+        let offset = centralDirectoryOffset;
+        const decoder = new TextDecoder("utf-8");
+        const entries = [];
+        for (let index = 0; index < entryCount; index += 1) {
+          if (offset + 46 > bytes.length || readUint32LE(bytes, offset) !== centralSignature) {
+            throw new Error("Could not read the ZIP entries from this MXL file.");
+          }
+          const compressionMethod = readUint16LE(bytes, offset + 10);
+          const compressedSize = readUint32LE(bytes, offset + 20);
+          const uncompressedSize = readUint32LE(bytes, offset + 24);
+          const fileNameLength = readUint16LE(bytes, offset + 28);
+          const extraFieldLength = readUint16LE(bytes, offset + 30);
+          const fileCommentLength = readUint16LE(bytes, offset + 32);
+          const localHeaderOffset = readUint32LE(bytes, offset + 42);
+          const fileNameStart = offset + 46;
+          const fileNameEnd = fileNameStart + fileNameLength;
+          const fileName = decoder.decode(bytes.slice(fileNameStart, fileNameEnd));
+          entries.push({
+            fileName,
+            compressionMethod,
+            compressedSize,
+            uncompressedSize,
+            localHeaderOffset
+          });
+          offset = fileNameEnd + extraFieldLength + fileCommentLength;
+        }
+        return entries;
+      }
+      async function inflateZipEntryData(compressedBytes, compressionMethod) {
+        if (compressionMethod === 0) {
+          return compressedBytes;
+        }
+        if (compressionMethod !== 8) {
+          throw new Error(`Unsupported MXL compression method: ${compressionMethod}.`);
+        }
+        if (typeof DecompressionStream !== "function") {
+          throw new Error("This browser does not support ZIP decompression for transpose.");
+        }
+        const stream = new Blob([compressedBytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+        const inflatedBuffer = await new Response(stream).arrayBuffer();
+        return new Uint8Array(inflatedBuffer);
+      }
+      async function extractZipEntryText(arrayBuffer, entry) {
+        const bytes = new Uint8Array(arrayBuffer);
+        const localSignature = 67324752;
+        const localOffset = entry.localHeaderOffset;
+        if (localOffset + 30 > bytes.length || readUint32LE(bytes, localOffset) !== localSignature) {
+          throw new Error(`Could not read ZIP entry "${entry.fileName}".`);
+        }
+        const fileNameLength = readUint16LE(bytes, localOffset + 26);
+        const extraFieldLength = readUint16LE(bytes, localOffset + 28);
+        const dataStart = localOffset + 30 + fileNameLength + extraFieldLength;
+        const dataEnd = dataStart + entry.compressedSize;
+        const compressedBytes = bytes.slice(dataStart, dataEnd);
+        const inflatedBytes = await inflateZipEntryData(compressedBytes, entry.compressionMethod);
+        return new TextDecoder("utf-8").decode(inflatedBytes);
+      }
+      function chooseMusicXmlEntry(entries, containerPath = "") {
+        const normalizedContainerPath = normalizeZipEntryPath(containerPath).toLowerCase();
+        const xmlEntries = entries.filter((entry) => {
+          const normalizedPath = normalizeZipEntryPath(entry.fileName);
+          if (!normalizedPath) return false;
+          if (normalizedPath.toLowerCase() === "meta-inf/container.xml") return false;
+          return /\.(xml|musicxml)$/i.test(normalizedPath);
+        });
+        if (!xmlEntries.length) return null;
+        if (normalizedContainerPath) {
+          const containerMatch = xmlEntries.find((entry) => normalizeZipEntryPath(entry.fileName).toLowerCase() === normalizedContainerPath);
+          if (containerMatch) return containerMatch;
+        }
+        const rootLevelEntry = xmlEntries.filter((entry) => getZipEntryDepth(entry.fileName) === 0).sort((left, right) => normalizeZipEntryPath(left.fileName).localeCompare(normalizeZipEntryPath(right.fileName)))[0];
+        if (rootLevelEntry) return rootLevelEntry;
+        return xmlEntries.sort((left, right) => {
+          const depthDelta = getZipEntryDepth(left.fileName) - getZipEntryDepth(right.fileName);
+          if (depthDelta !== 0) return depthDelta;
+          return normalizeZipEntryPath(left.fileName).localeCompare(normalizeZipEntryPath(right.fileName));
+        })[0];
+      }
+      async function extractMusicXmlFromMxl(rawData) {
+        const arrayBuffer = await rawDataToArrayBuffer(rawData);
+        if (!arrayBuffer) return null;
+        const entries = listZipEntries(arrayBuffer);
+        const containerEntry = entries.find((entry) => normalizeZipEntryPath(entry.fileName).toLowerCase() === "meta-inf/container.xml");
+        let containerPath = "";
+        if (containerEntry) {
+          try {
+            const containerText = await extractZipEntryText(arrayBuffer, containerEntry);
+            const match = containerText.match(/full-path\s*=\s*["']([^"']+)["']/i);
+            if (match && match[1]) {
+              containerPath = match[1];
+            }
+          } catch (_) {
+          }
+        }
+        const xmlEntry = chooseMusicXmlEntry(entries, containerPath);
+        if (!xmlEntry) {
+          throw new Error("Could not find the embedded MusicXML inside this MXL file.");
+        }
+        return await extractZipEntryText(arrayBuffer, xmlEntry);
+      }
+      async function getCanonicalMusicXmlForTranspose(rawData, { fileName = "Untitled Score", fileType = "xml" } = {}) {
+        if (typeof rawData === "string" && /^\s*(?:<\?xml\b|<score-partwise\b)/.test(rawData)) return rawData;
+        const resolvedType = String(fileType || getScoreFileTypeFromName(fileName || "") || "xml").toLowerCase();
+        if (resolvedType === "xml" || resolvedType === "musicxml") {
+          return typeof rawData === "string" ? rawData : rawData instanceof Blob ? await rawData.text() : null;
+        }
+        if (resolvedType === "mxl") {
+          try {
+            return await extractMusicXmlFromMxl(rawData);
+          } catch (extractErr) {
+            const normalize = ports.getNormalizer();
+            if (normalize) {
+              try {
+                return await normalize(rawData, { fileName, fileType: resolvedType });
+              } catch (normalizeErr) {
+                ports.warn("Could not normalize MXL to MusicXML for transpose support.", normalizeErr);
+                ports.warn("Direct MXL XML extraction also failed.", extractErr);
+                return null;
+              }
+            }
+            ports.warn("Could not extract MXL to MusicXML for transpose support.", extractErr);
+            return null;
+          }
+        }
+        return null;
+      }
+      function getOsmdLoadPayload(rawData, fileType = "xml", fileName = "Untitled Score") {
+        const resolvedType = String(fileType || getScoreFileTypeFromName(fileName || "") || "xml").toLowerCase();
+        if (resolvedType !== "mxl") return rawData;
+        const resolvedName = fileName || "Untitled Score.mxl";
+        if (rawData instanceof File) return rawData;
+        if (rawData instanceof Blob) {
+          if (typeof File === "function") {
+            return new File([rawData], resolvedName);
+          }
+          Object.assign(rawData, { name: resolvedName });
+          return rawData;
+        }
+        if (rawData instanceof ArrayBuffer) {
+          if (typeof File === "function") {
+            return new File([rawData], resolvedName);
+          }
+          const blob = new Blob([rawData]);
+          Object.assign(blob, { name: resolvedName });
+          return blob;
+        }
+        if (ArrayBuffer.isView(rawData)) {
+          const slice = sliceView(rawData);
+          if (typeof File === "function") {
+            return new File([slice], resolvedName);
+          }
+          const blob = new Blob([slice]);
+          Object.assign(blob, { name: resolvedName });
+          return blob;
+        }
+        return rawData;
+      }
+      return { getScoreFileTypeFromName, getScoreDisplayTitle, cloneScoreRawData, readUint16LE, readUint32LE, normalizeZipEntryPath, getZipEntryDepth, rawDataToArrayBuffer, listZipEntries, inflateZipEntryData, extractZipEntryText, chooseMusicXmlEntry, extractMusicXmlFromMxl, getCanonicalMusicXmlForTranspose, getOsmdLoadPayload };
+    }
+    PianoTrainerMusicXmlIO2.create = create;
+  })(PianoTrainerMusicXmlIO || (PianoTrainerMusicXmlIO = {}));
 
   // src/score/osmd-debug-observation.ts
   var PianoTrainerOsmdDebugObservation;
@@ -5350,8 +6540,9 @@
     function create(ports) {
       const state = ports.state, format = ports.format;
       let disposed = false;
-      function assertActive() {
-        if (disposed) throw new DOMException("Score loading disposed.", "AbortError");
+      let generation = 0, vendorLoad = Promise.resolve();
+      function assertActive(token) {
+        if (disposed || token !== generation) throw new DOMException("Score loading expired.", "AbortError");
       }
       async function loadScoreIntoApp(rawData, {
         fileName = "Untitled Score",
@@ -5363,8 +6554,10 @@
         originalFileType = void 0,
         skipTransposeReset = false
       } = {}) {
+        const token = ++generation;
         try {
-          assertActive();
+          assertActive(token);
+          ports.beginLoad?.();
           ports.resetPlayback();
           if (!skipTransposeReset) ports.resetTempo();
           const resolvedOriginalRawData = originalRawData !== void 0 ? originalRawData : rawData;
@@ -5376,10 +6569,16 @@
             fileName: resolvedOriginalFileName,
             fileType: resolvedOriginalFileType
           });
-          assertActive();
+          assertActive(token);
           const osmdLoadPayload = format.getOsmdLoadPayload(osmdSourceRawData, fileType, fileName);
-          await ports.score.load(osmdLoadPayload);
-          assertActive();
+          const load = vendorLoad.then(() => {
+            assertActive(token);
+            return ports.score.load(osmdLoadPayload);
+          });
+          vendorLoad = load.catch(() => {
+          });
+          await load;
+          assertActive(token);
           ports.render();
           ports.initSongUI();
           if (ports.score.hasCursor()) {
@@ -5400,22 +6599,25 @@
           state.currentScoreOriginalFileType = resolvedOriginalFileType;
           state.currentScoreLibraryId = libraryScoreId ?? null;
           state.currentScoreTitle = title || format.getScoreDisplayTitle(fileName || "");
+          await ports.prepareDisplay?.(rawData, { fileName, fileType }, () => !disposed && token === generation);
+          assertActive(token);
           const library = libraryScoreId ? ports.getLibrary() : void 0;
           if (libraryScoreId && library) {
             await library.markScoreOpened(libraryScoreId);
-            assertActive();
+            assertActive(token);
             await ports.refreshLibrary();
-            assertActive();
+            assertActive(token);
           }
           ports.notifyTranspose(skipTransposeReset);
           ports.success();
         } catch (error) {
-          if (!disposed) ports.reportError(error);
+          if (!disposed && token === generation) ports.reportError(error);
           throw error;
         }
       }
       function dispose() {
         disposed = true;
+        generation++;
       }
       return { loadScoreIntoApp, dispose };
     }
@@ -6901,6 +8103,7 @@
           if (!state.debugPersistentAnchors || !frame || !Array.isArray(frame.notes) || frame.notes.length === 0)
             return;
           const normalizedNotes = frame.notes.filter((n) => n && n.anchor && Number.isFinite(n.anchor.x) && Number.isFinite(n.anchor.y)).map((n) => ({
+            ...ports.captureDisplay?.(n.midi, n.staffId, n.anchor),
             midi: n.midi,
             staffId: n.staffId,
             kind: n.kind || "expected",
@@ -6948,37 +8151,39 @@
           history.forEach((frame, frameIndex) => {
             const opacity = 0.95;
             frame.notes.forEach((note, noteIndex) => {
+              const anchor = ports.projectNote ? ports.projectNote(note) : note.anchor;
+              if (!anchor) return;
               const g = ports.document.createElementNS("http://www.w3.org/2000/svg", "g");
               g.setAttribute("data-debug-seq", String(frame.seq));
               g.setAttribute("data-debug-kind", frame.kind || "expected");
               g.setAttribute("opacity", String(opacity));
               const ring = ports.document.createElementNS("http://www.w3.org/2000/svg", "circle");
-              ring.setAttribute("cx", String(note.anchor.x));
-              ring.setAttribute("cy", String(note.anchor.y));
+              ring.setAttribute("cx", String(anchor.x));
+              ring.setAttribute("cy", String(anchor.y));
               ring.setAttribute("r", note.kind === "feedback" ? "8" : "6");
               ring.setAttribute("fill", "none");
               ring.setAttribute("stroke", note.kind === "feedback" ? note.hit ? "rgba(46, 204, 113, 0.95)" : "rgba(231, 76, 60, 0.95)" : "rgba(255, 140, 0, 0.95)");
               ring.setAttribute("stroke-width", note.kind === "feedback" ? "2" : "1.5");
               g.appendChild(ring);
               const h = ports.document.createElementNS("http://www.w3.org/2000/svg", "line");
-              h.setAttribute("x1", String(note.anchor.x - 4));
-              h.setAttribute("y1", String(note.anchor.y));
-              h.setAttribute("x2", String(note.anchor.x + 4));
-              h.setAttribute("y2", String(note.anchor.y));
+              h.setAttribute("x1", String(anchor.x - 4));
+              h.setAttribute("y1", String(anchor.y));
+              h.setAttribute("x2", String(anchor.x + 4));
+              h.setAttribute("y2", String(anchor.y));
               h.setAttribute("stroke", "rgba(255, 255, 255, 0.85)");
               h.setAttribute("stroke-width", "1");
               g.appendChild(h);
               const v = ports.document.createElementNS("http://www.w3.org/2000/svg", "line");
-              v.setAttribute("x1", String(note.anchor.x));
-              v.setAttribute("y1", String(note.anchor.y - 4));
-              v.setAttribute("x2", String(note.anchor.x));
-              v.setAttribute("y2", String(note.anchor.y + 4));
+              v.setAttribute("x1", String(anchor.x));
+              v.setAttribute("y1", String(anchor.y - 4));
+              v.setAttribute("x2", String(anchor.x));
+              v.setAttribute("y2", String(anchor.y + 4));
               v.setAttribute("stroke", "rgba(255, 255, 255, 0.85)");
               v.setAttribute("stroke-width", "1");
               g.appendChild(v);
               const label = ports.document.createElementNS("http://www.w3.org/2000/svg", "text");
-              label.setAttribute("x", String(note.anchor.x + 7));
-              label.setAttribute("y", String(note.anchor.y - 7 - noteIndex % 2 * 9));
+              label.setAttribute("x", String(anchor.x + 7));
+              label.setAttribute("y", String(anchor.y - 7 - noteIndex % 2 * 9));
               label.setAttribute("font-size", "9");
               label.setAttribute("font-family", "monospace");
               label.setAttribute("fill", note.kind === "feedback" ? note.hit ? "rgba(46, 204, 113, 0.95)" : "rgba(231, 76, 60, 0.95)" : "rgba(255, 140, 0, 0.95)");
@@ -11190,12 +12395,12 @@
       score: {
         getGraphicalNote: (note, measure, staff) => osmdAdapter.getGraphicalNote(note, measure, staff),
         getMeasureBox: (measure, staff, units) => osmdAdapter.getMeasureBox(measure, staff, units),
-        getCursorElement: () => osmdAdapter.getCursorElement(),
+        getCursorElement: () => horizontalScore.getCursorElement(),
         getCurrentMeasureIndex: () => osmdAdapter.getCurrentMeasureIndex(),
-        getStaffTopY: (measure, staff) => osmdAdapter.getStaffTopY(measure, staff)
+        getStaffTopY: (measure, staff) => horizontalScore.staffTopY(staff) ?? osmdAdapter.getStaffTopY(measure, staff)
       },
       document,
-      getSvg: () => document.querySelector("#osmd-container svg"),
+      getSvg: () => horizontalScore.getSvg(),
       getComputedStyle: (node) => window.getComputedStyle(node),
       clearOverlays: () => {
         feedbackOverlay.clear();
@@ -11208,6 +12413,7 @@
       debugLog: (name, detail) => debugLogAnchorResolution(name, detail)
     });
     const feedbackOverlay = PianoTrainerFeedbackOverlay.create({
+      projectMarker: projectDisplayReference,
       state: AppState,
       document,
       getSvg: () => geometryEngine.getSvg(),
@@ -11215,6 +12421,7 @@
       getCurrentContextKey: () => getCurrentFeedbackContext().key
     });
     const loopOverlay = PianoTrainerLoopOverlay.create({
+      displayMeasures: () => horizontalScore.measureBoxes(),
       bounds: AppState.looper,
       document,
       getSvg: () => geometryEngine.getSvg(),
@@ -11242,6 +12449,8 @@
     const feedbackDebug = PianoTrainerFeedbackDebug.create({
       document,
       state: AppState,
+      captureDisplay: captureDisplayReference,
+      projectNote: projectDisplayReference,
       getSvg: () => GeometryEngine.getSvg(),
       ensureGroup: (id) => GeometryEngine.ensureGroup(id),
       readEnabled: () => getStoredBool(SETTINGS_DEBUG_STORAGE_KEY, false),
@@ -11268,6 +12477,58 @@
       debugLog: (name, detail) => debugLogAnchorResolution(name, detail),
       reportError: (message, error) => console.error(message, error)
     });
+    const performancePosition = PianoTrainerPerformancePosition.create({
+      getTrace: osmdAdapter.getPerformanceTrace,
+      getTraceStepIndex: osmdAdapter.getTraceStepIndex,
+      getScoreRevision: osmdAdapter.getScoreRevision,
+      changed: () => {
+        horizontalScore.paint();
+        handleAutoScroll();
+      }
+    });
+    const horizontalScore = PianoTrainerHorizontalScore.create({
+      container: requireScoreDisplayElement("osmd-container", HTMLElement),
+      area: requireScoreDisplayElement("music-area", HTMLElement),
+      source: osmdAdapter,
+      currentEvent: performancePosition.current,
+      loopSettings: () => ({ enabled: playbackControls.isLoopEnabled(), min: playbackControls.readLoopMin(), max: playbackControls.readLoopMax() }),
+      follows: () => requireScoreDisplayElement("check-autoscroll", HTMLInputElement).checked,
+      refreshed: (immediate) => {
+        GeometryEngine.invalidate();
+        for (const expected of AppState.expectedNotes) expected.anchor = getPresentedNoteAnchor(expected.noteRef, expected.mIdx, Number(expected.staffId) - 1);
+        renderFeedbackOverlay();
+        feedbackDebug.renderStickyDebug();
+        renderLooper();
+        ScoreDisplay.follow({ immediate });
+      },
+      reportError: (error) => console.error("Could not prepare horizontal score:", error)
+    });
+    function getPresentedNoteAnchor(ref, measure, staff) {
+      if (horizontalScore.isActive()) return horizontalScore.anchor(ref);
+      const note = osmdAdapter.resolveNote(ref);
+      return note ? GeometryEngine.getNoteAnchor(note, measure, staff) : null;
+    }
+    function captureDisplayReference(midi, staff, anchor) {
+      const event = performancePosition.current();
+      if (!event) return {};
+      const effectiveStaff = staff ?? (midi >= 60 ? AppState.hands.right : AppState.hands.left) ?? AppState.hands.right ?? 1;
+      const ref = AppState.expectedNotes.find((note) => note.midi === midi && note.staffId === effectiveStaff)?.noteRef || event.notes.find((note) => note.staffIndex === effectiveStaff - 1)?.sourceNoteRef;
+      const point = ref ? getPresentedNoteAnchor(ref, event.source.sourceMeasureIndex, effectiveStaff - 1) : null;
+      return {
+        performance: event,
+        ...ref ? { referenceNoteRef: ref } : {},
+        ...point ? { displayOffset: { x: anchor.x - point.x, y: anchor.y - point.y } } : {}
+      };
+    }
+    function projectDisplayReference(marker) {
+      if (!marker.performance || !marker.referenceNoteRef) return marker.anchor;
+      const point = horizontalScore.isActive() ? horizontalScore.anchor(marker.referenceNoteRef, marker.performance) : (() => {
+        const note = osmdAdapter.resolveNote(marker.referenceNoteRef);
+        const staff = marker.performance.notes.find((entry) => entry.sourceNoteRef.id === marker.referenceNoteRef.id)?.staffIndex ?? Math.max(0, Number(marker.staffId) - 1);
+        return note ? GeometryEngine.getNoteAnchor(note, marker.performance.source.sourceMeasureIndex, staff) : null;
+      })();
+      return point ? { x: point.x + (marker.displayOffset?.x || 0), y: point.y + (marker.displayOffset?.y || 0) } : null;
+    }
     const getResolvedStaffAssignmentIdFromNote = osmdAdapter.resolveStaffIdFromNote;
     const getResolvedStaffAssignmentIdFromEntry = osmdAdapter.resolveStaffIdFromEntry;
     function requireScoreDisplayElement(id, type) {
@@ -11282,14 +12543,23 @@
         layout: requireScoreDisplayElement("select-score-layout", HTMLSelectElement),
         autoScroll: requireScoreDisplayElement("check-autoscroll", HTMLInputElement)
       },
-      score: osmdAdapter,
+      score: {
+        ...osmdAdapter,
+        getCursorElement: horizontalScore.getCursorElement,
+        setLayout: (horizontal, defaults) => {
+          osmdAdapter.setLayout(false, defaults);
+          horizontalScore.setMode(horizontal);
+        }
+      },
+      refreshPresentation: () => {
+        void horizontalScore.refresh();
+      },
       state: AppState,
       storage: localStorage,
       storageKey: TRAINER_SCORE_LAYOUT_STORAGE_KEY,
-      getSvg: () => document.querySelector("#osmd-container svg"),
+      getSvg: () => horizontalScore.getSvg(),
       getAnchor: (ref, measureIndex, staffIndex) => {
-        const note = osmdAdapter.resolveNote(ref);
-        return note ? GeometryEngine.getNoteAnchor(note, measureIndex, staffIndex) : null;
+        return getPresentedNoteAnchor(ref, measureIndex, staffIndex);
       },
       clearFeedbackPreserveScoring: () => clearFeedbackVisualStatePreserveScoring(),
       renderScoreAndRefreshGeometry: () => scoreRenderer.renderScoreAndRefreshGeometry(),
@@ -11314,6 +12584,7 @@
     const sharedScoreTraversal = PianoTrainerScoreTraversal.create({
       state: AppState,
       getCursor: () => osmdAdapter.getTraversalCursor(),
+      getIndependentIterator: osmdAdapter.getIndependentIterator,
       resolveStaffId: (note) => getResolvedStaffAssignmentIdFromNote(note),
       isPracticeHandEnabled: (staffId) => isPracticeHandEnabledForStaff(staffId),
       getHandRole: (staffId) => getAssignedHandRoleForStaff(staffId),
@@ -11352,6 +12623,7 @@
       getMeasure: (index) => osmdAdapter.getSourceMeasure(index),
       getMeasureCount: () => osmdAdapter.getSourceMeasureCount(),
       getCursor: () => osmdAdapter.getTraversalCursor(),
+      getIndependentIterator: osmdAdapter.getIndependentIterator,
       restoreToPosition: (measure, timestamp) => sharedScoreTraversal.restoreToMeasureAndTimestamp(measure, timestamp)
     });
     const metronomeClock = PianoTrainerPlaybackClock.create({
@@ -11395,6 +12667,8 @@
     const stopWaitModeMetronome = trainerMetronome.stopWaitModeMetronome;
     const rebuildWaitModeMetronome = trainerMetronome.rebuildWaitModeMetronome;
     const practiceFeedback = PianoTrainerFeedbackState.create({
+      getPerformanceEvent: performancePosition.current,
+      captureDisplay: captureDisplayReference,
       state: AppState,
       getTraversalPosition: () => osmdAdapter.readPositions().traversal,
       resolveAnchor: (midi, staffId, measureIndex, anchor) => GeometryEngine.resolveFeedbackAnchor(midi, staffId, measureIndex, anchor),
@@ -11429,8 +12703,7 @@
       getHandRole: (staff) => getAssignedHandRoleForStaff(staff),
       isMidiInRange: (midi) => isMidiInPlayerRange(midi),
       getAnchor: (ref, measureIndex, staffIndex) => {
-        const note = osmdAdapter.resolveNote(ref);
-        return note ? GeometryEngine.getNoteAnchor(note, measureIndex, staffIndex) : null;
+        return getPresentedNoteAnchor(ref, measureIndex, staffIndex);
       },
       describeNote: (ref, measureIndex, staffIndex) => {
         const note = osmdAdapter.resolveNote(ref);
@@ -11493,6 +12766,17 @@
       renderKeyboard: () => renderVirtualKeyboard()
     });
     const trainerPlayback = PianoTrainerPlaybackCoordinator.create({
+      presentation: {
+        prepare: () => horizontalScore.ready(),
+        present: () => {
+          performancePosition.present();
+        },
+        navigate: (reason) => {
+          performancePosition.navigate(reason);
+        },
+        loop: performancePosition.loop,
+        traceStepIndex: osmdAdapter.getTraceStepIndex
+      },
       state: AppState,
       clock: playbackClock,
       transport: playbackTransport,
@@ -11565,9 +12849,17 @@
     });
     const scoreFileReader = PianoTrainerScoreFileReader.create({ createReader: () => new FileReader(), format: scoreFormat });
     const scoreLoader = PianoTrainerScoreLoader.create({
+      beginLoad: horizontalScore.beginLoad,
       state: AppState,
       format: scoreFormat,
       score: osmdAdapter,
+      prepareDisplay: async (raw, options, isActive) => {
+        const currentXml = await scoreFormat.getCanonicalMusicXmlForTranspose(raw, options);
+        if (!isActive()) throw new DOMException("Expired horizontal score load.", "AbortError");
+        if (!currentXml) throw new Error("Could not obtain current MusicXML for horizontal presentation.");
+        performancePosition.navigate("load");
+        await horizontalScore.loaded(currentXml);
+      },
       resetPlayback: () => resetPlaybackForLoadedScore(),
       resetTempo: () => {
         if (typeof updateTempo === "function") updateTempo("percent", 100);
@@ -11635,7 +12927,8 @@
       reset: () => resetPlaybackFromToolbar(),
       isReadyToRender: () => osmdAdapter.isReady(),
       setZoom: (value) => osmdAdapter.setZoom(value),
-      clearFeedbackVisualStatePreserveScoring: () => clearFeedbackVisualStatePreserveScoring(),
+      clearFeedbackVisualStatePreserveScoring: () => {
+      },
       renderScoreAndRefreshGeometry: () => renderScoreAndRefreshGeometry(),
       positionCalibrationPanel: () => optionalLedOutput.positionCalibrationPanel()
     });
@@ -11673,7 +12966,10 @@
       document,
       window,
       state: AppState,
-      renderLooper: () => renderLooper(),
+      renderLooper: () => {
+        renderLooper();
+        void horizontalScore.refresh();
+      },
       enforceLooperBounds: () => enforceLooperBounds(),
       saveLoopCountIn: (value) => setStoredBool(LOOP_COUNT_IN_STORAGE_KEY, value)
     });
@@ -11846,6 +13142,18 @@
     const scoreSeekController = PianoTrainerScoreSeek.create({
       state: AppState,
       hasGraphicSheet: osmdAdapter.hasGraphicSheet,
+      seekPresentation: (x, y) => {
+        if (!horizontalScore.isActive()) return false;
+        const hit = horizontalScore.hitTest(x, y);
+        if (!hit || playbackControls.isLoopEnabled() && (hit.sourceMeasureIndex < AppState.looper.min - 1 || hit.sourceMeasureIndex > AppState.looper.max - 1)) return true;
+        playbackTransport.stop();
+        osmdAdapter.seekTraceStep(hit.traceStepIndex);
+        osmdAdapter.updateCursor();
+        clearVisuals();
+        performancePosition.navigate("seek", hit.loopIteration);
+        handleAutoScroll();
+        return true;
+      },
       isAnyToolbarPanelOpen: () => isAnyToolbarPanelOpen(),
       clientPointToSvg: (x, y) => GeometryEngine.clientPointToSvg(x, y),
       getMeasureCount: osmdAdapter.getGraphicalMeasureCount,
@@ -11856,7 +13164,10 @@
       isEndReached: osmdAdapter.isEndReached,
       getCurrentMeasureIndex: osmdAdapter.getCurrentMeasureIndex,
       advance: osmdAdapter.advance,
-      updateCursor: osmdAdapter.updateCursor,
+      updateCursor: () => {
+        osmdAdapter.updateCursor();
+        performancePosition.navigate("seek");
+      },
       scroll: () => handleAutoScroll(),
       clearVisuals: () => clearVisuals()
     });
@@ -11873,7 +13184,7 @@
       syncToolbarButtonStates();
       midiControls.init();
       feedbackDebug.init();
-      osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmd-container", { autoResize: false, drawTitle: true });
+      osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("source-score", { autoResize: false, drawTitle: true });
       ScoreDisplay.init();
       audioOutput.init();
       metronomeOutput.init();
@@ -11989,6 +13300,7 @@
       audioOutput.dispose();
       metronomeOutput.dispose();
       osmdAdapter.dispose();
+      horizontalScore.dispose();
       preferences.dispose();
     }
     return {
@@ -12034,6 +13346,8 @@
       loopOverlay,
       feedbackDebug,
       osmdAdapter,
+      performancePosition,
+      horizontalScore,
       ScoreDisplay,
       scoreRenderer,
       sharedScoreTraversal,

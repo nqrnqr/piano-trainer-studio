@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>Horizontal interactions and cancellation checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1200px;height:600px;border:1px solid #ccc}pre{white-space:pre-wrap;max-height:210px;overflow:auto}</style>
+<h1>Horizontal interactions and cancellation checks</h1><p>Real OSMD/DOM and controlled musical clock: feedback copies, rapid reflow, superseded loads, fullscreen fallback and reduced-motion policy.</p>
+<button id="run" disabled>Run checks</button><button id="dispose" disabled>Dispose after capture</button><pre id="results">Ready</pre><iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script><script>
+const frame=document.querySelector('iframe');frame.onload=()=>{document.getElementById('run').disabled=false;};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/horizontal-interactions.integration.js';frame.contentDocument.body.append(script);};
+document.getElementById('dispose').onclick=()=>frame.contentWindow.HorizontalInteractionsCleanup();
+mountModuleTestFrame(frame,{ports:{controlledPlayback:true},preferences:{pt_ledOutputMode:'none'}});
+</script>

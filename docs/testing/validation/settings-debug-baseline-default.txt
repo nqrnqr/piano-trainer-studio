@@ -1,0 +1,23 @@
+PASS repeated debug init retains one native checkbox and heartbeat
+PASS native checkbox stores enabled state and all original debug flags
+PASS sticky history filters invalid geometry and snapshots anchor values
+PASS actual SVG keeps original ring and label attributes
+PASS sticky frame limit trims native SVG and history
+PASS feedback debug ring retains hit color and radius
+PASS actual OSMD note diagnostics stay at vendor observation boundary
+PASS reload debug paints the current native SVG
+PASS explicit debug dispose clears only owned listeners/heartbeat/layers
+PASS explicit debug dispose clears its native checkbox marker
+PASS fresh debug init restores one listener and heartbeat
+PASS native disabled toggle keeps original history cleanup
+PASS empty settings file remains a no-op
+PASS ordinary native settings read reports invalid backup without reload
+PASS native settings import starts one owned pending FileReader
+PASS explicit settings dispose aborts the native reader and removes its callbacks
+PASS captured old read cannot import/alert/reload after reinit
+PASS fresh settings lifetime accepts a new native file
+PASS all explicit debug/file resources return to zero
+PASS debug/settings work with requested default/no-op LED
+RESOURCES {"listeners":0,"intervals":0,"loading":0}
+CLEANUP 1 disposable databases
+DONE

@@ -219,9 +219,11 @@ export namespace PianoTrainerMusicXmlIO {
         }
 
         async function getCanonicalMusicXmlForTranspose(rawData: PianoTrainerDomain.ScoreRawData, { fileName = 'Untitled Score', fileType = 'xml' }: PianoTrainerDomain.ScoreLoadOptions = {}) {
+            // A reset can carry canonical XML with its original MXL metadata.
+            if (typeof rawData === 'string' && /^\s*(?:<\?xml\b|<score-partwise\b)/.test(rawData)) return rawData;
             const resolvedType = String(fileType || getScoreFileTypeFromName(fileName || '') || 'xml').toLowerCase();
             if (resolvedType === 'xml' || resolvedType === 'musicxml') {
-                return typeof rawData === 'string' ? rawData : null;
+                return typeof rawData === 'string' ? rawData : rawData instanceof Blob ? await rawData.text() : null;
             }
 
             if (resolvedType === 'mxl') {

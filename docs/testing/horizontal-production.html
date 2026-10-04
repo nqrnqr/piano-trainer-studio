@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8"><title>Horizontal production smoke checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1100px;height:620px;border:1px solid #ccc}pre{white-space:pre-wrap;max-height:230px;overflow:auto}</style>
+<h1>Horizontal production smoke checks</h1><p>Actual app.js, native playback timers, toolbar and virtual keys; simulated MIDI ports and muted Tone. No test facade.</p>
+<button id="run" disabled>Run checks</button><button id="dispose" disabled>Dispose after capture</button><pre id="results">Ready</pre><iframe title="Production app under test"></iframe>
+<script>
+const frame=document.querySelector('iframe');frame.onload=()=>{document.getElementById('run').disabled=false;};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/horizontal-production.integration.js';frame.contentDocument.body.append(script);};
+document.getElementById('dispose').onclick=()=>frame.contentWindow.HorizontalProductionCleanup();
+(async()=>{const html=await(await fetch('/index.html')).text(),fixtures=['library-fixture.js','midi-device-fixture.js','production-lifecycle-fixture.js'].map(name=>'<script src="/docs/testing/'+name+'"><'+'/script>').join('');
+const late='<script>Tone.Destination.volume.value=-Infinity;localStorage.setItem("pt_ledOutputMode","none");<'+'/script>',slot=html.indexOf('    <script>document.write(\'<script src="js/generated/app.js');
+frame.srcdoc=(html.slice(0,slot)+late+html.slice(slot)).replace('<head>','<head><base href="/">'+fixtures+'<script>window.__PT_BOOT_OPTIONS__={ledEnabled:'+ (new URLSearchParams(location.search).get('led')!=='off')+'};<'+'/script>');})();
+</script>

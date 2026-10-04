@@ -1,0 +1,40 @@
+INITIAL {"virtual-keyboard-controls":{"owned":892,"connected":892},"score-seek-controls":{"owned":1,"connected":1}}
+PASS repeated init retains one keyboard/seek listener set
+PASS native keyboard owns 880 key/12 activation listeners and seek owns one
+PASS actual keyboard retains 88 keys and the original white/black pattern
+PASS native pointer down and compatibility mouse share one down state
+PASS mismatched global pointer release retains active input
+PASS matching native pointer up releases and clears its key marker
+PASS touch pointer leave retains input until a release event
+PASS native pointer cancel releases touch-pointer input
+PASS native touch identifier mismatch preserves the original active touch
+PASS native touch end releases its matching key
+PASS empty changed-touch fallback cancels the active touch
+PASS native mouse leave releases keyboard input
+PASS blur releases the note while retaining the original per-key down marker
+PASS release before ordinary audio unlock retains the baseline delayed attack
+PASS ordinary keyboard rebuild preserves pending old-key attack
+PASS ordinary rebuild retains detached owned handlers until explicit disposal
+PASS explicit disposal invalidates pending unlock attack after reinit
+PASS fresh keyboard init accepts input
+PASS explicit dispose releases its active input, all key DOM and detached listeners
+PASS detached disposed key cannot send new input
+PASS native score click reaches the requested measure through real repeat traversal
+PASS native score click outside the active loop retains its cursor
+PASS open native toolbar panel blocks score seeking
+PASS playing score blocks native seek
+PASS paused seek resets and paints the first real event
+PASS score status keeps the original rounded percentage
+PASS actual two-instrument notes retain distinct global staff identities
+PASS score UI rebuild retains default assignments/options and score reset
+PASS pending same-pitch staff overrides sustained staff in original presentation order
+PASS native key presentation keeps sustained expected and future colors
+PASS held early carry keeps expected key color
+PASS correct highlight follows the actual left staff
+PASS native calibration clears recognized key state classes
+PASS explicit dispose releases all keyboard/seek resources
+PASS fresh init restores the same keyboard/seek resource counts
+PASS keyboard/shared preview/seek work with default and no-op LED
+RESOURCES {"virtual-keyboard-controls":{"owned":0,"connected":0},"score-seek-controls":{"owned":0,"connected":0}}
+CLEANUP 1 disposable databases
+DONE

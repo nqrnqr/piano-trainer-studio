@@ -10,6 +10,7 @@ export namespace PianoTrainerMeasureTiming {
         getMeasure(index: number | undefined): PianoTrainerOsmdVendor.SourceMeasure | null;
         getMeasureCount(): number;
         getCursor(): PianoTrainerScoreTraversal.Cursor | null | undefined;
+        getIndependentIterator?(): PianoTrainerScoreTraversal.Iterator;
         restoreToPosition(measureIndex: number, timestamp: number | null): void;
     }
     export function create(ports: Ports) {
@@ -47,14 +48,14 @@ export namespace PianoTrainerMeasureTiming {
             const nextStarts: (number | null)[] = new Array(totalMeasures).fill(null);
             const firstEvents: (number | null)[] = new Array(totalMeasures).fill(null);
 
-            cursor.reset();
+            const iterator = ports.getIndependentIterator?.() || (cursor.reset(), cursor.Iterator);
             const safetyMax = 100000;
             let safety = 0;
             let previousMeasureIndex: number | null = null;
 
-            while (!cursor.Iterator.EndReached && safety < safetyMax) {
-                const measureIndex = cursor.Iterator.CurrentMeasureIndex;
-                const timestamp = cursor.Iterator.currentTimeStamp?.RealValue ?? null;
+            while (!iterator.EndReached && safety < safetyMax) {
+                const measureIndex = iterator.CurrentMeasureIndex;
+                const timestamp = iterator.currentTimeStamp?.RealValue ?? null;
 
                 if (firstEvents[measureIndex] == null && Number.isFinite(timestamp)) {
                     firstEvents[measureIndex] = timestamp;
@@ -65,7 +66,7 @@ export namespace PianoTrainerMeasureTiming {
                 }
 
                 previousMeasureIndex = measureIndex;
-                cursor.Iterator.moveToNext();
+                iterator.moveToNext();
                 safety += 1;
             }
 
@@ -95,7 +96,8 @@ export namespace PianoTrainerMeasureTiming {
                 runningStart = explicitStart + actualLengthWhole;
             }
 
-            ports.restoreToPosition(savedMeasureIndex, savedTimestamp);
+            if (!iterator.EndReached) throw new Error(`Timing traversal exceeds ${safetyMax} events.`);
+            if (!ports.getIndependentIterator) ports.restoreToPosition(savedMeasureIndex, savedTimestamp);
             return measureTimingCache;
         }
         return {getInfo, rebuild, getCachedMeasureCount: () => measureTimingCache.length, readCache: () => measureTimingCache.map(entry => ({...entry}))};

@@ -1,0 +1,32 @@
+PASS real audio context is unlocked for native timer checks
+PASS one actual MembraneSynth owns the original metronome options
+PASS repeated init allocates no second metronome node
+PASS actual repeat traversal retains original timing cache and zero repeat-boundary length
+PASS count-in starts with a synchronous downbeat
+PASS four native count-in clicks hand off after the final full beat
+PASS actual Tone clicks retain accented downbeat and unaccented notes
+PASS native count-in timer intervals and Tone target times remain on the original beat cadence
+PASS native handoff waits through the last count-in beat
+PASS Wait metronome ticks while no input advancement occurs
+PASS Wait stop cancels the next native beat
+PASS Follow window uses actual immediate audio time at its native timeout
+PASS native window click is emitted during the current beat window
+PASS native metronome MIDI click/release uses Channel 10 and original volume quantization
+PASS pause gates pending native count-in tick
+PASS explicit dispose cancels native count-in and pulse resources
+PASS visual pulse cleanup removes its DOM class
+NATIVE_SYNC wait {"pianoTime":4.101333333333334,"lastCountInTarget":3.94,"lastCountInImmediate":3.84,"firstWindowTarget":4.201333333333333,"lookAhead":0.1}
+PASS wait: native coordinator count-in reaches actual routed piano and metronome voices
+PASS wait: native piano and playback-window click preserve the original mode time offset
+PASS wait: native piano handoff follows the last count-in callback by a full beat
+NATIVE_SYNC follow {"pianoTime":5.341333333333333,"lastCountInTarget":5.095666666666666,"lastCountInImmediate":5.0906666666666665,"firstWindowTarget":5.373333333333333,"lookAhead":0.005}
+PASS follow: native coordinator count-in reaches actual routed piano and metronome voices
+PASS follow: native piano and playback-window click preserve the original mode time offset
+PASS follow: native piano handoff follows the last count-in callback by a full beat
+NATIVE_SYNC realtime {"pianoTime":6.570666666666667,"lastCountInTarget":6.412,"lastCountInImmediate":6.312,"firstWindowTarget":6.570666666666667,"lookAhead":0.1}
+PASS realtime: native coordinator count-in reaches actual routed piano and metronome voices
+PASS realtime: native piano and playback-window click preserve the original mode time offset
+PASS realtime: native piano handoff follows the last count-in callback by a full beat
+PASS actual metronome output can be disposed and reinitialized once
+PASS metronome checks complete with the selected default/no-op LED port
+DONE

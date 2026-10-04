@@ -8,6 +8,7 @@ export namespace PianoTrainerScoreViewport {
         layout: HTMLSelectElement; autoScroll: HTMLInputElement;
     }
     export interface Ports {
+        refreshPresentation?(): void;
         elements: Elements;
         score: Pick<PianoTrainerOsmdAdapter.Service, 'getDefaults' | 'setLayout' | 'isReady' | 'afterRender' | 'getCursorElement'>;
         state: Pick<LegacyAppState, 'expectedNotes' | 'realtimeWrongPressInCurrentContext'>;
@@ -63,6 +64,7 @@ export namespace PianoTrainerScoreViewport {
             else if (frame === null) frame = ports.requestFrame(animate);
         }
         function afterRender() {
+            ports.refreshPresentation?.();
             if (isHorizontal() || changingLayout) {
                 for (const expected of state.expectedNotes) {
                     if (expected.noteRef) expected.anchor = ports.getAnchor(expected.noteRef, expected.mIdx, Number(expected.staffId) - 1);
@@ -100,7 +102,7 @@ export namespace PianoTrainerScoreViewport {
             area().scrollLeft = 0; area().scrollTop = 0;
             if (score.isReady()) {
                 const wrongPress = state.realtimeWrongPressInCurrentContext;
-                ports.clearFeedbackPreserveScoring();
+                if (!ports.refreshPresentation) ports.clearFeedbackPreserveScoring();
                 state.realtimeWrongPressInCurrentContext = wrongPress;
                 changingLayout = true;
                 try { ports.renderScoreAndRefreshGeometry(); } finally { changingLayout = false; }
@@ -110,7 +112,7 @@ export namespace PianoTrainerScoreViewport {
         const onLayoutChange = (event: Event) => {
             if (event.target instanceof HTMLSelectElement) setMode(event.target.value);
         };
-        const onAutoScrollChange = () => { if (follows()) follow(); else cancel(); };
+        const onAutoScrollChange = () => { ports.refreshPresentation?.(); if (follows()) follow(); else cancel(); };
         function init() {
             if (initialized) return;
             defaults ??= score.getDefaults();

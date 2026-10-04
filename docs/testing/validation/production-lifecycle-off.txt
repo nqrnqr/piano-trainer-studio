@@ -1,0 +1,32 @@
+PASS actual production bundle/main entry runs without test facade
+PASS actual production file input loads OSMD and one keyboard
+PASS native virtual key works before cache
+PASS production input creates a non-default score before suspension
+PASS cache 1: pause retains score SVG, keys and UI owners
+PASS cache 1: held input is released and MIDI detached
+PASS cache 1: native library connection is closed
+PASS cache 1: reconnect once without duplicate bindings
+PASS cache 1: score and displayed position survive
+PASS cache 1: same virtual key handles down/up again
+PASS cache 1: returned MIDI port drives production input
+PASS cache 1: Play/Reset work after return
+PASS cache 1: layout control stays bound
+PASS cache 1: device removal detaches returned input
+PASS cache 1: hotplug selects the saved input again
+PASS cache 2: pause retains score SVG, keys and UI owners
+PASS cache 2: held input is released and MIDI detached
+PASS cache 2: native library connection is closed
+PASS cache 2: reconnect once without duplicate bindings
+PASS cache 2: score and displayed position survive
+PASS cache 2: same virtual key handles down/up again
+PASS cache 2: returned MIDI port drives production input
+PASS cache 2: Play/Reset work after return
+PASS cache 2: layout control stays bound
+PASS cache 2: device removal detaches returned input
+PASS cache 2: hotplug selects the saved input again
+PASS native library opens lazily after restoration
+PASS ordinary pagehide performs final production disposal
+PASS final disposal cannot be revived by a later pageshow
+CLEANUP 1 disposable databases
+RESOURCES {"listeners":0,"databases":0}
+DONE

@@ -1,0 +1,22 @@
+PASS legacy scripts publish only explicit hardware factory APIs
+PASS repeated init retains one native LED binding set
+PASS native calibration toggle and selected key keep original panel behavior
+PASS native count input updates actual framebuffer and stored value
+PASS native pointer hold nudges immediately and owns the initial delay
+PASS calibration hold enters the original repeating interval
+PASS calibration import owns an actual pending native FileReader
+PASS explicit optional output disposal clears its native timers/readers/listeners/frames
+PASS pending calibration read is aborted and its own callbacks removed
+PASS LED markers are removed by their owners
+PASS disposed native click and old repeat cannot change calibration
+PASS fresh optional lifetime restores one native binding set
+PASS captured old file callback remains invalid after reinit
+PASS fresh native calibration file completes and releases its reader
+PASS WLED request uses its own native abort signal against the local test server
+PASS old WLED request cannot mark status or restart retry after disposal/reinit
+PASS fresh LED lifetime also returns all owned native resources to zero
+PASS score and shared music traversal still load after optional LED disposal
+PASS explicit default/no-op selection is preserved
+RESOURCES {"led":{"active":false,"listeners":0,"markers":0,"timers":0,"intervals":0,"frames":0,"waits":0,"readers":0,"requests":0,"urls":0,"links":0,"captures":0},"midi":{"active":false,"listeners":0,"markers":0,"timers":0,"intervals":0,"frames":0,"waits":0,"readers":0,"requests":0,"urls":0,"links":0,"captures":0}}
+CLEANUP 1 disposable databases
+DONE

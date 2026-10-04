@@ -16,9 +16,10 @@ export function createRenderChecks(getServices: () => Services) {
             while (!adapter.isEndReached() && adapter.getCurrentMeasureIndex() < index && steps++ < 100000) adapter.advance();
             if (steps >= 100000) throw Error('Fixture traversal did not terminate');
             adapter.showCursor(); adapter.updateCursor();
+            services.performancePosition.navigate('seek');
             if (follow) services.ScoreDisplay.autoScroll();
         },
-        updateCursor:() => getServices().osmdAdapter.updateCursor(),
+        updateCursor:() => {const services = getServices();services.osmdAdapter.updateCursor();services.performancePosition.present();},
         follow:(immediate = false) => getServices().ScoreDisplay.follow({immediate}),
         render:() => getServices().scoreRenderer.renderScoreAndRefreshGeometry(),
         zoom:(value:number) => getServices().displayControls.applyZoom(value,{save:false}),

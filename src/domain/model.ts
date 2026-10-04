@@ -1,3 +1,4 @@
+import type {PianoTrainerPerformance} from './performance-position';
 // Transitional domain data: preserve legacy field names and units. Expected
 // notes now use revision-scoped references; vendor objects belong to adapters.
 export namespace PianoTrainerDomain {
@@ -28,7 +29,7 @@ export namespace PianoTrainerDomain {
         // Legacy deferred sampler guard still reads these optional keys.
         left?: boolean; right?: boolean;
     }
-    export interface ExpectedContext { measureIndex: number; timestamp: WholeNoteTime; signature: string; }
+    export interface ExpectedContext { measureIndex: number; timestamp: WholeNoteTime; signature: string; traceStepIndex?: number; }
     export interface NoteRef { readonly scoreRevision: number; readonly id: string; }
     export interface PracticeSourceNote {
         readonly midi: MidiNote;
@@ -95,6 +96,9 @@ export namespace PianoTrainerDomain {
     export interface PendingVisual extends SustainedVisual { durationMs: number; }
     export interface OutOfRangeNote { midi: MidiNote; staffId: number | null; mIdx: number; }
     export interface FeedbackMarker {
+        performance?: PianoTrainerPerformance.PerformedEvent;
+        referenceNoteRef?: NoteRef;
+        displayOffset?: SvgPoint;
         midi: MidiNote;
         staffId: number | null;
         anchor: SvgPoint;
@@ -104,6 +108,9 @@ export namespace PianoTrainerDomain {
         contextKey: string;
     }
     export interface DebugNote {
+        performance?: PianoTrainerPerformance.PerformedEvent;
+        referenceNoteRef?: NoteRef;
+        displayOffset?: SvgPoint;
         midi: MidiNote;
         staffId: number | null;
         kind: string;
@@ -124,7 +131,7 @@ export namespace PianoTrainerDomain {
         signature?: string;
         notes: PreviewNote[];
     }
-    export interface PreviewTimelineEvent extends PreviewEvent { signature: string; }
+    export interface PreviewTimelineEvent extends PreviewEvent { signature: string; traceStepIndex?: number; }
     export interface PlayerRange {
         keyCount: number;
         minMidi: MidiNote;

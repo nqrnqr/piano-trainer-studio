@@ -1,0 +1,35 @@
+PASS adapter selection: no-op
+PASS MIDI permission help remains available
+PASS update UI initializes independently
+PASS LED settings visibility follows explicit adapter configuration
+PASS wait/traditional: shared timeline builds and restores the current playback position
+PASS wait/traditional: early input reservation matches legacy mode semantics
+PASS wait/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: shared timeline builds and restores the current playback position
+PASS follow/traditional: early input reservation matches legacy mode semantics
+PASS follow/traditional: early tap survives release across accompaniment events
+PASS follow/traditional: target event uses the same practiced-hand note source
+PASS follow/traditional: reserved released tap grades at the target
+PASS realtime/traditional: shared timeline builds and restores the current playback position
+PASS realtime/traditional: early input reservation matches legacy mode semantics
+PASS realtime/traditional: target event uses the same practiced-hand note source
+PASS realtime/traditional: reserved held key grades at the target
+PASS wait/horizontal: shared timeline builds and restores the current playback position
+PASS wait/horizontal: early input reservation matches legacy mode semantics
+PASS wait/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: shared timeline builds and restores the current playback position
+PASS follow/horizontal: early input reservation matches legacy mode semantics
+PASS follow/horizontal: early tap survives release across accompaniment events
+PASS follow/horizontal: target event uses the same practiced-hand note source
+PASS follow/horizontal: reserved released tap grades at the target
+PASS realtime/horizontal: shared timeline builds and restores the current playback position
+PASS realtime/horizontal: early input reservation matches legacy mode semantics
+PASS realtime/horizontal: target event uses the same practiced-hand note source
+PASS realtime/horizontal: reserved held key grades at the target
+PASS range and keyboard filtering still work with the selected adapter
+PASS no-op runs no LED output frames
+PASS no-op preserves existing WLED mode, address and transport preferences
+PASS no-op owns no hardware discovery or reconnect timer
+PASS no-op startup and practice perform no WLED/helper discovery requests
+
+All checks passed.

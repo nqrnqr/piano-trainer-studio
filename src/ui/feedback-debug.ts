@@ -12,6 +12,8 @@ export namespace PianoTrainerFeedbackDebug {
         document: Document;
         state: Pick<LegacyAppState, 'debugPersistentAnchors' | 'debugEventFlow' | 'debugMatchLogs' | 'debugAnchorResolution' | 'debugFrameSeq' | 'debugAnchorHistory' | 'debugStickyFrameLimit' | 'isPlaying' | 'expectedNotes'>;
         getSvg(): SVGSVGElement | null;
+        captureDisplay?(midi: number, staff: number | null, anchor: PianoTrainerDomain.SvgPoint): Pick<PianoTrainerDomain.DebugNote, 'performance' | 'referenceNoteRef' | 'displayOffset'>;
+        projectNote?(note: PianoTrainerDomain.DebugNote): PianoTrainerDomain.SvgPoint | null;
         ensureGroup(id: string): Element | null;
         readEnabled(): boolean;
         saveEnabled(enabled: boolean): void;
@@ -73,6 +75,7 @@ export namespace PianoTrainerFeedbackDebug {
                 const normalizedNotes = frame.notes
                     .filter(n => n && n.anchor && Number.isFinite(n.anchor.x) && Number.isFinite(n.anchor.y))
                     .map(n => ({
+                    ...ports.captureDisplay?.(n.midi, n.staffId, n.anchor!),
                     midi: n.midi,
                     staffId: n.staffId,
                     kind: n.kind || 'expected',
@@ -120,13 +123,15 @@ export namespace PianoTrainerFeedbackDebug {
                 history.forEach((frame, frameIndex) => {
                     const opacity = 0.95;
                     frame.notes.forEach((note, noteIndex) => {
+                        const anchor = ports.projectNote ? ports.projectNote(note) : note.anchor;
+                        if (!anchor) return;
                         const g = ports.document.createElementNS('http://www.w3.org/2000/svg', 'g');
                         g.setAttribute('data-debug-seq', String(frame.seq));
                         g.setAttribute('data-debug-kind', frame.kind || 'expected');
                         g.setAttribute('opacity', String(opacity));
                         const ring = ports.document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                        ring.setAttribute('cx', String(note.anchor.x));
-                        ring.setAttribute('cy', String(note.anchor.y));
+                        ring.setAttribute('cx', String(anchor.x));
+                        ring.setAttribute('cy', String(anchor.y));
                         ring.setAttribute('r', note.kind === 'feedback' ? '8' : '6');
                         ring.setAttribute('fill', 'none');
                         ring.setAttribute('stroke', note.kind === 'feedback'
@@ -135,24 +140,24 @@ export namespace PianoTrainerFeedbackDebug {
                         ring.setAttribute('stroke-width', note.kind === 'feedback' ? '2' : '1.5');
                         g.appendChild(ring);
                         const h = ports.document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                        h.setAttribute('x1', String(note.anchor.x - 4));
-                        h.setAttribute('y1', String(note.anchor.y));
-                        h.setAttribute('x2', String(note.anchor.x + 4));
-                        h.setAttribute('y2', String(note.anchor.y));
+                        h.setAttribute('x1', String(anchor.x - 4));
+                        h.setAttribute('y1', String(anchor.y));
+                        h.setAttribute('x2', String(anchor.x + 4));
+                        h.setAttribute('y2', String(anchor.y));
                         h.setAttribute('stroke', 'rgba(255, 255, 255, 0.85)');
                         h.setAttribute('stroke-width', '1');
                         g.appendChild(h);
                         const v = ports.document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                        v.setAttribute('x1', String(note.anchor.x));
-                        v.setAttribute('y1', String(note.anchor.y - 4));
-                        v.setAttribute('x2', String(note.anchor.x));
-                        v.setAttribute('y2', String(note.anchor.y + 4));
+                        v.setAttribute('x1', String(anchor.x));
+                        v.setAttribute('y1', String(anchor.y - 4));
+                        v.setAttribute('x2', String(anchor.x));
+                        v.setAttribute('y2', String(anchor.y + 4));
                         v.setAttribute('stroke', 'rgba(255, 255, 255, 0.85)');
                         v.setAttribute('stroke-width', '1');
                         g.appendChild(v);
                         const label = ports.document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                        label.setAttribute('x', String(note.anchor.x + 7));
-                        label.setAttribute('y', String(note.anchor.y - 7 - ((noteIndex % 2) * 9)));
+                        label.setAttribute('x', String(anchor.x + 7));
+                        label.setAttribute('y', String(anchor.y - 7 - ((noteIndex % 2) * 9)));
                         label.setAttribute('font-size', '9');
                         label.setAttribute('font-family', 'monospace');
                         label.setAttribute('fill', note.kind === 'feedback'

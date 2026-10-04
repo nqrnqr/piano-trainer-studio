@@ -1,0 +1,22 @@
+PASS repeated native init retains one range select and update button
+PASS native select preserves saved 25-key range
+PASS range change prunes original note arrays and retains held Map identity
+PASS range label and actual keyboard update together
+PASS range change invalidates shared preview
+PASS explicit range disposal removes native binding and marker
+PASS fresh range lifetime restores one native binding
+PASS connection UI observes native no-device states
+PASS blank WLED address remains None
+PASS connection UI retains WLED connected label
+PASS actual local version manifest keeps original state and button text
+PASS update fetch receives its owned native abort signal
+PASS explicit controller disposal aborts native fetch without late state commit
+PASS disposed old request does not run its finally button sync
+PASS explicit update UI disposal removes only its button binding
+PASS fresh update lifetime performs original automatic checks with one listener
+PASS native update button accepts a fresh manual check
+PASS explicit range/update resources all return to zero
+PASS device controls work with default and no-op LED
+RESOURCES {"player-range-controls":0,"update-controls":0}
+CLEANUP 1 disposable databases
+DONE

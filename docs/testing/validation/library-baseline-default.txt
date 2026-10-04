@@ -1,0 +1,40 @@
+PASS native v1 database is isolated from user data
+PASS native stores retain id key paths
+PASS native indexes retain original names
+PASS native indexes remain nonunique
+PASS test-only starter flag prevents automatic initial user-library writes
+PASS create trims folder names and lists sort by name
+PASS native folder rename persists
+PASS empty folder creation rejects before writing
+PASS save applies original inferred metadata
+PASS native structured clone preserves compressed MXL binary
+PASS score list sorts by title
+PASS missing ID lookup retains null versus undefined results
+PASS native score rename persists
+PASS mark opened feeds recent list
+PASS nonempty folder deletion rejects without removing contents
+PASS batch move returns requested unique count including missing ID
+PASS batch request callback writes inside native transaction
+PASS empty native folder deletion succeeds
+PASS backup v1 metadata and complete lists remain compatible
+PASS backup encodes binary bytes and preserves XML text
+PASS backup import creates fresh IDs without clearing original library
+PASS restore maps only imported folder IDs
+PASS native backup roundtrip preserves every compressed byte
+PASS unknown-version backup retains original defaults and byte coercion
+PASS invalid backup aborts the native transaction and rolls back earlier queued writes
+PASS folder cascade deletes contents in one native transaction and returns unique requested count
+PASS batch delete preserves requested count and removes stored scores
+PASS actual relative starter asset imports all scores
+PASS starter flag persists only after completion and prevents repeat import
+PASS existing scores skip seed and mark imported
+PASS failed starter response preserves original error and leaves flag unset
+PASS explicit disposal and reinit retain stored scores
+PASS native transaction abort rejects the command
+PASS explicit native disposal aborts a pending read without orphaned request rejection
+PASS native disposal permits one fresh database connection
+PASS actual drawer consumer reads the typed repository
+PASS actual score loader awaits repository markOpened and refresh
+PASS native library integrates with default/no-op LED
+CLEANUP 6 disposable databases
+DONE

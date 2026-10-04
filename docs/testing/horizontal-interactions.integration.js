@@ -1,0 +1,48 @@
+(async()=>{
+ const api=window.PianoTrainerTest,f=api.playback,results=parent.document.getElementById('results'),el=id=>document.getElementById(id),wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));results.textContent='';
+ const check=(ok,label)=>{results.textContent+=`${ok?'PASS':'FAIL'} ${label}\n`;if(!ok)throw Error(label);},snapshot=()=>api.readPracticeSnapshot();
+ const hit=()=>{for(const note of snapshot().expected)if(!note.hit)api.dispatchInput(note.midi,true);for(const midi of snapshot().pressed)api.dispatchInput(midi,false);};
+ const begin=async mode=>{f.selectMode(mode);f.prepareScenario();el('btn-play').click();await wait(0);f.finishCountIn();};
+ window.HorizontalInteractionsCleanup=async()=>{api.dispose();await window.__PT_LIBRARY_FIXTURE__.cleanup();parent.document.getElementById('dispose').disabled=true;results.textContent+='DONE\n';};
+ const nativeMedia=window.matchMedia;
+ try{
+  api.practice.muteOutputs();f.disablePulse();const xml=await(await fetch('/docs/testing/fixtures/simple-repeat.musicxml')).text();await api.loadScore(xml,{fileName:'interaction-repeat.musicxml'});await api.setLayout('horizontal');el('check-autoscroll').checked=true;
+  await begin('wait');const firstX=snapshot().expected.find(note=>note.midi===60).anchor.x;
+  for(let i=0;i<8;i++){hit();f.fireNext();}const second=snapshot().expected.find(note=>note.midi===60);api.dispatchInput(90,true);
+  const correct=[...document.querySelectorAll('#pt-feedback-group circle')].filter(node=>node.getAttribute('fill').includes('46, 204'));
+  check(second.anchor.x>firstX&&correct.some(node=>Math.abs(Number(node.getAttribute('cx'))-firstX)<.01),'first-pass correct history stays on the first displayed copy');
+  const wrong=document.querySelector('#pt-feedback-group circle[fill="rgba(231, 76, 60, 0.55)"]');check(wrong&&Math.abs(Number(wrong.getAttribute('cx'))-second.anchor.x)<1,'held wrong input paints the second-pass copy');
+  el('check-debug').checked=true;el('check-debug').dispatchEvent(new Event('change'));api.debug.pushFrame({kind:'expected',measureIndex:0,timestamp:0,notes:[{...second,kind:'expected'}]});
+  const id=api.horizontal.position().eventId,score=JSON.stringify(snapshot().score),expected=JSON.stringify(snapshot().expected.map(note=>[note.noteId,note.hit]));
+  api.render.zoom(50);api.render.zoom(150);api.render.zoom(100);await api.horizontal.ready();
+  check(api.horizontal.position().eventId===id&&JSON.stringify(snapshot().score)===score&&JSON.stringify(snapshot().expected.map(note=>[note.noteId,note.hit]))===expected,'rapid 50/150/100% reflow preserves event, NoteRef, hit state and grading');
+  const debugCircle=document.querySelector('#pt-debug-group circle');check(debugCircle&&Math.abs(Number(debugCircle.getAttribute('cx'))-snapshot().expected.find(note=>note.midi===60).anchor.x)<.01,'debug frame reprojects to the current occurrence after reflow');
+  api.dispatchInput(90,false);el('check-debug').checked=false;el('check-debug').dispatchEvent(new Event('change'));api.pause();f.clearCountIns();
+  await Promise.all([api.setLayout('traditional'),api.setLayout('horizontal'),api.setLayout('traditional'),api.setLayout('horizontal')]);await api.horizontal.ready();
+  check(api.horizontal.position().eventId===id&&api.readViewportSnapshot().layout==='horizontal'&&api.horizontal.resources().instances===0,'rapid layout changes discard stale rendering and retain the second pass');
+  await api.controls.requestFullscreen();await api.horizontal.ready();check(api.horizontal.position().eventId===id&&JSON.stringify(snapshot().score)===score,'fullscreen or its supported fallback preserves event and score');
+  results.textContent+=`FULLSCREEN ${JSON.stringify({native:!!document.fullscreenElement,pseudo:api.controls.readSnapshot().pseudoFullscreen})}\n`;await api.controls.exitFullscreen();await api.horizontal.ready();
+  window.matchMedia=query=>query==='(prefers-reduced-motion: reduce)'?{matches:true}:nativeMedia.call(window,query);
+  api.horizontal.seek(12);await api.horizontal.ready();api.render.follow();const bounds=el('music-area').getBoundingClientRect(),cursor=document.querySelector('.pt-performance-cursor').getBoundingClientRect();
+  check(Math.abs(cursor.left+cursor.width/2-bounds.left-el('music-area').clientWidth*.33)<3,'reduced-motion policy positions the same right-hand copy immediately');window.matchMedia=nativeMedia;
+  api.pause();f.disposeCoordinator();f.clearCountIns();await api.loadScore(xml);await api.setLayout('horizontal');await begin('realtime');
+  api.render.zoom(50);f.fireNext();const latest=api.horizontal.position();await api.horizontal.ready();check(api.horizontal.position().eventId===latest.eventId&&document.querySelector('.pt-performance-cursor').dataset.eventId===String(latest.eventId),'async display commit positions the latest formal event rather than its preparation snapshot');api.pause();
+  let finish;const slow=new Blob([xml],{type:'application/xml'});slow.slice=()=>slow;slow.text=()=>new Promise(resolve=>finish=resolve);
+  const obsolete=api.loadScore(slow,{fileName:'obsolete.musicxml',fileType:'musicxml'}).then(()=>false,error=>error.name==='AbortError');
+  await wait(0);await api.loadScore(xml,{fileName:'latest.musicxml'});finish(xml);check(await obsolete,'superseded XML normalization is rejected');
+  check(snapshot().fileName==='latest.musicxml'&&api.score.readFirstPitch()===60&&api.horizontal.position().scoreRevision===api.readViewportSnapshot().scoreRevision,'only the latest score owns metadata, source and display');
+  const change=(id,value)=>{const node=el(id);if(node.type==='checkbox')node.checked=value;else node.value=value;node.dispatchEvent(new Event('change',{bubbles:true}));};
+  await begin('realtime');change('check-looper',true);change('val-loop-min','2');change('val-loop-max','2');await api.horizontal.ready();
+  check(api.horizontal.position().source.sourceMeasureIndex===1&&api.horizontal.position().reason==='seek','live Loop range change uses explicit source-measure navigation');
+  f.fireNext();await api.horizontal.ready();change('check-looper',false);const loopEvent=api.horizontal.position().eventId;await api.horizontal.ready();
+  check(api.horizontal.position().eventId===loopEvent&&!api.horizontal.resources().pending,'turning Loop off rebuilds finite presentation without an extra formal event');api.pause();
+  api.render.zoom(150);const pending=api.horizontal.ready();api.dispose();await pending;await wait(30);const disposed=api.horizontal.resources();
+  check(disposed.instances===0&&disposed.models===0&&disposed.chunks===0&&!disposed.pending&&!document.querySelector('.horizontal-score-content'),'dispose releases a pending render and prevents late DOM commits');
+  api.recreate();api.practice.muteOutputs();const connections=await(await fetch('/docs/testing/fixtures/horizontal-connections.musicxml')).text();await api.loadScore(connections,{fileName:'connection-seams.musicxml'});await api.setLayout('horizontal');api.render.zoom(75);await api.horizontal.ready();
+  const anchors=api.horizontal.anchors(),c4=anchors.filter(note=>note.midi===60&&note.staffIndex===0&&note.point);
+  check(c4.length>8&&Math.max(...c4.map(note=>note.point.y))-Math.min(...c4.map(note=>note.point.y))<.01,'upper staff baseline stays identical across independently rendered blocks');
+  const low=anchors.filter(note=>note.midi===48&&note.staffIndex===1&&note.point);check(Math.max(...low.map(note=>note.point.y))-Math.min(...low.map(note=>note.point.y))<.01,'lower staff baseline stays identical at chunk seams');
+  check(anchors.every(note=>!note.point||(note.point.y>=0&&note.point.y<=Number(document.querySelector('.pt-horizontal-canvas').getAttribute('viewBox').split(' ')[3]))),'high and low ledger notes fit the shared vertical crop');
+  results.textContent+=`INTERACTIONS ${JSON.stringify({resources:api.horizontal.resources(),ledgerAnchors:anchors.filter(note=>note.midi===108||note.midi===24),frame:parent.document.querySelector('iframe').clientWidth})}\nREADY_FOR_CAPTURE\n`;parent.document.getElementById('dispose').disabled=false;
+ }catch(error){results.textContent+=`ERROR ${error.stack||error}\n`;window.matchMedia=nativeMedia;await window.HorizontalInteractionsCleanup();}
+})();

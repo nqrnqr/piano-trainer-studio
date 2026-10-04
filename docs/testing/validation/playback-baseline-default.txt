@@ -1,0 +1,135 @@
+PASS wait/traditional: toolbar Play enters count-in once
+PASS wait/traditional: timeline build preserves pre-play viewport
+PASS wait/traditional: count-in handoff paints current event and prefetches next
+PASS wait/traditional: started event builds both staff expectations
+PASS wait/traditional: wrong input grades without advancing immediately
+PASS wait/traditional: original first event delay advances actual cursor
+PASS wait/traditional: correct or missed chord grading keeps original counts
+PASS wait/traditional: speed change affects subsequent beat window with original mode rounding
+PASS wait/traditional: toolbar Pause gates the existing pending callback
+PASS wait/traditional: resume starts from original prefetched iterator position
+PASS wait/traditional: rapid Play/Pause keeps stopped count-in handoff gated
+PASS wait/traditional: toolbar Reset restores first cursor and clears score
+PASS wait/traditional: Loop boundary grades then seeks and restarts with reset score
+PASS wait/traditional: Loop count-in postpones restart handoff
+PASS wait/traditional: Loop count-in resumes one coordinator at the loop start
+PASS wait/traditional: Reset respects the UI Loop minimum
+PASS wait/traditional: coordinator follows actual repeat and first/second endings
+PASS wait/traditional: song end pauses and retains final iterator
+PASS wait/traditional: repeat traversal visits the original number of timed events
+SNAPSHOT wait/traditional [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS wait/traditional: switching song while playing stops and installs the new score
+PASS wait/traditional: old pending callback remains gated after song switch
+PASS follow/traditional: toolbar Play enters count-in once
+PASS follow/traditional: timeline build preserves pre-play viewport
+PASS follow/traditional: count-in handoff paints current event and prefetches next
+PASS follow/traditional: started event builds both staff expectations
+PASS follow/traditional: wrong input grades without advancing immediately
+PASS follow/traditional: original first event delay advances actual cursor
+PASS follow/traditional: correct or missed chord grading keeps original counts
+PASS follow/traditional: speed change affects subsequent beat window with original mode rounding
+PASS follow/traditional: toolbar Pause gates the existing pending callback
+PASS follow/traditional: resume starts from original prefetched iterator position
+PASS follow/traditional: rapid Play/Pause keeps stopped count-in handoff gated
+PASS follow/traditional: toolbar Reset restores first cursor and clears score
+PASS follow/traditional: Loop boundary grades then seeks and restarts with reset score
+PASS follow/traditional: Loop count-in postpones restart handoff
+PASS follow/traditional: Loop count-in resumes one coordinator at the loop start
+PASS follow/traditional: Reset respects the UI Loop minimum
+PASS follow/traditional: coordinator follows actual repeat and first/second endings
+PASS follow/traditional: song end pauses and retains final iterator
+PASS follow/traditional: repeat traversal visits the original number of timed events
+SNAPSHOT follow/traditional [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS follow/traditional: switching song while playing stops and installs the new score
+PASS follow/traditional: old pending callback remains gated after song switch
+PASS realtime/traditional: toolbar Play enters count-in once
+PASS realtime/traditional: timeline build preserves pre-play viewport
+PASS realtime/traditional: count-in handoff paints current event and prefetches next
+PASS realtime/traditional: started event builds both staff expectations
+PASS realtime/traditional: wrong input grades without advancing immediately
+PASS realtime/traditional: original first event delay advances actual cursor
+PASS realtime/traditional: correct or missed chord grading keeps original counts
+PASS realtime/traditional: speed change affects subsequent beat window with original mode rounding
+PASS realtime/traditional: toolbar Pause gates the existing pending callback
+PASS realtime/traditional: resume starts from original prefetched iterator position
+PASS realtime/traditional: rapid Play/Pause keeps stopped count-in handoff gated
+PASS realtime/traditional: toolbar Reset restores first cursor and clears score
+PASS realtime/traditional: Loop boundary grades then seeks and restarts with reset score
+PASS realtime/traditional: Loop count-in postpones restart handoff
+PASS realtime/traditional: Loop count-in resumes one coordinator at the loop start
+PASS realtime/traditional: Reset respects the UI Loop minimum
+PASS realtime/traditional: coordinator follows actual repeat and first/second endings
+PASS realtime/traditional: song end pauses and retains final iterator
+PASS realtime/traditional: repeat traversal visits the original number of timed events
+SNAPSHOT realtime/traditional [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS realtime/traditional: switching song while playing stops and installs the new score
+PASS realtime/traditional: old pending callback remains gated after song switch
+PASS wait/horizontal: toolbar Play enters count-in once
+PASS wait/horizontal: timeline build preserves pre-play viewport
+PASS wait/horizontal: count-in handoff paints current event and prefetches next
+PASS wait/horizontal: started event builds both staff expectations
+PASS wait/horizontal: wrong input grades without advancing immediately
+PASS wait/horizontal: original first event delay advances actual cursor
+PASS wait/horizontal: correct or missed chord grading keeps original counts
+PASS wait/horizontal: speed change affects subsequent beat window with original mode rounding
+PASS wait/horizontal: toolbar Pause gates the existing pending callback
+PASS wait/horizontal: resume starts from original prefetched iterator position
+PASS wait/horizontal: rapid Play/Pause keeps stopped count-in handoff gated
+PASS wait/horizontal: toolbar Reset restores first cursor and clears score
+PASS wait/horizontal: Loop boundary grades then seeks and restarts with reset score
+PASS wait/horizontal: Loop count-in postpones restart handoff
+PASS wait/horizontal: Loop count-in resumes one coordinator at the loop start
+PASS wait/horizontal: Reset respects the UI Loop minimum
+PASS wait/horizontal: coordinator follows actual repeat and first/second endings
+PASS wait/horizontal: song end pauses and retains final iterator
+PASS wait/horizontal: repeat traversal visits the original number of timed events
+SNAPSHOT wait/horizontal [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS wait/horizontal: switching song while playing stops and installs the new score
+PASS wait/horizontal: old pending callback remains gated after song switch
+PASS follow/horizontal: toolbar Play enters count-in once
+PASS follow/horizontal: timeline build preserves pre-play viewport
+PASS follow/horizontal: count-in handoff paints current event and prefetches next
+PASS follow/horizontal: started event builds both staff expectations
+PASS follow/horizontal: wrong input grades without advancing immediately
+PASS follow/horizontal: original first event delay advances actual cursor
+PASS follow/horizontal: correct or missed chord grading keeps original counts
+PASS follow/horizontal: speed change affects subsequent beat window with original mode rounding
+PASS follow/horizontal: toolbar Pause gates the existing pending callback
+PASS follow/horizontal: resume starts from original prefetched iterator position
+PASS follow/horizontal: rapid Play/Pause keeps stopped count-in handoff gated
+PASS follow/horizontal: toolbar Reset restores first cursor and clears score
+PASS follow/horizontal: Loop boundary grades then seeks and restarts with reset score
+PASS follow/horizontal: Loop count-in postpones restart handoff
+PASS follow/horizontal: Loop count-in resumes one coordinator at the loop start
+PASS follow/horizontal: Reset respects the UI Loop minimum
+PASS follow/horizontal: coordinator follows actual repeat and first/second endings
+PASS follow/horizontal: song end pauses and retains final iterator
+PASS follow/horizontal: repeat traversal visits the original number of timed events
+SNAPSHOT follow/horizontal [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS follow/horizontal: switching song while playing stops and installs the new score
+PASS follow/horizontal: old pending callback remains gated after song switch
+PASS realtime/horizontal: toolbar Play enters count-in once
+PASS realtime/horizontal: timeline build preserves pre-play viewport
+PASS realtime/horizontal: count-in handoff paints current event and prefetches next
+PASS realtime/horizontal: started event builds both staff expectations
+PASS realtime/horizontal: wrong input grades without advancing immediately
+PASS realtime/horizontal: original first event delay advances actual cursor
+PASS realtime/horizontal: correct or missed chord grading keeps original counts
+PASS realtime/horizontal: speed change affects subsequent beat window with original mode rounding
+PASS realtime/horizontal: toolbar Pause gates the existing pending callback
+PASS realtime/horizontal: resume starts from original prefetched iterator position
+PASS realtime/horizontal: rapid Play/Pause keeps stopped count-in handoff gated
+PASS realtime/horizontal: toolbar Reset restores first cursor and clears score
+PASS realtime/horizontal: Loop boundary grades then seeks and restarts with reset score
+PASS realtime/horizontal: Loop count-in postpones restart handoff
+PASS realtime/horizontal: Loop count-in resumes one coordinator at the loop start
+PASS realtime/horizontal: Reset respects the UI Loop minimum
+PASS realtime/horizontal: coordinator follows actual repeat and first/second endings
+PASS realtime/horizontal: song end pauses and retains final iterator
+PASS realtime/horizontal: repeat traversal visits the original number of timed events
+SNAPSHOT realtime/horizontal [{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":2,"time":2},{"measure":2,"time":2.25},{"measure":2,"time":2.5},{"measure":2,"time":2.75},{"measure":0,"time":0},{"measure":0,"time":0.25},{"measure":0,"time":0.5},{"measure":0,"time":0.75},{"measure":1,"time":1},{"measure":1,"time":1.25},{"measure":1,"time":1.5},{"measure":1,"time":1.75},{"measure":3,"time":3},{"measure":3,"time":3.25},{"measure":3,"time":3.5},{"measure":3,"time":3.75},{"measure":4,"time":4},{"measure":4,"time":4.25},{"measure":4,"time":4.5},{"measure":4,"time":4.75}]
+PASS realtime/horizontal: switching song while playing stops and installs the new score
+PASS realtime/horizontal: old pending callback remains gated after song switch
+PASS playback matrix completes with the selected default/no-op LED port
+PASS controlled fixture disposal releases backend and coordinator clock ownership
+DONE

@@ -1,0 +1,16 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Horizontal unfolded score checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:100%;height:560px;border:1px solid #ccc}pre{white-space:pre-wrap;max-height:270px;overflow:auto}h1{font-size:18px}</style>
+<h1>Horizontal unfolded score checks</h1>
+<p>Real local OSMD, structural note mapping and controlled playback. Audio and hardware routes are disabled.</p>
+<button id="run" disabled>Run checks</button>
+<pre id="results">Ready</pre>
+<iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script>
+<script>
+const frame=document.querySelector('iframe');
+frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('results').textContent='Ready';};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/horizontal-unfolded.integration.js';frame.contentDocument.body.append(script);};
+mountModuleTestFrame(frame,{ports:{controlledPlayback:true},preferences:{pt_ledOutputMode:'none'}});
+</script>

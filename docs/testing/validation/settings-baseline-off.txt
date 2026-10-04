@@ -1,0 +1,14 @@
+PASS settings import/reload runs with the requested default/no-op LED
+PASS backup preserves version 1 and string settings
+PASS real FileReader reports an unsupported backup
+PASS invalid file leaves existing settings unchanged
+PASS invalid import retains the shared state and Set
+PASS valid file invokes the production success/reload path
+PASS reload applies imported practice mode to state and controls
+PASS reload restores the horizontal display preference
+PASS reload keeps imported channel and volume without reseeding defaults
+PASS reload retains forced monitoring preferences
+PASS original supported settings are restored after a second real reload
+NATIVE_RELOADS {"boots":3,"pageHides":2,"databases":1}
+
+All checks passed.

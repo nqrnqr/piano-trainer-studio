@@ -28,6 +28,6 @@ test('missing measure falls back to first time signature and undefined index ret
 test('missing cursor resets cache and stuck iterator retains 100000 safety limit',()=>{
  const h=harness();let moves=0;const cursor={Iterator:{CurrentMeasureIndex:0,currentTimeStamp:{RealValue:0},EndReached:false,moveToNext(){moves++;}},reset(){},update(){}};
  let active=cursor;const service=h.api('PianoTrainerMeasureTiming').create({getMeasure:()=>null,getMeasureCount:()=>1,getCursor:()=>active,restoreToPosition(){}});
- service.rebuild();assert.equal(moves,100000);assert.equal(service.getCachedMeasureCount(),1);active=null;
+ assert.throws(()=>service.rebuild(),/exceeds 100000 events/);assert.equal(moves,100000);active=null;
  assert.equal(service.rebuild().length,0);assert.equal(service.getCachedMeasureCount(),0);
 });

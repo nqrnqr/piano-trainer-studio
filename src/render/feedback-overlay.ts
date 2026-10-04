@@ -3,6 +3,7 @@ import type {LegacyAppState} from '../state/model';
 // Draw recorded feedback only. Context and scoring are supplied by practice.
 export namespace PianoTrainerFeedbackOverlay {
     export interface Ports {
+        projectMarker?(marker: PianoTrainerDomain.FeedbackMarker): PianoTrainerDomain.SvgPoint | null;
         state: Pick<LegacyAppState, 'feedbackEnabled' | 'correctFeedbackHistory' |
             'releasedIncorrectFeedback' | 'activeHeldIncorrectFeedback'>;
         document: Pick<Document, 'createElementNS'>;
@@ -27,7 +28,7 @@ export namespace PianoTrainerFeedbackOverlay {
         }
         function drawStoredMarker(marker: PianoTrainerDomain.FeedbackMarker | null | undefined) {
             if (!marker?.anchor) return;
-            drawMarker(marker.anchor, !!marker.isCorrect);
+            drawMarker(ports.projectMarker ? ports.projectMarker(marker) : marker.anchor, !!marker.isCorrect);
         }
         function render() {
             clear();

@@ -22,6 +22,7 @@ export namespace PianoTrainerPlaybackCoordinator {
         readLoopMin(): number; readLoopMax(): number; isMetronomeEnabled(): boolean;
     }
     export interface Ports {
+        presentation?: {prepare?(): Promise<void>; present(): void; navigate(reason: 'load' | 'reset' | 'seek'): void; loop(): void; traceStepIndex(): number;};
         state: State; clock: PianoTrainerPlaybackClock.Service; score: Score;
         transport: {stop():void; start():void; pause():void; setBpm(value:number):void};
         controls: Controls;
@@ -115,6 +116,8 @@ export namespace PianoTrainerPlaybackCoordinator {
 
             await ports.audio.ensureReady();
             if (generation !== epoch) return;
+            await ports.presentation?.prepare?.();
+            if (generation !== epoch) return;
 
             state.isPlaying = true;
             ports.ui.updatePlayPause();
@@ -127,9 +130,8 @@ export namespace PianoTrainerPlaybackCoordinator {
             state.lastLedPreviewEvents = [];
             state.ledPreviewTraversalIndex = -1;
 
-            // WARNING:
-            // Building the LED preview timeline temporarily resets/traverses the OSMD cursor.
-            // Preserve the user's pre-play viewport so auto-scroll does not jump to measure 1 during count-in.
+            // Preview uses an independent iterator. Preserve the pre-play
+            // viewport throughout preparation and the existing count-in.
             ports.ui.preserveScroll(() => {
                 ports.ensureTimeline();
             });
@@ -214,6 +216,7 @@ export namespace PianoTrainerPlaybackCoordinator {
             }
 
             const entries = ports.score.readEvent();
+            ports.presentation?.present();
             if (entries.isEmpty) {
                 ports.score.advance();
                 ports.score.update();
@@ -236,7 +239,8 @@ export namespace PianoTrainerPlaybackCoordinator {
             state.currentExpectedContext = {
                 measureIndex: currentMeasureIdx,
                 timestamp: currentTimestamp,
-                signature: entries.signature
+                signature: entries.signature,
+                ...(ports.presentation ? {traceStepIndex: ports.presentation.traceStepIndex()} : {})
             };
 
             ports.ui.renderFeedback();
@@ -347,6 +351,7 @@ export namespace PianoTrainerPlaybackCoordinator {
                         ports.ui.updateScore();
 
                         state.anchorTime = ports.clock.nowSeconds();
+                        ports.presentation?.loop();
                         ports.transport.start();
                         playbackLoop();
                     };
@@ -438,6 +443,7 @@ export namespace PianoTrainerPlaybackCoordinator {
                 }
             }
             ports.score.update();
+            ports.presentation?.navigate('reset');
             ports.ui.scroll();
             state.ledPreviewTraversalIndex = -1;
             state.lastLedPreviewEvents = [];
@@ -462,6 +468,7 @@ export namespace PianoTrainerPlaybackCoordinator {
                     ports.score.advance();
                 }
                 ports.score.update();
+                ports.presentation?.navigate('seek');
                 ports.ui.scroll();
             }
         }
