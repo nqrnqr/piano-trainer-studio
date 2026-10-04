@@ -6,6 +6,7 @@
 - `/src` = TypeScript ES modules with explicit imports/exports; `/js/generated/app.js` and its embedded-source map are the committed production bundle
 - `src/main.ts` starts one application; `src/app/services.ts` owns service composition, original initialization order and final disposal
 - `src/app/bootstrap.ts` exposes application lifecycle, score loading and input commands; business state and vendor instances remain private
+- A persisted `pagehide` suspends output activity/connections while retaining score and UI; persisted `pageshow` restores connections on the same application. An ordinary `pagehide` performs final disposal. See `docs/refactor/BFCACHE_FIX_2026-10-04.md` for production-entry tests and the real-navigation limitation.
 - `/docs` = architecture notes and development notes
 
 ## Current modules

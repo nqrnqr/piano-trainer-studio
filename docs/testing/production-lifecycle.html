@@ -1,0 +1,28 @@
+<!doctype html><meta charset="utf-8"><title>Production page cache lifecycle checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1200px;height:600px;border:1px solid #ccc}pre{white-space:pre-wrap}</style>
+<h1>Production page cache lifecycle checks</h1>
+<p>Actual app.js and main.ts; native page-transition event simulation, disposable preferences/database, simulated MIDI ports and muted real Tone.</p>
+<button id="run" disabled>Run checks</button>
+<button id="prepare-navigation" disabled>Prepare navigation check</button>
+<button id="check-navigation" disabled>Check navigation return</button>
+<a href="/docs/testing/lifecycle-away.html">Navigate away to test browser Back</a>
+<pre id="results">Loading</pre><iframe title="Production app under test"></iframe>
+<pre id="navigation-record"></pre>
+<script>
+const navigationEvents=[];
+for(const type of ['pageshow','pagehide'])window.addEventListener(type,event=>{navigationEvents.push({type,persisted:event.persisted,trusted:event.isTrusted});const navigation=performance.getEntriesByType('navigation')[0];document.getElementById('navigation-record').textContent=JSON.stringify({events:navigationEvents,navigationType:navigation?.type,notRestoredReasons:navigation?.notRestoredReasons});});
+window.__PT_NAVIGATION_EVENTS__=navigationEvents;
+const frame=document.querySelector('iframe');
+frame.onload=()=>{document.getElementById('run').disabled=false;document.getElementById('prepare-navigation').disabled=false;document.getElementById('results').textContent='Ready';};
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/production-lifecycle.integration.js';frame.contentDocument.body.append(script);};
+document.getElementById('prepare-navigation').onclick=()=>{document.getElementById('prepare-navigation').disabled=true;document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/production-navigation.integration.js';frame.contentDocument.body.append(script);};
+document.getElementById('check-navigation').onclick=()=>{void frame.contentWindow.ProductionNavigationCheck.verify();};
+(async()=>{
+ const html=await(await fetch('/index.html')).text();
+ const fixtures=['library-fixture.js','midi-device-fixture.js','production-lifecycle-fixture.js'].map(name=>'<script src="/docs/testing/'+name+'"><'+'/script>').join('');
+ const late='<script>Tone.Destination.volume.value=-Infinity;<'+'/script>';
+ const slot=html.indexOf('    <script>document.write(\'<script src="js/generated/app.js');
+ if(slot<0)throw Error('Missing production entry');
+ frame.srcdoc=(html.slice(0,slot)+late+html.slice(slot)).replace('<head>','<head><base href="/">'+fixtures);
+})();
+</script>

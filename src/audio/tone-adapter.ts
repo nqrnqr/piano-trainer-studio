@@ -26,7 +26,7 @@ export namespace PianoTrainerAudioOutput {
         let pianoSamplerReady = false;
         let pianoSamplerReadyPromise: Promise<boolean> | null = null;
         let DEFAULT_TONE_LATENCY_PROFILE: ReturnType<typeof captureToneLatencyProfile> | null = null;
-        let disposed = false, epoch = 0;
+        let disposed = false, epoch = 0, pendingNoteEpoch = 0;
         // Voice assertions below follow init and a disposal/epoch guard.
         const releaseTimers = new Set<number>();
         function init() {
@@ -66,9 +66,10 @@ export namespace PianoTrainerAudioOutput {
         }
         function scheduleRelease(callback: () => void, delayMs: number) {
             const currentEpoch = epoch;
+            const currentNoteEpoch = pendingNoteEpoch;
             const id = ports.setTimer(() => {
                 releaseTimers.delete(id);
-                if (!disposed && currentEpoch === epoch) callback();
+                if (!disposed && currentEpoch === epoch && currentNoteEpoch === pendingNoteEpoch) callback();
             }, delayMs);
             releaseTimers.add(id);
         }
@@ -205,9 +206,10 @@ export namespace PianoTrainerAudioOutput {
                 return;
             if (!pianoSamplerReady) {
                 const currentEpoch = epoch;
+                const currentNoteEpoch = pendingNoteEpoch;
                 ensurePianoSamplerLoaded()
                     .then(() => {
-                        if (disposed || epoch !== currentEpoch)
+                        if (disposed || epoch !== currentEpoch || pendingNoteEpoch !== currentNoteEpoch)
                             return;
                         if (!state.audioEnabled?.virtual && !state.audioEnabled?.instrument && !state.audioEnabled?.left && !state.audioEnabled?.right && !state.audioEnabled?.other)
                             return;
@@ -255,6 +257,12 @@ export namespace PianoTrainerAudioOutput {
         function resumeWithoutWaiting() {
             if (Tone.context.state !== 'running') Tone.context.resume();
         }
+        function suspend() {
+            pendingNoteEpoch++;
+            for (const id of releaseTimers) ports.clearTimer(id);
+            releaseTimers.clear();
+            silence();
+        }
         function dispose() {
             disposed = true;
             epoch++;
@@ -271,7 +279,7 @@ export namespace PianoTrainerAudioOutput {
             pianoSamplerReady = false;
             pianoSamplerReadyPromise = null;
         }
-        return { init, dispose, ensurePianoSamplerLoaded, ensureLiveAudioReady, applyToneLatencyProfileForMode,
+        return { init, suspend, dispose, ensurePianoSamplerLoaded, ensureLiveAudioReady, applyToneLatencyProfileForMode,
             getLiveAudioTime, getSamplerNoteName, playLocalPianoNote, playLowLatencyPlaybackNote,
             playScheduledPlaybackNote, shouldUseLowLatencyPlaybackPath, releaseLocalPianoNote,
             silence, releaseLowLatencyPlayback, setPianoVolume, resumeWithoutWaiting, isReady: () => pianoSamplerReady };

@@ -13,7 +13,7 @@ export namespace PianoTrainerVirtualKeyboardControls {
         const dom = PianoTrainerControlDom.create(ports.document);
         const keys = new Set<HTMLElement>(), captures = new Map<HTMLElement, Set<number>>();
         let activePointerId: string | null = null, activeMidi: number | null = null;
-        let activationInitialized = false, keyboardInitialized = false, generation = 0;
+        let activationInitialized = false, keyboardInitialized = false, generation = 0, inputEpoch = 0;
         function releaseActiveVirtualPointer(pointerId: string | null = null) {
             if (activeMidi == null) return;
             if (pointerId != null && activePointerId != null && pointerId !== activePointerId) return;
@@ -36,8 +36,9 @@ export namespace PianoTrainerVirtualKeyboardControls {
         async function bindStart(key: HTMLElement, midi: number, token: string | null, lifetime: number) {
             if (key.dataset.virtualDown === '1') return;
             key.dataset.virtualDown = '1';
+            const pendingEpoch = inputEpoch;
             await ports.ensureLiveAudioReady();
-            if (lifetime !== generation) return;
+            if (lifetime !== generation || pendingEpoch !== inputEpoch) return;
             // Ordinary release/rebuild does not invalidate this delayed attack.
             if (activeMidi != null && activeMidi !== midi) releaseActiveVirtualPointer();
             activePointerId = token; activeMidi = midi;
@@ -109,15 +110,19 @@ export namespace PianoTrainerVirtualKeyboardControls {
             }, {passive: true});
         }
         function init() {initActivation(); if (!keyboardInitialized) createKeyboard();}
-        function dispose() {
-            generation++; dom.dispose(); releaseActiveVirtualPointer();
+        function suspend() {
+            inputEpoch++; releaseActiveVirtualPointer();
             for (const [key, ids] of captures) for (const id of ids) {
                 try {if (key.hasPointerCapture(id)) key.releasePointerCapture(id);} catch (_) {}
             }
             captures.clear();
+            for (const key of keys) key.dataset.virtualDown = '0';
+        }
+        function dispose() {
+            generation++; dom.dispose(); suspend();
             for (const key of keys) {key.dataset.virtualDown = '0'; key.remove();}
             keys.clear(); activationInitialized = false; keyboardInitialized = false;
         }
-        return {init, initActivation, createKeyboard, releaseActiveVirtualPointer, dispose};
+        return {init, initActivation, createKeyboard, releaseActiveVirtualPointer, suspend, dispose};
     }
 }

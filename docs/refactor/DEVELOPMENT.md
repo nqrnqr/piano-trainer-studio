@@ -3,7 +3,8 @@
 核心源码现在使用实际 ES 模块，生产入口为 `src/main.ts`，输出为单个 IIFE
 `js/generated/app.js`。`src/app/services.ts` 显式创建应用实例与服务，
 `bootstrap.ts` 只提供应用生命周期和加载/输入命令；业务对象不发布到 Window。
-P0–P9 已完成；最终验收为 338 项 Node 测试和 42 页、1,497 项浏览器断言。
+P0–P9 已完成；审查后 bfcache P2 已修复，当前验证为 346 项 Node 和 44 页、1,555 项浏览器断言。
+实际生产入口的可恢复生命周期、测试方法及真实导航限制见 [BFCACHE_FIX_2026-10-04.md](BFCACHE_FIX_2026-10-04.md)。
 干净安装、构建/watch、Windows 启动器与静态资源已复验，范围和手工限制见 [FINAL_ACCEPTANCE.md](FINAL_ACCEPTANCE.md)。
 阶段证据见 [PROGRESS.md](PROGRESS.md)，历史经典脚本说明保留于 [CLASSIC_DEVELOPMENT.md](CLASSIC_DEVELOPMENT.md)。
 
@@ -130,6 +131,13 @@ readPracticeSnapshot、readViewportSnapshot 和明确的场景/生命周期命�
 | [settings-baseline](../testing/settings-baseline.html) | 11 | 11 |
 | [library-ui-baseline](../testing/library-ui-baseline.html) | 44 | 44 |
 | [legacy-led-baseline](../testing/legacy-led-baseline.html) | 19 | 6 |
+| [production-lifecycle](../testing/production-lifecycle.html) | 29 | 29 |
+
+审查后本轮重新执行原42页及上面的生产入口2页，共44页1,555项，
+见 [BFCACHE-browser-regression.txt](validation/BFCACHE-browser-regression.txt) 和
+[BFCACHE-production-lifecycle.txt](validation/BFCACHE-production-lifecycle.txt)。
+生产生命周期页加载真正 app.js/main.ts；其中两轮缓存恢复为 native event 模拟。
+真实浏览器后退未命中缓存，保留 Prepare navigation check 工作流供可命中的浏览器实测。
 
 `module-test-frame.js` 加载原生产 HTML/vendors 与独立测试 bundle，使用内存偏好和随机库。
 测试完成先 dispose/清理库，再发布通过终态。身份捕获保留在测试实例内，返回 token/布尔观察；

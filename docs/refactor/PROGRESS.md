@@ -3,6 +3,7 @@
 执行日期：2026-10-02 至 2026-10-04。P0–P9 已完成；下方保留各检查点的当时状态。
 最终结果：338/338 Node、42 页 1,497/1,497 浏览器断言、干净安装/构建/watch、原 Windows 启动器与静态资源通过。
 当前完整结论与未验证手工项见 [FINAL_ACCEPTANCE.md](FINAL_ACCEPTANCE.md)。
+审查后 P2 缓存生命周期已修复：本轮346项Node与44页1555项通过；真实cache命中仍未实测，见文末修复记录。
 
 ## P0
 
@@ -502,3 +503,11 @@
 - 库存/兼容：重建94 modules/3slots/4lexical candidates，无同名覆盖；52direct state writes及alias所有权已更新。生产无测试源码，四outputs与archive重建逐字节一致；全生产模块无any/nocheck/ignore。assets/helper/server/launchers/version.json与`be6d51c`基线diff为空，vendor哈希相同。IndexedDB v1、prefs key/default/backup/native资源格式保留。证据 FINAL-source-audit 与 settings/library矩阵。
 - 未验证：实体 MIDI/WLED/helper、可听质量/硬件同步、触屏设备、macOS执行、LAN客户端、交互F12断点。按计划保留手工清单；真实节点/模拟设备结果不代替这些结论。复杂重复/D.C./D.S.、原普通pending操作与vendor失败前worker公开释放限制继续记录，没有借类型重构改算法。
 - 回退与 Git：各阶段独立本地提交；稳定经典入口`7fe81d0`。revert对应阶段无需清用户配置/数据库，不同时保留两份生效实现。未push、未发布站点、未版本提升；版本约定留待用户授权push时执行。无剩余核心迁移任务。
+
+## 审查后修复：P2 浏览器缓存页面生命周期
+
+- 状态：修复完成（2026-10-04），对应用户独立审查的 main.ts pagehide 问题；完整说明见 BFCACHE_FIX_2026-10-04.md。原审查文件未改、未纳入此修复提交。
+- 修改：persisted pagehide→可恢复 suspend，persisted pageshow→同一实例 resume，普通 pagehide→最终 dispose/移除入口监听。乐谱/计分/位置/UI owners 保留；挂起停止播放与旧 advance/count-in/unlock callbacks，释放输入/音符/captures，断开 MIDI/optional LED/可重开 DB。恢复连接一次、不重跑 init、不自动播放；普通 Pause/Reset 语义保持。
+- 验证：两套 strict、四产物 clean comparison、346/346 Node（新增8项）；原21套件两配置42页1497项全重新通过。新增生产入口页真实加载 app.js/main.ts，native PageTransitionEvent 两轮模拟/default/off各29项，包括非默认计分、原SVG/key身份、光标、Play/Reset/布局/MIDI replacement/hotplug与资源归零。当前本轮合计44页1555项，不再仅以测试 bundle 证明生产入口。原始证据 BFCACHE-check、BFCACHE-browser-regression、BFCACHE-production-lifecycle。
+- 真实导航：native link→history.back 实际执行，但当前浏览器 pageshow.persisted=false、navigationType=back_forward、notRestoredReasons=null；发生普通reload，没有实际cache hit。明确不把事件模拟当真实bfcache复现，保留manual navigation workflow；证据 BFCACHE-native-navigation。实体/可听/其他平台限制保持。
+- 回退/Git：revert本修复，无用户数据迁移。vendor/helper/server/launchers/prefs/schema未改，无新增生产test API；仅本地提交，无push。

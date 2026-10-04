@@ -93,7 +93,7 @@ export function createServices(ports: ServicePorts = {}) {
 const permissionHelp = createPermissionHelp(document);
 const {showMidiPermissionHelp,clearMidiPermissionHelp,showWledPermissionHelp,clearWledPermissionHelp}=permissionHelp;
 let osmd: PianoTrainerOsmdVendor.Renderer;
-let initialized=false, disposed=false, firstRunTimer:number|undefined;
+let initialized=false, disposed=false, suspended=false, firstRunTimer:number|undefined;
 // app-state.ts composition
 const appMetadata = PianoTrainerAppState.readMetadata({manifest: window.__PT_APP_MANIFEST__, assetVersion: window.__PT_ASSET_VERSION__,
     getManifestUrl: () => localStorage.getItem(UPDATE_MANIFEST_URL_STORAGE_KEY)});
@@ -998,6 +998,31 @@ optionalLedOutput.start();
 
 
 }
+// Cached pages keep score, state and DOM owners while playback/devices are paused.
+function suspend() {
+    if (!initialized || disposed || suspended) return;
+    suspended = true;
+    trainerPlayback.suspend();
+    virtualKeyboardControls.suspend();
+    for (const note of [...AppState.pressedKeys]) practiceInput.handle({kind:'note-off',note,
+        velocity:0,source:'midi',channel:null,receivedAtMs:performance.now()});
+    audioOutput.suspend();
+    audioRouting.dispose();
+    midiOutput.dispose();
+    midiService.dispose();
+    optionalLedOutput.dispose();
+    ScoreLibrary.dispose();
+}
+function resume() {
+    if (!initialized || disposed || !suspended) return;
+    suspended = false;
+    optionalLedOutput.initControls();
+    optionalLedOutput.initOutput();
+    optionalLedOutput.refreshMapping();
+    optionalLedOutput.start();
+    void setupMIDI();
+    updateConnectionStatuses();
+}
 function dispose() {if(disposed)return;disposed=true;
 if(firstRunTimer!==undefined)window.clearTimeout(firstRunTimer);
 scoreLoader.dispose();
@@ -1042,6 +1067,8 @@ preferences.dispose();
 }
 return {
     init,
+    suspend,
+    resume,
     dispose,
     appMetadata,
     AppState,

@@ -1,6 +1,21 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');
 const {harness,note,entry,plain}=require('../helpers/playback-harness.cjs');
 const kinds=events=>events.map(e=>Array.isArray(e)?e[0]:e);
+test('cached-page suspension cancels old advances, preserves score/position and permits a fresh Play',async()=>{
+ const h=harness({state:{mode:'realtime'}});h.service.playbackLoop();const old=h.nextTimer()[1].callback,position=h.getStep();h.state.score.correct=7;
+ h.service.suspend();assert.equal(h.state.isPlaying,false);assert.equal(h.timers.size,0);assert.equal(h.frames.size,0);assert.equal(h.state.score.correct,7);assert.equal(h.getStep(),position);
+ await h.service.startPlaybackFromToolbar();h.finishCountIn();const fresh=h.getStep();old();assert.equal(h.getStep(),fresh);assert.equal(h.state.isPlaying,true);
+});
+test('cached-page suspension invalidates pending unlock and a captured count-in handoff',async()=>{
+ let finish;const h=harness({state:{isPlaying:false},unlock:new Promise(resolve=>finish=resolve)});
+ const start=h.service.startPlaybackFromToolbar();h.service.suspend();finish();await start;assert.equal(h.state.isPlaying,false);assert.equal(h.countIns.length,0);
+ h.ports.audio.ensureReady=async()=>{};await h.service.startPlaybackFromToolbar();const old=h.countIns[0];h.service.suspend();
+ await h.service.startPlaybackFromToolbar();const position=h.getStep();old();assert.equal(h.getStep(),position);h.finishCountIn();assert.equal(h.state.isPlaying,true);
+});
+test('cached-page suspension invalidates a captured Loop count-in restart without resetting scoring on return',()=>{
+ const h=harness({loopEnabled:true,loopMax:1,state:{mode:'realtime',loopCountInEnabled:true},steps:[{measure:0,time:0,entries:[entry(note(60))]},{measure:1,time:1,entries:[]}]});
+ h.service.playbackLoop();h.fire(h.nextTimer()[0]);const old=h.countIns[0];h.state.score.correct=7;h.service.suspend();h.state.isPlaying=true;const position=h.getStep();old();assert.equal(h.state.score.correct,7);assert.equal(h.getStep(),position);
+});
 test('one coordinator paints current event before real iterator prefetch and gates Wait input',()=>{
  const h=harness();h.service.playbackLoop();assert.equal(h.state.currentExpectedContext.timestamp,0);assert.equal(h.iterator.currentTimeStamp.RealValue,.25);
  assert.deepEqual(kinds(h.events),['expected','feedback','keyboard-event','advance','window']);assert.equal(h.state.isAudioBusy,true);assert.equal(h.timers.size,0);

@@ -796,7 +796,7 @@
       let pianoSamplerReady = false;
       let pianoSamplerReadyPromise = null;
       let DEFAULT_TONE_LATENCY_PROFILE = null;
-      let disposed = false, epoch = 0;
+      let disposed = false, epoch = 0, pendingNoteEpoch = 0;
       const releaseTimers = /* @__PURE__ */ new Set();
       function init() {
         if (masterPianoVolume)
@@ -857,9 +857,10 @@
       }
       function scheduleRelease(callback, delayMs) {
         const currentEpoch = epoch;
+        const currentNoteEpoch = pendingNoteEpoch;
         const id = ports.setTimer(() => {
           releaseTimers.delete(id);
-          if (!disposed && currentEpoch === epoch) callback();
+          if (!disposed && currentEpoch === epoch && currentNoteEpoch === pendingNoteEpoch) callback();
         }, delayMs);
         releaseTimers.add(id);
       }
@@ -988,8 +989,9 @@
           return;
         if (!pianoSamplerReady) {
           const currentEpoch = epoch;
+          const currentNoteEpoch = pendingNoteEpoch;
           ensurePianoSamplerLoaded().then(() => {
-            if (disposed || epoch !== currentEpoch)
+            if (disposed || epoch !== currentEpoch || pendingNoteEpoch !== currentNoteEpoch)
               return;
             if (!state.audioEnabled?.virtual && !state.audioEnabled?.instrument && !state.audioEnabled?.left && !state.audioEnabled?.right && !state.audioEnabled?.other)
               return;
@@ -1038,6 +1040,12 @@
       function resumeWithoutWaiting() {
         if (Tone2.context.state !== "running") Tone2.context.resume();
       }
+      function suspend() {
+        pendingNoteEpoch++;
+        for (const id of releaseTimers) ports.clearTimer(id);
+        releaseTimers.clear();
+        silence();
+      }
       function dispose() {
         disposed = true;
         epoch++;
@@ -1056,6 +1064,7 @@
       }
       return {
         init,
+        suspend,
         dispose,
         ensurePianoSamplerLoaded,
         ensureLiveAudioReady,
@@ -2531,6 +2540,7 @@
         });
         ports.audio.applyLatencyProfile();
         ports.metronome.doCountInAndStart(() => {
+          if (generation !== epoch) return;
           state.anchorTime = ports.clock.nowSeconds();
           ports.score.show();
           ports.ui.scroll();
@@ -2586,6 +2596,7 @@
       }
       function playbackLoop() {
         if (disposed || !state.isPlaying) return;
+        const generation = epoch;
         if (ports.score.isEndReached()) {
           const isLoopEnabledAtEnd = ports.controls.isLoopEnabledAtEnd();
           if (!isLoopEnabledAtEnd) {
@@ -2697,6 +2708,7 @@
             ports.ui.scroll();
             ports.transitions.clearVisuals();
             const restartLoopPlayback = () => {
+              if (generation !== epoch) return;
               ports.ui.clearSvgFeedback();
               state.pendingAudio = [];
               state.score.correct = 0;
@@ -2813,6 +2825,12 @@
         ports.clock.dispose();
         ports.metronome.dispose();
       }
+      function suspend() {
+        epoch++;
+        pausePlaybackFromToolbar();
+        ports.clock.dispose();
+        ports.metronome.dispose();
+      }
       return {
         checkWaitModeAdvance,
         startPlaybackFromToolbar,
@@ -2823,6 +2841,7 @@
         resetPlaybackFromToolbar,
         playbackLoop,
         enforceLooperBounds,
+        suspend,
         dispose
       };
     }
@@ -10474,7 +10493,7 @@
       const dom = PianoTrainerControlDom.create(ports.document);
       const keys = /* @__PURE__ */ new Set(), captures = /* @__PURE__ */ new Map();
       let activePointerId = null, activeMidi = null;
-      let activationInitialized = false, keyboardInitialized = false, generation = 0;
+      let activationInitialized = false, keyboardInitialized = false, generation = 0, inputEpoch = 0;
       function releaseActiveVirtualPointer(pointerId = null) {
         if (activeMidi == null) return;
         if (pointerId != null && activePointerId != null && pointerId !== activePointerId) return;
@@ -10506,8 +10525,9 @@
       async function bindStart(key, midi, token, lifetime) {
         if (key.dataset.virtualDown === "1") return;
         key.dataset.virtualDown = "1";
+        const pendingEpoch = inputEpoch;
         await ports.ensureLiveAudioReady();
-        if (lifetime !== generation) return;
+        if (lifetime !== generation || pendingEpoch !== inputEpoch) return;
         if (activeMidi != null && activeMidi !== midi) releaseActiveVirtualPointer();
         activePointerId = token;
         activeMidi = midi;
@@ -10614,9 +10634,8 @@
         initActivation();
         if (!keyboardInitialized) createKeyboard();
       }
-      function dispose() {
-        generation++;
-        dom.dispose();
+      function suspend() {
+        inputEpoch++;
         releaseActiveVirtualPointer();
         for (const [key, ids] of captures) for (const id of ids) {
           try {
@@ -10625,6 +10644,12 @@
           }
         }
         captures.clear();
+        for (const key of keys) key.dataset.virtualDown = "0";
+      }
+      function dispose() {
+        generation++;
+        dom.dispose();
+        suspend();
         for (const key of keys) {
           key.dataset.virtualDown = "0";
           key.remove();
@@ -10633,7 +10658,7 @@
         activationInitialized = false;
         keyboardInitialized = false;
       }
-      return { init, initActivation, createKeyboard, releaseActiveVirtualPointer, dispose };
+      return { init, initActivation, createKeyboard, releaseActiveVirtualPointer, suspend, dispose };
     }
     PianoTrainerVirtualKeyboardControls2.create = create;
   })(PianoTrainerVirtualKeyboardControls || (PianoTrainerVirtualKeyboardControls = {}));
@@ -10643,7 +10668,7 @@
     const permissionHelp = createPermissionHelp(document);
     const { showMidiPermissionHelp, clearMidiPermissionHelp, showWledPermissionHelp, clearWledPermissionHelp } = permissionHelp;
     let osmd;
-    let initialized = false, disposed = false, firstRunTimer;
+    let initialized = false, disposed = false, suspended = false, firstRunTimer;
     const appMetadata = PianoTrainerAppState.readMetadata({
       manifest: window.__PT_APP_MANIFEST__,
       assetVersion: window.__PT_ASSET_VERSION__,
@@ -11892,6 +11917,36 @@
       applyModeSettings();
       optionalLedOutput.start();
     }
+    function suspend() {
+      if (!initialized || disposed || suspended) return;
+      suspended = true;
+      trainerPlayback.suspend();
+      virtualKeyboardControls.suspend();
+      for (const note of [...AppState.pressedKeys]) practiceInput.handle({
+        kind: "note-off",
+        note,
+        velocity: 0,
+        source: "midi",
+        channel: null,
+        receivedAtMs: performance.now()
+      });
+      audioOutput.suspend();
+      audioRouting.dispose();
+      midiOutput.dispose();
+      midiService.dispose();
+      optionalLedOutput.dispose();
+      ScoreLibrary.dispose();
+    }
+    function resume() {
+      if (!initialized || disposed || !suspended) return;
+      suspended = false;
+      optionalLedOutput.initControls();
+      optionalLedOutput.initOutput();
+      optionalLedOutput.refreshMapping();
+      optionalLedOutput.start();
+      void setupMIDI();
+      updateConnectionStatuses();
+    }
     function dispose() {
       if (disposed) return;
       disposed = true;
@@ -11938,6 +11993,8 @@
     }
     return {
       init,
+      suspend,
+      resume,
       dispose,
       appMetadata,
       AppState,

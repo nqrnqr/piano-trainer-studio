@@ -137,6 +137,7 @@ export namespace PianoTrainerPlaybackCoordinator {
             ports.audio.applyLatencyProfile();
 
             ports.metronome.doCountInAndStart(() => {
+                if (generation !== epoch) return;
                 state.anchorTime = ports.clock.nowSeconds();
                 ports.score.show();
                 ports.ui.scroll();
@@ -200,6 +201,7 @@ export namespace PianoTrainerPlaybackCoordinator {
 
         function playbackLoop() {
             if (disposed || !state.isPlaying) return;
+            const generation = epoch;
 
             if (ports.score.isEndReached()) {
                 const isLoopEnabledAtEnd = ports.controls.isLoopEnabledAtEnd();
@@ -337,6 +339,7 @@ export namespace PianoTrainerPlaybackCoordinator {
                     ports.transitions.clearVisuals();
 
                     const restartLoopPlayback = () => {
+                        if (generation !== epoch) return;
                         ports.ui.clearSvgFeedback();
                         state.pendingAudio = [];
                         state.score.correct = 0;
@@ -470,9 +473,15 @@ export namespace PianoTrainerPlaybackCoordinator {
             ports.clock.dispose();
             ports.metronome.dispose();
         }
+        function suspend() {
+            epoch++;
+            pausePlaybackFromToolbar();
+            ports.clock.dispose();
+            ports.metronome.dispose();
+        }
         return {checkWaitModeAdvance, startPlaybackFromToolbar, silencePlaybackOutputsImmediately,
             stopPlaybackState, pausePlaybackFromToolbar, resetPlaybackForLoadedScore, resetPlaybackFromToolbar,
-            playbackLoop, enforceLooperBounds, dispose};
+            playbackLoop, enforceLooperBounds, suspend, dispose};
     }
     export type Service = ReturnType<typeof create>;
 }

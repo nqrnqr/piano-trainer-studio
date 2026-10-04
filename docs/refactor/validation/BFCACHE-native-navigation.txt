@@ -1,0 +1,4 @@
+Real navigation attempt, 2026-10-04
+Actual production bundle in same-origin iframe; native link -> history.back()
+{"events":[{"type":"pageshow","persisted":false,"trusted":true}],"navigationType":"back_forward","notRestoredReasons":null}
+Result: browser performed an ordinary reload, no bfcache restore; no cached-return claim.

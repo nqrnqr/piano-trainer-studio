@@ -39,6 +39,15 @@ test('ordinary release and keyboard rebuild preserve delayed attack; explicit di
  const h=harness();let finish;h.inputPorts.ensureLiveAudioReady=()=>new Promise(resolve=>finish=resolve);h.inputs.init();const old=h.key(60);old.dispatch(new Mouse('mousedown'));old.dispatch(new Mouse('mouseup'));h.inputs.createKeyboard();finish();await h.tick();assert.ok(h.state.pressedKeys.has(60));assert.equal(old.dataset.virtualDown,'0');
  h.inputs.dispose();assert.ok(!h.state.pressedKeys.has(60));h.inputs.init();h.key(62).dispatch(new Pointer('pointerdown',{pointerId:11}));const pending=finish;h.inputs.dispose();h.inputs.init();pending();await h.tick();assert.ok(!h.state.pressedKeys.has(62));assert.equal(h.count(),892);
 });
+test('cached-page suspension releases pointer/capture and delayed unlock while retaining the same key bindings',async()=>{
+ const h=harness();h.inputs.init();const key=h.key(60),bindings=h.count();
+ key.dispatch(new Pointer('pointerdown',{pointerId:7}));await h.tick();h.inputs.suspend();
+ assert.equal(h.count(),bindings);assert.equal(h.key(60),key);assert.equal(key.dataset.virtualDown,'0');assert.equal(key.captured.size,0);assert.equal(h.state.pressedKeys.size,0);
+ let finish;h.inputPorts.ensureLiveAudioReady=()=>new Promise(resolve=>finish=resolve);
+ key.dispatch(new Mouse('mousedown'));h.inputs.suspend();finish();await h.tick();assert.equal(h.state.pressedKeys.size,0);
+ h.inputPorts.ensureLiveAudioReady=async()=>{};key.dispatch(new Mouse('mousedown'));await h.tick();assert.ok(h.state.pressedKeys.has(60));
+ key.dispatch(new Mouse('mouseup'));assert.equal(h.state.pressedKeys.size,0);assert.equal(h.count(),bindings);
+});
 test('dispose removes owned keys/capture/listeners and releases its active note without clearing other pressed notes',async()=>{
  const h=harness();h.inputs.init();const key=h.key(60),saved=key.listeners.find(x=>x.event==='mousedown').handler;h.state.pressedKeys.add(65);key.dispatch(new Pointer('pointerdown',{pointerId:17}));await h.tick();h.inputs.dispose();h.inputs.dispose();assert.equal(h.count(),0);assert.equal(h.container.children.length,0);assert.equal(key.captured.size,0);assert.ok(h.state.pressedKeys.has(65)&&!h.state.pressedKeys.has(60));h.inputs.init();h.effects.length=0;saved(new Mouse('mousedown'));await h.tick();assert.equal(h.effects.length,0);
 });
