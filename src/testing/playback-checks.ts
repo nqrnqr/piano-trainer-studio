@@ -4,7 +4,7 @@ import type {PianoTrainerPlaybackClock} from '../audio/playback-clock';
 
 // Controlled clock/count-in at the explicit composition ports. Native score,
 // toolbar, practice and coordinator remain the actual production instances.
-export function createPlaybackChecks() {
+export function createPlaybackChecks(nativeTime = false) {
     const timers = new Map<number,{callback:() => void,delay:number,due:number}>();
     const frames = new Map<number,FrameRequestCallback>();
     const countIns: (() => void)[] = [];
@@ -18,12 +18,14 @@ export function createPlaybackChecks() {
         requestFrame:callback => {const id = ++nextId;frames.set(id,callback);return id;},
         cancelFrame:id => {frames.delete(id);}
     };
-    const ports: ServicePorts = {playbackClock:clock,ensurePlaybackReady:async () => {unlocks++;}};
+    const ports: ServicePorts = {ensurePlaybackReady:async () => {unlocks++;if (nativeTime) await Tone.start();},
+        ...(nativeTime ? {} : {playbackClock:clock})};
     const nextTimer = () => [...timers].sort((a,b) => a[1].due-b[1].due || a[0]-b[0])[0];
     const commands = Object.freeze({
         setNow:(value:number) => {now = value;},
-        readClock:() => ({now,unlocks,timers:timers.size,frames:frames.size,countIns:countIns.length,
+        readClock:() => ({now:nativeTime ? getServices().playbackClock.nowSeconds() : now,unlocks,timers:timers.size,frames:frames.size,countIns:countIns.length,
             owned:getServices().playbackClock.readResources()}),
+        readWindow:() => getServices().trainerPlayback.readDisplayWindow(),
         nextTimer:() => {const next = nextTimer();return next ? [next[0],{delay:next[1].delay,due:next[1].due}] as const : undefined;},
         fireNext:() => {
             const next = nextTimer(); if (!next) throw Error('Missing scheduled playback event');
@@ -35,6 +37,7 @@ export function createPlaybackChecks() {
             if (state.isPlaying) callback();
         },
         clearCountIns:() => {countIns.length = 0;},
+        clearScheduled:() => getServices().playbackClock.dispose(),
         disposeCoordinator:() => getServices().trainerPlayback.dispose(),
         selectMode:(mode:PianoTrainerDomain.PracticeMode,syncHands = true) => {
             const services = getServices(), state = services.AppState;

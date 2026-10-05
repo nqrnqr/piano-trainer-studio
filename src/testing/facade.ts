@@ -21,8 +21,8 @@ import {createLedChecks} from './led-checks';
 import {createHorizontalChecks} from './horizontal-checks';
 
 // Separate test entry: commands and copied observations, with no state/vendor object.
-export function createTestFacade(options: {controlledPlayback?:boolean} = {}, injectedPorts:ServicePorts = {}, libraryFixture?:LibraryFixturePorts) {
-    const playbackChecks = options.controlledPlayback ? createPlaybackChecks() : null;
+export function createTestFacade(options: {controlledPlayback?:boolean; nativePlayback?:boolean} = {}, injectedPorts:ServicePorts = {}, libraryFixture?:LibraryFixturePorts) {
+    const playbackChecks = options.controlledPlayback || options.nativePlayback ? createPlaybackChecks(options.nativePlayback) : null;
     const servicePorts = {...injectedPorts,...playbackChecks?.ports};
     let services = createServices(servicePorts);
     playbackChecks?.attach(() => services);

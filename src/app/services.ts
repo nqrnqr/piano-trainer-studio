@@ -37,7 +37,7 @@ import {PianoTrainerLoopOverlay} from '../render/loop-overlay';
 import {PianoTrainerScoreRenderer} from '../render/score-renderer';
 import {PianoTrainerScoreViewport} from '../render/score-viewport';
 import {systemBoundsInContent} from '../render/traditional-scroll-geometry';
-import {estimateSystemSeconds} from '../score/system-duration';
+import {buildSystemProgress} from '../score/system-progress';
 import {PianoTrainerHorizontalScore} from '../render/horizontal-score';
 import {PianoTrainerPerformancePosition} from '../score/performance-position';
 import {PianoTrainerVirtualKeyboardView} from '../render/virtual-keyboard';
@@ -574,12 +574,20 @@ const ScoreDisplay = PianoTrainerScoreViewport.create({
                 mode:AppState.mode === 'wait' ? 'wait' : AppState.mode === 'follow' ? 'follow' : 'realtime',
                 topObstruction:controls ? Math.max(0,controls.bottom-rect.top-area.clientTop+4) : 0};
         },
-        estimateSeconds: (system, position) => {
-            try {return estimateSystemSeconds({trace:osmdAdapter.getPerformanceTrace(), traceStepIndex:position.traceStepIndex,
+        buildProgress: (system, position) => {
+            try {return buildSystemProgress({trace:osmdAdapter.getPerformanceTrace(), traceStepIndex:position.traceStepIndex,
                 firstMeasureIndex:system.firstMeasureIndex, lastMeasureIndex:system.lastMeasureIndex,
                 loopMax:playbackControls.isLoopEnabled() ? playbackControls.readLoopMax()-1 : null,
-                baseBpm:AppState.baseBpm, speed:AppState.speedPercent, getTempo:osmdAdapter.getPlaybackTempo,
                 getMeasureTimingInfo:scoreMeasureTiming.getInfo});} catch (_) {return null;}
+        },
+        readPlayback: position => {
+            const window = trainerPlayback.readDisplayWindow();
+            if (!AppState.isPlaying || AppState.countInActive || position.eventId === null || !window
+                || window.eventId !== position.eventId
+                || window.traceStepIndex !== position.traceStepIndex || window.measureIndex !== position.measureIndex
+                || window.timestampWhole !== position.timestampWhole || window.endSec <= window.startSec) return null;
+            const now = playbackClock.nowSeconds();
+            return {fraction:Math.max(0,Math.min(1,(now-window.startSec)/(window.endSec-window.startSec))), moving:now < window.endSec};
         },
         lifecycle:document, isPlaying:() => AppState.isPlaying
     },
@@ -800,7 +808,7 @@ const playbackState = PianoTrainerPlaybackState.create({
 });
 const trainerPlayback = PianoTrainerPlaybackCoordinator.create({
     presentation: {prepare: () => horizontalScore.ready(), present: () => {performancePosition.present();}, navigate: reason => {performancePosition.navigate(reason);},
-        loop: performancePosition.loop, traceStepIndex: osmdAdapter.getTraceStepIndex},
+        loop: performancePosition.loop, traceStepIndex: osmdAdapter.getTraceStepIndex, eventId: () => performancePosition.current()?.eventId ?? null},
     state: AppState, clock: playbackClock, transport: playbackTransport, controls: playbackControls,
     transitions: playbackState, metronome: trainerMetronome,
     score: {

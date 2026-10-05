@@ -1,5 +1,4 @@
 import type {PianoTrainerPerformance} from '../domain/performance-position';
-import type {PianoTrainerDomain} from '../domain/model';
 
 // All distances here are scroll-container content coordinates in CSS pixels.
 export namespace PianoTrainerTraditionalScroll {
@@ -29,32 +28,30 @@ export namespace PianoTrainerTraditionalScroll {
         if (current.systemId === previous.systemId) return 'same';
         return current.systemId !== null && previous.systemId !== null && current.systemId === previous.systemId + 1 ? 'adjacent' : 'visibility';
     }
-    export function duration(mode: PianoTrainerDomain.PracticeMode, lineSeconds: number | null) {
-        return mode === 'wait' || lineSeconds === null || !Number.isFinite(lineSeconds) || lineSeconds <= 0
-            ? 650 : Math.min(1200, Math.max(400, lineSeconds * 200));
-    }
+    export const dockingFraction = .06;
+    export const completionFraction = .60;
+    export const smoothingMilliseconds = 150;
     const clamp = (value: number, low: number, high: number) => Math.max(low, Math.min(value, high));
     export function decide(input: {
-        kind: Kind; height: number; scrollTop: number; maxScroll: number;
+        height: number; scrollTop: number; maxScroll: number;
         system: Bounds | null; cursor: Bounds; topObstruction?: number;
-        mode: PianoTrainerDomain.PracticeMode; lineSeconds: number | null;
     }) {
-        const {kind, height: h, cursor, system, mode, lineSeconds} = input;
+        const {height: h, cursor, system} = input;
         const s = input.scrollTop, max = Math.max(0, input.maxScroll);
         const margin = clamp(h * .04, 12, 32), pt = Math.max(margin, input.topObstruction || 0), pb = margin;
-        const hold = {kind: 'hold' as const, target: s, durationMs: 0, lineSeconds};
+        const hold = {dock:s, minimum:s};
         if (!Number.isFinite(h) || h <= 0 || ![s,max,cursor.top,cursor.bottom].every(Number.isFinite)) return hold;
-        if (kind === 'navigation') return {kind: 'legacy' as const, target: s, durationMs: 0, lineSeconds};
         const safe = (box: Bounds) => box.top - s >= pt - 3 && box.bottom - s <= h - pb + 3;
         let target = s;
         const valid = system && [system.top, system.bottom].every(Number.isFinite) && system.bottom > system.top;
         const low = valid ? Math.max(0, system.bottom - h + pb) : Infinity;
         const high = valid ? Math.min(max, system.top - pt) : -Infinity;
         if (valid && low <= high) {
-            if (safe(system)) {
-                if (kind === 'same' || kind === 'visibility' || system.top - s <= h * .35 + 3) return hold;
-            }
-            target = clamp(system.top - h * .30, low, high);
+            // System graphic top, not just the upper staff/cursor. Six percent
+            // of the usable space below measured controls, plus safety margins.
+            target = clamp(system.top - (pt + Math.max(0, h-pt-pb)*dockingFraction), low, high);
+            if (safe(system) && target <= s + 3) return hold;
+            return {dock:target, minimum:clamp(s, low, high)};
         } else {
             // An oversized system cannot satisfy both edges. Keep the painted
             // cursor readable with the smallest movement, even for long staves.
@@ -67,11 +64,14 @@ export namespace PianoTrainerTraditionalScroll {
         }
         target = clamp(target, 0, max);
         if (Math.abs(target - s) <= 3) return hold;
-        const correction = !safe(cursor);
-        return {kind: 'animate' as const, target, durationMs: correction ? Math.min(400, duration(mode, lineSeconds)) : duration(mode, lineSeconds), lineSeconds};
+        return {dock:target, minimum:target};
     }
-    export function interpolate(from: number, to: number, elapsed: number, durationMs: number) {
-        const t = Math.min(1, Math.max(0, elapsed / durationMs));
-        return from + (to - from) * t * t * (3 - 2 * t);
+    export function progressTarget(from: number, dock: number, progress: number) {
+        return from + Math.max(0, dock-from) * clamp(progress/completionFraction, 0, 1);
+    }
+    // Smoothing a moving target is visual only; it never advances musical time.
+    export function approach(current: number, target: number, elapsedMs: number) {
+        if (Math.abs(target-current) <= .5) return target;
+        return current + (target-current) * (1-Math.exp(-clamp(elapsedMs,0,50)/smoothingMilliseconds));
     }
 }

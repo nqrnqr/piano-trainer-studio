@@ -2484,6 +2484,7 @@
     function create(ports) {
       const state = ports.state;
       let epoch = 0, disposed = false;
+      let displayWindow = null;
       const policy = () => PianoTrainerModePolicy.forMode(state.mode);
       function scheduleAdvance(delayMs, guard, gradeMisses) {
         ports.clock.setTimer(() => {
@@ -2566,6 +2567,7 @@
         ports.midi.silence();
       }
       function stopPlaybackState({ pauseTransport = true } = {}) {
+        displayWindow = null;
         ports.ui.cancelViewport();
         state.isPlaying = false;
         state.countInActive = false;
@@ -2605,6 +2607,7 @@
       }
       function playbackLoop() {
         if (disposed || !state.isPlaying) return;
+        displayWindow = null;
         const generation = epoch;
         if (ports.score.isEndReached()) {
           const isLoopEnabledAtEnd = ports.controls.isLoopEnabledAtEnd();
@@ -2689,6 +2692,14 @@
         const currentRunningBpm = state.baseBpm * state.speedPercent;
         const waitSeconds = beatsToWait * (60 / currentRunningBpm);
         const playbackWindowStartSec = policy().usesRelativeAnchor ? ports.clock.nowSeconds() : state.anchorTime;
+        displayWindow = {
+          eventId: ports.presentation?.eventId?.() ?? null,
+          traceStepIndex: state.currentExpectedContext?.traceStepIndex ?? -1,
+          measureIndex: currentMeasureIdx,
+          timestampWhole: currentTimestamp,
+          startSec: playbackWindowStartSec,
+          endSec: playbackWindowStartSec + waitSeconds
+        };
         const deferMetronomeWindow = policy().deferMetronome(state.expectedNotes.length);
         if (!deferMetronomeWindow) {
           ports.metronome.scheduleMetronomeForPlaybackWindow(
@@ -2849,6 +2860,7 @@
         checkWaitModeAdvance,
         startPlaybackFromToolbar,
         silencePlaybackOutputsImmediately,
+        readDisplayWindow: () => displayWindow ? { ...displayWindow } : null,
         stopPlaybackState,
         pausePlaybackFromToolbar,
         resetPlaybackForLoadedScore,
@@ -3593,28 +3605,25 @@
       return current.systemId !== null && previous.systemId !== null && current.systemId === previous.systemId + 1 ? "adjacent" : "visibility";
     }
     PianoTrainerTraditionalScroll2.classify = classify;
-    function duration(mode, lineSeconds) {
-      return mode === "wait" || lineSeconds === null || !Number.isFinite(lineSeconds) || lineSeconds <= 0 ? 650 : Math.min(1200, Math.max(400, lineSeconds * 200));
-    }
-    PianoTrainerTraditionalScroll2.duration = duration;
+    PianoTrainerTraditionalScroll2.dockingFraction = 0.06;
+    PianoTrainerTraditionalScroll2.completionFraction = 0.6;
+    PianoTrainerTraditionalScroll2.smoothingMilliseconds = 150;
     const clamp = (value, low, high) => Math.max(low, Math.min(value, high));
     function decide(input) {
-      const { kind, height: h, cursor, system, mode, lineSeconds } = input;
+      const { height: h, cursor, system } = input;
       const s = input.scrollTop, max = Math.max(0, input.maxScroll);
       const margin = clamp(h * 0.04, 12, 32), pt = Math.max(margin, input.topObstruction || 0), pb = margin;
-      const hold = { kind: "hold", target: s, durationMs: 0, lineSeconds };
+      const hold = { dock: s, minimum: s };
       if (!Number.isFinite(h) || h <= 0 || ![s, max, cursor.top, cursor.bottom].every(Number.isFinite)) return hold;
-      if (kind === "navigation") return { kind: "legacy", target: s, durationMs: 0, lineSeconds };
       const safe = (box) => box.top - s >= pt - 3 && box.bottom - s <= h - pb + 3;
       let target = s;
       const valid = system && [system.top, system.bottom].every(Number.isFinite) && system.bottom > system.top;
       const low = valid ? Math.max(0, system.bottom - h + pb) : Infinity;
       const high = valid ? Math.min(max, system.top - pt) : -Infinity;
       if (valid && low <= high) {
-        if (safe(system)) {
-          if (kind === "same" || kind === "visibility" || system.top - s <= h * 0.35 + 3) return hold;
-        }
-        target = clamp(system.top - h * 0.3, low, high);
+        target = clamp(system.top - (pt + Math.max(0, h - pt - pb) * PianoTrainerTraditionalScroll2.dockingFraction), low, high);
+        if (safe(system) && target <= s + 3) return hold;
+        return { dock: target, minimum: clamp(s, low, high) };
       } else {
         if (cursor.bottom - cursor.top > h - pt - pb) {
           if (cursor.top - s >= pt - 3 && cursor.top - s <= h - pb + 3) return hold;
@@ -3625,15 +3634,18 @@
       }
       target = clamp(target, 0, max);
       if (Math.abs(target - s) <= 3) return hold;
-      const correction = !safe(cursor);
-      return { kind: "animate", target, durationMs: correction ? Math.min(400, duration(mode, lineSeconds)) : duration(mode, lineSeconds), lineSeconds };
+      return { dock: target, minimum: target };
     }
     PianoTrainerTraditionalScroll2.decide = decide;
-    function interpolate(from, to, elapsed, durationMs) {
-      const t = Math.min(1, Math.max(0, elapsed / durationMs));
-      return from + (to - from) * t * t * (3 - 2 * t);
+    function progressTarget(from, dock, progress) {
+      return from + Math.max(0, dock - from) * clamp(progress / PianoTrainerTraditionalScroll2.completionFraction, 0, 1);
     }
-    PianoTrainerTraditionalScroll2.interpolate = interpolate;
+    PianoTrainerTraditionalScroll2.progressTarget = progressTarget;
+    function approach(current, target, elapsedMs) {
+      if (Math.abs(target - current) <= 0.5) return target;
+      return current + (target - current) * (1 - Math.exp(-clamp(elapsedMs, 0, 50) / PianoTrainerTraditionalScroll2.smoothingMilliseconds));
+    }
+    PianoTrainerTraditionalScroll2.approach = approach;
   })(PianoTrainerTraditionalScroll || (PianoTrainerTraditionalScroll = {}));
 
   // src/render/score-viewport.ts
@@ -3648,7 +3660,8 @@
       let verticalFrame = null, generation = 0, dirty = false;
       let previous = null, recheck = null;
       let resume = false, nativeScroll = false, framesRun = 0, framesRequested = 0;
-      let vertical = null, lastAnimation = null;
+      let vertical = null, verticalTime = 0;
+      let snapshot = null;
       let measuredSystem = null;
       let lastKind = null;
       let renderedTop = null;
@@ -3667,6 +3680,8 @@
         if (verticalFrame !== null) ports.cancelFrame(verticalFrame);
         verticalFrame = null;
         vertical = null;
+        snapshot = null;
+        verticalTime = 0;
         dirty = false;
         recheck = null;
         resume = true;
@@ -3701,7 +3716,7 @@
         if (!follows() || isHorizontal()) return;
         if (dirty) {
           dirty = false;
-          const snapshot = ports.traditional?.read();
+          snapshot = ports.traditional?.read() ?? null;
           if (snapshot) {
             const classification = PianoTrainerTraditionalScroll.classify(previous, snapshot.position);
             const unchanged = previous && previous.scoreRevision === snapshot.position.scoreRevision && previous.layoutRevision === snapshot.position.layoutRevision && previous.traceStepIndex === snapshot.position.traceStepIndex && previous.eventId === snapshot.position.eventId && previous.runId === snapshot.position.runId;
@@ -3713,49 +3728,69 @@
             previous = { ...snapshot.position };
             measuredSystem = snapshot.system;
             if (!unchanged || reevaluate) {
-              if (kind === "navigation") legacyPosition(snapshot.cursor);
-              else if (!(kind === "same" && vertical)) {
-                if (kind !== "same") stopNativeScroll();
-                const lineSeconds = snapshot.system && (kind === "adjacent" || kind === "align") ? ports.traditional.estimateSeconds(snapshot.system, snapshot.position) : null;
+              if (kind === "navigation") {
+                vertical = null;
+                legacyPosition(snapshot.cursor);
+              }
+              if (!vertical || vertical.navigation || kind !== "same" || reevaluate || nativeScroll || Math.abs(area().scrollTop - vertical.value) > 2) {
+                if (kind !== "navigation") stopNativeScroll();
                 const decision = PianoTrainerTraditionalScroll.decide({
-                  kind,
                   height: area().clientHeight,
                   scrollTop: area().scrollTop,
                   maxScroll: area().scrollHeight - area().clientHeight,
                   system: snapshot.system,
                   cursor: snapshot.cursor,
-                  topObstruction: snapshot.topObstruction,
-                  mode: snapshot.mode,
-                  lineSeconds
+                  topObstruction: snapshot.topObstruction
                 });
-                if (decision.kind === "animate") {
-                  stopNativeScroll();
-                  vertical = {
-                    from: area().scrollTop,
-                    target: decision.target,
-                    started: time,
-                    durationMs: decision.durationMs,
-                    lineSeconds,
-                    systemId: snapshot.position.systemId
-                  };
-                  lastAnimation = { ...vertical };
-                  if (ports.prefersReducedMotion()) {
-                    area().scrollTop = vertical.target;
-                    vertical = null;
-                  }
-                } else if (kind !== "same") vertical = null;
+                const profile = kind === "same" && vertical?.navigation ? vertical.profile : snapshot.system ? ports.traditional.buildProgress(snapshot.system, snapshot.position) : null;
+                const point = profile?.steps.find((point2) => point2.traceStepIndex === snapshot.position.traceStepIndex) ?? null;
+                const playback = snapshot.mode === "realtime" ? ports.traditional.readPlayback(snapshot.position) : null;
+                vertical = {
+                  from: area().scrollTop,
+                  value: area().scrollTop,
+                  dock: decision.dock,
+                  minimum: decision.minimum,
+                  target: kind === "navigation" ? area().scrollTop : decision.minimum,
+                  navigation: kind === "navigation",
+                  systemId: snapshot.position.systemId,
+                  profile,
+                  point,
+                  progress: 0,
+                  consumedAtStart: reevaluate && point ? point.durationBeats * (playback?.fraction ?? 0) : 0
+                };
+                verticalTime = time;
+              } else {
+                vertical.point = vertical.profile?.steps.find((point) => point.traceStepIndex === snapshot.position.traceStepIndex) ?? null;
               }
             }
           } else vertical = null;
         }
-        if (vertical) {
-          area().scrollTop = PianoTrainerTraditionalScroll.interpolate(vertical.from, vertical.target, time - vertical.started, vertical.durationMs);
-          if (time - vertical.started >= vertical.durationMs) {
-            area().scrollTop = vertical.target;
-            vertical = null;
+        let tracking = false, approaching = false;
+        if (vertical && snapshot && !vertical.navigation && !nativeScroll) {
+          if (Math.abs(area().scrollTop - vertical.value) > 2) {
+            cancel();
+            resume = false;
+            return;
           }
+          const playback = snapshot.mode === "realtime" && ports.traditional.isPlaying() ? ports.traditional.readPlayback(snapshot.position) : null;
+          const { profile, point, consumedAtStart } = vertical;
+          if (profile && point && profile.totalBeats > consumedAtStart) {
+            const completed = point.completedBeats + point.durationBeats * (playback?.fraction ?? 0);
+            vertical.progress = Math.max(vertical.progress, Math.min(1, Math.max(
+              0,
+              (completed - consumedAtStart) / (profile.totalBeats - consumedAtStart)
+            )));
+            vertical.target = vertical.dock < vertical.from ? vertical.minimum : Math.max(vertical.minimum, PianoTrainerTraditionalScroll.progressTarget(vertical.from, vertical.dock, vertical.progress));
+            tracking = !!playback?.moving && vertical.progress < PianoTrainerTraditionalScroll.completionFraction && vertical.dock > vertical.from + 0.5;
+          }
+          const elapsed = verticalTime ? time - verticalTime : 16;
+          verticalTime = time;
+          vertical.value = ports.prefersReducedMotion() ? vertical.target : PianoTrainerTraditionalScroll.approach(vertical.value, vertical.target, elapsed);
+          approaching = Math.abs(vertical.value - vertical.target) > 0.5;
+          if (!approaching) vertical.value = vertical.target;
+          area().scrollTop = vertical.value;
         }
-        if (dirty || vertical) scheduleVertical();
+        if (dirty || tracking || approaching) scheduleVertical();
       }
       function animate(time) {
         frame = null;
@@ -3922,12 +3957,19 @@
         cancel,
         readTraditionalState: () => ({
           framePending: verticalFrame !== null,
-          active: vertical !== null,
+          active: verticalFrame !== null,
           framesRun,
           framesRequested,
           position: previous ? { ...previous } : null,
           system: measuredSystem ? { ...measuredSystem } : null,
-          animation: lastAnimation ? { ...lastAnimation } : null,
+          animation: vertical ? {
+            from: vertical.from,
+            target: vertical.target,
+            dock: vertical.dock,
+            progress: vertical.progress,
+            totalBeats: vertical.profile?.totalBeats ?? null,
+            systemId: vertical.systemId
+          } : null,
           lastKind
         })
       };
@@ -3954,39 +3996,30 @@
     };
   }
 
-  // src/score/system-duration.ts
-  function estimateSystemSeconds(input) {
-    const { steps } = input.trace;
-    let bpm = input.baseBpm, seconds = 0, count = 0;
-    if (!Number.isFinite(input.speed) || input.speed <= 0 || !steps[input.traceStepIndex]) return null;
-    for (let index = input.traceStepIndex; index < steps.length; index++) {
-      if (++count > 1e5) return null;
-      const step = steps[index], next = steps[index + 1], measure = step.source.sourceMeasureIndex;
+  // src/score/system-progress.ts
+  function buildSystemProgress(input) {
+    const steps = [];
+    let totalBeats = 0;
+    for (let index = input.traceStepIndex; index < input.trace.steps.length; index++) {
+      if (steps.length >= 1e5) return null;
+      const step = input.trace.steps[index], next = input.trace.steps[index + 1];
+      const measure = step.source.sourceMeasureIndex;
       if (measure < input.firstMeasureIndex || measure > input.lastMeasureIndex || input.loopMax !== null && measure > input.loopMax) break;
-      const previous = steps[index - 1];
-      if (index === input.traceStepIndex || previous?.source.sourceMeasureIndex !== measure) {
-        const tempo = input.getTempo(measure);
-        if (tempo) bpm = tempo;
-      }
-      const effective = bpm * input.speed;
-      if (!Number.isFinite(effective) || effective <= 0) return null;
       const fallbackLength = step.notes[0]?.lengthWhole ?? 1;
-      const options = {
+      const durationBeats = PianoTrainerTiming.getTraversalBeatsToWait({
         currentMeasureIdx: measure,
         currentTimestamp: step.source.timestampWhole,
+        nextMeasureIdx: next?.source.sourceMeasureIndex ?? measure,
+        nextTimestamp: next?.source.timestampWhole ?? step.source.timestampWhole + fallbackLength,
         fallbackLength,
         getMeasureTimingInfo: input.getMeasureTimingInfo
-      };
-      const beats = next ? PianoTrainerTiming.getTraversalBeatsToWait({
-        ...options,
-        nextMeasureIdx: next.source.sourceMeasureIndex,
-        nextTimestamp: next.source.timestampWhole
-      }) : PianoTrainerTiming.getRemainingMeasureWaitWhole(options) * 4;
-      if (!Number.isFinite(beats) || beats < 0) return null;
-      seconds += beats * 60 / effective;
+      });
+      if (!Number.isFinite(durationBeats) || durationBeats < 0) return null;
+      steps.push({ traceStepIndex: index, completedBeats: totalBeats, durationBeats });
+      totalBeats += durationBeats;
       if (!next || next.source.sourceMeasureIndex < measure || next.source.timestampWhole < step.source.timestampWhole || next.source.sourceMeasureIndex === measure && next.measureOccurrenceId !== step.measureOccurrenceId) break;
     }
-    return Number.isFinite(seconds) && seconds > 0 ? seconds : null;
+    return Number.isFinite(totalBeats) && totalBeats > 0 ? { totalBeats, steps } : null;
   }
 
   // src/render/horizontal-chunks.ts
@@ -12897,22 +12930,25 @@ ${xml}`;
             topObstruction: controls ? Math.max(0, controls.bottom - rect.top - area.clientTop + 4) : 0
           };
         },
-        estimateSeconds: (system, position) => {
+        buildProgress: (system, position) => {
           try {
-            return estimateSystemSeconds({
+            return buildSystemProgress({
               trace: osmdAdapter.getPerformanceTrace(),
               traceStepIndex: position.traceStepIndex,
               firstMeasureIndex: system.firstMeasureIndex,
               lastMeasureIndex: system.lastMeasureIndex,
               loopMax: playbackControls.isLoopEnabled() ? playbackControls.readLoopMax() - 1 : null,
-              baseBpm: AppState.baseBpm,
-              speed: AppState.speedPercent,
-              getTempo: osmdAdapter.getPlaybackTempo,
               getMeasureTimingInfo: scoreMeasureTiming.getInfo
             });
           } catch (_) {
             return null;
           }
+        },
+        readPlayback: (position) => {
+          const window2 = trainerPlayback.readDisplayWindow();
+          if (!AppState.isPlaying || AppState.countInActive || position.eventId === null || !window2 || window2.eventId !== position.eventId || window2.traceStepIndex !== position.traceStepIndex || window2.measureIndex !== position.measureIndex || window2.timestampWhole !== position.timestampWhole || window2.endSec <= window2.startSec) return null;
+          const now = playbackClock.nowSeconds();
+          return { fraction: Math.max(0, Math.min(1, (now - window2.startSec) / (window2.endSec - window2.startSec))), moving: now < window2.endSec };
         },
         lifecycle: document,
         isPlaying: () => AppState.isPlaying
@@ -13156,7 +13192,8 @@ ${xml}`;
           performancePosition.navigate(reason);
         },
         loop: performancePosition.loop,
-        traceStepIndex: osmdAdapter.getTraceStepIndex
+        traceStepIndex: osmdAdapter.getTraceStepIndex,
+        eventId: () => performancePosition.current()?.eventId ?? null
       },
       state: AppState,
       clock: playbackClock,

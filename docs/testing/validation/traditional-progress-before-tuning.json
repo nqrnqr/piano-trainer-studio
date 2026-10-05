@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-05",
+  "musicClock": "production Tone.now and window timers",
+  "frames": "native browser rAF",
+  "checks": 45,
+  "assertions": [
+    "PASS original complete piano score has at least four systems",
+    "PASS original OSMD assignments and full visual borders equal pre-change baseline",
+    "PASS full piano bounds include ledger, lyric and dynamic extents",
+    "PASS actual system entry starts near zero musical progress, without a full fixed-time settle",
+    "PASS current row moves before it has finished, following actual progress",
+    "PASS current painted system governs movement despite prefetched next events",
+    "PASS native rAF records many moving frames during the current row",
+    "PASS normal row trajectory has no reverse motion",
+    "PASS row target changes with progress rather than a fixed full-row destination",
+    "PASS docking is reached while still playing this row",
+    "PASS full system graphic top docks at 10% of usable viewport below controls and safety margin",
+    "PASS current piano system and next complete system fit after docking",
+    "PASS native trajectory is foreground, without throttled frame gaps",
+    "PASS pause releases the owned scroll frame immediately",
+    "PASS Wait never settles a full row merely on entry",
+    "PASS Wait input advances only a partial musical-progress target",
+    "PASS Wait stops without input and owns no idle frames",
+    "PASS same-system duplicates preserve baseline and target",
+    "PASS Wait target depends on actual durations, independent of configured BPM",
+    "PASS pause in partial motion has no late writes",
+    "PASS resume rebuilds baseline from actual scroll rather than old target",
+    "PASS wheel cancels, duplicate callback does not reclaim view",
+    "PASS follow off owns no writes",
+    "PASS follow on rebases current event rather than playing an old settle",
+    "PASS touch cancels current smoothing",
+    "PASS Follow waiting does not extrapolate musical progress from BPM",
+    "PASS rapid actual input across rows replaces the current baseline",
+    "PASS reflow preserves scroll and live iterator identity",
+    "PASS 50% zoom invalidates geometry without stale frames",
+    "PASS 100% zoom invalidates geometry without stale frames",
+    "PASS 150% zoom invalidates geometry without stale frames",
+    "PASS 100% restores original OSMD layout",
+    "PASS resize drops old geometry and animation",
+    "PASS fullscreen/fallback preserves painted position and cancels motion",
+    "PASS oversized system uses finite cursor visibility fallback",
+    "PASS Loop count-in return clears outgoing target before formal restart",
+    "PASS formal Loop restart rebuilds a zero-progress baseline",
+    "PASS seek/reset retains original return behavior",
+    "PASS same-system repeat is actual navigation, even with advance reason",
+    "PASS cross-system repeat rebuilds baseline without outgoing animation pullback",
+    "PASS Realtime long note progresses within same formally displayed event using playback clock",
+    "PASS Realtime whole rest uses the same scheduled musical window between formal commits",
+    "PASS raw/original MusicXML remains unchanged",
+    "PASS reduced motion applies the partial progress target",
+    "PASS layout switches leave no vertical frame"
+  ],
+  "primary": {
+    "nativeMusic": true,
+    "frames": "native",
+    "height": 697,
+    "entry": {
+      "from": 34.400001525878906,
+      "target": 39.080064910617764,
+      "dock": 314.5880067964197,
+      "progress": 0.010857142857143221,
+      "totalBeats": 28,
+      "systemId": 1
+    },
+    "early": {
+      "from": 34.400001525878906,
+      "target": 81.4469544987789,
+      "dock": 314.5880067964197,
+      "progress": 0.10914285714285807,
+      "totalBeats": 28,
+      "systemId": 1
+    },
+    "firstEvent": 26,
+    "arrived": {
+      "phase": "realtime-200",
+      "time": 81059,
+      "clock": 11.612,
+      "height": 697,
+      "scroll": 313.6000061035156,
+      "top": 130.9000041261316,
+      "bottom": 367.0000076442956,
+      "eventId": 46,
+      "systemId": 1,
+      "painted": {
+        "measureIndex": 11,
+        "timestampWhole": 11
+      },
+      "traversal": {
+        "measureIndex": 11,
+        "timestampWhole": 11.25
+      },
+      "animation": {
+        "from": 34.400001525878906,
+        "target": 314.5880067964197,
+        "dock": 314.5880067964197,
+        "progress": 0.7457142857142889,
+        "totalBeats": 28,
+        "systemId": 1
+      },
+      "active": true
+    },
+    "final": {
+      "phase": "realtime-200",
+      "time": 82906.3,
+      "clock": 13.452,
+      "height": 697,
+      "scroll": 314.3999938964844,
+      "top": 130.10000107437378,
+      "bottom": 366.20000459253777,
+      "eventId": 53,
+      "systemId": 1,
+      "painted": {
+        "measureIndex": 12,
+        "timestampWhole": 12.75
+      },
+      "traversal": {
+        "measureIndex": 13,
+        "timestampWhole": 13
+      },
+      "animation": {
+        "from": 34.400001525878906,
+        "target": 314.5880067964197,
+        "dock": 314.5880067964197,
+        "progress": 0.965428571428573,
+        "totalBeats": 28,
+        "systemId": 1
+      },
+      "active": false
+    },
+    "points": 753,
+    "intermediate": 432
+  },
+  "fullscreen": {
+    "native": false,
+    "pseudo": true
+  },
+  "samples": 2421
+}

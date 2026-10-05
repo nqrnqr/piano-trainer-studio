@@ -22,7 +22,7 @@ export namespace PianoTrainerPlaybackCoordinator {
         readLoopMin(): number; readLoopMax(): number; isMetronomeEnabled(): boolean;
     }
     export interface Ports {
-        presentation?: {prepare?(): Promise<void>; present(): void; navigate(reason: 'load' | 'reset' | 'seek'): void; loop(): void; traceStepIndex(): number;};
+        presentation?: {prepare?(): Promise<void>; present(): void; navigate(reason: 'load' | 'reset' | 'seek'): void; loop(): void; traceStepIndex(): number; eventId?():number | null;};
         state: State; clock: PianoTrainerPlaybackClock.Service; score: Score;
         transport: {stop():void; start():void; pause():void; setBpm(value:number):void};
         controls: Controls;
@@ -45,6 +45,9 @@ export namespace PianoTrainerPlaybackCoordinator {
     export function create(ports: Ports) {
         const state = ports.state;
         let epoch = 0, disposed = false;
+        // Read-only presentation evidence of the existing scheduling window.
+        let displayWindow: {eventId:number | null; traceStepIndex:number; measureIndex:number; timestampWhole:number;
+            startSec:number; endSec:number} | null = null;
         const policy = () => PianoTrainerModePolicy.forMode(state.mode);
         function scheduleAdvance(delayMs: number, guard: PianoTrainerModePolicy.AdvanceGuard, gradeMisses: boolean) {
             ports.clock.setTimer(() => {
@@ -158,6 +161,7 @@ export namespace PianoTrainerPlaybackCoordinator {
         }
 
         function stopPlaybackState({ pauseTransport = true }: {pauseTransport?: boolean} = {}) {
+            displayWindow = null;
             ports.ui.cancelViewport();
             state.isPlaying = false;
             state.countInActive = false;
@@ -203,6 +207,7 @@ export namespace PianoTrainerPlaybackCoordinator {
 
         function playbackLoop() {
             if (disposed || !state.isPlaying) return;
+            displayWindow = null;
             const generation = epoch;
 
             if (ports.score.isEndReached()) {
@@ -305,6 +310,9 @@ export namespace PianoTrainerPlaybackCoordinator {
             const currentRunningBpm = state.baseBpm * state.speedPercent;
             const waitSeconds = beatsToWait * (60 / currentRunningBpm);
             const playbackWindowStartSec = policy().usesRelativeAnchor ? ports.clock.nowSeconds() : state.anchorTime;
+            displayWindow = {eventId:ports.presentation?.eventId?.() ?? null, traceStepIndex:state.currentExpectedContext?.traceStepIndex ?? -1,
+                measureIndex:currentMeasureIdx, timestampWhole:currentTimestamp,
+                startSec:playbackWindowStartSec, endSec:playbackWindowStartSec+waitSeconds};
 
             const deferMetronomeWindow = policy().deferMetronome(state.expectedNotes.length);
             if (!deferMetronomeWindow) {
@@ -487,6 +495,7 @@ export namespace PianoTrainerPlaybackCoordinator {
             ports.metronome.dispose();
         }
         return {checkWaitModeAdvance, startPlaybackFromToolbar, silencePlaybackOutputsImmediately,
+            readDisplayWindow: () => displayWindow ? {...displayWindow} : null,
             stopPlaybackState, pausePlaybackFromToolbar, resetPlaybackForLoadedScore, resetPlaybackFromToolbar,
             playbackLoop, enforceLooperBounds, suspend, dispose};
     }

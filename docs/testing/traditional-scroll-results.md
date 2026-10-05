@@ -1,106 +1,98 @@
-# 传统五线谱：换行后平缓归位执行记录
+# 传统五线谱：行内进度滚动执行记录
 
-执行日期：2026-10-04。前序横向改动已提交为 `b1235dc`；本次传统改动未提交、未推送。
+日期：2026-10-05。本次修改基于已提交的传统滚动实现 `7d82e0d`；本轮没有提交或推送。按最新用户需求同步修订 [方案](../TRADITIONAL_SCORE_SCROLL_PLAN.md)，替换固定短时间完整归位的行为和断言。
 
-T0–T2 已完成。T3 的真实 OSMD 受控帧集成和受影响回归通过；新纵向策略的原生前台运动验收尚未通过采样条件，详见限制。本文没有把受控帧记录当作原生平滑度证明。
+## 最终策略
 
-## 实现及参数
+保留完整原谱与 OSMD 原有排版。每次系统入口记录实际 scrollTop 和最终停靠位置，复用独立 performance trace 及既有遍历等待计算，把本次系统各时段的实际四分拍累计为音乐进度。同时声部只算一次，休止和长音按实际时值计入；区间在离开系统、反复返回或 Loop 上界结束。
 
-保留完整原谱、原 OSMD 换行和分页。按 `ParentMusicSystem` 对象身份缓存系统索引；使用实际 `BorderTop/Bottom` 和整组谱表范围覆盖高低加线、歌词、力度。adapter 输出页内 SVG 坐标，geometry 使用该页 `getScreenCTM()` 转成容器 CSS 内容坐标，包含 zoom、页偏移、边框和滚动偏移。
+普通目标在前 **60% 音乐进度** 内从入口位置逐步上移至最终停靠，随后保持。唯一 rAF 使用 **150ms 指数响应** 平滑追随当前目标，帧间隔最多取 50ms，在 0.5 CSS px 内收敛。150ms 是视觉响应参数，不是整行归位时长；不再保存整行归位截止时间。实际接近最终位置还受这一小段追随影响，60% 与 150ms 均为可调参数。
 
-| 参数 | 最终值 |
-| --- | --- |
-| 系统顶部阅读带 | 视口高度 25%–35%，中心 30% |
-| 上下安全边距 | `clamp(0.04H, 12, 32)` CSS px；上方实测悬浮控件遮挡优先 |
-| 迟滞 | 3 CSS px |
-| Wait 时长 | 650ms，与设定速度无关 |
-| Follow / Realtime | `clamp(0.20 × Tline, 0.40, 1.20)` 秒 |
-| 时值/速度估算失败 | 650ms |
-| 当前光标不可见的纠正 | 最长 400ms |
-| 插值 | 固定起点、目标、开始时间和 D 的 smoothstep |
+Wait / Follow 只随正式显示事件推进；停止输入后，仅完成最近目标的追随，再释放帧。Realtime 额外读取协调器已经计算的当前事件起止时刻和现有 `playbackClock.nowSeconds()`，在事件之间插值；没有第二套音乐时钟，也没有新增音乐调度。只读窗口保存预取前的 trace 身份及正式 eventId；窗口与 painted/正式事件不一致时不插值。
 
-参数沿用方案初始值。完整系统可见优先于精确落在 30%；第一页、末页和过高系统接受合法边界或当前光标的最小必要纠正。已经安全位于阅读带或其上方时保持位置。没有按音符位置、谱宽或 X 百分比推算时长。
+锚点选 **完整系统图形 top**，包含整组钢琴谱表与加线、歌词、力度的图形范围。目标屏幕位置为：
 
-只读时长查询复用独立 performance trace、小节实际时值和播放的四分拍等待计算，逐事件累计同时声部一次。有效 BPM 使用现有 `baseBpm × speedPercent`，其中倍率为 1、2 等；源小节速度沿用播放引擎的读取规则。到离开当前系统、原谱返回或 Loop 上界时停止，不累计后续反复轮次。
+```text
+margin = clamp(clientHeight × 0.04, 12, 32)
+safeTop = max(margin, 工具栏实测底边 + 4)
+目标屏幕 top = safeTop + (clientHeight - safeTop - margin) × 0.06
+```
 
-`performancePosition.changed` 早于 cursor.update，迭代器也会预取。纵向滚动合并本次同步更新到单次帧中，读取 painted 的 trace 索引和小节；只有正式事件与之匹配才采用其事件身份、原因及 Loop 轮次。Loop 提前 reset/update/scroll 时使用已画出的返回位置。播放协调器和音乐时钟没有改动。
+完整系统可读性和首末页滚动边界优先。已经在目标或更靠上且完整可见时保持。系统不可完整容纳时使用 painted 光标的最小可见性纠正；不改变 zoom、裁切或排版。所有坐标统一为容器 CSS 内容坐标，各页 CTM 已计入 zoom、边框和页面偏移。
 
-同系统推进不改动画截止时间。新系统从实际 scrollTop 接管；完成后释放 rAF。暂停、跟随关闭、wheel/touch、重排、换谱、页面挂起和销毁取消所有本组件拥有的帧；纵向迟到回调有代际检查。重绘前保存 scrollTop，重建 SVG 后恢复，避免空容器把位置归零；重新检查可见性，并刷新当前反馈锚点。reduced-motion 使用相同目标直接归位。原谱反复、seek/reset、Loop 保留原传统 60%/0 阈值到 10% 的导航分支；横向 33%/90ms 参数及显示实现保留。
+反复、Loop、seek/reset 保留旧传统返回分支；返回阶段建立基准但不追加一次图形边界纠正，下一次正常提交从实际位置接管并保留已经完成的区间时值。新系统接管实际位置，不排队旧目标。暂停、关闭跟随、人工滚动、重排、页面隐藏及销毁取消旧帧，generation 阻止迟到写入。reduced-motion 直接应用当前进度目标。横向 33%/90ms 跟随和横向谱面服务保持原实现。
 
-## 基线及排版对照
+## 原生实测中修复的问题
 
-基线 `npm run check`：357/357 通过。四系统双谱表谱例包含 C8/C1 加线、歌词、力度和 90/180 BPM 变化。宽 1100px 的测试 iframe、约 698px 的音乐视口完整容纳前两个系统。源小节号从 0 开始：
+144Hz 浏览器会把 scrollTop 量化为设备像素（本机约 0.8 CSS px）。如果每帧从量化后的 scrollTop 重新算小步移动，接近目标时的小步可能一直被舍去，造成约 5px 的停靠误差和持续请求帧。本次保留内部小数位置，再写入 DOM；新增取整测试证明能收敛并释放帧。人工拖动滚动条造成的大于 2px 外部位置变化仍由用户接管。
 
-| 系统 | 小节 | SVG 顶部 | SVG 底部 |
+初次长音场景只有两系统且受末页边界和可见性纠正限制，目标下界暂时压过音乐进度目标，因此不能据此证明长音插值。最终测试使用扩充的独立 MusicXML fixture 留出页面空间，通过真实播放进入并推进至纠正之后，再测量同一正式长音事件内的进度和目标变化；这只是测试谱例，不向生产显示追加副本。
+
+## 排版与基线
+
+同一 1100px 测试宽度下，24 小节钢琴谱的自然系统边界与旧基线逐项一致：
+
+| 系统 | 源小节（从 0 开始） | SVG top | SVG bottom |
 | --- | --- | ---: | ---: |
 | 0 | 0–5 | 150.0 | 377.0 |
 | 1 | 6–12 | 430.5 | 666.6 |
 | 2 | 13–19 | 656.6 | 911.2 |
 | 3 | 20–23 | 961.2 | 1179.7 |
 
-新实现对上述系统数量、小节所属系统和四个上下边界逐一断言相等；100% 缩放恢复后再次对照。OSMD 默认忽略 XML print 换行标记，本测试使用其自然排版，没有更改 vendor 选项强制分行。曲名属于原谱页头，保留原始排版，不用它作为每个系统的滚动目标。
+fixture 有高低加线、歌词、力度和 90/180 BPM 变化；没有强制 XML 换行，也没有更改 OSMD 排版选项。100% 缩放恢复后再次对照；raw/original XML 相等也由浏览器断言。
 
-旧滚动通过实际逐事件播放复现：第二系统进入时从 0 滚到约 389.6px，光标顶部落在约 71.4px。基线保存了 415 个原生样本、scrollTo 参数和系统图形数据，见 [基线 JSON](validation/traditional-baseline.json)、[基线截图](validation/traditional-baseline.png) 和 [文本](validation/traditional-baseline.txt)。
+旧版传统阈值跟随将光标顶部定位在约 71px，但光标顶部不包含系统全部图形。完整系统锚点同时扣除实测工具栏：697px 视口下，上一轮 10% 参数的最终系统 top 约 130px。本次用户反馈要求再靠上一点，调整为可用空间的 6%，原生实测 top 约 106px，比前一轮再上移约 24px；目标 scrollTop 约 338.55px。不能把“可用空间比例”误报成整个容器绝对顶部的比例。
 
-## 新轨迹：受控帧、真实 OSMD/DOM
+## 执行与证据
 
-完整矩阵通过 49 项。音乐时钟受控，换行使用实际播放或输入推进；seek 仅用于导航场景。视口 rAF 单独以确定时间驱动。第二系统在进入时已经完整可见，下边界约 680.6px；直到 painted 从第一系统进入第二系统才开始移动，预取到下一系统时 scrollTop 仍为 0。
+原生页面使用生产 Tone.now 和计时器，实际播放/输入提交；仅静音输出并简化 count-in 等待。所有普通前进场景通过真实逐事件路径进入系统，seek 仅用于导航检查。
 
-实测 CSS 容器 clientHeight 为 697px；布局基线设置值约 698px。新目标约 235.4px，浏览器量化后的 scrollTop 为 235.2px，系统顶部约 209.3px，即视口的 30%。完整双谱表与加线仍可见。以下时间为采样帧相对动画开始时间；采样观察发生在该帧写入之前，允许一帧差：
+| 执行项 | 实际结果 |
+| --- | --- |
+| `npm run build` | 通过，更新生产和测试 bundle 及 sourcemap |
+| `npm run check` | 类型检查、生成一致性及 387/387 单元测试通过 |
+| `git diff --check` | 通过，仅 LF/CRLF 提示 |
+| `traditional-scroll.html?led=off&music=native` | 45/45 项通过；生产音乐时钟与计时器，原生 rAF |
+| `traditional-scroll.html?led=off&frames=controlled` | 44/44 项通过；受控时钟和帧，单独覆盖返回边界 |
+| 上一轮 `score-display.html?led=off` | 30/30 项通过；双布局三模式、反馈、位置保留、390px 和 240 小节资源界限 |
+| 上一轮 `horizontal-unfolded.html?led=off` | 648/648 断言通过；原谱事件路径、反复/ending、Loop、映射及 100 轮资源回收 |
 
-| 毫秒 | scrollTop | 系统顶部 | 系统底部 |
-| ---: | ---: | ---: | ---: |
-| 16.67 | 0.0 | 444.5 | 680.6 |
-| 200.04 | 15.2 | 429.3 | 665.4 |
-| 400.08 | 56.8 | 387.7 | 623.8 |
-| 600.12 | 112.8 | 331.7 | 567.8 |
-| 800.16 | 170.4 | 274.1 | 510.2 |
-| 1000.20 | 215.2 | 229.3 | 465.4 |
-| 1200.24 | 235.2 | 209.3 | 445.4 |
+原生矩阵覆盖三种模式、Wait 50%/200% 的相同实际进度目标、Realtime 长音与整小节休止、快速实际输入换行、双谱表图形边界、重复通知、暂停恢复、wheel/touch、开关、重排、50%/100%/150% zoom、resize、全屏 fallback、过高系统、Loop/count-in、同系统及跨系统反复、seek/reset、reduced-motion 和布局切换。
 
-该段有 96 个关联样本；在约 1183.57ms 时进入目标 1px 内，D 为 1200ms，D 后一帧内精确完成。无超过 1px 的反向移动，无越过目标；之后继续八个事件且等待一秒仍保持位置。静止后帧数停止增长。
+2444 个记录样本中，第二系统有 752 个逐帧样本，其中 396 个发生在 60% 目标推进阶段。下表时间相对本系统首个原生采样；进度由正式事件与其播放窗口计算：
 
-| 模式/速度 | 本次系统估计秒数 | D |
+| 毫秒 | 音乐进度 | 当前目标 scrollTop | 实际 scrollTop | 系统屏幕 top |
+| ---: | ---: | ---: | ---: | ---: |
+| 90 | 2.1% | 68.27 | 61.60 | 382.90 |
+| 458 | 10.1% | 105.36 | 91.20 | 353.30 |
+| 1167 | 25.3% | 176.33 | 160.80 | 283.70 |
+| 2326 | 50.0% | 291.86 | 277.60 | 166.90 |
+| 2785 | 60.0% | 338.55 | 324.00 | 120.50 |
+| 3257 | 70.1% | 338.55 | 337.60 | 106.90 |
+| 4674 | 93.1% | 338.55 | 338.40 | 106.10 |
+
+在约 67.7% 进度、仍处于本行源小节 10 时进入目标 1px 范围；目标本身在 60% 到达停靠。上一轮参数在约 74.6% 进度时才进入目标 1px 范围，本次提早约 6.9 个音乐进度百分点。最终误差约 0.15 CSS px，完整系统 bottom 约 342.2px，下一系统 bottom 约 586.8px。轨迹断言无大于 1px 的反向移动，无超过 250ms 的前台采样缺口；Wait 等待时帧计数停止增长。
+
+本次微调前后的原生对照：
+
+| 参数或观察 | 微调前 | 当前 |
 | --- | ---: | ---: |
-| Realtime 100% | 10.6667 | 1200ms，上限 |
-| Realtime 200% | 5.3333 | 1066.67ms |
-| Follow 200% | 与 Realtime 200% 相同 | 1066.67ms |
-| Wait 50% | 21.3333 | 650ms |
-| Wait 200% | 不用于确定动画时长 | 650ms |
+| 停靠比例（安全区域） | 10% | 6% |
+| 目标推进完成比例 | 65% | 60% |
+| 平滑响应 | 180ms | 150ms |
+| 实测系统最终 top | 130.1px | 106.1px |
+| 实测进入目标 1px 范围的音乐进度 | 74.6% | 67.7% |
 
-该系统在最后一个小节回到 90 BPM，所以估算包含行内两种源速度。行内改为 50% 没有重新启动当前动画。单元还验证弱起、附点/连音时间戳、同时声部、跨行长音、尾事件余量、不同实际时值、非法速度和反复出口。
+对照保存于 [微调前原生摘要](validation/traditional-progress-before-tuning.json)。本次重新执行构建、387 项单元测试、原生 45 项和受控 44 项矩阵；现有显示 30 项与横向 648 项回执保留为上一轮回归结果，微调没有修改横向实现。
 
-完整逐帧事件身份、painted/traversal、系统边界、起点、目标、D 和实际位置见 [轨迹 JSON](validation/traditional-controlled-trajectory.json)；断言、时长和原生/模拟全屏观察见 [受控帧记录](validation/traditional-controlled.txt)。
+证据：[原生摘要](validation/traditional-progress-native.json)、[原生断言回执](validation/traditional-progress-native.txt)、[原生完整轨迹](validation/traditional-progress-native-trajectory.json)、[受控摘要](validation/traditional-progress-controlled.json)、[受控轨迹](validation/traditional-progress-controlled-trajectory.json)、[显示回归](validation/traditional-progress-score-display.txt)、[横向回归](validation/traditional-progress-horizontal.txt)。命令完整输出保留在本地忽略目录 `.cache/traditional-progress-check.txt`。
 
-## 执行结果
+旧版 2026-10-04 的 [独立复核](TRADITIONAL_SCROLL_REVIEW_2026-10-04.md) 和 `traditional-review-native.json` 只保留为历史记录，不用于证明本次进度策略。
 
-`npm run build` 生成生产及测试四个产物；`npm run check` 包含双入口类型检查、产物一致性和全部单元测试，最终 **382/382** 通过（原基线 357 项，新增 25 项）。见 [命令输出](validation/traditional-check.txt)。新增策略、几何、时值及帧生命周期测试保留原断言。
+## 验证限制
 
-| 浏览器页面 | 条件 | 通过数 |
-| --- | --- | ---: |
-| traditional-scroll | 真实 OSMD，受控 viewport rAF | 49 |
-| score-display | LED off，受控渲染/练习 | 30 |
-| render-baseline | LED off，实际几何及既有横向原生 rAF | 19 |
-| practice-baseline | LED off，双布局三模式 | 53 |
-| playback-baseline | LED off，三模式播放/换谱矩阵 | 128 |
-| horizontal-unfolded | LED off，原谱反复及 100 轮 Loop | 648 |
-| horizontal-interactions | LED off，显示/反馈/取消 | 16 |
-| production-lifecycle | 实际 app.js，缓存页事件模拟 | 29 |
-| bootstrap-baseline | LED off / 默认 | 各 37 |
-| native-controls-baseline | LED off | 39 |
-
-对应回执为 `validation/traditional-regression-*.txt`。完整销毁后观察到 0 listeners、timers、intervals、frames 和数据库连接。传统矩阵覆盖：当前系统已在带内/其上方、Wait 稳定等待、暂停恢复、关闭/开启跟随、wheel/touch、原谱同系统与跨系统反复、Loop/count-in、快速连续换行、整行长音、双谱表高度差、50/100/150% 缩放、重排、130px 高视口、全屏 fallback、反向 seek、布局切换、换谱和 reduced-motion。
-
-## 验证限制与已有问题
-
-- **新纵向策略的原生前台运动尚待复验。** 多次运行中浏览器报告 visible，但原生 rAF 只交付约一秒间隔的少量样本；应用打开浏览器面板的结果是 queued。最新运行明确记录 `NATIVE_UNAVAILABLE`，没有宣称原生运动通过。见 [原生采样限制](validation/traditional-native-unavailable.txt)。旧基线的原生轨迹和现有横向原生检查通过，不能代替新纵向验收。
-- resize 使用真实 iframe 尺寸变化，并派发 resize 事件验证原有重排入口；受限环境中自然事件交付较慢。全屏实际验证的是应用 fallback，`native:false, pseudo:true`；原生系统全屏仍需前台环境复验。visibility 取消/恢复及迟到帧在确定性单元中验证，生产 pagehide/pageshow 路径另有回归。
-- 当前默认原谱使用单个 SVG 页；多页页偏移、zoom、边框和 CTM 在单元中验证，没有声称运行了原生多 SVG 页跨页场景。
-- 新合成传统谱例切入横向时，OSMD 的速度标记渲染报 `hasMetronomeMark`。使用提交 `b1235dc` 的旧 test-app.js 独立复现了同样错误，见 [旧版探测回执](validation/traditional-prior-horizontal.txt)。本次没有改动横向显示来处理该既有谱例限制；布局切换回归使用已支持的原有 repeat fixture。临时旧产物和探测页面已清理。
-- 未验证实体 MIDI/WLED、触屏硬件、可听同步和其他操作系统；本次没有修改这些模块。
-
-## 本地复验
-
-在项目根目录执行 `npm run build` 和 `npm run serve`，打开 [主应用](http://127.0.0.1:8080/)。选择传统布局并开启 Auto Scroll，导入 `docs/testing/fixtures/traditional-scroll.musicxml` 后演奏或使用 Realtime。
-
-自动页面：[原生测试页](http://127.0.0.1:8080/docs/testing/traditional-scroll.html?led=off)。保持前台后点击 Run checks。若出现 `NATIVE_UNAVAILABLE`，先确认页面可见且没有被浏览器限制，再重载执行。[受控帧测试页](http://127.0.0.1:8080/docs/testing/traditional-scroll.html?led=off&frames=controlled) 执行确定性完整矩阵；它不能替代原生平滑度验收。成功后点击 Dispose after capture 清理隔离测试资源。
+- 实体 MIDI、可听伴奏同步、真实触屏硬件、其他浏览器/操作系统未实测。
+- 当前真实谱例是单 SVG 页；多页偏移、边框与 zoom 转换有单元覆盖，未增加真实多 SVG 页浏览器样例。
+- 本机全屏使用应用 fallback；原生系统全屏未覆盖。
+- 复杂 D.C./D.S./Coda 组合与极端密集标记未逐一实测；返回分类、现有 traversal 顺序和原返回分支保留。
+- 60% 是滚动目标到达停靠的音乐进度，不保证所有速度与距离下实际 DOM 在恰好 60% 时已完成视觉追随；最终轨迹记录实际到达时刻。

@@ -212,17 +212,18 @@ verbatimModuleSyntax，局部不变量/原错误路径见 [STRICT_MODULE_CONTRAC
 ## 调试与回退
 
 传统布局的跟随由 `render/traditional-scroll-policy.ts` 决定系统目标，
-`score-viewport.ts` 拥有单条有限时长的纵向 rAF。换入相邻系统后归位到顶部
-25%–35% 阅读带（中心 30%）；Wait 固定 650ms，Follow / Realtime 取本次
-系统剩余实际四分拍时长的 20%，限制为 400–1200ms。整组谱表安全边界优先。
+`score-viewport.ts` 拥有单条纵向 rAF。根据正式 painted 事件的实际四分拍进度，
+在当前系统前 60% 的进度内逐步上移，最终停靠在工具栏与安全边距以下的
+可用高度约 6% 处。Wait / Follow 不按 BPM 推测进度；Realtime 读取协调器
+既有事件时间窗口及播放时钟插值。150ms 指数响应只平滑视觉目标，整组谱表安全边界优先。
 adapter 缓存原 OSMD 系统身份和 SVG 边界；geometry 用各页 CTM 转成 CSS 内容坐标。
 滚动在同步绘制完成后的帧中读取 painted 位置，只在正式事件与该位置匹配时采纳事件身份。
 原谱返回及 Loop 仍走传统 10% 导航定位；重绘前保存 scrollTop，重绘后恢复并检查可见性。
 
-本地传统验收页为 `/docs/testing/traditional-scroll.html?led=off`，使用真实 OSMD、
-播放/输入路径和原生滚动帧。测试时保持浏览器前台；采样被限制时会显示
-`NATIVE_UNAVAILABLE`，不能视为运动验收通过。加 `&frames=controlled` 可执行
-确定性集成矩阵。两者均使用随机测试库、隔离偏好和静音输出；完成后点击
+本地传统验收页为 `/docs/testing/traditional-scroll.html?led=off&music=native`，使用真实 OSMD、
+生产播放时钟/计时器、实际播放/输入路径和原生滚动帧。测试时保持浏览器前台；
+轨迹包含帧间隔检查，后台节流不能视为运动验收通过。改用 `&frames=controlled`
+（删除 `music=native`）可执行受控时钟和帧的集成矩阵。两者均使用随机测试库、隔离偏好和静音输出；完成后点击
 “Dispose after capture” 清理。实际结果和限制见
 [traditional-scroll-results.md](../testing/traditional-scroll-results.md)。
 

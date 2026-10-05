@@ -2,6 +2,7 @@ import type {PianoTrainerDomain} from '../domain/model';
 import type {PianoTrainerOsmdAdapter} from '../score/osmd-adapter';
 import type {LegacyAppState} from '../state/model';
 import {PianoTrainerTraditionalScroll as Traditional} from './traditional-scroll-policy';
+import type {SystemProgress} from '../score/system-progress';
 // Display layout and scrolling only. Musical advancement belongs to practice.
 export namespace PianoTrainerScoreViewport {
     export interface Elements {
@@ -12,7 +13,8 @@ export namespace PianoTrainerScoreViewport {
         traditional?: {
             read(): {position: Traditional.Position; system: Traditional.SystemBounds | null; cursor: Traditional.Bounds;
                 mode: PianoTrainerDomain.PracticeMode; topObstruction: number} | null;
-            estimateSeconds(system: Traditional.SystemBounds, position: Traditional.Position): number | null;
+            buildProgress(system: Traditional.SystemBounds, position: Traditional.Position): SystemProgress | null;
+            readPlayback(position: Traditional.Position): {fraction:number; moving:boolean} | null;
             lifecycle?: Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'>;
             isPlaying(): boolean;
         };
@@ -39,8 +41,10 @@ export namespace PianoTrainerScoreViewport {
         let verticalFrame: number | null = null, generation = 0, dirty = false;
         let previous: Traditional.Position | null = null, recheck: 'align' | 'visibility' | null = null;
         let resume = false, nativeScroll = false, framesRun = 0, framesRequested = 0;
-        type Animation = {from: number; target: number; started: number; durationMs: number; lineSeconds: number | null; systemId: number | null};
-        let vertical: Animation | null = null, lastAnimation: Animation | null = null;
+        type Segment = {from:number; value:number; dock:number; minimum:number; target:number; systemId:number | null; navigation:boolean;
+            profile:SystemProgress | null; point:SystemProgress['steps'][number] | null; consumedAtStart:number; progress:number};
+        let vertical: Segment | null = null, verticalTime = 0;
+        let snapshot: ReturnType<NonNullable<Ports['traditional']>['read']> = null;
         let measuredSystem: Traditional.SystemBounds | null = null;
         let lastKind: Traditional.Kind | null = null;
         let renderedTop: number | null = null;
@@ -56,7 +60,7 @@ export namespace PianoTrainerScoreViewport {
             frame = null; previousTime = 0;
             generation++;
             if (verticalFrame !== null) ports.cancelFrame(verticalFrame);
-            verticalFrame = null; vertical = null; dirty = false; recheck = null; resume = true;
+            verticalFrame = null; vertical = null; snapshot = null; verticalTime = 0; dirty = false; recheck = null; resume = true;
             stopNativeScroll();
         }
         function scheduleVertical() {
@@ -81,7 +85,7 @@ export namespace PianoTrainerScoreViewport {
             if (!follows() || isHorizontal()) return;
             if (dirty) {
                 dirty = false;
-                const snapshot = ports.traditional?.read();
+                snapshot = ports.traditional?.read() ?? null;
                 if (snapshot) {
                     const classification = Traditional.classify(previous, snapshot.position);
                     const unchanged = previous && previous.scoreRevision === snapshot.position.scoreRevision
@@ -93,30 +97,54 @@ export namespace PianoTrainerScoreViewport {
                     recheck = null; resume = false;
                     previous = {...snapshot.position}; measuredSystem = snapshot.system;
                     if (!unchanged || reevaluate) {
-                        if (kind === 'navigation') legacyPosition(snapshot.cursor);
-                        else if (!(kind === 'same' && vertical)) {
-                            if (kind !== 'same') stopNativeScroll();
-                            const lineSeconds = snapshot.system && (kind === 'adjacent' || kind === 'align')
-                                ? ports.traditional!.estimateSeconds(snapshot.system, snapshot.position) : null;
-                            const decision = Traditional.decide({kind, height:area().clientHeight, scrollTop:area().scrollTop,
+                        if (kind === 'navigation') {vertical = null; legacyPosition(snapshot.cursor);}
+                        if (!vertical || vertical.navigation || kind !== 'same' || reevaluate || nativeScroll || Math.abs(area().scrollTop-vertical.value) > 2) {
+                            // Keep the established return scroll. Normal forward
+                            // commits take over from its actual position.
+                            if (kind !== 'navigation') stopNativeScroll();
+                            const decision = Traditional.decide({height:area().clientHeight, scrollTop:area().scrollTop,
                                 maxScroll:area().scrollHeight-area().clientHeight, system:snapshot.system, cursor:snapshot.cursor,
-                                topObstruction:snapshot.topObstruction, mode:snapshot.mode, lineSeconds});
-                            if (decision.kind === 'animate') {
-                                stopNativeScroll();
-                                vertical = {from:area().scrollTop, target:decision.target, started:time, durationMs:decision.durationMs,
-                                    lineSeconds, systemId:snapshot.position.systemId};
-                                lastAnimation = {...vertical};
-                                if (ports.prefersReducedMotion()) {area().scrollTop = vertical.target; vertical = null;}
-                            } else if (kind !== 'same') vertical = null;
+                                topObstruction:snapshot.topObstruction});
+                            const profile = kind === 'same' && vertical?.navigation ? vertical.profile
+                                : snapshot.system ? ports.traditional!.buildProgress(snapshot.system,snapshot.position) : null;
+                            const point = profile?.steps.find(point => point.traceStepIndex === snapshot!.position.traceStepIndex) ?? null;
+                            const playback = snapshot.mode === 'realtime' ? ports.traditional!.readPlayback(snapshot.position) : null;
+                            vertical = {from:area().scrollTop, value:area().scrollTop, dock:decision.dock, minimum:decision.minimum,
+                                target:kind === 'navigation' ? area().scrollTop : decision.minimum, navigation:kind === 'navigation',
+                                systemId:snapshot.position.systemId, profile, point, progress:0,
+                                consumedAtStart:reevaluate && point ? point.durationBeats*(playback?.fraction ?? 0) : 0};
+                            verticalTime = time;
+                        } else {
+                            vertical.point = vertical.profile?.steps.find(point => point.traceStepIndex === snapshot!.position.traceStepIndex) ?? null;
                         }
                     }
                 } else vertical = null;
             }
-            if (vertical) {
-                area().scrollTop = Traditional.interpolate(vertical.from, vertical.target, time-vertical.started, vertical.durationMs);
-                if (time-vertical.started >= vertical.durationMs) {area().scrollTop = vertical.target; vertical = null;}
+            let tracking = false, approaching = false;
+            if (vertical && snapshot && !vertical.navigation && !nativeScroll) {
+                // Keep fractional motion between frames: native scrollTop may
+                // quantize to device pixels, especially at high refresh rates.
+                // A larger external change belongs to manual scrollbar input.
+                if (Math.abs(area().scrollTop-vertical.value) > 2) {cancel();resume = false;return;}
+                const playback = snapshot.mode === 'realtime' && ports.traditional!.isPlaying()
+                    ? ports.traditional!.readPlayback(snapshot.position) : null;
+                const {profile,point,consumedAtStart} = vertical;
+                if (profile && point && profile.totalBeats > consumedAtStart) {
+                    const completed = point.completedBeats + point.durationBeats*(playback?.fraction ?? 0);
+                    vertical.progress = Math.max(vertical.progress, Math.min(1,Math.max(0,
+                        (completed-consumedAtStart)/(profile.totalBeats-consumedAtStart))));
+                    vertical.target = vertical.dock < vertical.from ? vertical.minimum
+                        : Math.max(vertical.minimum, Traditional.progressTarget(vertical.from,vertical.dock,vertical.progress));
+                    tracking = !!playback?.moving && vertical.progress < Traditional.completionFraction && vertical.dock > vertical.from+.5;
+                }
+                const elapsed = verticalTime ? time-verticalTime : 16;
+                verticalTime = time;
+                vertical.value = ports.prefersReducedMotion() ? vertical.target : Traditional.approach(vertical.value,vertical.target,elapsed);
+                approaching = Math.abs(vertical.value-vertical.target) > .5;
+                if (!approaching) vertical.value = vertical.target;
+                area().scrollTop = vertical.value;
             }
-            if (dirty || vertical) scheduleVertical();
+            if (dirty || tracking || approaching) scheduleVertical();
         }
         function animate(time: number) {
             frame = null;
@@ -233,8 +261,9 @@ export namespace PianoTrainerScoreViewport {
             initialized = false;
         }
         return {init, dispose, setMode, isHorizontal, follow, beforeRender, afterRender, autoScroll, cancel,
-            readTraditionalState: () => ({framePending:verticalFrame !== null, active:vertical !== null, framesRun, framesRequested,
+            readTraditionalState: () => ({framePending:verticalFrame !== null, active:verticalFrame !== null, framesRun, framesRequested,
                 position:previous ? {...previous} : null, system:measuredSystem ? {...measuredSystem} : null,
-                animation:lastAnimation ? {...lastAnimation} : null, lastKind})};
+                animation:vertical ? {from:vertical.from,target:vertical.target,dock:vertical.dock,progress:vertical.progress,
+                    totalBeats:vertical.profile?.totalBeats ?? null,systemId:vertical.systemId} : null, lastKind})};
     }
 }

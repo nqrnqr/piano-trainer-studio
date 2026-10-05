@@ -3,7 +3,7 @@ import type {ServicePorts} from '../app/services';
 import type {LibraryFixturePorts} from './library-checks';
 declare global {interface Window {
     PianoTrainerTest:ReturnType<typeof createTestFacade>;
-    __PT_TEST_OPTIONS__?:{controlledPlayback?:boolean};
+    __PT_TEST_OPTIONS__?:{controlledPlayback?:boolean; nativePlayback?:boolean};
     AudioFixture?:{tone:NonNullable<ServicePorts['audioTone']>};
     MetronomeFixture?:{tone:NonNullable<ServicePorts['metronomeTone']>};
     __PT_LIBRARY_FIXTURE__?:LibraryFixturePorts;

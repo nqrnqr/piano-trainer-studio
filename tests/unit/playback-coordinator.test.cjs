@@ -1,6 +1,20 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');
 const {harness,note,entry,plain}=require('../helpers/playback-harness.cjs');
 const kinds=events=>events.map(e=>Array.isArray(e)?e[0]:e);
+test('display window observes the painted event before prefetch and the existing anchor, with copied reads',()=>{
+ const h=harness({state:{mode:'realtime',anchorTime:9.8}});
+ h.ports.presentation={present(){},navigate(){},loop(){},traceStepIndex:()=>h.getStep(),eventId:()=>42};
+ h.service.playbackLoop();const w=h.service.readDisplayWindow();
+ assert.equal(h.getStep(),1);assert.equal(w.traceStepIndex,0);assert.equal(w.timestampWhole,0);
+ assert.equal(w.eventId,42);
+ assert.equal(w.startSec,9.8);assert.equal(w.endSec,10.3);w.endSec=100;
+ assert.equal(h.service.readDisplayWindow().endSec,10.3);h.service.pausePlaybackFromToolbar();assert.equal(h.service.readDisplayWindow(),null);
+});
+test('Loop display window retains full last-event interval even when anchor update is skipped',()=>{
+ const h=harness({loopEnabled:true,loopMax:1,state:{mode:'realtime',anchorTime:9.7},steps:[{measure:0,time:0,entries:[entry(note(60))]},{measure:1,time:1,entries:[]}]});
+ h.service.playbackLoop();assert.deepEqual(plain(h.service.readDisplayWindow()),{eventId:null,traceStepIndex:-1,measureIndex:0,timestampWhole:0,startSec:9.7,endSec:11.7});
+ assert.equal(h.state.anchorTime,9.7);assert.equal(h.nextTimer()[1].delay,2000);
+});
 test('cached-page suspension cancels old advances, preserves score/position and permits a fresh Play',async()=>{
  const h=harness({state:{mode:'realtime'}});h.service.playbackLoop();const old=h.nextTimer()[1].callback,position=h.getStep();h.state.score.correct=7;
  h.service.suspend();assert.equal(h.state.isPlaying,false);assert.equal(h.timers.size,0);assert.equal(h.frames.size,0);assert.equal(h.state.score.correct,7);assert.equal(h.getStep(),position);
