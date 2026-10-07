@@ -764,6 +764,15 @@ Updated readme for new iPad instructions
 v1.2.4
 Fixed real-time mode grading
 
+v1.3.0
+TypeScript module refactor, application lifecycle fixes, horizontal unfolded scores,
+traditional score following by musical progress, and Simplified Chinese / English UI.
+Added checked GitHub Actions deployment for nqrnqr/piano-trainer-studio.
+Updated version.json, the index.html asset fallback, and package metadata together.
+Boot metadata now lives in src/state/app-state.ts instead of trainer-state.js;
+it reads the runtime version from the version manifest and uses relative update paths.
+Removed the upstream custom domain and made the web manifest work under a project subpath.
+
 //------------------------------//
 **KEEP AT BOTTOM OF FILE FOR REFERENCE!**
 VERSION CONTROL - you MUST update the version in version.json and trainer-state.js prior to pushing to github!

@@ -8199,11 +8199,11 @@ ${xml}`;
   ((PianoTrainerAppState2) => {
     function readMetadata(ports) {
       const manifest = ports.manifest || {};
-      const repoSlug = "ztbishop/piano-trainer-studio";
+      const repoSlug = "nqrnqr/piano-trainer-studio";
       const version = String(ports.assetVersion || manifest.version || "dev").trim();
-      const manifestUrl = ports.getManifestUrl() || "/version.json";
-      const releaseUrl = String(manifest.releaseUrl || `https://github.com/${repoSlug}/releases/latest`).trim();
-      const downloadUrl = String(manifest.downloadUrl || `https://github.com/${repoSlug}/archive/refs/tags/v${version}.zip`).trim();
+      const manifestUrl = ports.getManifestUrl() || "version.json";
+      const releaseUrl = String(manifest.releaseUrl || `https://github.com/${repoSlug}/releases`).trim();
+      const downloadUrl = String(manifest.downloadUrl || `https://github.com/${repoSlug}/archive/refs/heads/main.zip`).trim();
       return { version, manifestUrl, releaseUrl, downloadUrl };
     }
     PianoTrainerAppState2.readMetadata = readMetadata;

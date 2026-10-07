@@ -2,7 +2,7 @@
 
 Practice piano with real-time MIDI feedback, scoring, and optional LED guidance.
 
-For contributors: [TypeScript development and regression checks](docs/refactor/DEVELOPMENT.md).
+For contributors: [TypeScript development and regression checks](https://github.com/nqrnqr/piano-trainer-studio/blob/main/docs/refactor/DEVELOPMENT.md).
 The app includes generated scripts; running the existing launchers requires no frontend build.
 
 Interface language defaults to **简体中文**. Choose **设置 → 语言 → English / 简体中文** to switch; your choice takes effect immediately and is saved in this browser.
@@ -13,9 +13,14 @@ Interface language defaults to **简体中文**. Choose **设置 → 语言 → 
 
 ## 🌐 Try It
 
-- App (GitHub Pages): [https://ztbishop.github.io/piano-trainer-studio/](https://ztbishop.github.io/piano-trainer-studio/)
-- App (Custom Domain): [https://www.pianotrainerstudio.com/](https://www.pianotrainerstudio.com/)
-- GitHub Repository: [https://github.com/ztbishop/piano-trainer-studio](https://github.com/ztbishop/piano-trainer-studio)
+- App (GitHub Pages): [https://nqrnqr.github.io/piano-trainer-studio/](https://nqrnqr.github.io/piano-trainer-studio/)
+- GitHub Repository: [https://github.com/nqrnqr/piano-trainer-studio](https://github.com/nqrnqr/piano-trainer-studio)
+
+### GitHub Pages deployment
+
+In the repository's **Settings → Pages**, set **Source → GitHub Actions**. The `Deploy GitHub Pages` workflow runs on every push to `main` and can also be started manually from **Actions**. It uses the Node.js version in `.nvmrc`, runs `npm ci` and `npm run check`, then publishes the app and setup guides. If verification fails, deployment stops and the previous published site remains available.
+
+GitHub Pages serves the browser app. The optional WLED/DDP helper still runs on your own computer. Scores and settings are saved in the browser for each site address; use library/settings backups to transfer them from localhost or another domain.
 
 💻 Want to run locally? Download from the Releases page (no Git required)
 
@@ -31,9 +36,9 @@ Interface language defaults to **简体中文**. Choose **设置 → 语言 → 
 
 You can download and run Piano Trainer Studio locally without cloning the repository:
 
-👉 https://github.com/ztbishop/piano-trainer-studio/releases
+👉 [Download the current source ZIP](https://github.com/nqrnqr/piano-trainer-studio/archive/refs/heads/main.zip)
 
-- Download the latest `.zip` file under **Assets**
+- Download the ZIP from the link above (it includes the generated browser scripts)
 - Extract it to a folder on your computer
 
 ---
@@ -323,6 +328,7 @@ Songs are stored in your browser (IndexedDB).
 
 ## 🙌 Credits
 
+- Original Piano Trainer Studio by [ztbishop](https://github.com/ztbishop/piano-trainer-studio)
 - OSMD
 - WLED
 - MIDIWeb

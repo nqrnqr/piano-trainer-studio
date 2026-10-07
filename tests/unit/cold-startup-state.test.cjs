@@ -98,16 +98,20 @@ test('first-run notices belong to their instance and imports cancel only the own
 test('boot metadata retains precedence, trimming and one explicit storage read', () => {
     const h = cold();
     for (const [manifest, assetVersion, saved, version, releaseUrl] of [
-        [undefined, undefined, null, 'dev', 'https://github.com/ztbishop/piano-trainer-studio/releases/latest'],
+        [undefined, undefined, null, 'dev', 'https://github.com/nqrnqr/piano-trainer-studio/releases'],
         [{ version: ' 1.2.4 ', releaseUrl: ' /release ', downloadUrl: ' /download ' }, undefined, '/custom.json', '1.2.4', '/release'],
-        [{ version: 'manifest' }, ' override ', '', 'override', 'https://github.com/ztbishop/piano-trainer-studio/releases/latest']
+        [{ version: 'manifest' }, ' override ', '', 'override', 'https://github.com/nqrnqr/piano-trainer-studio/releases']
     ]) {
         let reads = 0;
         const result = h.state.readMetadata({ manifest, assetVersion, getManifestUrl: () => { reads++; return saved; } });
         assert.equal(reads, 1);
         assert.equal(result.version, version);
-        assert.equal(result.manifestUrl, saved || '/version.json');
+        assert.equal(result.manifestUrl, saved || 'version.json');
+        if (!saved) {
+            assert.equal(new URL(result.manifestUrl, 'https://nqrnqr.github.io/piano-trainer-studio/').pathname,
+                '/piano-trainer-studio/version.json');
+        }
         assert.equal(result.releaseUrl, releaseUrl);
-        assert.equal(result.downloadUrl, manifest?.downloadUrl?.trim() || `https://github.com/ztbishop/piano-trainer-studio/archive/refs/tags/v${version}.zip`);
+        assert.equal(result.downloadUrl, manifest?.downloadUrl?.trim() || 'https://github.com/nqrnqr/piano-trainer-studio/archive/refs/heads/main.zip');
     }
 });
