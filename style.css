@@ -5075,6 +5075,18 @@ input[type="range"] {
     justify-self: start;
 }
 
+#fs-language .language-setting {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+#select-language {
+    min-width: 150px;
+    max-width: 100%;
+}
+
 #fs-tempo-popup .tempo-midiout-metronome-hint,
 #tempo-midiout-metronome-hint {
     justify-self: start;

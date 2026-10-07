@@ -28,10 +28,20 @@ export namespace PianoTrainerScoresDrawer {
     export function create(ports: Ports) {
         const document = ports.document;
         const state = ports.state;
-        const { createFoldersLibraryToolbar, createFolderListRow, createScoresLibraryToolbar, createScoreRow, formatScorePaneSummary } = ports.rows;
+        const { createFoldersLibraryToolbar, createFolderListRow, createScoresLibraryToolbar, createScoreRow } = ports.rows;
         const { getFilteredLibraryScores } = PianoTrainerLibraryView;
         const { isScoreLibraryManageMode } = ports.selection;
         const { getScoreLibraryFolderLabel } = ports;
+        function appendEmptyMessage(empty: HTMLElement, folderId: string | null, folders: Parameters<typeof getScoreLibraryFolderLabel>[1]) {
+            if (folderId === '__all__') {
+                empty.textContent = 'No saved scores yet. Add files to the library or save the current score.';
+                return;
+            }
+            const name = document.createElement('span');
+            name.textContent = getScoreLibraryFolderLabel(folderId, folders);
+            if (folderId && folderId !== '__all__' && folderId !== '__unfiled__') name.setAttribute('data-i18n-skip', '');
+            empty.append('No scores in ', name, ' yet.');
+        }
         function optional<T extends HTMLElement>(id: string, type: {
             new (): T;
         }): T | null {
@@ -174,7 +184,10 @@ export namespace PianoTrainerScoresDrawer {
                     const filteredScores = getFilteredScores();
                     const scoresHeader = document.createElement('div');
                     scoresHeader.className = 'scores-split-pane-header scores-split-pane-header-summary';
-                    scoresHeader.textContent = formatScorePaneSummary(activeFolderId, folders, filteredScores.length);
+                    const summaryFolder = document.createElement('span');
+                    summaryFolder.textContent = getScoreLibraryFolderLabel(activeFolderId, folders);
+                    if (activeFolderId && activeFolderId !== '__all__' && activeFolderId !== '__unfiled__') summaryFolder.setAttribute('data-i18n-skip', '');
+                    scoresHeader.append(`${filteredScores.length} score${filteredScores.length === 1 ? '' : 's'} • `, summaryFolder);
                     scoresPane.appendChild(scoresHeader);
                     const scoresList = document.createElement('div');
                     scoresList.className = 'scores-split-list';
@@ -187,9 +200,7 @@ export namespace PianoTrainerScoresDrawer {
                     if (!filteredScores.length) {
                         const empty = document.createElement('div');
                         empty.className = 'scores-folder-empty';
-                        empty.textContent = activeFolderId === '__all__'
-                            ? 'No saved scores yet. Add files to the library or save the current score.'
-                            : `No scores in ${getScoreLibraryFolderLabel(activeFolderId, folders)} yet.`;
+                        appendEmptyMessage(empty, activeFolderId, folders);
                         scoresList.appendChild(empty);
                     }
                     else {
@@ -244,6 +255,7 @@ export namespace PianoTrainerScoresDrawer {
                 const title = document.createElement('div');
                 title.className = 'scores-browser-title';
                 title.textContent = getScoreLibraryFolderLabel(activeFolderId, folders);
+                if (activeFolderId && activeFolderId !== '__all__' && activeFolderId !== '__unfiled__') title.setAttribute('data-i18n-skip', '');
                 browserHeader.appendChild(title);
                 const filteredScores = getFilteredScores();
                 browserBody.appendChild(createScoresLibraryToolbar({
@@ -257,9 +269,7 @@ export namespace PianoTrainerScoresDrawer {
                 if (!filteredScores.length) {
                     const empty = document.createElement('div');
                     empty.className = 'scores-folder-empty';
-                    empty.textContent = activeFolderId === '__all__'
-                        ? 'No saved scores yet. Add files to the library or save the current score.'
-                        : `No scores in ${getScoreLibraryFolderLabel(activeFolderId, folders)} yet.`;
+                    appendEmptyMessage(empty, activeFolderId, folders);
                     scoresList.appendChild(empty);
                 }
                 else {

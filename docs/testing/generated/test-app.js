@@ -1,5 +1,727 @@
 "use strict";
 (() => {
+  // src/i18n/messages.ts
+  var DEFAULT_LANGUAGE = "zh-CN";
+  function normalizeLanguage(value) {
+    return value === "en" || value === "zh-CN" ? value : DEFAULT_LANGUAGE;
+  }
+  var chineseMessages = Object.freeze({
+    "Language": "\u8BED\u8A00",
+    "Changes take effect immediately and are saved in this browser.": "\u5207\u6362\u7ACB\u5373\u751F\u6548\uFF0C\u5E76\u4FDD\u5B58\u5728\u5F53\u524D\u6D4F\u89C8\u5668\u4E2D\u3002",
+    "\u{1F3BC} Scores": "\u{1F3BC} \u66F2\u8C31",
+    "\u25B6 Play": "\u25B6 \u64AD\u653E",
+    "\u23F8 Pause": "\u23F8 \u6682\u505C",
+    "\u23EE Reset": "\u23EE \u91CD\u7F6E",
+    "\u{1F3B9} Practice \u25BE": "\u{1F3B9} \u7EC3\u4E60 \u25BE",
+    "\u266A Tempo \u25BE": "\u266A \u901F\u5EA6 \u25BE",
+    "\u{1F501} Loop \u25BE": "\u{1F501} \u5FAA\u73AF \u25BE",
+    "\u22EF More \u25BE": "\u22EF \u66F4\u591A \u25BE",
+    "Score:": "\u5F97\u5206\uFF1A",
+    "\u2699 Settings": "\u2699 \u8BBE\u7F6E",
+    "Open File": "\u6253\u5F00\u6587\u4EF6",
+    "Save to Library": "\u4FDD\u5B58\u5230\u66F2\u5E93",
+    "Backup Library": "\u5907\u4EFD\u66F2\u5E93",
+    "Import Library (Merge)": "\u5BFC\u5165\u66F2\u5E93\uFF08\u5408\u5E76\uFF09",
+    "Library": "\u66F2\u5E93",
+    "Library tools will appear here in the next step.": "\u6B63\u5728\u51C6\u5907\u66F2\u5E93\u5DE5\u5177\u3002",
+    "Welcome / Quick Start": "\u6B22\u8FCE / \u5FEB\u901F\u5165\u95E8",
+    "Close help": "\u5173\u95ED\u5E2E\u52A9",
+    "Close": "\u5173\u95ED",
+    "Advanced setup (LEDs, iPad, hardware):": "\u9AD8\u7EA7\u914D\u7F6E\uFF08LED\u3001iPad\u3001\u786C\u4EF6\uFF09\uFF1A",
+    "Full Setup Guide / README": "\u5B8C\u6574\u914D\u7F6E\u6307\u5357 / README\uFF08\u82F1\u6587\uFF09",
+    "\u{1F4D8} Full Setup Guide": "\u{1F4D8} \u5B8C\u6574\u914D\u7F6E\u6307\u5357\uFF08\u82F1\u6587\uFF09",
+    "Practice Modes": "\u7EC3\u4E60\u6A21\u5F0F",
+    "Play continuously at the set tempo.": "\u6309\u8BBE\u5B9A\u901F\u5EA6\u8FDE\u7EED\u6F14\u594F\u3002",
+    "Waits for correct notes before continuing.": "\u7B49\u5F85\u5F39\u5BF9\u97F3\u7B26\u540E\u518D\u7EE7\u7EED\u3002",
+    "Play one hand while the app follows with the other.": "\u4F60\u5F39\u594F\u4E00\u53EA\u624B\uFF0C\u5E94\u7528\u8DDF\u968F\u6F14\u594F\u53E6\u4E00\u53EA\u624B\u3002",
+    "\u2014 Play continuously at the set tempo.": "\u2014 \u6309\u8BBE\u5B9A\u901F\u5EA6\u8FDE\u7EED\u6F14\u594F\u3002",
+    "\u2014 Waits for correct notes before continuing.": "\u2014 \u7B49\u5F85\u5F39\u5BF9\u97F3\u7B26\u540E\u518D\u7EE7\u7EED\u3002",
+    "\u2014 Play one hand while the app follows with the other.": "\u2014 \u4F60\u5F39\u594F\u4E00\u53EA\u624B\uFF0C\u5E94\u7528\u8DDF\u968F\u6F14\u594F\u53E6\u4E00\u53EA\u624B\u3002",
+    "Tip:": "\u63D0\u793A\uFF1A",
+    "Start with": "\u5148\u4F7F\u7528",
+    "to learn notes, then try": "\u719F\u6089\u97F3\u7B26\uFF0C\u7136\u540E\u5C1D\u8BD5",
+    "to practice with timing.": "\u7EC3\u4E60\u8282\u594F\u3002",
+    "Quick Start": "\u5FEB\u901F\u5165\u95E8",
+    "Open a score from the Scores menu, or add your own files to the library.": "\u4ECE\u201C\u66F2\u8C31\u201D\u83DC\u5355\u6253\u5F00\u66F2\u8C31\uFF0C\u6216\u5C06\u81EA\u5DF1\u7684\u6587\u4EF6\u6DFB\u52A0\u5230\u66F2\u5E93\u3002",
+    "Best results:": "\u63A8\u8350\u683C\u5F0F\uFF1A",
+    "Also supported:": "\u5176\u4ED6\u652F\u6301\u683C\u5F0F\uFF1A",
+    "MIDI, MuseScore (3.x), and Guitar Pro (5.x) files. These are experimental, and MIDI does not include all notation details.": "MIDI\u3001MuseScore (3.x) \u548C Guitar Pro (5.x) \u6587\u4EF6\u3002\u8FD9\u4E9B\u683C\u5F0F\u4ECD\u4E3A\u5B9E\u9A8C\u652F\u6301\uFF0CMIDI \u4E0D\u5305\u542B\u6240\u6709\u8BB0\u8C31\u7EC6\u8282\u3002",
+    "Connect your MIDI keyboard in Settings.": "\u5728\u201C\u8BBE\u7F6E\u201D\u4E2D\u8FDE\u63A5 MIDI \u952E\u76D8\u3002",
+    "On iPad / iPhone, use": "\u5728 iPad / iPhone \u4E0A\uFF0C\u53EF\u4F7F\u7528",
+    "for MIDI input support.": "\u83B7\u5F97 MIDI \u8F93\u5165\u652F\u6301\u3002",
+    "LED output is optional. See the setup guide for hardware and setup details.": "LED \u8F93\u51FA\u4E3A\u53EF\u9009\u529F\u80FD\uFF0C\u786C\u4EF6\u548C\u914D\u7F6E\u8BE6\u60C5\u8BF7\u53C2\u9605\u914D\u7F6E\u6307\u5357\u3002",
+    "Starter songs are added on first run and can be deleted.": "\u9996\u6B21\u542F\u52A8\u4F1A\u6DFB\u52A0\u5165\u95E8\u66F2\u76EE\uFF0C\u4E5F\u53EF\u4EE5\u5220\u9664\u5B83\u4EEC\u3002",
+    "Browse free starter songs at": "\u514D\u8D39\u5165\u95E8\u66F2\u76EE\u53EF\u5728\u6B64\u6D4F\u89C8\uFF1A",
+    "Library & Backups": "\u66F2\u5E93\u4E0E\u5907\u4EFD",
+    "Your score library is stored in your browser. Back it up if it matters to you.": "\u66F2\u5E93\u5B58\u50A8\u5728\u5F53\u524D\u6D4F\u89C8\u5668\u4E2D\uFF0C\u8BF7\u5907\u4EFD\u9700\u8981\u4FDD\u7559\u7684\u66F2\u8C31\u3002",
+    "Use": "\u4F7F\u7528",
+    "Scores \u2192 Backup Library": "\u66F2\u8C31 \u2192 \u5907\u4EFD\u66F2\u5E93",
+    "to back up your song library.": "\u5907\u4EFD\u66F2\u5E93\u3002",
+    "Settings \u2192 Backup All Settings": "\u8BBE\u7F6E \u2192 \u5907\u4EFD\u5168\u90E8\u8BBE\u7F6E",
+    "to save trainer preferences, connections, and LED calibration.": "\u4FDD\u5B58\u7EC3\u4E60\u504F\u597D\u3001\u8FDE\u63A5\u914D\u7F6E\u548C LED \u6821\u51C6\u6570\u636E\u3002",
+    "Important Note": "\u6CE8\u610F\u4E8B\u9879",
+    "Some browsers, especially on mobile or low-storage devices, may clear local site data over time. Back up your library and LED calibration if the data matters to you.": "\u90E8\u5206\u6D4F\u89C8\u5668\uFF08\u5C24\u5176\u5728\u79FB\u52A8\u8BBE\u5907\u6216\u5B58\u50A8\u7A7A\u95F4\u4E0D\u8DB3\u65F6\uFF09\u53EF\u80FD\u6E05\u9664\u7F51\u7AD9\u672C\u5730\u6570\u636E\u3002\u8BF7\u53CA\u65F6\u5907\u4EFD\u66F2\u5E93\u548C LED \u6821\u51C6\u6570\u636E\u3002",
+    "About & Updates": "\u5173\u4E8E\u4E0E\u66F4\u65B0",
+    "Check for Updates": "\u68C0\u67E5\u66F4\u65B0",
+    "Version: --": "\u7248\u672C\uFF1A--",
+    "Update status: not checked yet.": "\u66F4\u65B0\u72B6\u6001\uFF1A\u5C1A\u672A\u68C0\u67E5\u3002",
+    "MIDI Setup": "MIDI \u8BBE\u7F6E",
+    "MIDI In:": "MIDI \u8F93\u5165\uFF1A",
+    "MIDI Out:": "MIDI \u8F93\u51FA\uFF1A",
+    "None": "\u65E0",
+    "Any": "\u4EFB\u610F",
+    "Channel:": "\u901A\u9053\uFF1A",
+    "Keys:": "\u952E\u6570\uFF1A",
+    "LED Setup": "LED \u8BBE\u7F6E",
+    "LED Lights:": "LED \u706F\uFF1A",
+    "MIDI Device": "MIDI \u8BBE\u5907",
+    "MIDI LED Output": "MIDI LED \u8F93\u51FA",
+    "LED MIDI Device:": "LED MIDI \u8BBE\u5907\uFF1A",
+    "Low Velocity Mode": "\u4F4E\u529B\u5EA6\u6A21\u5F0F",
+    "Test LED Strip": "\u6D4B\u8BD5\u706F\u5E26",
+    "MIDI LED idle.": "MIDI LED \u7A7A\u95F2\u3002",
+    "WLED Connection": "WLED \u8FDE\u63A5",
+    "WLED IP Address:": "WLED IP \u5730\u5740\uFF1A",
+    "Transport:": "\u4F20\u8F93\u65B9\u5F0F\uFF1A",
+    "HTTP JSON (recommended)": "HTTP JSON\uFF08\u63A8\u8350\uFF09",
+    "DDP (lower latency, experimental)": "DDP\uFF08\u4F4E\u5EF6\u8FDF\uFF0C\u5B9E\u9A8C\u529F\u80FD\uFF09",
+    "DDP may require a local sender in browser mode.": "\u6D4F\u89C8\u5668\u6A21\u5F0F\u4E0B\uFF0CDDP \u53EF\u80FD\u9700\u8981\u672C\u5730\u53D1\u9001\u7A0B\u5E8F\u3002",
+    "Active: HTTP JSON": "\u5F53\u524D\uFF1AHTTP JSON",
+    "Active: DDP": "\u5F53\u524D\uFF1ADDP",
+    "Active: DDP (awaiting frame confirm)": "\u5F53\u524D\uFF1ADDP\uFF08\u7B49\u5F85\u5E27\u786E\u8BA4\uFF09",
+    "Active: HTTP JSON (DDP fallback active)": "\u5F53\u524D\uFF1AHTTP JSON\uFF08DDP \u56DE\u9000\u5DF2\u542F\u7528\uFF09",
+    "Helper: Not detected.": "\u8F85\u52A9\u7A0B\u5E8F\uFF1A\u672A\u68C0\u6D4B\u5230\u3002",
+    "Helper: Not detected. Using HTTP JSON fallback.": "\u8F85\u52A9\u7A0B\u5E8F\uFF1A\u672A\u68C0\u6D4B\u5230\uFF0C\u4F7F\u7528 HTTP JSON \u56DE\u9000\u3002",
+    "Helper: Connected on localhost.": "\u8F85\u52A9\u7A0B\u5E8F\uFF1A\u5DF2\u5728 localhost \u8FDE\u63A5\u3002",
+    "Helper: Connected on localhost. Last DDP frame sent.": "\u8F85\u52A9\u7A0B\u5E8F\uFF1A\u5DF2\u5728 localhost \u8FDE\u63A5\uFF0C\u4E0A\u4E00 DDP \u5E27\u5DF2\u53D1\u9001\u3002",
+    "Helper: Connected on localhost. Waiting for a confirmed DDP frame.": "\u8F85\u52A9\u7A0B\u5E8F\uFF1A\u5DF2\u5728 localhost \u8FDE\u63A5\uFF0C\u7B49\u5F85 DDP \u5E27\u786E\u8BA4\u3002",
+    "Helper: Not needed for HTTP JSON.": "\u8F85\u52A9\u7A0B\u5E8F\uFF1AHTTP JSON \u65E0\u9700\u8F85\u52A9\u7A0B\u5E8F\u3002",
+    "Re-send LEDs": "\u91CD\u65B0\u53D1\u9001 LED \u72B6\u6001",
+    "WLED idle.": "WLED \u7A7A\u95F2\u3002",
+    "LED Count": "LED \u6570\u91CF",
+    "Reverse LEDs": "\u53CD\u8F6C LED \u987A\u5E8F",
+    "Brightness": "\u4EAE\u5EA6",
+    "Master": "\u603B\u4EAE\u5EA6",
+    "Future note brightness": "\u540E\u7EED\u97F3\u7B26\u4EAE\u5EA6",
+    "Future": "\u540E\u7EED\u97F3\u7B26",
+    "Calibration": "\u6821\u51C6",
+    "Start LED Calibration": "\u5F00\u59CB LED \u6821\u51C6",
+    "Done LED Calibration": "\u5B8C\u6210 LED \u6821\u51C6",
+    "Opens a small live calibration bar so you can still see the keyboard and LEDs.": "\u6253\u5F00\u5B9E\u65F6\u6821\u51C6\u680F\uFF0C\u540C\u65F6\u4FDD\u6301\u952E\u76D8\u548C LED \u53EF\u89C1\u3002",
+    "Debug": "\u8C03\u8BD5",
+    "Debug Note Feedback": "\u97F3\u7B26\u53CD\u9988\u8C03\u8BD5",
+    "DDP Debug Logging": "DDP \u8C03\u8BD5\u65E5\u5FD7",
+    "Backup All Settings": "\u5907\u4EFD\u5168\u90E8\u8BBE\u7F6E",
+    "Import Settings": "\u5BFC\u5165\u8BBE\u7F6E",
+    "Reset All Settings": "\u91CD\u7F6E\u5168\u90E8\u8BBE\u7F6E",
+    "Backup includes saved Settings, Trainer preferences, Connections, WLED settings, and LED calibration. Score Library export stays separate.": "\u5907\u4EFD\u5305\u542B\u8BED\u8A00\u3001\u5DF2\u4FDD\u5B58\u7684\u8BBE\u7F6E\u3001\u7EC3\u4E60\u504F\u597D\u3001\u8FDE\u63A5\u914D\u7F6E\u3001WLED \u8BBE\u7F6E\u548C LED \u6821\u51C6\u6570\u636E\u3002\u66F2\u5E93\u9700\u8981\u5355\u72EC\u5BFC\u51FA\u3002",
+    "\u22EF More": "\u22EF \u66F4\u591A",
+    "\u266A Tempo": "\u266A \u901F\u5EA6",
+    "\u{1F501} Loop": "\u{1F501} \u5FAA\u73AF",
+    "\u{1F39A} Audio / Routing": "\u{1F39A} \u97F3\u9891 / \u8DEF\u7531",
+    "\u{1F5A5} Display": "\u{1F5A5} \u663E\u793A",
+    "\u2195 Transpose": "\u2195 \u79FB\u8C03",
+    "\u2139 Help & Guide": "\u2139 \u5E2E\u52A9\u4E0E\u6307\u5357",
+    "App Audio": "\u5E94\u7528\u97F3\u9891",
+    "Send enabled playback and live input through browser audio.": "\u901A\u8FC7\u6D4F\u89C8\u5668\u97F3\u9891\u8F93\u51FA\u5DF2\u542F\u7528\u7684\u64AD\u653E\u548C\u5B9E\u65F6\u8F93\u5165\u3002",
+    "Volume": "\u97F3\u91CF",
+    "Level": "\u7535\u5E73",
+    "Score Playback": "\u66F2\u8C31\u64AD\u653E",
+    "Uses Practice hand selections.": "\u4F7F\u7528\u201C\u7EC3\u4E60\u201D\u4E2D\u7684\u624B\u90E8\u9009\u62E9\u3002",
+    "Hand Staves": "\u5DE6\u53F3\u624B\u8C31\u8868",
+    "Other Staves": "\u5176\u4ED6\u8C31\u8868",
+    "Live Input Monitoring": "\u5B9E\u65F6\u8F93\u5165\u76D1\u542C",
+    "MIDI In": "MIDI \u8F93\u5165",
+    "MIDI Out": "MIDI \u8F93\u51FA",
+    "Virtual Keyboard": "\u865A\u62DF\u952E\u76D8",
+    "MIDI In Boost": "MIDI \u8F93\u5165\u589E\u76CA",
+    "No MIDI device selected.": "\u5C1A\u672A\u9009\u62E9 MIDI \u8BBE\u5907\u3002",
+    "Select a device in Settings.": "\u8BF7\u5728\u201C\u8BBE\u7F6E\u201D\u4E2D\u9009\u62E9\u8BBE\u5907\u3002",
+    "Score Layout": "\u8C31\u9762\u5E03\u5C40",
+    "Traditional (multi-line)": "\u4F20\u7EDF\u4E94\u7EBF\u8C31\uFF08\u591A\u884C\uFF09",
+    "Continuous (horizontal)": "\u8FDE\u7EED\u6A2A\u5411\u8C31\u9762",
+    "Zoom": "\u7F29\u653E",
+    "Auto Scroll": "\u81EA\u52A8\u6EDA\u52A8",
+    "Full Screen on Play": "\u64AD\u653E\u65F6\u5168\u5C4F",
+    "Transpose": "\u79FB\u8C03",
+    "Current Key": "\u5F53\u524D\u8C03\u6027",
+    "No score loaded": "\u5C1A\u672A\u52A0\u8F7D\u66F2\u8C31",
+    "Mode": "\u6A21\u5F0F",
+    "Transpose to Key": "\u6309\u8C03\u6027\u79FB\u8C03",
+    "Transpose by Semitones": "\u6309\u534A\u97F3\u6570\u79FB\u8C03",
+    "Target Key": "\u76EE\u6807\u8C03\u6027",
+    "Semitones": "\u534A\u97F3\u6570",
+    "Update key signature": "\u66F4\u65B0\u8C03\u53F7",
+    "Reset": "\u91CD\u7F6E",
+    "Apply": "\u5E94\u7528",
+    "Load a MusicXML-based score to enable transpose.": "\u52A0\u8F7D MusicXML \u683C\u5F0F\u7684\u66F2\u8C31\u4EE5\u542F\u7528\u79FB\u8C03\u3002",
+    "Tempo": "\u901F\u5EA6",
+    "Speed (%)": "\u901F\u5EA6 (%)",
+    "Metronome": "\u8282\u62CD\u5668",
+    "MIDI Out click (Ch 10)": "MIDI \u8F93\u51FA\u8282\u62CD\u58F0\uFF08\u901A\u9053 10\uFF09",
+    "Uses GM percussion on the selected MIDI Out device.": "\u4F7F\u7528\u6240\u9009 MIDI \u8F93\u51FA\u8BBE\u5907\u7684 GM \u6253\u51FB\u4E50\u97F3\u8272\u3002",
+    "Accented Downbeat": "\u91CD\u97F3\u5F3A\u62CD",
+    "Visual Pulse": "\u89C6\u89C9\u8282\u62CD\u63D0\u793A",
+    "\u{1F3B9} Practice": "\u{1F3B9} \u7EC3\u4E60",
+    "Practice mode": "\u7EC3\u4E60\u6A21\u5F0F",
+    "Practice hands": "\u7EC3\u4E60\u624B\u90E8",
+    "Left \u270B": "\u5DE6\u624B \u270B",
+    "Right \u{1F91A}": "\u53F3\u624B \u{1F91A}",
+    "Hands playback": "\u624B\u90E8\u64AD\u653E",
+    "Audio playback is unavailable in Wait mode.": "Wait \u6A21\u5F0F\u4E0B\u4E0D\u64AD\u653E\u66F2\u8C31\u97F3\u9891\u3002",
+    "Playback is automatically set to the opposite hand in Follow Me.": "Follow Me \u6A21\u5F0F\u4E0B\u81EA\u52A8\u64AD\u653E\u53E6\u4E00\u53EA\u624B\u7684\u58F0\u90E8\u3002",
+    "Playback Timing": "\u64AD\u653E\u8BBE\u7F6E",
+    "Use simple synth playback (experimental)": "\u4F7F\u7528\u7B80\u5355\u5408\u6210\u5668\u64AD\u653E\uFF08\u5B9E\u9A8C\u529F\u80FD\uFF09",
+    "Uses a lighter synth sound instead of the sampled piano. May feel snappier, but sounds less realistic.": "\u7528\u8F83\u8F7B\u91CF\u7684\u5408\u6210\u97F3\u8272\u4EE3\u66FF\u94A2\u7434\u91C7\u6837\uFF0C\u54CD\u5E94\u53EF\u80FD\u66F4\u5FEB\uFF0C\u4F46\u97F3\u8272\u771F\u5B9E\u611F\u8F83\u4F4E\u3002",
+    "Visual Feedback": "\u89C6\u89C9\u53CD\u9988",
+    "Highlight correct / incorrect notes (on staff)": "\u9AD8\u4EAE\u6B63\u786E / \u9519\u8BEF\u97F3\u7B26\uFF08\u8C31\u8868\uFF09",
+    "Highlight correct-note feedback (keyboard)": "\u9AD8\u4EAE\u6B63\u786E\u97F3\u7B26\u53CD\u9988\uFF08\u952E\u76D8\uFF09",
+    "Highlight future notes (keyboard)": "\u9AD8\u4EAE\u540E\u7EED\u97F3\u7B26\uFF08\u952E\u76D8\uFF09",
+    "Hand \u2192 Staff": "\u624B\u90E8 \u2192 \u8C31\u8868",
+    "Staff 1": "\u8C31\u8868 1",
+    "Staff 2": "\u8C31\u8868 2",
+    "Looper": "\u5FAA\u73AF\u64AD\u653E",
+    "Enable Loop": "\u542F\u7528 Loop \u5FAA\u73AF",
+    "Loop Count-in": "Loop \u5FAA\u73AF\u9884\u5907\u62CD",
+    "Beginning Measure": "\u5F00\u59CB\u5C0F\u8282",
+    "Ending Measure": "\u7ED3\u675F\u5C0F\u8282",
+    "Beginning Measure controls": "\u5F00\u59CB\u5C0F\u8282\u63A7\u5236",
+    "Ending Measure controls": "\u7ED3\u675F\u5C0F\u8282\u63A7\u5236",
+    "Decrease beginning measure": "\u51CF\u5C11\u5F00\u59CB\u5C0F\u8282",
+    "Increase beginning measure": "\u589E\u52A0\u5F00\u59CB\u5C0F\u8282",
+    "Decrease ending measure": "\u51CF\u5C11\u7ED3\u675F\u5C0F\u8282",
+    "Increase ending measure": "\u589E\u52A0\u7ED3\u675F\u5C0F\u8282",
+    "Score view controls": "\u8C31\u9762\u663E\u793A\u63A7\u5236",
+    "Enter full screen": "\u8FDB\u5165\u5168\u5C4F",
+    "Exit full screen": "\u9000\u51FA\u5168\u5C4F",
+    "LED Calibration": "LED \u6821\u51C6",
+    "Close LED calibration": "\u5173\u95ED LED \u6821\u51C6",
+    "No key selected": "\u5C1A\u672A\u9009\u62E9\u7434\u952E",
+    "Press any piano key or click a virtual key to select it.": "\u6309\u4E0B\u4EFB\u610F\u7434\u952E\u6216\u70B9\u51FB\u865A\u62DF\u7434\u952E\u8FDB\u884C\u9009\u62E9\u3002",
+    "\u2190 Move Left": "\u2190 \u5411\u5DE6\u79FB\u52A8",
+    "Move Right \u2192": "\u5411\u53F3\u79FB\u52A8 \u2192",
+    "Reset Selected Key": "\u91CD\u7F6E\u6240\u9009\u7434\u952E",
+    "Reset All Calibration": "\u91CD\u7F6E\u5168\u90E8\u6821\u51C6",
+    "Export Calibration": "\u5BFC\u51FA\u6821\u51C6",
+    "Import Calibration": "\u5BFC\u5165\u6821\u51C6",
+    "Use Move Left / Move Right to line up the selected key.": "\u4F7F\u7528\u201C\u5411\u5DE6\u79FB\u52A8 / \u5411\u53F3\u79FB\u52A8\u201D\u5BF9\u9F50\u6240\u9009\u7434\u952E\u3002",
+    "Connected": "\u5DF2\u8FDE\u63A5",
+    "Disconnected": "\u5DF2\u65AD\u5F00",
+    "Folders": "\u6587\u4EF6\u5939",
+    "New Folder": "\u65B0\u5EFA\u6587\u4EF6\u5939",
+    "Manage": "\u7BA1\u7406",
+    "Deselect All": "\u53D6\u6D88\u5168\u9009",
+    "Select All": "\u5168\u9009",
+    "Delete": "\u5220\u9664",
+    "Cancel": "\u53D6\u6D88",
+    "Rename": "\u91CD\u547D\u540D",
+    "Move": "\u79FB\u52A8",
+    "Loaded": "\u5DF2\u52A0\u8F7D",
+    "All Scores": "\u5168\u90E8\u66F2\u8C31",
+    "Unfiled": "\u672A\u5206\u7C7B",
+    "Add File(s)": "\u6DFB\u52A0\u6587\u4EF6",
+    "\u2190 Back": "\u2190 \u8FD4\u56DE",
+    "Select folders to delete": "\u9009\u62E9\u8981\u5220\u9664\u7684\u6587\u4EF6\u5939",
+    "Select scores to move or delete": "\u9009\u62E9\u8981\u79FB\u52A8\u6216\u5220\u9664\u7684\u66F2\u8C31",
+    "No saved scores yet. Add files to the library or save the current score.": "\u6682\u65E0\u5DF2\u4FDD\u5B58\u7684\u66F2\u8C31\u3002\u8BF7\u6DFB\u52A0\u6587\u4EF6\u6216\u4FDD\u5B58\u5F53\u524D\u66F2\u8C31\u3002",
+    "Could not load the library.": "\u65E0\u6CD5\u52A0\u8F7D\u66F2\u5E93\u3002",
+    "Open a score first, then save it into the library.": "\u8BF7\u5148\u6253\u5F00\u66F2\u8C31\uFF0C\u518D\u4FDD\u5B58\u5230\u66F2\u5E93\u3002",
+    "Save the currently loaded score into your library.": "\u5C06\u5F53\u524D\u5DF2\u52A0\u8F7D\u7684\u66F2\u8C31\u4FDD\u5B58\u5230\u66F2\u5E93\u3002",
+    "Choose a folder:": "\u9009\u62E9\u6587\u4EF6\u5939\uFF1A",
+    "Add files to which folder?": "\u5C06\u6587\u4EF6\u6DFB\u52A0\u5230\u54EA\u4E2A\u6587\u4EF6\u5939\uFF1F",
+    "Save into which folder?": "\u4FDD\u5B58\u5230\u54EA\u4E2A\u6587\u4EF6\u5939\uFF1F",
+    "Rename folder:": "\u91CD\u547D\u540D\u6587\u4EF6\u5939\uFF1A",
+    "Rename score:": "\u91CD\u547D\u540D\u66F2\u8C31\uFF1A",
+    "New folder name:": "\u65B0\u6587\u4EF6\u5939\u540D\u79F0\uFF1A",
+    "Save to library as:": "\u66F2\u5E93\u4E2D\u7684\u66F2\u8C31\u540D\u79F0\uFF1A",
+    "Load a score first, then save it to the library.": "\u8BF7\u5148\u52A0\u8F7D\u66F2\u8C31\uFF0C\u518D\u4FDD\u5B58\u5230\u66F2\u5E93\u3002",
+    "Could not create that folder.": "\u65E0\u6CD5\u521B\u5EFA\u8BE5\u6587\u4EF6\u5939\u3002",
+    "Could not rename that folder.": "\u65E0\u6CD5\u91CD\u547D\u540D\u8BE5\u6587\u4EF6\u5939\u3002",
+    "Could not rename that score.": "\u65E0\u6CD5\u91CD\u547D\u540D\u8BE5\u66F2\u8C31\u3002",
+    "Could not delete that folder.": "\u65E0\u6CD5\u5220\u9664\u8BE5\u6587\u4EF6\u5939\u3002",
+    "Could not delete that score.": "\u65E0\u6CD5\u5220\u9664\u8BE5\u66F2\u8C31\u3002",
+    "Could not delete the selected folders.": "\u65E0\u6CD5\u5220\u9664\u6240\u9009\u6587\u4EF6\u5939\u3002",
+    "Could not delete the selected scores.": "\u65E0\u6CD5\u5220\u9664\u6240\u9009\u66F2\u8C31\u3002",
+    "Could not move that score.": "\u65E0\u6CD5\u79FB\u52A8\u8BE5\u66F2\u8C31\u3002",
+    "Could not move the selected scores.": "\u65E0\u6CD5\u79FB\u52A8\u6240\u9009\u66F2\u8C31\u3002",
+    "Could not import one or more score files.": "\u90E8\u5206\u66F2\u8C31\u6587\u4EF6\u65E0\u6CD5\u5BFC\u5165\u3002",
+    "Could not save the current score to the library.": "\u65E0\u6CD5\u5C06\u5F53\u524D\u66F2\u8C31\u4FDD\u5B58\u5230\u66F2\u5E93\u3002",
+    "Could not export the library backup.": "\u65E0\u6CD5\u5BFC\u51FA\u66F2\u5E93\u5907\u4EFD\u3002",
+    "Invalid library backup file.": "\u66F2\u5E93\u5907\u4EFD\u6587\u4EF6\u65E0\u6548\u3002",
+    "Could not export settings backup.": "\u65E0\u6CD5\u5BFC\u51FA\u8BBE\u7F6E\u5907\u4EFD\u3002",
+    "Settings imported. The app will now reload to apply them.": "\u8BBE\u7F6E\u5DF2\u5BFC\u5165\uFF0C\u5E94\u7528\u5C06\u91CD\u65B0\u52A0\u8F7D\u4EE5\u5E94\u7528\u8BBE\u7F6E\u3002",
+    "Invalid settings backup file.": "\u8BBE\u7F6E\u5907\u4EFD\u6587\u4EF6\u65E0\u6548\u3002",
+    "Reset ALL saved Settings and Trainer preferences? This will erase all saved settings and restore defaults.": "\u91CD\u7F6E\u5168\u90E8\u5DF2\u4FDD\u5B58\u7684\u8BBE\u7F6E\u548C\u7EC3\u4E60\u504F\u597D\uFF1F\u8FD9\u5C06\u6E05\u9664\u6240\u6709\u5DF2\u4FDD\u5B58\u7684\u8BBE\u7F6E\uFF08\u5305\u62EC\u8BED\u8A00\uFF09\u5E76\u6062\u590D\u9ED8\u8BA4\u503C\u3002",
+    "Could not export LED calibration.": "\u65E0\u6CD5\u5BFC\u51FA LED \u6821\u51C6\u6570\u636E\u3002",
+    "Invalid LED calibration file.": "LED \u6821\u51C6\u6587\u4EF6\u65E0\u6548\u3002",
+    "Reset all LED calibration adjustments?": "\u91CD\u7F6E\u5168\u90E8 LED \u6821\u51C6\u8C03\u6574\uFF1F",
+    "Stop Test": "\u505C\u6B62\u6D4B\u8BD5",
+    "Select an LED MIDI device first.": "\u8BF7\u5148\u9009\u62E9 LED MIDI \u8BBE\u5907\u3002",
+    "MIDI LED test stopped.": "MIDI LED \u6D4B\u8BD5\u5DF2\u505C\u6B62\u3002",
+    "No playable keys available for MIDI LED test.": "\u6CA1\u6709\u53EF\u7528\u4E8E MIDI LED \u6D4B\u8BD5\u7684\u7434\u952E\u3002",
+    "Running MIDI LED strip test\u2026": "\u6B63\u5728\u6D4B\u8BD5 MIDI LED \u706F\u5E26\u2026",
+    "MIDI LED test complete.": "MIDI LED \u6D4B\u8BD5\u5B8C\u6210\u3002",
+    "MIDI LED test failed.": "MIDI LED \u6D4B\u8BD5\u5931\u8D25\u3002",
+    "Run a chromatic sweep across the player key range.": "\u5728\u53EF\u5F39\u594F\u97F3\u57DF\u5185\u9010\u534A\u97F3\u6D4B\u8BD5\u3002",
+    "MIDI access appears blocked or unavailable. Allow MIDI/device access in your browser, then refresh. MIDI only works on the device running this browser.": "MIDI \u8BBF\u95EE\u4F3C\u4E4E\u88AB\u963B\u6B62\u6216\u4E0D\u53EF\u7528\u3002\u8BF7\u5728\u6D4F\u89C8\u5668\u4E2D\u5141\u8BB8 MIDI / \u8BBE\u5907\u8BBF\u95EE\uFF0C\u7136\u540E\u5237\u65B0\u3002MIDI \u53EA\u80FD\u8FDE\u63A5\u8FD0\u884C\u6B64\u6D4F\u89C8\u5668\u7684\u8BBE\u5907\u3002",
+    "DDP helper access failed. Allow local device access in your browser, then refresh. If access is already allowed, start the helper on this same device.": "DDP \u8F85\u52A9\u7A0B\u5E8F\u8BBF\u95EE\u5931\u8D25\u3002\u8BF7\u5141\u8BB8\u6D4F\u89C8\u5668\u8BBF\u95EE\u672C\u5730\u8BBE\u5907\u5E76\u5237\u65B0\uFF1B\u82E5\u5DF2\u5141\u8BB8\uFF0C\u8BF7\u5728\u540C\u4E00\u8BBE\u5907\u4E0A\u542F\u52A8\u8F85\u52A9\u7A0B\u5E8F\u3002",
+    "Browser access to local devices may be blocked. Allow local network or local device access for this site, then refresh and try WLED again.": "\u6D4F\u89C8\u5668\u53EF\u80FD\u963B\u6B62\u4E86\u672C\u5730\u8BBE\u5907\u8BBF\u95EE\u3002\u8BF7\u5141\u8BB8\u6B64\u7F51\u7AD9\u8BBF\u95EE\u672C\u5730\u7F51\u7EDC\u6216\u8BBE\u5907\uFF0C\u7136\u540E\u5237\u65B0\u5E76\u91CD\u8BD5 WLED\u3002",
+    "Select a MIDI Out device to hear metronome clicks on Channel 10. Some keyboards require a drum (Ch 10) or multi-timbral mode to avoid piano sounds.": "\u9009\u62E9 MIDI \u8F93\u51FA\u8BBE\u5907\u4EE5\u5728\u901A\u9053 10 \u64AD\u653E\u8282\u62CD\u58F0\u3002\u90E8\u5206\u952E\u76D8\u9700\u542F\u7528\u9F13\u97F3\u8272\uFF08\u901A\u9053 10\uFF09\u6216\u591A\u97F3\u8272\u6A21\u5F0F\uFF0C\u624D\u80FD\u907F\u514D\u94A2\u7434\u97F3\u8272\u3002",
+    "Enter a WLED IP address first.": "\u8BF7\u5148\u8F93\u5165 WLED IP \u5730\u5740\u3002",
+    "No playable LEDs configured to test.": "\u6CA1\u6709\u53EF\u6D4B\u8BD5\u7684 LED \u914D\u7F6E\u3002",
+    "WLED ready.": "WLED \u5C31\u7EEA\u3002",
+    "WLED ready. DDP selected.": "WLED \u5C31\u7EEA\uFF0C\u5DF2\u9009\u62E9 DDP\u3002",
+    "DDP selected via localhost helper (awaiting frame confirm).": "\u5DF2\u901A\u8FC7 localhost \u8F85\u52A9\u7A0B\u5E8F\u9009\u62E9 DDP\uFF08\u7B49\u5F85\u5E27\u786E\u8BA4\uFF09\u3002",
+    "DDP helper unavailable. Using HTTP JSON fallback.": "DDP \u8F85\u52A9\u7A0B\u5E8F\u4E0D\u53EF\u7528\uFF0C\u4F7F\u7528 HTTP JSON \u56DE\u9000\u3002",
+    "DDP frame confirmed via localhost helper.": "DDP \u5E27\u5DF2\u901A\u8FC7 localhost \u8F85\u52A9\u7A0B\u5E8F\u786E\u8BA4\u3002",
+    "HTTP JSON active.": "HTTP JSON \u5DF2\u542F\u7528\u3002",
+    "HTTP JSON active; DDP fallback in use. Helper not detected.": "HTTP JSON \u5DF2\u542F\u7528\uFF1B\u6B63\u5728\u4F7F\u7528 DDP \u56DE\u9000\uFF0C\u672A\u68C0\u6D4B\u5230\u8F85\u52A9\u7A0B\u5E8F\u3002",
+    "WLED cleared.": "WLED \u5DF2\u6E05\u7A7A\u3002",
+    "WLED unreachable. Retrying\u2026": "\u65E0\u6CD5\u8FDE\u63A5 WLED\uFF0C\u6B63\u5728\u91CD\u8BD5\u2026",
+    "WLED force-send failed. Retrying\u2026": "WLED \u5F3A\u5236\u53D1\u9001\u5931\u8D25\uFF0C\u6B63\u5728\u91CD\u8BD5\u2026",
+    "WLED send error. Retrying\u2026": "WLED \u53D1\u9001\u51FA\u9519\uFF0C\u6B63\u5728\u91CD\u8BD5\u2026",
+    "WLED reconnect failed. Retrying\u2026": "WLED \u91CD\u8FDE\u5931\u8D25\uFF0C\u6B63\u5728\u91CD\u8BD5\u2026",
+    "WLED reconnected. Restoring current notes.": "WLED \u5DF2\u91CD\u8FDE\uFF0C\u6B63\u5728\u6062\u590D\u5F53\u524D\u97F3\u7B26\u3002",
+    "WLED reconnected. Strip cleared.": "WLED \u5DF2\u91CD\u8FDE\uFF0C\u706F\u5E26\u5DF2\u6E05\u7A7A\u3002",
+    "Running WLED note test\u2026": "\u6B63\u5728\u6D4B\u8BD5 WLED \u97F3\u7B26\u2026",
+    "WLED test stopped.": "WLED \u6D4B\u8BD5\u5DF2\u505C\u6B62\u3002",
+    "WLED test failed.": "WLED \u6D4B\u8BD5\u5931\u8D25\u3002",
+    "WLED note test complete.": "WLED \u97F3\u7B26\u6D4B\u8BD5\u5B8C\u6210\u3002",
+    "DDP is experimental. It may require a local sender or standalone build and may not work directly in browser mode. Switch to DDP anyway?": "DDP \u662F\u5B9E\u9A8C\u529F\u80FD\u3002\n\n\u5B83\u53EF\u80FD\u9700\u8981\u672C\u5730\u53D1\u9001\u7A0B\u5E8F\u6216\u72EC\u7ACB\u7248\u672C\uFF0C\u5728\u6D4F\u89C8\u5668\u6A21\u5F0F\u4E2D\u53EF\u80FD\u65E0\u6CD5\u76F4\u63A5\u4F7F\u7528\u3002\n\n\u4ECD\u8981\u5207\u6362\u5230 DDP \u5417\uFF1F",
+    "No release URL is configured yet.": "\u5C1A\u672A\u914D\u7F6E\u7248\u672C\u4E0B\u8F7D\u5730\u5740\u3002",
+    "Download Latest": "\u4E0B\u8F7D\u6700\u65B0\u7248",
+    "Reload to Update": "\u91CD\u65B0\u52A0\u8F7D\u4EE5\u66F4\u65B0",
+    "Up to Date": "\u5DF2\u662F\u6700\u65B0\u7248",
+    "Up to date.": "\u5DF2\u662F\u6700\u65B0\u7248\u3002",
+    "Update checks are not configured yet.": "\u5C1A\u672A\u914D\u7F6E\u66F4\u65B0\u68C0\u67E5\u3002",
+    "Update manifest is missing a version value.": "\u66F4\u65B0\u4FE1\u606F\u7F3A\u5C11\u7248\u672C\u53F7\u3002",
+    "Update check unavailable.": "\u66F4\u65B0\u68C0\u67E5\u6682\u4E0D\u53EF\u7528\u3002",
+    "Unknown": "\u672A\u77E5",
+    "Unavailable for this score": "\u6B64\u66F2\u8C31\u4E0D\u53EF\u7528",
+    "Transposed score": "\u5DF2\u79FB\u8C03\u66F2\u8C31",
+    "Original score": "\u539F\u8C03\u66F2\u8C31",
+    "Ready. Transpose is applied from the original source score each time. Tanspose by Key Signature or by Semitones": "\u51C6\u5907\u5C31\u7EEA\u3002\u6BCF\u6B21\u79FB\u8C03\u5747\u57FA\u4E8E\u539F\u59CB\u66F2\u8C31\u3002\n\u53EF\u6309\u8C03\u53F7\u6216\u534A\u97F3\u6570\u79FB\u8C03\u3002",
+    "Choose a target key before applying transpose.": "\u8BF7\u5148\u9009\u62E9\u76EE\u6807\u8C03\u6027\uFF0C\u518D\u5E94\u7528\u79FB\u8C03\u3002",
+    "Target key already matches the current key. Choose a different key or use semitones.": "\u76EE\u6807\u8C03\u6027\u4E0E\u5F53\u524D\u8C03\u6027\u76F8\u540C\uFF0C\u8BF7\u9009\u62E9\u5176\u4ED6\u8C03\u6027\u6216\u4F7F\u7528\u534A\u97F3\u6570\u79FB\u8C03\u3002",
+    "This score does not expose a readable key signature. Use semitones for this score.": "\u65E0\u6CD5\u8BFB\u53D6\u6B64\u66F2\u8C31\u7684\u8C03\u53F7\uFF0C\u8BF7\u4F7F\u7528\u534A\u97F3\u6570\u79FB\u8C03\u3002",
+    "This score is not available as raw MusicXML text, so transpose is disabled for it right now.": "\u6B64\u66F2\u8C31\u6CA1\u6709\u53EF\u7528\u7684 MusicXML \u539F\u59CB\u6587\u672C\uFF0C\u6682\u65F6\u65E0\u6CD5\u79FB\u8C03\u3002",
+    "Transpose works on XML, MusicXML, normalized MXL, and imported files that convert to MusicXML.": "\u79FB\u8C03\u652F\u6301 XML\u3001MusicXML\u3001\u6807\u51C6\u5316\u7684 MXL\uFF0C\u4EE5\u53CA\u53EF\u8F6C\u6362\u4E3A MusicXML \u7684\u5BFC\u5165\u6587\u4EF6\u3002",
+    "Could not normalize this score for transpose.": "\u65E0\u6CD5\u4E3A\u79FB\u8C03\u6807\u51C6\u5316\u6B64\u66F2\u8C31\u3002",
+    "Could not transpose this score.": "\u65E0\u6CD5\u79FB\u8C03\u6B64\u66F2\u8C31\u3002",
+    "Could not reset transpose.": "\u65E0\u6CD5\u91CD\u7F6E\u79FB\u8C03\u3002",
+    "Could not parse MusicXML for transposition.": "\u65E0\u6CD5\u89E3\u6790\u7528\u4E8E\u79FB\u8C03\u7684 MusicXML\u3002",
+    "Could not extract MXL to MusicXML for transpose support.": "\u65E0\u6CD5\u5C06 MXL \u89E3\u538B\u4E3A MusicXML \u4EE5\u652F\u6301\u79FB\u8C03\u3002",
+    "Could not normalize MXL to MusicXML for transpose support.": "\u65E0\u6CD5\u5C06 MXL \u6807\u51C6\u5316\u4E3A MusicXML \u4EE5\u652F\u6301\u79FB\u8C03\u3002",
+    "Could not find the ZIP directory in this MXL file.": "\u65E0\u6CD5\u5728\u6B64 MXL \u6587\u4EF6\u4E2D\u627E\u5230 ZIP \u76EE\u5F55\u3002",
+    "Could not read the ZIP entries from this MXL file.": "\u65E0\u6CD5\u8BFB\u53D6\u6B64 MXL \u6587\u4EF6\u4E2D\u7684 ZIP \u6761\u76EE\u3002",
+    "This browser does not support ZIP decompression for transpose.": "\u6B64\u6D4F\u89C8\u5668\u4E0D\u652F\u6301\u79FB\u8C03\u6240\u9700\u7684 ZIP \u89E3\u538B\u529F\u80FD\u3002",
+    "Could not find the embedded MusicXML inside this MXL file.": "\u65E0\u6CD5\u5728\u6B64 MXL \u6587\u4EF6\u4E2D\u627E\u5230\u5185\u5D4C\u7684 MusicXML\u3002",
+    "Only MusicXML text and compressed MXL are supported for transpose normalization.": "\u79FB\u8C03\u6807\u51C6\u5316\u4EC5\u652F\u6301 MusicXML \u6587\u672C\u548C\u538B\u7F29 MXL\u3002",
+    "No file selected.": "\u5C1A\u672A\u9009\u62E9\u6587\u4EF6\u3002",
+    "Could not read score file.": "\u65E0\u6CD5\u8BFB\u53D6\u66F2\u8C31\u6587\u4EF6\u3002",
+    "Could not read that file.": "\u65E0\u6CD5\u8BFB\u53D6\u8BE5\u6587\u4EF6\u3002",
+    "Error loading score file.": "\u52A0\u8F7D\u66F2\u8C31\u6587\u4EF6\u51FA\u9519\u3002",
+    "File loaded successfully.": "\u6587\u4EF6\u52A0\u8F7D\u6210\u529F\u3002",
+    "That file type is not supported for conversion.": "\u4E0D\u652F\u6301\u8F6C\u6362\u6B64\u6587\u4EF6\u7C7B\u578B\u3002",
+    "Converted score was not returned as text.": "\u8F6C\u6362\u540E\u7684\u66F2\u8C31\u672A\u8FD4\u56DE\u6587\u672C\u3002",
+    "Some MIDI, MuseScore, or Guitar Pro files may need cleanup in MuseScore before importing.": "\u90E8\u5206 MIDI\u3001MuseScore \u6216 Guitar Pro \u6587\u4EF6\u53EF\u80FD\u9700\u8981\u5728 MuseScore \u4E2D\u6574\u7406\u540E\u518D\u5BFC\u5165\u3002",
+    "Could not load the local webmscore converter files. Download them into assets/vendor/webmscore first.": "\u65E0\u6CD5\u52A0\u8F7D\u672C\u5730 webmscore \u8F6C\u6362\u5668\u6587\u4EF6\u3002\u8BF7\u5148\u5C06\u5176\u4E0B\u8F7D\u5230 assets/vendor/webmscore\u3002",
+    "webmscore did not initialize correctly.": "webmscore \u521D\u59CB\u5316\u5931\u8D25\u3002",
+    "webmscore loaded, but this build does not expose a MusicXML export function.": "webmscore \u5DF2\u52A0\u8F7D\uFF0C\u4F46\u6B64\u7248\u672C\u6CA1\u6709\u53EF\u7528\u7684 MusicXML \u5BFC\u51FA\u529F\u80FD\u3002",
+    "Direct MXL XML extraction also failed.": "\u76F4\u63A5\u4ECE MXL \u63D0\u53D6 XML \u4E5F\u5931\u8D25\u4E86\u3002",
+    "Folder must be empty before deleting.": "\u5220\u9664\u524D\u6587\u4EF6\u5939\u5FC5\u987B\u4E3A\u7A7A\u3002",
+    "Folder name is required.": "\u8BF7\u8F93\u5165\u6587\u4EF6\u5939\u540D\u79F0\u3002",
+    "Folder not found.": "\u627E\u4E0D\u5230\u6587\u4EF6\u5939\u3002",
+    "Score name is required.": "\u8BF7\u8F93\u5165\u66F2\u8C31\u540D\u79F0\u3002",
+    "Score not found.": "\u627E\u4E0D\u5230\u66F2\u8C31\u3002",
+    "IndexedDB is not available in this browser.": "\u6B64\u6D4F\u89C8\u5668\u4E0D\u652F\u6301 IndexedDB\u3002",
+    "Could not open the score library database.": "\u65E0\u6CD5\u6253\u5F00\u66F2\u5E93\u6570\u636E\u5E93\u3002",
+    "Library request failed.": "\u66F2\u5E93\u8BF7\u6C42\u5931\u8D25\u3002",
+    "Library transaction failed.": "\u66F2\u5E93\u6570\u636E\u64CD\u4F5C\u5931\u8D25\u3002",
+    "Library transaction was aborted.": "\u66F2\u5E93\u6570\u636E\u64CD\u4F5C\u5DF2\u4E2D\u6B62\u3002",
+    "This cannot be undone.": "\u6B64\u64CD\u4F5C\u65E0\u6CD5\u64A4\u9500\u3002",
+    "No scores in": "\u201C",
+    "yet.": "\u201D\u4E2D\u6682\u65E0\u66F2\u8C31\u3002"
+  });
+  var templates = [
+    [/^Version: (.*)$/, (v) => `\u7248\u672C\uFF1A${v}`],
+    [/^Version (.*) is available\. Reload now\?$/, (v) => `\u7248\u672C ${v} \u5DF2\u53D1\u5E03\uFF0C\u7ACB\u5373\u91CD\u65B0\u52A0\u8F7D\u5417\uFF1F`],
+    [/^Update available: (.*)\.$/, (v) => `\u6709\u53EF\u7528\u66F4\u65B0\uFF1A${v}\u3002`],
+    [/^Updating to (.*)\.\.\.$/, (v) => `\u6B63\u5728\u66F4\u65B0\u81F3 ${v}\u2026`],
+    [/^Update check failed: (.*)$/, (v) => `\u66F4\u65B0\u68C0\u67E5\u5931\u8D25\uFF1A${v}`],
+    [/^Playable Range: MIDI (.*)$/, (v) => `\u53EF\u5F39\u594F\u97F3\u57DF\uFF1AMIDI ${v}`],
+    [/^Staff (\d+)$/, (v) => `\u8C31\u8868 ${v}`],
+    [/^(\d+) selected$/, (v) => `\u5DF2\u9009\u62E9 ${v} \u9879`],
+    [/^(\d+) scores? •$/, (v) => `${v} \u9996\u66F2\u8C31 \u2022`],
+    [/^Actions for folder (.*)$/, (v) => `\u6587\u4EF6\u5939\u64CD\u4F5C\uFF1A${v}`],
+    [/^Actions for (.*)$/, (v) => `\u66F2\u8C31\u64CD\u4F5C\uFF1A${v}`],
+    [/^Move "(.*)" to which folder\?$/, (v) => `\u5C06\u201C${v}\u201D\u79FB\u52A8\u5230\u54EA\u4E2A\u6587\u4EF6\u5939\uFF1F`],
+    [/^Move (\d+) selected scores? to which folder\?$/, (v) => `\u5C06\u6240\u9009 ${v} \u9996\u66F2\u8C31\u79FB\u52A8\u5230\u54EA\u4E2A\u6587\u4EF6\u5939\uFF1F`],
+    [/^Delete score "(.*)"\?$/, (v) => `\u5220\u9664\u66F2\u8C31\u201C${v}\u201D\uFF1F`],
+    [/^Delete (\d+) selected scores?\? This cannot be undone\.$/, (v) => `\u5220\u9664\u6240\u9009 ${v} \u9996\u66F2\u8C31\uFF1F\u6B64\u64CD\u4F5C\u65E0\u6CD5\u64A4\u9500\u3002`],
+    [/^Delete (\d+) selected folders?\? Any scores inside (?:it will|them will) also be deleted\.$/, (v) => `\u5220\u9664\u6240\u9009 ${v} \u4E2A\u6587\u4EF6\u5939\uFF1F\u5176\u4E2D\u7684\u66F2\u8C31\u4E5F\u5C06\u88AB\u5220\u9664\u3002`],
+    [/^Delete folder "(.*)"\? This cannot be undone\.$/, (v) => `\u5220\u9664\u6587\u4EF6\u5939\u201C${v}\u201D\uFF1F\u6B64\u64CD\u4F5C\u65E0\u6CD5\u64A4\u9500\u3002`],
+    [/^Delete folder "(.*)"\? This will also delete (\d+) scores? inside it\.$/, (v, count) => `\u5220\u9664\u6587\u4EF6\u5939\u201C${v}\u201D\uFF1F\u5176\u4E2D ${count} \u9996\u66F2\u8C31\u4E5F\u5C06\u88AB\u5220\u9664\u3002`],
+    [/^No scores in (.*) yet\.$/, (v) => `\u201C${v}\u201D\u4E2D\u6682\u65E0\u66F2\u8C31\u3002`],
+    [/^Send playback and input to (.*)\.$/, (v) => `\u5C06\u64AD\u653E\u4E0E\u8F93\u5165\u53D1\u9001\u5230 ${v}\u3002`],
+    [/^Selected Key: MIDI (.*) \| LED Offset: (.*)$/, (v, offset) => `\u6240\u9009\u7434\u952E\uFF1AMIDI ${v} | LED \u504F\u79FB\uFF1A${offset}`],
+    [/^Testing MIDI LED note (.*) \((.*)\)\.$/, (v, count) => `\u6B63\u5728\u6D4B\u8BD5 MIDI LED \u97F3\u7B26 ${v} (${count})\u3002`],
+    [/^WLED test note (.*) \((.*)\)\.$/, (v, count) => `\u6B63\u5728\u6D4B\u8BD5 WLED \u97F3\u7B26 ${v} (${count})\u3002`],
+    [/^WLED connected \((.*) LEDs, (.*)\)$/, (v, transport) => `WLED \u5DF2\u8FDE\u63A5\uFF08${v} \u4E2A LED\uFF0C${transport}\uFF09`],
+    [/^WLED frame re-sent \((.*) LEDs\)\.$/, (v) => `WLED \u5E27\u5DF2\u91CD\u65B0\u53D1\u9001\uFF08${v} \u4E2A LED\uFF09\u3002`],
+    [/^WLED frame re-sent over (.*) \((.*) LEDs\)\.$/, (transport, v) => `WLED \u5E27\u5DF2\u901A\u8FC7 ${transport} \u91CD\u65B0\u53D1\u9001\uFF08${v} \u4E2A LED\uFF09\u3002`],
+    [/^Helper: Connected on localhost\. Last DDP frame skipped \((.*)\)\.$/, (v) => `\u8F85\u52A9\u7A0B\u5E8F\uFF1A\u5DF2\u5728 localhost \u8FDE\u63A5\uFF0C\u4E0A\u4E00 DDP \u5E27\u5DF2\u8DF3\u8FC7\uFF08${v}\uFF09\u3002`],
+    [/^Helper: Connected on localhost\. Last frame (.*) (.*)\.$/, (transport, outcome) => `\u8F85\u52A9\u7A0B\u5E8F\uFF1A\u5DF2\u5728 localhost \u8FDE\u63A5\uFF0C\u4E0A\u4E00\u5E27 ${transport} ${outcome}\u3002`],
+    [/^Applied: ([+-]?\d+) semitones$/, (v) => `\u5DF2\u5E94\u7528\uFF1A${v} \u534A\u97F3`],
+    [/^Applied: to (.*)$/, (v) => `\u5DF2\u79FB\u8C03\u81F3\uFF1A${v}`],
+    [/^Applied: Original score$/, () => "\u5DF2\u5E94\u7528\uFF1A\u539F\u8C03\u66F2\u8C31"],
+    [/^Applied: (.*)$/, (v) => `\u5DF2\u5E94\u7528\uFF1A${v}`],
+    [/^Unsupported MXL compression method: (.*)\.$/, (v) => `\u4E0D\u652F\u6301\u7684 MXL \u538B\u7F29\u65B9\u6CD5\uFF1A${v}\u3002`],
+    [/^Could not read ZIP entry "(.*)"\.$/, (v) => `\u65E0\u6CD5\u8BFB\u53D6 ZIP \u6761\u76EE\u201C${v}\u201D\u3002`],
+    [/^Could not convert "(.*)"\. (.*)$/, (v, detail) => `\u65E0\u6CD5\u8F6C\u6362\u201C${v}\u201D\u3002${detail === "Some MIDI, MuseScore, or Guitar Pro files may need cleanup in MuseScore before importing." ? chineseMessages[detail] : detail}`],
+    [/^Could not load starter library \((.*)\)\.$/, (v) => `\u65E0\u6CD5\u52A0\u8F7D\u5165\u95E8\u66F2\u5E93\uFF08${v}\uFF09\u3002`]
+  ];
+  function translateMessage(source, language) {
+    if (language === "en") return source;
+    const normalized = source.trim().replace(/\s+/g, " ");
+    const direct = Object.prototype.hasOwnProperty.call(chineseMessages, normalized) ? chineseMessages[normalized] : void 0;
+    if (direct !== void 0) return source.replace(source.trim(), () => direct);
+    for (const [pattern, render] of templates) {
+      const match = source.trim().match(pattern);
+      if (match) return source.replace(source.trim(), () => render(...match.slice(1)));
+    }
+    return source;
+  }
+
+  // src/state/preference-keys.ts
+  var PREFERENCE_STORAGE_KEYS = Object.freeze({
+    LANGUAGE_STORAGE_KEY: "pt_language",
+    UPDATE_MANIFEST_URL_STORAGE_KEY: "pt_updateManifestUrl",
+    ASSET_VERSION_OVERRIDE_STORAGE_KEY: "pt_assetVersionOverride",
+    PLAYER_PIANO_STORAGE_KEY: "pt_playerPianoType",
+    MIDI_IN_NAME_STORAGE_KEY: "pt_savedMidiInName",
+    MIDI_OUT_NAME_STORAGE_KEY: "pt_savedMidiOutName",
+    MIDI_LIGHTS_NAME_STORAGE_KEY: "pt_savedMidiLightsName",
+    LED_COUNT_STORAGE_KEY: "pt_ledCount",
+    LED_OUTPUT_MODE_STORAGE_KEY: "pt_ledOutputMode",
+    LED_REVERSE_STORAGE_KEY: "pt_ledReverse",
+    WLED_IP_STORAGE_KEY: "pt_wledIp",
+    WLED_TRANSPORT_STORAGE_KEY: "pt_wledTransport",
+    WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY: "pt_wledTransportWarningAccepted",
+    WLED_DDP_DEBUG_STORAGE_KEY: "pt_wledDdpDebugEnabled",
+    LED_MASTER_BRIGHTNESS_STORAGE_KEY: "pt_ledMasterBrightness",
+    LED_FUTURE1_PCT_STORAGE_KEY: "pt_ledFuture1Pct",
+    LED_FUTURE2_PCT_STORAGE_KEY: "pt_ledFuture2Pct",
+    LED_CALIBRATION_STORAGE_KEY: "pt_ledCalibration",
+    TRAINER_MODE_STORAGE_KEY: "pt_trainerMode",
+    TRAINER_FEEDBACK_STORAGE_KEY: "pt_feedbackEnabled",
+    TRAINER_FUTURE_PREVIEW_STORAGE_KEY: "pt_futurePreviewEnabled",
+    TRAINER_FUTURE_DEPTH_STORAGE_KEY: "pt_futurePreviewDepth",
+    TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY: "pt_correctHighlightEnabled",
+    TRAINER_PRACTICE_LH_STORAGE_KEY: "pt_practiceLeft",
+    TRAINER_PRACTICE_RH_STORAGE_KEY: "pt_practiceRight",
+    TRAINER_PLAYBACK_LH_STORAGE_KEY: "pt_audioLeft",
+    TRAINER_PLAYBACK_RH_STORAGE_KEY: "pt_audioRight",
+    TRAINER_AUDIO_HANDS_STORAGE_KEY: "pt_audioHands",
+    TRAINER_AUDIO_OTHER_STORAGE_KEY: "pt_audioOther",
+    TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY: "pt_audioInstrument",
+    TRAINER_AUDIO_VIRTUAL_STORAGE_KEY: "pt_audioVirtualKeyboard",
+    TRAINER_MIDIOUT_HANDS_STORAGE_KEY: "pt_midiOutHands",
+    TRAINER_MIDIOUT_OTHER_STORAGE_KEY: "pt_midiOutOther",
+    TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY: "pt_midiOutInstrument",
+    TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY: "pt_midiOutVirtualKeyboard",
+    TRAINER_INPUT_VELOCITY_STORAGE_KEY: "pt_inputVelocityEnabled",
+    TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY: "pt_liveLowLatencyMonitoringEnabled",
+    TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY: "pt_lowLatencyPlaybackEnabled",
+    TRAINER_PIANO_VOL_STORAGE_KEY: "pt_trainerPianoVolume",
+    TRAINER_MIDIOUT_VOL_STORAGE_KEY: "pt_trainerMidiOutVolume",
+    TRAINER_MIDIIN_BOOST_STORAGE_KEY: "pt_trainerMidiInBoost",
+    TRAINER_ZOOM_STORAGE_KEY: "pt_trainerZoom",
+    TRAINER_SCORE_LAYOUT_STORAGE_KEY: "pt_scoreLayout",
+    TRAINER_AUTOSCROLL_STORAGE_KEY: "pt_autoScroll",
+    TRAINER_KEYBOARD_STORAGE_KEY: "pt_virtualKeyboardVisible",
+    TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY: "pt_fullscreenOnPlay",
+    SETTINGS_DEBUG_STORAGE_KEY: "pt_debugEnabled",
+    MIDI_IN_ID_STORAGE_KEY: "pt_savedMidiIn",
+    MIDI_OUT_ID_STORAGE_KEY: "pt_savedMidiOut",
+    MIDI_LIGHTS_ID_STORAGE_KEY: "pt_savedMidiLights",
+    MIDI_IN_CHANNEL_STORAGE_KEY: "pt_savedMidiInChannel",
+    MIDI_OUT_CHANNEL_STORAGE_KEY: "pt_savedMidiOutChannel",
+    MIDI_LIGHTS_CHANNEL_STORAGE_KEY: "pt_savedMidiLightsChannel",
+    MIDI_LED_LOW_VELOCITY_STORAGE_KEY: "pt_midiLedLowVelocity",
+    VISUAL_PULSE_STORAGE_KEY: "pt_visualPulseEnabled",
+    LOOP_COUNT_IN_STORAGE_KEY: "pt_loopCountInEnabled",
+    METRONOME_VOL_STORAGE_KEY: "pt_metronomeVolume",
+    METRONOME_MIDIOUT_STORAGE_KEY: "pt_metronomeMidiOutEnabled",
+    ACCENTED_DOWNBEAT_STORAGE_KEY: "pt_accentedDownbeatEnabled",
+    FIRST_RUN_INIT_STORAGE_KEY: "pt_firstRunInit_20260321",
+    SKIP_FIRST_RUN_ONCE_STORAGE_KEY: "pt_skipFirstRunOnce"
+  });
+  var LANGUAGE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LANGUAGE_STORAGE_KEY;
+  var UPDATE_MANIFEST_URL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.UPDATE_MANIFEST_URL_STORAGE_KEY;
+  var ASSET_VERSION_OVERRIDE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.ASSET_VERSION_OVERRIDE_STORAGE_KEY;
+  var PLAYER_PIANO_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.PLAYER_PIANO_STORAGE_KEY;
+  var MIDI_IN_NAME_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_IN_NAME_STORAGE_KEY;
+  var MIDI_OUT_NAME_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_OUT_NAME_STORAGE_KEY;
+  var MIDI_LIGHTS_NAME_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_LIGHTS_NAME_STORAGE_KEY;
+  var LED_COUNT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_COUNT_STORAGE_KEY;
+  var LED_OUTPUT_MODE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_OUTPUT_MODE_STORAGE_KEY;
+  var LED_REVERSE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_REVERSE_STORAGE_KEY;
+  var WLED_IP_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.WLED_IP_STORAGE_KEY;
+  var WLED_TRANSPORT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.WLED_TRANSPORT_STORAGE_KEY;
+  var WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY;
+  var WLED_DDP_DEBUG_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.WLED_DDP_DEBUG_STORAGE_KEY;
+  var LED_MASTER_BRIGHTNESS_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_MASTER_BRIGHTNESS_STORAGE_KEY;
+  var LED_FUTURE1_PCT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_FUTURE1_PCT_STORAGE_KEY;
+  var LED_FUTURE2_PCT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_FUTURE2_PCT_STORAGE_KEY;
+  var LED_CALIBRATION_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_CALIBRATION_STORAGE_KEY;
+  var TRAINER_MODE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MODE_STORAGE_KEY;
+  var TRAINER_FEEDBACK_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_FEEDBACK_STORAGE_KEY;
+  var TRAINER_FUTURE_PREVIEW_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_FUTURE_PREVIEW_STORAGE_KEY;
+  var TRAINER_FUTURE_DEPTH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_FUTURE_DEPTH_STORAGE_KEY;
+  var TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY;
+  var TRAINER_PRACTICE_LH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PRACTICE_LH_STORAGE_KEY;
+  var TRAINER_PRACTICE_RH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PRACTICE_RH_STORAGE_KEY;
+  var TRAINER_PLAYBACK_LH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PLAYBACK_LH_STORAGE_KEY;
+  var TRAINER_PLAYBACK_RH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PLAYBACK_RH_STORAGE_KEY;
+  var TRAINER_AUDIO_HANDS_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUDIO_HANDS_STORAGE_KEY;
+  var TRAINER_AUDIO_OTHER_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUDIO_OTHER_STORAGE_KEY;
+  var TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY;
+  var TRAINER_AUDIO_VIRTUAL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUDIO_VIRTUAL_STORAGE_KEY;
+  var TRAINER_MIDIOUT_HANDS_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_HANDS_STORAGE_KEY;
+  var TRAINER_MIDIOUT_OTHER_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_OTHER_STORAGE_KEY;
+  var TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY;
+  var TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY;
+  var TRAINER_INPUT_VELOCITY_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_INPUT_VELOCITY_STORAGE_KEY;
+  var TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY;
+  var TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY;
+  var TRAINER_PIANO_VOL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PIANO_VOL_STORAGE_KEY;
+  var TRAINER_MIDIOUT_VOL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_VOL_STORAGE_KEY;
+  var TRAINER_MIDIIN_BOOST_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIIN_BOOST_STORAGE_KEY;
+  var TRAINER_ZOOM_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_ZOOM_STORAGE_KEY;
+  var TRAINER_SCORE_LAYOUT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_SCORE_LAYOUT_STORAGE_KEY;
+  var TRAINER_AUTOSCROLL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUTOSCROLL_STORAGE_KEY;
+  var TRAINER_KEYBOARD_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_KEYBOARD_STORAGE_KEY;
+  var TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY;
+  var SETTINGS_DEBUG_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.SETTINGS_DEBUG_STORAGE_KEY;
+  var MIDI_IN_ID_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_IN_ID_STORAGE_KEY;
+  var MIDI_OUT_ID_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_OUT_ID_STORAGE_KEY;
+  var MIDI_LIGHTS_ID_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_LIGHTS_ID_STORAGE_KEY;
+  var MIDI_IN_CHANNEL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_IN_CHANNEL_STORAGE_KEY;
+  var MIDI_OUT_CHANNEL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_OUT_CHANNEL_STORAGE_KEY;
+  var MIDI_LIGHTS_CHANNEL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_LIGHTS_CHANNEL_STORAGE_KEY;
+  var MIDI_LED_LOW_VELOCITY_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_LED_LOW_VELOCITY_STORAGE_KEY;
+  var VISUAL_PULSE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.VISUAL_PULSE_STORAGE_KEY;
+  var LOOP_COUNT_IN_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LOOP_COUNT_IN_STORAGE_KEY;
+  var METRONOME_VOL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.METRONOME_VOL_STORAGE_KEY;
+  var METRONOME_MIDIOUT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.METRONOME_MIDIOUT_STORAGE_KEY;
+  var ACCENTED_DOWNBEAT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.ACCENTED_DOWNBEAT_STORAGE_KEY;
+  var FIRST_RUN_INIT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.FIRST_RUN_INIT_STORAGE_KEY;
+  var SKIP_FIRST_RUN_ONCE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.SKIP_FIRST_RUN_ONCE_STORAGE_KEY;
+  var RESETTABLE_PREFERENCE_KEYS = [
+    LANGUAGE_STORAGE_KEY,
+    PLAYER_PIANO_STORAGE_KEY,
+    MIDI_IN_NAME_STORAGE_KEY,
+    MIDI_OUT_NAME_STORAGE_KEY,
+    MIDI_LIGHTS_NAME_STORAGE_KEY,
+    MIDI_IN_ID_STORAGE_KEY,
+    MIDI_IN_CHANNEL_STORAGE_KEY,
+    MIDI_OUT_ID_STORAGE_KEY,
+    MIDI_LIGHTS_ID_STORAGE_KEY,
+    MIDI_OUT_CHANNEL_STORAGE_KEY,
+    MIDI_LIGHTS_CHANNEL_STORAGE_KEY,
+    MIDI_LED_LOW_VELOCITY_STORAGE_KEY,
+    LED_COUNT_STORAGE_KEY,
+    LED_OUTPUT_MODE_STORAGE_KEY,
+    LED_REVERSE_STORAGE_KEY,
+    WLED_IP_STORAGE_KEY,
+    WLED_TRANSPORT_STORAGE_KEY,
+    WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY,
+    WLED_DDP_DEBUG_STORAGE_KEY,
+    LED_MASTER_BRIGHTNESS_STORAGE_KEY,
+    LED_FUTURE1_PCT_STORAGE_KEY,
+    LED_FUTURE2_PCT_STORAGE_KEY,
+    LED_CALIBRATION_STORAGE_KEY,
+    TRAINER_MODE_STORAGE_KEY,
+    TRAINER_FEEDBACK_STORAGE_KEY,
+    TRAINER_FUTURE_PREVIEW_STORAGE_KEY,
+    TRAINER_FUTURE_DEPTH_STORAGE_KEY,
+    TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY,
+    TRAINER_PRACTICE_LH_STORAGE_KEY,
+    TRAINER_PRACTICE_RH_STORAGE_KEY,
+    TRAINER_PLAYBACK_LH_STORAGE_KEY,
+    TRAINER_PLAYBACK_RH_STORAGE_KEY,
+    TRAINER_AUDIO_HANDS_STORAGE_KEY,
+    TRAINER_AUDIO_OTHER_STORAGE_KEY,
+    TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY,
+    TRAINER_AUDIO_VIRTUAL_STORAGE_KEY,
+    TRAINER_MIDIOUT_HANDS_STORAGE_KEY,
+    TRAINER_MIDIOUT_OTHER_STORAGE_KEY,
+    TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY,
+    TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY,
+    TRAINER_INPUT_VELOCITY_STORAGE_KEY,
+    TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY,
+    TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY,
+    TRAINER_PIANO_VOL_STORAGE_KEY,
+    TRAINER_MIDIOUT_VOL_STORAGE_KEY,
+    TRAINER_MIDIIN_BOOST_STORAGE_KEY,
+    TRAINER_ZOOM_STORAGE_KEY,
+    TRAINER_SCORE_LAYOUT_STORAGE_KEY,
+    TRAINER_AUTOSCROLL_STORAGE_KEY,
+    TRAINER_KEYBOARD_STORAGE_KEY,
+    TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY,
+    SETTINGS_DEBUG_STORAGE_KEY,
+    VISUAL_PULSE_STORAGE_KEY,
+    LOOP_COUNT_IN_STORAGE_KEY,
+    METRONOME_VOL_STORAGE_KEY,
+    METRONOME_MIDIOUT_STORAGE_KEY,
+    ACCENTED_DOWNBEAT_STORAGE_KEY
+  ];
+
+  // src/i18n/language-controller.ts
+  var rootsSelector = "#static-menu, #scores-panel, #options-overlay, #help-overlay, #more-popup, #audio-popup, #display-popup, #transpose-popup, #tempo-popup, #practice-popup, #looper-popup, .score-overlay-controls, #led-calibration-panel, .scores-folder-picker-overlay, .scores-action-menu-overlay";
+  var skipSelector = "script, style, svg, [data-i18n-skip], .scores-item-title, .scores-item-meta, .scores-action-menu-title";
+  var attributes = ["title", "aria-label", "placeholder", "data-tooltip"];
+  var sourceCopies = /* @__PURE__ */ new WeakMap();
+  function createLanguageController(ports) {
+    const { document: document2 } = ports;
+    let language = DEFAULT_LANGUAGE, initialized = false, disposed = false;
+    let bodyObserver = null, select = null;
+    const observers = /* @__PURE__ */ new Map();
+    let copies = sourceCopies.get(document2);
+    if (!copies) {
+      copies = { texts: /* @__PURE__ */ new WeakMap(), attributes: /* @__PURE__ */ new WeakMap() };
+      sourceCopies.set(document2, copies);
+    }
+    const textCopies = copies.texts, attributeCopies = copies.attributes;
+    function translate(source) {
+      return translateMessage(String(source ?? ""), language);
+    }
+    function skip(node) {
+      const element = node.nodeType === 1 ? node : node.parentElement;
+      return !element || !!element.closest(skipSelector);
+    }
+    function applyText(node) {
+      if (skip(node)) return;
+      const value = node.nodeValue || "", previous = textCopies.get(node);
+      const source = previous && value === previous.rendered ? previous.source : value;
+      const rendered = translate(source);
+      textCopies.set(node, { source, rendered });
+      if (rendered !== value) node.nodeValue = rendered;
+    }
+    function applyAttributes(element) {
+      if (skip(element)) return;
+      let copies2 = attributeCopies.get(element);
+      if (!copies2) {
+        copies2 = /* @__PURE__ */ new Map();
+        attributeCopies.set(element, copies2);
+      }
+      for (const name of attributes) {
+        const value = element.getAttribute(name);
+        if (value === null) {
+          copies2.delete(name);
+          continue;
+        }
+        const previous = copies2.get(name);
+        const source = previous && value === previous.rendered ? previous.source : value;
+        const rendered = translate(source);
+        copies2.set(name, { source, rendered });
+        if (rendered !== value) element.setAttribute(name, rendered);
+      }
+    }
+    function applyTree(node) {
+      if (node.nodeType === 3) {
+        applyText(node);
+        return;
+      }
+      if (node.nodeType !== 1 || skip(node)) return;
+      applyAttributes(node);
+      for (const child of node.childNodes) applyTree(child);
+    }
+    function onMutations(records) {
+      if (disposed) return;
+      for (const record of records) {
+        if (record.type === "characterData") applyText(record.target);
+        else if (record.type === "attributes") applyAttributes(record.target);
+        else for (const node of record.addedNodes) applyTree(node);
+      }
+    }
+    function registerRoot(root) {
+      if (observers.has(root)) return;
+      applyTree(root);
+      const observer = ports.createObserver(onMutations);
+      observer.observe(root, {
+        subtree: true,
+        childList: true,
+        characterData: true,
+        attributes: true,
+        attributeFilter: [...attributes]
+      });
+      observers.set(root, observer);
+    }
+    function discoverRoots() {
+      for (const [root, observer] of observers) {
+        if (!root.isConnected) {
+          observer.disconnect();
+          observers.delete(root);
+        }
+      }
+      for (const root of document2.querySelectorAll(rootsSelector)) registerRoot(root);
+    }
+    function setLanguage(value, { save = true } = {}) {
+      if (disposed) return;
+      language = normalizeLanguage(value);
+      if (save) {
+        try {
+          ports.storage.setItem(LANGUAGE_STORAGE_KEY, language);
+        } catch (_) {
+        }
+      }
+      document2.documentElement.lang = language;
+      if (select) select.value = language;
+      discoverRoots();
+      for (const [root, observer] of observers) {
+        onMutations(observer.takeRecords());
+        applyTree(root);
+      }
+    }
+    function readSavedLanguage() {
+      try {
+        return normalizeLanguage(ports.storage.getItem(LANGUAGE_STORAGE_KEY));
+      } catch (_) {
+        return DEFAULT_LANGUAGE;
+      }
+    }
+    function onChange() {
+      if (select) setLanguage(select.value);
+    }
+    function init() {
+      if (initialized || disposed) return;
+      initialized = true;
+      select = document2.querySelector("#select-language");
+      select?.addEventListener("change", onChange);
+      setLanguage(readSavedLanguage(), { save: false });
+      bodyObserver = ports.createObserver(() => {
+        if (!disposed) discoverRoots();
+      });
+      bodyObserver.observe(document2.body, { childList: true });
+    }
+    function restoreSavedLanguage() {
+      setLanguage(readSavedLanguage(), { save: false });
+    }
+    function dispose() {
+      if (disposed) return;
+      disposed = true;
+      select?.removeEventListener("change", onChange);
+      select = null;
+      bodyObserver?.disconnect();
+      bodyObserver = null;
+      for (const observer of observers.values()) observer.disconnect();
+      observers.clear();
+    }
+    return { init, dispose, translate, setLanguage, restoreSavedLanguage, getLanguage: () => language };
+  }
+
   // src/app/hand-assignment-controller.ts
   var PianoTrainerHandAssignment;
   ((PianoTrainerHandAssignment2) => {
@@ -5085,13 +5807,13 @@ ${xml}`;
     }
     function contexts(measures) {
       const result = [];
-      const attributes = /* @__PURE__ */ new Map();
+      const attributes2 = /* @__PURE__ */ new Map();
       let tempo = null;
       for (const measure of measures) {
-        result.push({ attributes: new Map(attributes), tempo });
+        result.push({ attributes: new Map(attributes2), tempo });
         for (const block of children(measure, "attributes")) {
           for (const attribute of Array.from(block.children)) {
-            if (!["measure-style"].includes(attribute.localName)) attributes.set(attributeKey(attribute), attribute);
+            if (!["measure-style"].includes(attribute.localName)) attributes2.set(attributeKey(attribute), attribute);
           }
         }
         for (const direction of children(measure, "direction")) {
@@ -7627,188 +8349,6 @@ ${xml}`;
     PianoTrainerPlayerRange2.create = create;
   })(PianoTrainerPlayerRange || (PianoTrainerPlayerRange = {}));
 
-  // src/state/preference-keys.ts
-  var PREFERENCE_STORAGE_KEYS = Object.freeze({
-    UPDATE_MANIFEST_URL_STORAGE_KEY: "pt_updateManifestUrl",
-    ASSET_VERSION_OVERRIDE_STORAGE_KEY: "pt_assetVersionOverride",
-    PLAYER_PIANO_STORAGE_KEY: "pt_playerPianoType",
-    MIDI_IN_NAME_STORAGE_KEY: "pt_savedMidiInName",
-    MIDI_OUT_NAME_STORAGE_KEY: "pt_savedMidiOutName",
-    MIDI_LIGHTS_NAME_STORAGE_KEY: "pt_savedMidiLightsName",
-    LED_COUNT_STORAGE_KEY: "pt_ledCount",
-    LED_OUTPUT_MODE_STORAGE_KEY: "pt_ledOutputMode",
-    LED_REVERSE_STORAGE_KEY: "pt_ledReverse",
-    WLED_IP_STORAGE_KEY: "pt_wledIp",
-    WLED_TRANSPORT_STORAGE_KEY: "pt_wledTransport",
-    WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY: "pt_wledTransportWarningAccepted",
-    WLED_DDP_DEBUG_STORAGE_KEY: "pt_wledDdpDebugEnabled",
-    LED_MASTER_BRIGHTNESS_STORAGE_KEY: "pt_ledMasterBrightness",
-    LED_FUTURE1_PCT_STORAGE_KEY: "pt_ledFuture1Pct",
-    LED_FUTURE2_PCT_STORAGE_KEY: "pt_ledFuture2Pct",
-    LED_CALIBRATION_STORAGE_KEY: "pt_ledCalibration",
-    TRAINER_MODE_STORAGE_KEY: "pt_trainerMode",
-    TRAINER_FEEDBACK_STORAGE_KEY: "pt_feedbackEnabled",
-    TRAINER_FUTURE_PREVIEW_STORAGE_KEY: "pt_futurePreviewEnabled",
-    TRAINER_FUTURE_DEPTH_STORAGE_KEY: "pt_futurePreviewDepth",
-    TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY: "pt_correctHighlightEnabled",
-    TRAINER_PRACTICE_LH_STORAGE_KEY: "pt_practiceLeft",
-    TRAINER_PRACTICE_RH_STORAGE_KEY: "pt_practiceRight",
-    TRAINER_PLAYBACK_LH_STORAGE_KEY: "pt_audioLeft",
-    TRAINER_PLAYBACK_RH_STORAGE_KEY: "pt_audioRight",
-    TRAINER_AUDIO_HANDS_STORAGE_KEY: "pt_audioHands",
-    TRAINER_AUDIO_OTHER_STORAGE_KEY: "pt_audioOther",
-    TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY: "pt_audioInstrument",
-    TRAINER_AUDIO_VIRTUAL_STORAGE_KEY: "pt_audioVirtualKeyboard",
-    TRAINER_MIDIOUT_HANDS_STORAGE_KEY: "pt_midiOutHands",
-    TRAINER_MIDIOUT_OTHER_STORAGE_KEY: "pt_midiOutOther",
-    TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY: "pt_midiOutInstrument",
-    TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY: "pt_midiOutVirtualKeyboard",
-    TRAINER_INPUT_VELOCITY_STORAGE_KEY: "pt_inputVelocityEnabled",
-    TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY: "pt_liveLowLatencyMonitoringEnabled",
-    TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY: "pt_lowLatencyPlaybackEnabled",
-    TRAINER_PIANO_VOL_STORAGE_KEY: "pt_trainerPianoVolume",
-    TRAINER_MIDIOUT_VOL_STORAGE_KEY: "pt_trainerMidiOutVolume",
-    TRAINER_MIDIIN_BOOST_STORAGE_KEY: "pt_trainerMidiInBoost",
-    TRAINER_ZOOM_STORAGE_KEY: "pt_trainerZoom",
-    TRAINER_SCORE_LAYOUT_STORAGE_KEY: "pt_scoreLayout",
-    TRAINER_AUTOSCROLL_STORAGE_KEY: "pt_autoScroll",
-    TRAINER_KEYBOARD_STORAGE_KEY: "pt_virtualKeyboardVisible",
-    TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY: "pt_fullscreenOnPlay",
-    SETTINGS_DEBUG_STORAGE_KEY: "pt_debugEnabled",
-    MIDI_IN_ID_STORAGE_KEY: "pt_savedMidiIn",
-    MIDI_OUT_ID_STORAGE_KEY: "pt_savedMidiOut",
-    MIDI_LIGHTS_ID_STORAGE_KEY: "pt_savedMidiLights",
-    MIDI_IN_CHANNEL_STORAGE_KEY: "pt_savedMidiInChannel",
-    MIDI_OUT_CHANNEL_STORAGE_KEY: "pt_savedMidiOutChannel",
-    MIDI_LIGHTS_CHANNEL_STORAGE_KEY: "pt_savedMidiLightsChannel",
-    MIDI_LED_LOW_VELOCITY_STORAGE_KEY: "pt_midiLedLowVelocity",
-    VISUAL_PULSE_STORAGE_KEY: "pt_visualPulseEnabled",
-    LOOP_COUNT_IN_STORAGE_KEY: "pt_loopCountInEnabled",
-    METRONOME_VOL_STORAGE_KEY: "pt_metronomeVolume",
-    METRONOME_MIDIOUT_STORAGE_KEY: "pt_metronomeMidiOutEnabled",
-    ACCENTED_DOWNBEAT_STORAGE_KEY: "pt_accentedDownbeatEnabled",
-    FIRST_RUN_INIT_STORAGE_KEY: "pt_firstRunInit_20260321",
-    SKIP_FIRST_RUN_ONCE_STORAGE_KEY: "pt_skipFirstRunOnce"
-  });
-  var UPDATE_MANIFEST_URL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.UPDATE_MANIFEST_URL_STORAGE_KEY;
-  var ASSET_VERSION_OVERRIDE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.ASSET_VERSION_OVERRIDE_STORAGE_KEY;
-  var PLAYER_PIANO_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.PLAYER_PIANO_STORAGE_KEY;
-  var MIDI_IN_NAME_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_IN_NAME_STORAGE_KEY;
-  var MIDI_OUT_NAME_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_OUT_NAME_STORAGE_KEY;
-  var MIDI_LIGHTS_NAME_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_LIGHTS_NAME_STORAGE_KEY;
-  var LED_COUNT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_COUNT_STORAGE_KEY;
-  var LED_OUTPUT_MODE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_OUTPUT_MODE_STORAGE_KEY;
-  var LED_REVERSE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_REVERSE_STORAGE_KEY;
-  var WLED_IP_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.WLED_IP_STORAGE_KEY;
-  var WLED_TRANSPORT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.WLED_TRANSPORT_STORAGE_KEY;
-  var WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY;
-  var WLED_DDP_DEBUG_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.WLED_DDP_DEBUG_STORAGE_KEY;
-  var LED_MASTER_BRIGHTNESS_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_MASTER_BRIGHTNESS_STORAGE_KEY;
-  var LED_FUTURE1_PCT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_FUTURE1_PCT_STORAGE_KEY;
-  var LED_FUTURE2_PCT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_FUTURE2_PCT_STORAGE_KEY;
-  var LED_CALIBRATION_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LED_CALIBRATION_STORAGE_KEY;
-  var TRAINER_MODE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MODE_STORAGE_KEY;
-  var TRAINER_FEEDBACK_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_FEEDBACK_STORAGE_KEY;
-  var TRAINER_FUTURE_PREVIEW_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_FUTURE_PREVIEW_STORAGE_KEY;
-  var TRAINER_FUTURE_DEPTH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_FUTURE_DEPTH_STORAGE_KEY;
-  var TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY;
-  var TRAINER_PRACTICE_LH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PRACTICE_LH_STORAGE_KEY;
-  var TRAINER_PRACTICE_RH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PRACTICE_RH_STORAGE_KEY;
-  var TRAINER_PLAYBACK_LH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PLAYBACK_LH_STORAGE_KEY;
-  var TRAINER_PLAYBACK_RH_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PLAYBACK_RH_STORAGE_KEY;
-  var TRAINER_AUDIO_HANDS_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUDIO_HANDS_STORAGE_KEY;
-  var TRAINER_AUDIO_OTHER_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUDIO_OTHER_STORAGE_KEY;
-  var TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY;
-  var TRAINER_AUDIO_VIRTUAL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUDIO_VIRTUAL_STORAGE_KEY;
-  var TRAINER_MIDIOUT_HANDS_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_HANDS_STORAGE_KEY;
-  var TRAINER_MIDIOUT_OTHER_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_OTHER_STORAGE_KEY;
-  var TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY;
-  var TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY;
-  var TRAINER_INPUT_VELOCITY_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_INPUT_VELOCITY_STORAGE_KEY;
-  var TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY;
-  var TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY;
-  var TRAINER_PIANO_VOL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_PIANO_VOL_STORAGE_KEY;
-  var TRAINER_MIDIOUT_VOL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIOUT_VOL_STORAGE_KEY;
-  var TRAINER_MIDIIN_BOOST_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_MIDIIN_BOOST_STORAGE_KEY;
-  var TRAINER_ZOOM_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_ZOOM_STORAGE_KEY;
-  var TRAINER_SCORE_LAYOUT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_SCORE_LAYOUT_STORAGE_KEY;
-  var TRAINER_AUTOSCROLL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_AUTOSCROLL_STORAGE_KEY;
-  var TRAINER_KEYBOARD_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_KEYBOARD_STORAGE_KEY;
-  var TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY;
-  var SETTINGS_DEBUG_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.SETTINGS_DEBUG_STORAGE_KEY;
-  var MIDI_IN_ID_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_IN_ID_STORAGE_KEY;
-  var MIDI_OUT_ID_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_OUT_ID_STORAGE_KEY;
-  var MIDI_LIGHTS_ID_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_LIGHTS_ID_STORAGE_KEY;
-  var MIDI_IN_CHANNEL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_IN_CHANNEL_STORAGE_KEY;
-  var MIDI_OUT_CHANNEL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_OUT_CHANNEL_STORAGE_KEY;
-  var MIDI_LIGHTS_CHANNEL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_LIGHTS_CHANNEL_STORAGE_KEY;
-  var MIDI_LED_LOW_VELOCITY_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.MIDI_LED_LOW_VELOCITY_STORAGE_KEY;
-  var VISUAL_PULSE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.VISUAL_PULSE_STORAGE_KEY;
-  var LOOP_COUNT_IN_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.LOOP_COUNT_IN_STORAGE_KEY;
-  var METRONOME_VOL_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.METRONOME_VOL_STORAGE_KEY;
-  var METRONOME_MIDIOUT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.METRONOME_MIDIOUT_STORAGE_KEY;
-  var ACCENTED_DOWNBEAT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.ACCENTED_DOWNBEAT_STORAGE_KEY;
-  var FIRST_RUN_INIT_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.FIRST_RUN_INIT_STORAGE_KEY;
-  var SKIP_FIRST_RUN_ONCE_STORAGE_KEY = PREFERENCE_STORAGE_KEYS.SKIP_FIRST_RUN_ONCE_STORAGE_KEY;
-  var RESETTABLE_PREFERENCE_KEYS = [
-    PLAYER_PIANO_STORAGE_KEY,
-    MIDI_IN_NAME_STORAGE_KEY,
-    MIDI_OUT_NAME_STORAGE_KEY,
-    MIDI_LIGHTS_NAME_STORAGE_KEY,
-    MIDI_IN_ID_STORAGE_KEY,
-    MIDI_IN_CHANNEL_STORAGE_KEY,
-    MIDI_OUT_ID_STORAGE_KEY,
-    MIDI_LIGHTS_ID_STORAGE_KEY,
-    MIDI_OUT_CHANNEL_STORAGE_KEY,
-    MIDI_LIGHTS_CHANNEL_STORAGE_KEY,
-    MIDI_LED_LOW_VELOCITY_STORAGE_KEY,
-    LED_COUNT_STORAGE_KEY,
-    LED_OUTPUT_MODE_STORAGE_KEY,
-    LED_REVERSE_STORAGE_KEY,
-    WLED_IP_STORAGE_KEY,
-    WLED_TRANSPORT_STORAGE_KEY,
-    WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY,
-    WLED_DDP_DEBUG_STORAGE_KEY,
-    LED_MASTER_BRIGHTNESS_STORAGE_KEY,
-    LED_FUTURE1_PCT_STORAGE_KEY,
-    LED_FUTURE2_PCT_STORAGE_KEY,
-    LED_CALIBRATION_STORAGE_KEY,
-    TRAINER_MODE_STORAGE_KEY,
-    TRAINER_FEEDBACK_STORAGE_KEY,
-    TRAINER_FUTURE_PREVIEW_STORAGE_KEY,
-    TRAINER_FUTURE_DEPTH_STORAGE_KEY,
-    TRAINER_CORRECT_HIGHLIGHT_STORAGE_KEY,
-    TRAINER_PRACTICE_LH_STORAGE_KEY,
-    TRAINER_PRACTICE_RH_STORAGE_KEY,
-    TRAINER_PLAYBACK_LH_STORAGE_KEY,
-    TRAINER_PLAYBACK_RH_STORAGE_KEY,
-    TRAINER_AUDIO_HANDS_STORAGE_KEY,
-    TRAINER_AUDIO_OTHER_STORAGE_KEY,
-    TRAINER_AUDIO_INSTRUMENT_STORAGE_KEY,
-    TRAINER_AUDIO_VIRTUAL_STORAGE_KEY,
-    TRAINER_MIDIOUT_HANDS_STORAGE_KEY,
-    TRAINER_MIDIOUT_OTHER_STORAGE_KEY,
-    TRAINER_MIDIOUT_INSTRUMENT_STORAGE_KEY,
-    TRAINER_MIDIOUT_VIRTUAL_STORAGE_KEY,
-    TRAINER_INPUT_VELOCITY_STORAGE_KEY,
-    TRAINER_LIVE_LOW_LATENCY_STORAGE_KEY,
-    TRAINER_LOW_LATENCY_PLAYBACK_STORAGE_KEY,
-    TRAINER_PIANO_VOL_STORAGE_KEY,
-    TRAINER_MIDIOUT_VOL_STORAGE_KEY,
-    TRAINER_MIDIIN_BOOST_STORAGE_KEY,
-    TRAINER_ZOOM_STORAGE_KEY,
-    TRAINER_SCORE_LAYOUT_STORAGE_KEY,
-    TRAINER_AUTOSCROLL_STORAGE_KEY,
-    TRAINER_KEYBOARD_STORAGE_KEY,
-    TRAINER_FULLSCREEN_ON_PLAY_STORAGE_KEY,
-    SETTINGS_DEBUG_STORAGE_KEY,
-    VISUAL_PULSE_STORAGE_KEY,
-    LOOP_COUNT_IN_STORAGE_KEY,
-    METRONOME_VOL_STORAGE_KEY,
-    METRONOME_MIDIOUT_STORAGE_KEY,
-    ACCENTED_DOWNBEAT_STORAGE_KEY
-  ];
-
   // src/state/preferences.ts
   var PianoTrainerPreferences;
   ((PianoTrainerPreferences2) => {
@@ -9075,6 +9615,7 @@ ${xml}`;
             const btn = document2.createElement("button");
             btn.type = "button";
             btn.className = "scores-folder-picker-option";
+            if (choice.value !== null && choice.value !== "__all__") btn.setAttribute("data-i18n-skip", "");
             btn.textContent = choice.label;
             btn.addEventListener("click", () => finish(choice.value));
             list.appendChild(btn);
@@ -9349,6 +9890,7 @@ ${xml}`;
           indicator.textContent = selectedSet.has(option.value) ? "\u2713" : "";
           row2.appendChild(indicator);
           const label = document2.createElement("span");
+          label.setAttribute("data-i18n-skip", "");
           label.textContent = option.label;
           row2.appendChild(label);
           bind(row2, "click", async () => {
@@ -9367,6 +9909,7 @@ ${xml}`;
         const btn = document2.createElement("button");
         btn.type = "button";
         btn.className = "scores-folder-list-item";
+        if (!isSystem) btn.setAttribute("data-i18n-skip", "");
         if (isActive)
           btn.classList.add("is-active");
         btn.textContent = option.label;
@@ -10083,16 +10626,19 @@ ${xml}`;
         for (let input of ports.service.listInputs()) {
           const option = document2.createElement("option");
           option.value = input.id;
+          option.setAttribute("data-i18n-skip", "");
           option.text = String(input.name);
           midiInSelect.appendChild(option);
         }
         for (let output of ports.service.listOutputs()) {
           const optOut = document2.createElement("option");
           optOut.value = output.id;
+          optOut.setAttribute("data-i18n-skip", "");
           optOut.text = String(output.name);
           midiOutSelect.appendChild(optOut);
           const optLights = document2.createElement("option");
           optLights.value = output.id;
+          optLights.setAttribute("data-i18n-skip", "");
           optLights.text = String(output.name);
           midiLightsSelect?.appendChild(optLights);
         }
@@ -11037,10 +11583,20 @@ ${xml}`;
     function create(ports) {
       const document2 = ports.document;
       const state = ports.state;
-      const { createFoldersLibraryToolbar, createFolderListRow, createScoresLibraryToolbar, createScoreRow, formatScorePaneSummary } = ports.rows;
+      const { createFoldersLibraryToolbar, createFolderListRow, createScoresLibraryToolbar, createScoreRow } = ports.rows;
       const { getFilteredLibraryScores } = PianoTrainerLibraryView;
       const { isScoreLibraryManageMode } = ports.selection;
       const { getScoreLibraryFolderLabel } = ports;
+      function appendEmptyMessage(empty, folderId, folders) {
+        if (folderId === "__all__") {
+          empty.textContent = "No saved scores yet. Add files to the library or save the current score.";
+          return;
+        }
+        const name = document2.createElement("span");
+        name.textContent = getScoreLibraryFolderLabel(folderId, folders);
+        if (folderId && folderId !== "__all__" && folderId !== "__unfiled__") name.setAttribute("data-i18n-skip", "");
+        empty.append("No scores in ", name, " yet.");
+      }
       function optional(id, type) {
         const node = document2.getElementById(id);
         if (node && !(node instanceof type))
@@ -11178,7 +11734,10 @@ ${xml}`;
             const filteredScores2 = getFilteredScores();
             const scoresHeader = document2.createElement("div");
             scoresHeader.className = "scores-split-pane-header scores-split-pane-header-summary";
-            scoresHeader.textContent = formatScorePaneSummary(activeFolderId, folders, filteredScores2.length);
+            const summaryFolder = document2.createElement("span");
+            summaryFolder.textContent = getScoreLibraryFolderLabel(activeFolderId, folders);
+            if (activeFolderId && activeFolderId !== "__all__" && activeFolderId !== "__unfiled__") summaryFolder.setAttribute("data-i18n-skip", "");
+            scoresHeader.append(`${filteredScores2.length} score${filteredScores2.length === 1 ? "" : "s"} \u2022 `, summaryFolder);
             scoresPane.appendChild(scoresHeader);
             const scoresList2 = document2.createElement("div");
             scoresList2.className = "scores-split-list";
@@ -11191,7 +11750,7 @@ ${xml}`;
             if (!filteredScores2.length) {
               const empty = document2.createElement("div");
               empty.className = "scores-folder-empty";
-              empty.textContent = activeFolderId === "__all__" ? "No saved scores yet. Add files to the library or save the current score." : `No scores in ${getScoreLibraryFolderLabel(activeFolderId, folders)} yet.`;
+              appendEmptyMessage(empty, activeFolderId, folders);
               scoresList2.appendChild(empty);
             } else {
               filteredScores2.forEach((score) => scoresList2.appendChild(createScoreRow(score, { manageMode: isScoreLibraryManageMode() })));
@@ -11245,6 +11804,7 @@ ${xml}`;
           const title = document2.createElement("div");
           title.className = "scores-browser-title";
           title.textContent = getScoreLibraryFolderLabel(activeFolderId, folders);
+          if (activeFolderId && activeFolderId !== "__all__" && activeFolderId !== "__unfiled__") title.setAttribute("data-i18n-skip", "");
           browserHeader.appendChild(title);
           const filteredScores = getFilteredScores();
           browserBody.appendChild(createScoresLibraryToolbar({
@@ -11258,7 +11818,7 @@ ${xml}`;
           if (!filteredScores.length) {
             const empty = document2.createElement("div");
             empty.className = "scores-folder-empty";
-            empty.textContent = activeFolderId === "__all__" ? "No saved scores yet. Add files to the library or save the current score." : `No scores in ${getScoreLibraryFolderLabel(activeFolderId, folders)} yet.`;
+            appendEmptyMessage(empty, activeFolderId, folders);
             scoresList.appendChild(empty);
           } else {
             filteredScores.forEach((score) => scoresList.appendChild(createScoreRow(score, { manageMode: isScoreLibraryManageMode() })));
@@ -12236,6 +12796,11 @@ ${xml}`;
 
   // src/app/services.ts
   function createServices(ports = {}) {
+    const language = createLanguageController({
+      document,
+      storage: localStorage,
+      createObserver: (callback) => new MutationObserver(callback)
+    });
     const permissionHelp = createPermissionHelp(document);
     const { showMidiPermissionHelp, clearMidiPermissionHelp, showWledPermissionHelp, clearWledPermissionHelp } = permissionHelp;
     let osmd;
@@ -12290,7 +12855,7 @@ ${xml}`;
       now: () => /* @__PURE__ */ new Date(),
       buildPayload: buildSettingsBackupPayload,
       importPayload: importSettingsBackupPayload,
-      alert: (message) => window.alert(message),
+      alert: (message) => window.alert(language.translate(message)),
       reload: () => window.location.reload(),
       warn: (message, error) => console.warn(message, error)
     });
@@ -12378,9 +12943,9 @@ ${xml}`;
       lifetime: libraryUiLifetime,
       selection: librarySelection,
       format: { getScoreDisplayTitle: (name = "") => getScoreDisplayTitle(name), getScoreFileTypeFromName: (name = "") => getScoreFileTypeFromName(name) },
-      prompt: (...args) => window.prompt(...args),
-      confirm: (message) => window.confirm(message),
-      alert: (message) => window.alert(message),
+      prompt: (...args) => args.length === 1 ? window.prompt(language.translate(args[0])) : window.prompt(language.translate(args[0]), args[1]),
+      confirm: (message) => window.confirm(language.translate(message)),
+      alert: (message) => window.alert(language.translate(message)),
       reportError: (...args) => console.error(...args)
     };
     const libraryActions = PianoTrainerLibraryActions.create({
@@ -12467,8 +13032,8 @@ ${xml}`;
       open: (url, target, features) => {
         window.open(url, target, features);
       },
-      alert: (message) => window.alert(message),
-      confirm: (message) => window.confirm(message)
+      alert: (message) => window.alert(language.translate(message)),
+      confirm: (message) => window.confirm(language.translate(message))
     });
     const initUpdateControls = updateControls.init;
     function createLegacyLedResources() {
@@ -12494,7 +13059,14 @@ ${xml}`;
       console,
       fetch: (url, options) => fetch(url, options),
       resources: legacyLedResources,
-      view: window,
+      view: {
+        get innerHeight() {
+          return window.innerHeight;
+        },
+        crypto: window.crypto,
+        alert: (message) => window.alert(language.translate(message)),
+        confirm: (message) => window.confirm(language.translate(message))
+      },
       keys: {
         LED_CALIBRATION_STORAGE_KEY,
         LED_COUNT_STORAGE_KEY,
@@ -13313,7 +13885,7 @@ ${xml}`;
       reportError: (error) => {
         console.error("OSMD Load Error:", error);
         const message = error && (typeof error === "object" || typeof error === "function") && "message" in error ? error.message : null;
-        alert(message ? String(message) : "Error loading score file.");
+        window.alert(language.translate(message ? String(message) : "Error loading score file."));
       }
     });
     const scoreFileInput = document.getElementById("file-input");
@@ -13508,12 +14080,15 @@ ${xml}`;
       }
     });
     const applyPersistedTrainerAndSettingsPreferences = preferenceControls.applyPersistedTrainerAndSettingsPreferences;
-    const restoreDefaultPreferences = preferenceControls.restoreDefaultPreferences;
+    const restoreDefaultPreferences = (...args) => {
+      preferenceControls.restoreDefaultPreferences(...args);
+      language.restoreSavedLanguage();
+    };
     const settingsActions = PianoTrainerSettingsActions.create({
       document,
       downloadSettingsBackup,
       handleSettingsBackupImportFile,
-      confirm: (message) => window.confirm(message),
+      confirm: (message) => window.confirm(language.translate(message)),
       restoreDefaultPreferences
     });
     const virtualKeyboardView = PianoTrainerVirtualKeyboardView.create({ document, isMidiInRange: (midi) => isMidiInPlayerRange(midi) });
@@ -13593,6 +14168,7 @@ ${xml}`;
     function init() {
       if (initialized || disposed) return;
       initialized = true;
+      language.init();
       preferences.init();
       settingsFiles.init();
       TransposeUI.init();
@@ -13679,6 +14255,7 @@ ${xml}`;
     function dispose() {
       if (disposed) return;
       disposed = true;
+      language.dispose();
       if (firstRunTimer !== void 0) window.clearTimeout(firstRunTimer);
       scoreLoader.dispose();
       practiceSustains.dispose();
@@ -13722,6 +14299,7 @@ ${xml}`;
       preferences.dispose();
     }
     return {
+      language,
       init,
       suspend,
       resume,

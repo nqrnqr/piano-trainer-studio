@@ -27,6 +27,14 @@ PowerShell 下可用 `$env:PIANO_TRAINER_APP_PORT = '8081'` 设置另一个端�
 
 ## 修改源码
 
+界面语言入口为“设置 → 语言”，支持 `en` / `zh-CN`，默认简体中文，保留已保存的英文选择；选择保存在 `pt_language`，
+纳入设置备份、导入与重置。文案目录为 `src/i18n/messages.ts`；新增控件文案应增加中文条目和
+相应模板，参数中的文件名、曲名、设备名保持原文。`language-controller.ts` 在明确的 UI 容器内
+更新文本、title、aria-label、placeholder、data-tooltip，保存英文源文案，能够即时切回。
+曲谱 SVG、虚拟键盘帧和 `[data-i18n-skip]` 用户数据不进入观察范围；动态曲库弹窗移除时释放观察器，
+应用销毁时释放所有观察器和语言监听。原生 alert/confirm/prompt 在组合端口翻译，未替换浏览器全局函数。
+浏览器验证入口为 `docs/testing/language.html`，测试范围与证据见 [language-results.md](../testing/language-results.md)。
+
 验证环境为 Node `22.21.0` / npm `10.9.4`；开发依赖固定为 TypeScript `5.9.3` 和
 esbuild `0.28.2`。根 package 不改为 `type: module`，没有新增运行时 npm 依赖。
 

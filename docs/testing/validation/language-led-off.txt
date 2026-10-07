@@ -1,0 +1,45 @@
+2026-10-07 | default language: zh-CN | native browser, LED disabled
+PASS first boot without a saved language defaults to Simplified Chinese
+PASS Chinese is applied immediately and saved
+PASS toolbar and transport are localized
+PASS accessibility label and tooltip are localized
+PASS help-overlay contains Chinese copy
+PASS options-overlay contains Chinese copy
+PASS audio-popup contains Chinese copy
+PASS display-popup contains Chinese copy
+PASS transpose-popup contains Chinese copy
+PASS tempo-popup contains Chinese copy
+PASS practice-popup contains Chinese copy
+PASS looper-popup contains Chinese copy
+PASS led-calibration-panel contains Chinese copy
+PASS runtime update/version status is localized
+PASS device names matching UI labels are preserved
+PASS device-name preference stores original text
+PASS score title and filename matching UI labels are preserved
+PASS user folder names remain verbatim
+PASS newly generated library counts and controls are localized
+PASS native library prompt uses Chinese
+PASS asynchronous import error alert uses Chinese
+PASS new dialog is translated on insertion
+PASS folder picker preserves user folder names
+PASS open dialog returns to English without being recreated
+PASS removed dialog releases its observer
+PASS mode changes after switching produce translated dynamic notes
+PASS Wait runtime hint is localized
+PASS active playback button is localized
+PASS switching during Wait leaves formal progress and scoring unchanged
+PASS switching preserves original source and rendered score
+PASS actual practice input still advances after language switches
+PASS idle localization has no self-triggered observer loop
+PASS score and high-frequency keyboard trees are excluded from observation
+PASS settings reset confirmation uses the selected language
+PASS settings export includes the language preference
+PASS settings import and full frame reload restore Chinese
+PASS English selection also persists across a full reload
+PASS invalid saved language falls back to Simplified Chinese
+PASS reset all settings restores default Simplified Chinese immediately
+PASS disposal removes language listeners and all observers
+PASS recreated application translates from fresh source copy
+PASS recreated application can restore static English copy
+PASS language picker remains readable at 390px
+PASS 43 language checks

@@ -140,16 +140,19 @@ export namespace PianoTrainerMidiControls {
             for (let input of ports.service.listInputs()) {
                 const option = document.createElement('option');
                 option.value = input.id;
+                option.setAttribute('data-i18n-skip', '');
                 option.text = String(input.name);
                 midiInSelect.appendChild(option);
             }
             for (let output of ports.service.listOutputs()) {
                 const optOut = document.createElement('option');
                 optOut.value = output.id;
+                optOut.setAttribute('data-i18n-skip', '');
                 optOut.text = String(output.name);
                 midiOutSelect.appendChild(optOut);
                 const optLights = document.createElement('option');
                 optLights.value = output.id;
+                optLights.setAttribute('data-i18n-skip', '');
                 optLights.text = String(output.name);
                 midiLightsSelect?.appendChild(optLights);
             }

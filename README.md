@@ -5,6 +5,10 @@ Practice piano with real-time MIDI feedback, scoring, and optional LED guidance.
 For contributors: [TypeScript development and regression checks](docs/refactor/DEVELOPMENT.md).
 The app includes generated scripts; running the existing launchers requires no frontend build.
 
+Interface language defaults to **简体中文**. Choose **设置 → 语言 → English / 简体中文** to switch; your choice takes effect immediately and is saved in this browser.
+
+界面默认使用简体中文，可在 **设置 → 语言 → 简体中文 / English** 切换。选择立即生效，刷新后保留；已保存的英文选择仍会保留，无需重新加载曲谱。设置备份包含语言选择，重置全部设置会恢复默认简体中文。
+
 ---
 
 ## 🌐 Try It

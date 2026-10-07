@@ -69,6 +69,7 @@ export namespace PianoTrainerLibraryDialogs {
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = 'scores-folder-picker-option';
+                    if (choice.value !== null && choice.value !== '__all__') btn.setAttribute('data-i18n-skip', '');
                     btn.textContent = choice.label;
                     btn.addEventListener('click', () => finish(choice.value));
                     list.appendChild(btn);

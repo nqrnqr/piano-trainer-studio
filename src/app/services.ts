@@ -1,3 +1,4 @@
+import {createLanguageController} from '../i18n/language-controller';
 import {PianoTrainerHandAssignment} from './hand-assignment-controller';
 import {PianoTrainerKeyboardController} from './keyboard-controller';
 import {PianoTrainerScoreSeek} from './score-seek-controller';
@@ -94,6 +95,8 @@ export interface ServicePorts {
     metronomeTone?: PianoTrainerMetronomeOutput.Ports['tone'];
 }
 export function createServices(ports: ServicePorts = {}) {
+const language = createLanguageController({document, storage: localStorage,
+    createObserver: callback => new MutationObserver(callback)});
 const permissionHelp = createPermissionHelp(document);
 const {showMidiPermissionHelp,clearMidiPermissionHelp,showWledPermissionHelp,clearWledPermissionHelp}=permissionHelp;
 let osmd: PianoTrainerOsmdVendor.Renderer;
@@ -134,7 +137,7 @@ const {buildSettingsBackupPayload, importSettingsBackupPayload} = settingsBackup
 const settingsFiles = PianoTrainerSettingsFiles.create({document, createReader: () => new FileReader(),
     createBlob: (parts, options) => new Blob(parts, options), createObjectURL: blob => URL.createObjectURL(blob),
     revokeObjectURL: url => URL.revokeObjectURL(url), now: () => new Date(), buildPayload: buildSettingsBackupPayload,
-    importPayload: importSettingsBackupPayload, alert: message => window.alert(message), reload: () => window.location.reload(),
+    importPayload: importSettingsBackupPayload, alert: message => window.alert(language.translate(message)), reload: () => window.location.reload(),
     warn: (message, error) => console.warn(message, error)});
 
 const downloadSettingsBackup = settingsFiles.downloadSettingsBackup;
@@ -192,7 +195,8 @@ const libraryUiPorts = { document, window, state: AppState, library: ScoreLibrar
     prompt: (...args: [
         string,
         string?
-    ]) => window.prompt(...args), confirm: (message: string) => window.confirm(message), alert: (message: unknown) => window.alert(message),
+    ]) => args.length === 1 ? window.prompt(language.translate(args[0])) : window.prompt(language.translate(args[0]), args[1]),
+    confirm: (message: string) => window.confirm(language.translate(message)), alert: (message: unknown) => window.alert(language.translate(message)),
     reportError: (...args: [
         string,
         unknown?
@@ -229,7 +233,7 @@ const updateController = PianoTrainerUpdateController.create({state: AppState, v
     fetch: (url, options) => fetch(url, options), createAbortController: () => new AbortController(), nowMs: () => Date.now(),
     getErrorMessage: getUnknownErrorMessage, setChecking: () => updateControls.setChecking(), syncControls: () => updateControls.syncUpdateControls()});
 const updateControls = PianoTrainerUpdateControls.create({document, state: AppState, version: APP_VERSION, commands: updateController,
-    open: (url, target, features) => {window.open(url, target, features);}, alert: message => window.alert(message), confirm: message => window.confirm(message)});
+    open: (url, target, features) => {window.open(url, target, features);}, alert: message => window.alert(language.translate(message)), confirm: message => window.confirm(language.translate(message))});
 // LED calls init during ordinary setting changes: preserve its state refresh/check each time.
 const initUpdateControls = updateControls.init;
 
@@ -249,7 +253,8 @@ function createLegacyLedResources() {
 const legacyLedResources = createLegacyLedResources();
 const legacyLed = window.PianoTrainerLegacyLed.create({
     state: AppState, document, storage: localStorage, console, fetch: (url, options) => fetch(url, options),
-    resources: legacyLedResources, view: window,
+    resources: legacyLedResources, view: {get innerHeight() {return window.innerHeight;}, crypto: window.crypto,
+        alert: message => window.alert(language.translate(message)), confirm: message => window.confirm(language.translate(message))},
     keys: {LED_CALIBRATION_STORAGE_KEY, LED_COUNT_STORAGE_KEY, LED_FUTURE1_PCT_STORAGE_KEY, LED_FUTURE2_PCT_STORAGE_KEY,
         LED_MASTER_BRIGHTNESS_STORAGE_KEY, LED_OUTPUT_MODE_STORAGE_KEY, LED_REVERSE_STORAGE_KEY, WLED_DDP_DEBUG_STORAGE_KEY,
         WLED_IP_STORAGE_KEY, WLED_TRANSPORT_STORAGE_KEY, WLED_TRANSPORT_WARNING_ACCEPTED_STORAGE_KEY},
@@ -896,7 +901,7 @@ const scoreLoader = PianoTrainerScoreLoader.create({
     reportError: error => {
         console.error('OSMD Load Error:', error);
         const message = error && (typeof error === 'object' || typeof error === 'function') && 'message' in error ? error.message : null;
-        alert(message ? String(message) : 'Error loading score file.');
+        window.alert(language.translate(message ? String(message) : 'Error loading score file.'));
     }
 });
 const scoreFileInput = document.getElementById('file-input');
@@ -1002,9 +1007,11 @@ const preferenceControls = PianoTrainerPreferenceControls.create({document, stat
     positionCalibrationPanel: () => optionalLedOutput.positionCalibrationPanel(), renderLooper: () => renderLooper(),
     renderVirtualKeyboard: () => renderVirtualKeyboard(), populateMIDIDevices: () => {void populateMIDIDevices();}});
 const applyPersistedTrainerAndSettingsPreferences = preferenceControls.applyPersistedTrainerAndSettingsPreferences;
-const restoreDefaultPreferences = preferenceControls.restoreDefaultPreferences;
+const restoreDefaultPreferences = (...args: Parameters<typeof preferenceControls.restoreDefaultPreferences>) => {
+    preferenceControls.restoreDefaultPreferences(...args); language.restoreSavedLanguage();
+};
 const settingsActions = PianoTrainerSettingsActions.create({document, downloadSettingsBackup, handleSettingsBackupImportFile,
-    confirm: message => window.confirm(message), restoreDefaultPreferences});
+    confirm: message => window.confirm(language.translate(message)), restoreDefaultPreferences});
 
 // keyboard-and-score-controls.ts composition
 const virtualKeyboardView = PianoTrainerVirtualKeyboardView.create({document, isMidiInRange: midi => isMidiInPlayerRange(midi)});
@@ -1049,6 +1056,7 @@ const scoreSeekController = PianoTrainerScoreSeek.create({state: AppState, hasGr
 const scoreSeekControls = PianoTrainerScoreSeekControls.create({document, seek: scoreSeekController.seek});
 
 function init() {if(initialized || disposed)return;initialized=true;
+language.init();
 preferences.init();
 settingsFiles.init();
 TransposeUI.init();
@@ -1129,6 +1137,7 @@ function resume() {
     updateConnectionStatuses();
 }
 function dispose() {if(disposed)return;disposed=true;
+language.dispose();
 if(firstRunTimer!==undefined)window.clearTimeout(firstRunTimer);
 scoreLoader.dispose();
 practiceSustains.dispose();
@@ -1172,6 +1181,7 @@ horizontalScore.dispose();
 preferences.dispose();
 }
 return {
+    language,
     init,
     suspend,
     resume,

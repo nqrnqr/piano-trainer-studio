@@ -1,0 +1,15 @@
+<!doctype html><meta charset="utf-8"><title>Language switch checks</title>
+<style>body{font:14px system-ui;margin:12px}iframe{width:1100px;height:900px;border:1px solid #ccc}pre{white-space:pre-wrap;height:180px;overflow:auto}</style>
+<h1>英语 / 简体中文切换测试</h1>
+<p>实际应用、OSMD、DOM 和 MutationObserver；曲库与偏好均使用独立测试数据。</p>
+<button id="run" disabled>Run checks</button><button id="dispose" disabled>Dispose after capture</button>
+<pre id="results">Ready</pre><iframe title="App under test"></iframe>
+<script src="/docs/testing/module-test-frame.js"></script><script>
+window.LanguageScope={prefix:'__pt_language_'+crypto.randomUUID()+'_',databases:new Set(),values:new Map(),sessionValues:new Map()};
+const frame=document.querySelector('iframe');frame.onload=()=>{document.getElementById('run').disabled=false;};
+window.mountLanguageFrame=()=>mountModuleTestFrame(frame,{ports:{controlledPlayback:true},beforeFixtures:['language-storage-fixture.js'],
+ fixtures:['midi-device-fixture.js','language-controls-fixture.js'],preferences:{pt_language:LanguageScope.values.get('pt_language')??null}});
+document.getElementById('run').onclick=()=>{document.getElementById('run').disabled=true;const script=document.createElement('script');script.src='/docs/testing/language.integration.js';document.body.append(script);};
+document.getElementById('dispose').onclick=()=>frame.contentWindow.LanguageCleanup();
+mountLanguageFrame();
+</script>

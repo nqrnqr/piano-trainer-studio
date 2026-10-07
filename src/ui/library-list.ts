@@ -204,6 +204,7 @@ export namespace PianoTrainerLibraryList {
                 indicator.textContent = selectedSet.has(option.value!) ? '✓' : '';
                 row.appendChild(indicator);
                 const label = document.createElement('span');
+                label.setAttribute('data-i18n-skip', '');
                 label.textContent = option.label;
                 row.appendChild(label);
                 bind(row, 'click', async () => {
@@ -222,6 +223,7 @@ export namespace PianoTrainerLibraryList {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'scores-folder-list-item';
+            if (!isSystem) btn.setAttribute('data-i18n-skip', '');
             if (isActive)
                 btn.classList.add('is-active');
             btn.textContent = option.label;

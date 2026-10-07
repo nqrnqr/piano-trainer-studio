@@ -232,6 +232,16 @@
 
     <div id="options-overlay" class="popup-surface hidden">
         <div class="options-grid">
+            <fieldset id="fs-language">
+                <legend>Language</legend>
+                <label class="language-setting" for="select-language"><span>Language</span>
+                    <select id="select-language">
+                        <option value="en" lang="en" data-i18n-skip>English</option>
+                        <option value="zh-CN" lang="zh-CN" data-i18n-skip>简体中文</option>
+                    </select>
+                </label>
+                <div class="setting-note">Changes take effect immediately and are saved in this browser.</div>
+            </fieldset>
             <fieldset id="fs-about-updates">
                 <legend>About &amp; Updates</legend>
                 <div class="about-update-stack">
