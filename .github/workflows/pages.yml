@@ -32,9 +32,9 @@ jobs:
       - name: Prepare static website
         run: |
           mkdir -p .cache/pages/docs
-          cp index.html style.css site.webmanifest version.json README.html README.md quick-start.html LICENSE .cache/pages/
+          cp index.html style.css site.webmanifest version.json README.html README.md README.en.md quick-start.html LICENSE .cache/pages/
           cp -R assets js .cache/pages/
-          cp docs/LED-Setup.html docs/LED-Setup.md .cache/pages/docs/
+          cp docs/LED-Setup.html docs/LED-Setup.md docs/LED-Setup.en.md .cache/pages/docs/
           cp -R docs/screenshots .cache/pages/docs/
           touch .cache/pages/.nojekyll
       - name: Upload website

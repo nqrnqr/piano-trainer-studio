@@ -16,7 +16,7 @@ export const chineseMessages: Readonly<Record<string, string>> = Object.freeze({
     'Library tools will appear here in the next step.': '正在准备曲库工具。',
     'Welcome / Quick Start': '欢迎 / 快速入门', 'Close help': '关闭帮助', 'Close': '关闭',
     'Advanced setup (LEDs, iPad, hardware):': '高级配置（LED、iPad、硬件）：',
-    'Full Setup Guide / README': '完整配置指南 / README（英文）', '📘 Full Setup Guide': '📘 完整配置指南（英文）',
+    'Full Setup Guide / README': '完整配置指南 / README', '📘 Full Setup Guide': '📘 完整配置指南',
     'Practice Modes': '练习模式', 'Play continuously at the set tempo.': '按设定速度连续演奏。',
     'Waits for correct notes before continuing.': '等待弹对音符后再继续。',
     'Play one hand while the app follows with the other.': '你弹奏一只手，应用跟随演奏另一只手。',

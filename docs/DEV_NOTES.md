@@ -773,6 +773,12 @@ Boot metadata now lives in src/state/app-state.ts instead of trainer-state.js;
 it reads the runtime version from the version manifest and uses relative update paths.
 Removed the upstream custom domain and made the web manifest work under a project subpath.
 
+v1.3.1
+Published the complete setup README and WLED guide in Simplified Chinese by default,
+with English copies and in-page language controls. Added a brief upstream attribution.
+Bundled the Markdown renderer locally so the guides no longer depend on a CDN.
+Updated guide link labels and the default HTML language selection.
+
 //------------------------------//
 **KEEP AT BOTTOM OF FILE FOR REFERENCE!**
 VERSION CONTROL - you MUST update the version in version.json and trainer-state.js prior to pushing to github!

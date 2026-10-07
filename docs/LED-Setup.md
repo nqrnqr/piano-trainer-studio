@@ -1,226 +1,150 @@
-# 💡 LED Setup Guide (WLED)
+# 💡 LED / WLED 配置指南
 
-This guide walks you through setting up LED feedback for Piano Trainer Studio using WLED.
+本指南说明如何为 Piano Trainer Studio 配置 WLED 灯带反馈，基于原作者 [ztbishop 的配置说明](https://github.com/ztbishop/piano-trainer-studio/blob/main/docs/LED-Setup.md)整理翻译。
 
-LEDs are optional — but they are one of the most powerful features of the app for learning and visualization.
+灯带是可选功能。开始前先确认普通乐谱播放和 MIDI 输入能够正常使用，再逐步连接硬件。
 
----
+[返回完整配置指南](../README.html) · [打开应用](../)
 
-## 📸 Example Setup
+## 配置示例
 
-### Full Piano Setup
-![Piano Setup](screenshots/PianoSetup.jpg)
+### 钢琴与灯带
 
-### LED Strip Close-Up
-![LED Strip](screenshots/LightStrip.jpg)
+![钢琴与灯带示例](screenshots/PianoSetup.jpg)
 
-### WLED Controller Example
-![WLED Controller](screenshots/WLED-Controller.jpg)
+### 灯带近景
 
----
+![灯带近景](screenshots/LightStrip.jpg)
 
-## 🔌 Hardware Overview
+### WLED 控制器
 
-### Recommended Components
+![WLED 控制器示例](screenshots/WLED-Controller.jpg)
 
-- **Controller:** ESP32 WLED Controller (BTF / Athom / similar)
-- **LED Strip:** WS2812B (5V addressable)
-- **Power Supply:** 5V DC (5A–6A recommended)
+## 硬件组成
 
----
+原版示例使用以下设备，实际选择需与自己的灯带、电源和控制器规格匹配：
 
-## 🛒 Example Hardware (Reference)
+- 支持 WLED 的 ESP32 控制器，例如 BTF、Athom 或类似设备。
+- WS2812B 等 5V 可寻址 LED 灯带。
+- 匹配灯带功耗的 5V 直流电源；原版示例为 5V、5A–6A。
 
-### Controller  
-BTF-Lighting ESP32 WLED Controller  
-https://www.amazon.com/BTF-LIGHTING-Controller-Dynamic-Download-Addressable/dp/B0FB38FDCS?pd_rd_w=WR8cE  
+原版灯带示例是每米 200 颗灯珠、5mm 宽 PCB、总长 2m；电源示例接口为 5.5mm × 2.1mm。以上是示例参数，请以自己设备的说明为准。
 
-### LED Strip  
-200 LEDs/m, 5mm PCB, 2m length  
-https://a.aliexpress.com/_mOxIFCV  
+## 第一步：连接 WLED
 
-### Power Supply  
-5V, 6A DC Power Supply (5.5mm x 2.1mm barrel)
+1. 为控制器供电。
+2. 连接控制器提供的 Wi-Fi 网络。
+3. 按设备说明打开 WLED 配置页；初始热点地址通常为 [http://4.3.2.1](http://4.3.2.1)。
+4. 将控制器连接到家中的 Wi-Fi。
+5. 在路由器或 WLED 页面确认设备的局域网 IP，例如 `192.168.1.50`。
 
----
+后续需将这个 IP 填入应用。运行应用的电脑或移动设备应能访问该地址。
 
-## ⚙️ Step 1 — Set Up WLED
+## 第二步：连接灯带
 
-1. Power your controller  
-2. Connect to its Wi-Fi network  
-3. Open browser → http://4.3.2.1  
-4. Connect it to your home Wi-Fi  
-5. Find your device IP (example: 192.168.1.xxx)  
+常见接线关系：
 
-👉 You will use this IP in Piano Trainer
+| 灯带接口 | 连接位置 |
+| --- | --- |
+| VCC | 匹配的 5V 电源。 |
+| GND | 电源与控制器的公共地。 |
+| DATA | 控制器配置的灯带数据引脚。 |
 
----
+数据引脚由具体控制器和 WLED 设置决定，原版某些控制器示例使用 IO16，不能直接套用到所有设备。接线前断电并核对电压和极性，错误接线可能损坏设备。
 
-## 🔌 Step 2 — Wiring the LED Strip
+## 第三步：安装灯带
 
-Typical wiring:
+将灯带平直地固定在琴键上方，并居中对齐。可在琴键延伸方向添加白色标记，帮助观察灯珠与琴键的位置对应。
 
-- **VCC → 5V**
-- **GND → GND**
-- **DATA → GPIO (often IO16 on this controller)**
+先确定物理安装位置，再设置灯珠数量，最后进行校准。
 
-⚠️ Incorrect wiring can damage your LEDs
+## 第四步：在应用中配置
 
----
+在 **设置 → LED 设置** 中：
 
-## 🎯 Step 3 — Mounting the Strip (IMPORTANT)
+1. 将 **LED 灯** 设为 **WLED**。
+2. 填写 **WLED IP 地址**。
+3. 先使用 **HTTP JSON** 传输。
+4. 点击 **测试灯带**，确认控制器能够收到数据。
 
-Recommended approach:
+### LED 数量
 
-- Mount strip **above the keys**
-- Add **white stickers extending from keys (optional but highly recommended)**
+填写实际使用的灯珠数量，可先按下面的公式估算：
 
-### Why this helps:
-- Creates a visual “extended key”
-- Makes LED alignment MUCH clearer
-- Improves learning accuracy
+**LED 数量 ≈ 每米灯珠数 × 使用长度（米）**
 
----
+例如：每米 200 颗、实际使用 1.2m，对应约 240 颗灯珠。
 
-## 🎛️ Step 4 — Configure in Piano Trainer
+如果仅部分灯带亮起，检查应用中的数量、WLED 控制器中的灯珠数量和实际接线是否一致。琴键与灯珠位置不对应时，应在数量确认后进行校准。
 
-### In the App:
+### 亮度
 
-- **LED Lights:** WLED  
-- **WLED IP Address:**  
-  → Enter your WLED device IP  
+原版建议的初始参数为总亮度约 20、后续音符亮度约 1。根据自己的灯带与环境调整；后续音符看不清时，可小幅提高对应亮度。
 
----
+## 第五步：校准琴键位置
 
-### LED Count (IMPORTANT)
+1. 点击 **开始 LED 校准**。
+2. 按下实体琴键，或点击虚拟琴键。
+3. 使用校准栏中的左右移动控制，让灯珠提示对齐当前琴键。
+4. 在键盘不同位置重复检查和调整。
+5. 点击 **完成 LED 校准**。
 
-Set this based on your strip:
+校准用于修正灯珠与琴键间距的差异。更改安装位置或 LED 数量后，应重新检查对齐情况，并备份校准设置。
 
-LED Count ≈ LEDs per meter × strip length (meters)
+## 灯光反馈
 
-Example:
-- 200 LEDs/m × 1.2m ≈ 240 LEDs
+| 状态 | 灯光表现 |
+| --- | --- |
+| 当前预期音符 | 左手蓝色、右手绿色。 |
+| 后续音符 | 较暗的蓝色或绿色。 |
+| 正确音符 | 暖金色或白色。 |
+| 错误音符 | 红色。 |
 
----
+## 传输方式
 
-### Test It
+### HTTP JSON（默认）
 
-- Click **Test LED Strip**
-- If lights:
-  - don’t reach full width → LOWER count
-  - overshoot → LOWER count
-- Adjust until it visually matches your keyboard
+通过 WLED 的 HTTP 接口发送状态，适合先检查设备连接。通常无需 DDP 辅助程序，延迟可能略高。
 
-👉 This value is the foundation for calibration — get it right first
+使用 GitHub Pages 的 HTTPS 页面连接局域网 HTTP 设备时，浏览器可能限制访问或要求权限。若连接不通，可用项目的本地启动器；iPad 可通过局域网启动器和 MIDIWeb 打开电脑显示的 HTTP 地址。
 
----
+### DDP（低延迟，实验功能）
 
-## 🔆 Brightness Settings (Recommended Starting Point)
+DDP 通过电脑上的本地辅助程序发送 UDP 数据。先安装 Node.js，再运行：
 
-- **Master:** 20  
-- **Future:** 1  
+- Windows：`Windows Launchers/WLED Helper - Low Latency (DDP).bat`。
+- macOS：`Mac Launchers/WLED Helper - Low Latency (DDP).command`。
 
-If future notes don’t appear → increase slightly
+辅助程序默认监听 `http://127.0.0.1:4818`。在应用中切换为 DDP 后，确认状态显示已连接，并检查是否有帧发送确认。
 
----
+该本地桥接地址指向运行浏览器的同一台电脑；iPad 不能直接使用电脑的 `127.0.0.1`。GitHub Pages 只托管网页，不运行辅助程序。
 
-## 🎚️ Step 5 — Calibration
+## 使用建议
 
-### How it works:
+- 灯光过亮时降低总亮度。
+- 灯带保持平直、居中，避免安装后再移动位置。
+- 灯珠数量确认后再校准。
+- 先让 HTTP JSON 正常工作，再尝试 DDP。
+- 使用 **设置 → 备份全部设置** 保存连接配置和 LED 校准。
 
-1. Click **Start LED Calibration**
-2. Press a piano key (or click virtual key)
-3. Use:
-   - Move Left
-   - Move Right
-4. Repeat across keyboard
+## 常见问题
 
----
+### 灯带没有反应
 
-### Why calibration matters:
+检查电源、WLED IP 和 Wi-Fi 连接，先在浏览器中确认 WLED 页面可访问，再尝试 HTTP JSON 与“测试灯带”。
 
-- Fixes spacing inconsistencies  
-- Improves accuracy for learning  
-- Ensures LEDs match note positions exactly  
+### 只有部分灯带亮起
 
----
+核对实际灯珠数量、WLED 设备配置、应用的 LED 数量及接线。
 
-## 🎨 LED Behavior
+### 音符与琴键没有对齐
 
-- Expected notes:
-  - Left hand → Blue  
-  - Right hand → Green  
+确认灯带安装位置和 LED 数量后，重新执行校准。
 
-- Future notes:
-  - Dimmer blue/green  
+### DDP 无法使用
 
-- Correct notes:
-  - Warm gold/white  
+检查辅助程序窗口是否正在运行、应用是否连接到本机辅助程序，以及 WLED 设备是否在同一可访问的局域网中。
 
-- Incorrect notes:
-  - Red  
+## 项目来源
 
----
-
-## ⚡ Connection Modes
-
-### HTTP JSON (Default)
-
-- Works everywhere (desktop + iPad)  
-- No helper required  
-- Slightly higher latency  
-
-👉 Recommended for most users  
-
----
-
-### DDP (Low Latency Mode)
-
-Run helper:
-
-Launchers/Windows/WLED Helper - Low Latency (DDP).bat
-
-- Faster response  
-- Better for advanced setups  
-
-⚠️ Notes:
-- Requires Node.js  
-- Not supported on iPad  
-- Uses localhost bridge  
-
----
-
-## 🧠 Tips for Best Results
-
-- Lower brightness if LEDs are too intense  
-- Use high-density strips (160–200 LEDs/m)  
-- Keep LED strip straight and centered  
-- Calibrate AFTER setting LED count  
-- Use stickers for best visual alignment  
-
----
-
-## ⚠️ Troubleshooting
-
-**LEDs not responding**
-- Check IP address  
-- Ensure WLED is connected to Wi-Fi  
-- Try HTTP JSON mode first  
-
-**Only part of strip lights**
-- LED count too high or low  
-
-**Misaligned lights**
-- Run calibration  
-
-**DDP not working**
-- Make sure helper is running  
-- Confirm localhost connection  
-
----
-
-## 📌 Final Notes
-
-- LED setup is optional but highly recommended  
-- Once calibrated, it dramatically improves learning speed  
-- Works best with proper strip placement + correct LED count  
+原始项目：[ztbishop/piano-trainer-studio](https://github.com/ztbishop/piano-trainer-studio)。当前中文版本：[nqrnqr/piano-trainer-studio](https://github.com/nqrnqr/piano-trainer-studio)。沿用 AGPL v3.0 许可证。
